@@ -11,7 +11,11 @@ namespace LoopingAudioConverter {
         public WaveDataException(string message) : base(message) { }
     }
 
-    public class WaveData {
+	/// <summary>
+	/// Represents 16-bit uncompressed PCM data with an arbitary number of channels and an optional loop sequence.
+	/// The total sample length of this data is immutable, but the data itself and other properties can be modified.
+	/// </summary>
+    public class LWAV {
         [StructLayout(LayoutKind.Sequential, Pack=1)]
         private struct fmt {
             public int id;
@@ -61,7 +65,7 @@ namespace LoopingAudioConverter {
             return i;
         }
 
-        public unsafe static WaveData FromStream(Stream stream) {
+        public unsafe static LWAV FromStream(Stream stream) {
             int length;
 
             byte[] buffer = new byte[8];
@@ -88,16 +92,17 @@ namespace LoopingAudioConverter {
             return FromByteArray(buffer2);
         }
 
-        public unsafe static WaveData FromByteArray(byte[] data) {
-            int channels = 0;
-            int sampleRate = 0;
-            short[] samples = null;
+        public unsafe static LWAV FromByteArray(byte[] data) {
+			fixed (byte* bptr = data) {
+				int channels = 0;
+				int sampleRate = 0;
 
-            bool looping = false;
-            int loopStart = 0;
-            int loopEnd = 0;
+				short* sample_data = null;
+				int sample_data_length = 0;
 
-            fixed (byte* bptr = data) {
+				int? loopStart = null;
+				int? loopEnd = null;
+
                 // Verify RIFF format
                 if (*(int*)bptr != tag("RIFF")) {
                     throw new WaveDataException("RIFF header not found");
@@ -126,9 +131,8 @@ namespace LoopingAudioConverter {
                         sampleRate = fmt->sampleRate;
                     } else if (id == tag("data")) {
                         // Data chunk - contains samples
-                        int bytelen = *((int*)(ptr + 4));
-                        samples = new short[bytelen / 2];
-                        Marshal.Copy((IntPtr)(ptr + 8), samples, 0, samples.Length);
+						sample_data_length = *((int*)(ptr + 4));
+						sample_data = (short*)(ptr + 8);
                     } else if (id == tag("smpl")) {
                         // sampler chunk
                         smpl* smpl = (smpl*)ptr;
@@ -140,86 +144,57 @@ namespace LoopingAudioConverter {
                             if (loop->type != 0) {
                                 throw new WaveDataException("Cannot read looping .wav file with loop of type " + loop->type);
                             }
-                            looping = true;
                             loopStart = loop->start;
                             loopEnd = loop->end;
                         }
                     } else {
                         Console.Error.WriteLine("Ignoring unknown chunk " + id);
                     }
-                }
-            }
+				}
 
-            if (sampleRate == 0) {
-                throw new WaveDataException("Format chunk not found");
-            }
-            if (samples == null) {
-                throw new WaveDataException("Data chunk not found");
-            }
+				if (sampleRate == 0) {
+					throw new WaveDataException("Format chunk not found");
+				}
+				if (sample_data == null) {
+					throw new WaveDataException("Data chunk not found");
+				}
 
-            WaveData wav = new WaveData(channels, sampleRate, samples);
-            if (looping) {
-                wav.Looping = true;
-                wav.LoopStart = loopStart;
-                wav.LoopEnd = loopEnd;
-            }
-            return wav;
-        }
-
-        public short Channels;
-        public int SampleRate;
-        private short[] Samples;
-
-        public short this[int v] {
-            get {
-                return Samples[v];
+				LWAV wav = new LWAV(channels, sampleRate, (IntPtr)sample_data, sample_data_length, loopStart, loopEnd);
+				return wav;
             }
         }
 
-        public bool Looping;
-        public int LoopStart;
-        public int LoopEnd;
+		public short Channels { get; private set; }
+		public int SampleRate { get; private set; }
+		public short[] Samples { get; private set; }
+
+		public bool Looping { get; private set; }
+		public int LoopStart { get; private set; }
+		public int LoopEnd { get; private set; }
 
         /// <summary>
-        /// Creates a WAV with the given metadata and audio data.
+        /// Creates a WAV with the given metadata and length.
         /// </summary>
         /// <param name="channels">Number of channels</param>
         /// <param name="sampleRate">Sample rate</param>
-        /// <param name="samples">Audio data (array will not be modified)</param>
-        public WaveData(int channels, int sampleRate, short[] samples) {
-            if (channels > short.MaxValue) throw new ArgumentException("Streams of more than " + short.MaxValue + " channels not supported");
-            if (channels <= 0) throw new ArgumentException("Number of channels must be a positive integer");
-            if (sampleRate <= 0) throw new ArgumentException("Sample rate must be a positive integer");
+		/// <param name="sample_data">Audio data (will not be modified)</param>
+		/// <param name="sample_data_length">Length of sample data in bytes (audio length * channels * 2)</param>
+		/// <param name="loop_start">Start of loop, in samples (or null for no loop)</param>
+		/// <param name="loop_end">End of loop, in samples (or null for end of file); ignored if loop_start is null</param>
+		public unsafe LWAV(int channels, int sampleRate, IntPtr sample_data, int sample_data_length, int? loop_start = null, int? loop_end = null) {
+			if (channels > short.MaxValue) throw new ArgumentException("Streams of more than " + short.MaxValue + " channels not supported");
+			if (channels <= 0) throw new ArgumentException("Number of channels must be a positive integer");
+			if (sampleRate <= 0) throw new ArgumentException("Sample rate must be a positive integer");
 
-            this.Channels = (short)channels;
-            this.SampleRate = sampleRate;
+			Channels = (short)channels;
+			SampleRate = sampleRate;
 
-            this.Samples = new short[samples.Length];
-            Array.Copy(samples, this.Samples, samples.Length);
+			Samples = new short[sample_data_length / sizeof(short)];
+			Marshal.Copy(sample_data, Samples, 0, Samples.Length);
 
-            Looping = false;
-            LoopStart = 0;
-            LoopEnd = Samples.Length;
-        }
-
-        public WaveData Amplify(int dB) {
-            double ratio = Math.Pow(10.0, dB / 20.0);
-
-            // Replace samples
-            short[] nSamples = new short[Samples.Length];
-            for (int i = 0; i < nSamples.Length; i++) {
-                double nSample = Math.Round(this.Samples[i] * ratio);
-                nSamples[i] =
-                    nSample > short.MaxValue ? short.MaxValue
-                    : nSample < short.MinValue ? short.MinValue
-                    : (short)nSample;
-            }
-
-            WaveData nWav = new WaveData(this.Channels, this.SampleRate, nSamples);
-            nWav.Looping = this.Looping;
-            nWav.LoopStart = this.LoopStart;
-            nWav.LoopEnd = this.LoopEnd;
-            return nWav;
+			Looping = (loop_start != null);
+			LoopStart = loop_start ?? 0;
+			LoopEnd = loop_end ?? Samples.Length;
         }
 
         public unsafe byte[] Export() {

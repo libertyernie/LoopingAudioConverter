@@ -16,7 +16,7 @@ namespace LoopingAudioConverter {
                 Arguments = @"-L -p -l 2 ""C:\Users\ischemm\Downloads\Metal City.brstm"""
             };
             Process p = Process.Start(psi);
-            WaveData w = WaveData.FromStream(p.StandardOutput.BaseStream);
+            LWAV w = LWAV.FromStream(p.StandardOutput.BaseStream);
             Console.WriteLine(w);
             File.WriteAllBytes(@"C:\Users\ischemm\Downloads\out3.wav", w.Export());
         }
