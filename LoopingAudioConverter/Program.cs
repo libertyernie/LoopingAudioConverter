@@ -13,12 +13,18 @@ namespace LoopingAudioConverter {
                 FileName = "..\\..\\tools\\vgmstream\\test.exe",
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
-                Arguments = @"-L -p -l 2 ""C:\Users\ischemm\Downloads\Metal City.brstm"""
+                Arguments = @"-L -p -l 2 ""C:\Brawl\sound\strm\S02.brstm"""
             };
             Process p = Process.Start(psi);
-            LWAV w = LWAV.FromStream(p.StandardOutput.BaseStream);
-            Console.WriteLine(w);
-            File.WriteAllBytes(@"C:\Users\ischemm\Downloads\out3.wav", w.Export());
+			LWAV w = null;
+			try {
+				w = LWAVFactory.FromStream(p.StandardOutput.BaseStream);
+			} catch (Exception e) {
+				Console.Error.WriteLine("Could not read .wav file: " + e.Message);
+				return;
+			}
+			Console.WriteLine(w);
+			File.WriteAllBytes(@"C:\Users\Owner\Downloads\out3.wav", w.Export());
         }
     }
 }
