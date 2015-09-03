@@ -6,9 +6,12 @@ using System.Linq;
 namespace LoopingAudioConverter {
     class Program {
         static void Main(string[] args) {
+            SoX sox = new SoX(@"..\..\tools\sox\sox.exe");
+
 			IAudioImporter[] importers = {
 				new LWAVImporter(),
-				new VGMStreamImporter("..\\..\\tools\\vgmstream\\test.exe")
+				new VGMStreamImporter("..\\..\\tools\\vgmstream\\test.exe"),
+                sox
 			};
 
 			string[] inputFiles = {

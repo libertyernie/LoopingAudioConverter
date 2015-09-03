@@ -50,6 +50,7 @@
     <Compile Include="LWAVImporter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SoX.cs" />
     <Compile Include="VGMStreamImporter.cs" />
   </ItemGroup>
   <ItemGroup>
