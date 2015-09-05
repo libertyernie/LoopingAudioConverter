@@ -30,7 +30,7 @@ namespace LoopingAudioConverter {
                 FileName = ExePath,
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
-                Arguments = "\"" + filename + "\" -t wav -"
+                Arguments = "\"" + filename + "\" -b 16 -t wav -"
             };
             Process p = Process.Start(psi);
 
