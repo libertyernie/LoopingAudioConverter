@@ -7,10 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter {
-    public class WaveDataException : Exception {
-        public WaveDataException(string message) : base(message) { }
-    }
-
 	/// <summary>
 	/// Represents 16-bit uncompressed PCM data with an arbitary number of channels and an optional loop sequence.
 	/// The total sample length of this data is immutable, but the data itself and other properties can be modified.
@@ -29,11 +25,10 @@ namespace LoopingAudioConverter {
         /// </summary>
         /// <param name="channels">Number of channels</param>
         /// <param name="sampleRate">Sample rate</param>
-		/// <param name="sample_data">Audio data (will not be modified)</param>
-		/// <param name="sample_data_length">Length of sample data in bytes (audio length * channels * 2)</param>
+		/// <param name="sample_data">Audio data (array will not be modified)</param>
 		/// <param name="loop_start">Start of loop, in samples (or null for no loop)</param>
 		/// <param name="loop_end">End of loop, in samples (or null for end of file); ignored if loop_start is null</param>
-		public unsafe LWAV(int channels, int sampleRate, IntPtr sample_data, int sample_data_length, int? loop_start = null, int? loop_end = null) {
+		public unsafe LWAV(int channels, int sampleRate, short[] sample_data, int? loop_start = null, int? loop_end = null) {
 			if (channels > short.MaxValue) throw new ArgumentException("Streams of more than " + short.MaxValue + " channels not supported");
 			if (channels <= 0) throw new ArgumentException("Number of channels must be a positive integer");
 			if (sampleRate <= 0) throw new ArgumentException("Sample rate must be a positive integer");
@@ -41,8 +36,8 @@ namespace LoopingAudioConverter {
 			Channels = (short)channels;
 			SampleRate = sampleRate;
 
-			Samples = new short[sample_data_length / sizeof(short)];
-			Marshal.Copy(sample_data, Samples, 0, Samples.Length);
+			Samples = new short[sample_data.Length];
+			Array.Copy(sample_data, Samples, Samples.Length);
 
 			Looping = (loop_start != null);
 			LoopStart = loop_start ?? 0;

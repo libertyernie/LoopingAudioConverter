@@ -40,7 +40,7 @@ namespace LoopingAudioConverter {
 
 			try {
 				return LWAVFactory.FromStream(p.StandardOutput.BaseStream);
-			} catch (Exception e) {
+			} catch (WaveDataException e) {
 				throw new AudioImporterException("Could not read madplay output: " + e.Message);
 			}
 		}

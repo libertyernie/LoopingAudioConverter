@@ -7,11 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter {
+	public class WaveDataException : Exception {
+		public WaveDataException(string message) : base(message) { }
+	}
+
 	public static class LWAVFactory {
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		private struct fmt {
-			public int id;
-			public int size;
 			public short format;
 			public short channels;
 			public int sampleRate;
@@ -22,8 +24,6 @@ namespace LoopingAudioConverter {
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		private struct smpl {
-			public int id;
-			public int size;
 			public uint manufacturer;
 			public uint product;
 			public uint samplePeriod;
@@ -60,107 +60,113 @@ namespace LoopingAudioConverter {
 		}
 
 		public unsafe static LWAV FromStream(Stream stream) {
-			int length;
-
-			byte[] buffer = new byte[8];
-			int r = stream.Read(buffer, 0, 8);
+			byte[] buffer = new byte[12];
+			int r = stream.Read(buffer, 0, 12);
 			if (r == 0) {
 				throw new WaveDataException("No data in stream");
-			} else if (r < 8) {
-				throw new WaveDataException("Unexpected end of stream in first 8 bytes");
+			} else if (r < 12) {
+				throw new WaveDataException("Unexpected end of stream in first 12 bytes");
 			}
 			fixed (byte* bptr = buffer) {
 				if (*(int*)bptr != tag("RIFF")) {
 					throw new WaveDataException("RIFF header not found");
 				}
-				length = *(int*)(bptr + 4);
-				if (length < 0) {
-					throw new WaveDataException("WAV files with negative length in RIFF header are not supported... yet");
-				}
-			}
-
-			byte[] buffer2 = new byte[length + 8];
-			Array.Copy(buffer, buffer2, 8);
-
-			int total = 0;
-			while (total < length) {
-				r = stream.Read(buffer2, 8 + total, length - total);
-				if (r == 0) throw new WaveDataException("Unexpected end of stream when trying to read " + length + " bytes");
-				total += r;
-			}
-
-			return FromByteArray(buffer2);
-		}
-
-		public unsafe static LWAV FromByteArray(byte[] data) {
-			fixed (byte* bptr = data) {
-				int channels = 0;
-				int sampleRate = 0;
-
-				short* sample_data = null;
-				int sample_data_length = 0;
-
-				int? loopStart = null;
-				int? loopEnd = null;
-
-				// Verify RIFF format
-				if (*(int*)bptr != tag("RIFF")) {
-					throw new WaveDataException("RIFF header not found");
-				}
-
-				// Verify WAVE format
 				if (*(int*)(bptr + 8) != tag("WAVE")) {
 					throw new WaveDataException("WAVE header not found");
 				}
+			}
 
-				// Look for chunks until end of byte array
-				byte* end = bptr + data.Length;
-				for (byte* ptr = bptr + 12; ptr < end; ptr += 8 + *(int*)(ptr + 4)) {
-					// Four ASCII characters - stored here as int32
-					int id = *(int*)ptr;
-					if (id == tag("fmt ")) {
-						// Format chunk
-						fmt* fmt = (fmt*)ptr;
-						if (fmt->format != 1) {
-							throw new WaveDataException("Only uncompressed wave files suppported");
-						} else if (fmt->bitsPerSample != 16) {
-							throw new WaveDataException("Only 16-bit wave files supported");
-						}
+			int channels = 0;
+			int sampleRate = 0;
 
-						channels = fmt->channels;
-						sampleRate = fmt->sampleRate;
-					} else if (id == tag("data")) {
-						// Data chunk - contains samples
-						sample_data_length = *((int*)(ptr + 4));
-						sample_data = (short*)(ptr + 8);
-					} else if (id == tag("smpl")) {
-						// sampler chunk
-						smpl* smpl = (smpl*)ptr;
-						if (smpl->sampleLoopCount > 1) {
-							throw new WaveDataException("Cannot read looping .wav file with more than one loop");
-						} else if (smpl->sampleLoopCount == 1) {
-							// There is one loop - we only care about start and end points
-							smpl_loop* loop = (smpl_loop*)(smpl + 1);
-							if (loop->type != 0) {
-								throw new WaveDataException("Cannot read looping .wav file with loop of type " + loop->type);
+			short[] sample_data = null;
+
+			int? loopStart = null;
+			int? loopEnd = null;
+
+			while ((r = stream.Read(buffer, 0, 8)) > 0) {
+				if (r < 8) {
+					throw new WaveDataException("Unexpected end of stream in chunk header");
+				} else {
+					fixed (byte* ptr1 = buffer) {
+						// Four ASCII characters - stored here as int32
+						int id = *(int*)ptr1;
+
+						int chunklength = *(int*)(ptr1 + 4);
+
+						// Special handling for streaming output of madplay.exe
+						byte[] buffer2;
+						if (chunklength == -1) {
+							//Console.Error.WriteLine("LWAVFactory: No length given for \"" + Marshal.PtrToStringAnsi((IntPtr)ptr1, 4) + "\" chunk; will read until end of stream");
+							using (MemoryStream ms = new MemoryStream()) {
+								byte[] databuffer = new byte[1024 * 1024];
+								while ((r = stream.Read(databuffer, 0, databuffer.Length)) > 0) {
+									ms.Write(databuffer, 0, r);
+								}
+
+								buffer2 = ms.ToArray();
 							}
-							loopStart = loop->start;
-							loopEnd = loop->end;
+						} else {
+							buffer2 = new byte[chunklength];
+							int total = 0;
+							while (total < buffer2.Length) {
+								total += (r = stream.Read(buffer2, total, buffer2.Length - total));
+								if (r == 0) throw new WaveDataException("Unexpected end of data in \"" + Marshal.PtrToStringAnsi((IntPtr)ptr1, 4) + "\" chunk: expected " + buffer2.Length + " bytes, got " + r + " bytes");
+							}
 						}
-					} else {
-						Console.Error.WriteLine("Ignoring unknown chunk " + id);
+
+						fixed (byte* ptr2 = buffer2) {
+							if (id == tag("fmt ")) {
+								// Format chunk
+								fmt* fmt = (fmt*)ptr2;
+								if (fmt->format != 1) {
+									throw new WaveDataException("Only uncompressed wave files suppported");
+								} else if (fmt->bitsPerSample != 16) {
+									throw new WaveDataException("Only 16-bit wave files supported");
+								}
+
+								channels = fmt->channels;
+								sampleRate = fmt->sampleRate;
+							} else if (id == tag("data")) {
+								// Data chunk - contains samples
+								sample_data = new short[buffer2.Length / 2];
+								Marshal.Copy((IntPtr)ptr2, sample_data, 0, sample_data.Length);
+							} else if (id == tag("smpl")) {
+								// sampler chunk
+								smpl* smpl = (smpl*)ptr2;
+								if (smpl->sampleLoopCount > 1) {
+									throw new WaveDataException("Cannot read looping .wav file with more than one loop");
+								} else if (smpl->sampleLoopCount == 1) {
+									// There is one loop - we only care about start and end points
+									smpl_loop* loop = (smpl_loop*)(smpl + 1);
+									if (loop->type != 0) {
+										throw new WaveDataException("Cannot read looping .wav file with loop of type " + loop->type);
+									}
+									loopStart = loop->start;
+									loopEnd = loop->end;
+								}
+							} else {
+								Console.Error.WriteLine("Ignoring unknown chunk " + id);
+							}
+						}
 					}
 				}
+			}
 
-				if (sampleRate == 0) {
-					throw new WaveDataException("Format chunk not found");
-				}
-				if (sample_data == null) {
-					throw new WaveDataException("Data chunk not found");
-				}
+			if (sampleRate == 0) {
+				throw new WaveDataException("Format chunk not found");
+			}
+			if (sample_data == null) {
+				throw new WaveDataException("Data chunk not found");
+			}
 
-				LWAV wav = new LWAV(channels, sampleRate, (IntPtr)sample_data, sample_data_length, loopStart, loopEnd);
-				return wav;
+			LWAV wav = new LWAV(channels, sampleRate, sample_data, loopStart, loopEnd);
+			return wav;
+		}
+
+		public static LWAV FromByteArray(byte[] p) {
+			using (MemoryStream stream = new MemoryStream(p, false)) {
+				return FromStream(stream);
 			}
 		}
 
@@ -179,9 +185,12 @@ namespace LoopingAudioConverter {
 				*(int*)ptr = tag("WAVE");
 				ptr += 4;
 
+				*(int*)ptr = tag("fmt ");
+				ptr += 4;
+				*(int*)ptr = sizeof(fmt);
+				ptr += 4;
+
 				fmt* fmt = (fmt*)ptr;
-				fmt->id = tag("fmt ");
-				fmt->size = sizeof(fmt) - 8;
 				fmt->format = 1;
 				fmt->channels = lwav.Channels;
 				fmt->sampleRate = lwav.SampleRate;
@@ -199,9 +208,12 @@ namespace LoopingAudioConverter {
 				ptr += lwav.Samples.Length * 2;
 
 				if (lwav.Looping) {
+					*(int*)ptr = tag("smpl");
+					ptr += 4;
+					*(int*)ptr = sizeof(smpl) + sizeof(smpl_loop);
+					ptr += 4;
+
 					smpl* smpl = (smpl*)ptr;
-					smpl->id = tag("smpl");
-					smpl->size = sizeof(smpl) + sizeof(smpl_loop) - 8;
 					smpl->sampleLoopCount = 1;
 					ptr += sizeof(smpl);
 
