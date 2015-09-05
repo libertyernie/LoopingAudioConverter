@@ -26,8 +26,6 @@ namespace LoopingAudioConverter {
                 throw new AudioImporterException("File paths with double quote marks (\") are not supported");
             }
 
-            byte[] data = File.ReadAllBytes(filename);
-
             ProcessStartInfo psi = new ProcessStartInfo {
                 FileName = ExePath,
                 RedirectStandardOutput = true,

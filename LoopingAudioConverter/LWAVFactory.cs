@@ -74,6 +74,9 @@ namespace LoopingAudioConverter {
 					throw new WaveDataException("RIFF header not found");
 				}
 				length = *(int*)(bptr + 4);
+				if (length < 0) {
+					throw new WaveDataException("WAV files with negative length in RIFF header are not supported... yet");
+				}
 			}
 
 			byte[] buffer2 = new byte[length + 8];
