@@ -48,6 +48,7 @@
     <Compile Include="LWAVExporter.cs" />
     <Compile Include="LWAVFactory.cs" />
     <Compile Include="LWAVImporter.cs" />
+    <Compile Include="MP3Exporter.cs" />
     <Compile Include="MP3Importer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

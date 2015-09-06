@@ -10,6 +10,11 @@ namespace LoopingAudioConverter {
 		public AudioImporterException(string message, Exception innerException) : base(message, innerException) { }
 	}
 
+	public class AudioExporterException : Exception {
+		public AudioExporterException(string message) : base(message) { }
+		public AudioExporterException(string message, Exception innerException) : base(message, innerException) { }
+	}
+
 	public interface IAudioImporter {
 		bool SupportsExtension(string extension);
 		LWAV ReadFile(string filename);
