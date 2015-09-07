@@ -11,16 +11,10 @@ using System.Windows.Forms;
 
 namespace LoopingAudioConverter.Brawl {
 	public class RSTMExporter : IAudioExporter {
-		private int pwy = 20;
+		private static ConsoleProgressTracker cpt = new ConsoleProgressTracker();
 
 		public void WriteFile(LWAV lwav, string output_dir, string original_filename_no_ext) {
-			ProgressWindow pw = new ProgressWindow();
-			pw.Show();
-			pw.Location = new Point(20, pwy);
-			pwy += pw.Height;
-
-			var bounds = Screen.GetBounds(pw);
-			if (pwy + pw.Height > bounds.Height) pwy = 0;
+			IProgressTracker pw = cpt.Add(original_filename_no_ext);
 
 			FileMap map = RSTMConverter.Encode(new LWAVAudioStream(lwav), pw);
 			if (pw.Cancelled) throw new AudioExporterException("RSTM export cancelled");
