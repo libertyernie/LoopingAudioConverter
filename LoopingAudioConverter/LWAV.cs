@@ -28,7 +28,7 @@ namespace LoopingAudioConverter {
 		/// <param name="sample_data">Audio data (array will not be modified)</param>
 		/// <param name="loop_start">Start of loop, in samples (or null for no loop)</param>
 		/// <param name="loop_end">End of loop, in samples (or null for end of file); ignored if loop_start is null</param>
-		public unsafe LWAV(int channels, int sampleRate, short[] sample_data, int? loop_start = null, int? loop_end = null) {
+		public LWAV(int channels, int sampleRate, short[] sample_data, int? loop_start = null, int? loop_end = null) {
 			if (channels > short.MaxValue) throw new ArgumentException("Streams of more than " + short.MaxValue + " channels not supported");
 			if (channels <= 0) throw new ArgumentException("Number of channels must be a positive integer");
 			if (sampleRate <= 0) throw new ArgumentException("Sample rate must be a positive integer");
