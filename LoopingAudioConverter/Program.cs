@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter {
@@ -16,13 +17,13 @@ namespace LoopingAudioConverter {
 				new VGMStreamImporter("..\\..\\tools\\vgmstream\\test.exe"),
                 sox
 			};
+			IAudioExporter exporter = new MP3Exporter(@"..\..\tools\lame\lame.exe");
 
-			string[] inputFiles = {
-				@"C:\Brawl\sound\strm\S03.brstm",
-				@"C:\Users\Owner\Desktop\test.wav",
-				@"C:\Users\Owner\Desktop\frombrawl.wav",
-				@"C:\Users\Owner\Music\iTunes\iTunes Media\Music\Bowman\Comfortable Bugs\03 Bad Dudes.mp3"
-			};
+			string[] inputFiles = Directory.EnumerateFiles(@"C:\melee\audio", "*.hps").ToArray();
+
+			List<Task> tasks = new List<Task>();
+			Semaphore sem = new Semaphore(4, 4);
+
 			Stopwatch s = new Stopwatch();
 			s.Start();
 			foreach (string inputFile in inputFiles) {
@@ -38,7 +39,6 @@ namespace LoopingAudioConverter {
 				foreach (IAudioImporter importer in importers_supported) {
 					try {
 						w = importer.ReadFile(inputFile);
-						Console.WriteLine("Imported with " + importer.GetImporterName() + ": " + inputFile);
 						break;
 					} catch (AudioImporterException e) {
 						//Console.Error.WriteLine(importer.GetImporterName() + " could not read file " + inputFile + ": " + e.Message);
@@ -49,11 +49,16 @@ namespace LoopingAudioConverter {
 				if (w == null) {
 					throw new AggregateException("Could not read " + inputFile, exceptions);
 				}
-
-				IAudioExporter exporter = new MP3Exporter(@"..\..\tools\lame\lame.exe");
-				exporter.WriteFile(w, @"C:\Users\Owner\Downloads", Path.GetFileNameWithoutExtension(inputFile));
-				
+				sem.WaitOne();
+				Task task = exporter.WriteFileAsync(w, @"C:\Users\Owner\Downloads", Path.GetFileNameWithoutExtension(inputFile));
+				task.ContinueWith(t => {
+					if (t.Exception != null) Console.WriteLine(t.Exception.Message);
+					sem.Release();
+				});
+				tasks.Add(task);
+				GC.Collect();
 			}
+			Task.WaitAll(tasks.ToArray());
 			s.Stop();
 			Console.WriteLine(s.Elapsed);
         }

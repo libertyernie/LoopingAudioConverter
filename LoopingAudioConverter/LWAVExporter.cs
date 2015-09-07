@@ -12,6 +12,12 @@ namespace LoopingAudioConverter {
 			File.WriteAllBytes(output_filename, lwav.Export());
 		}
 
+		public Task WriteFileAsync(LWAV lwav, string output_dir, string original_filename_no_ext) {
+			Task t = new Task(() => WriteFile(lwav, output_dir, original_filename_no_ext));
+			t.Start();
+			return t;
+		}
+
 		public string GetExporterName() {
 			return "LWAVExporter";
 		}

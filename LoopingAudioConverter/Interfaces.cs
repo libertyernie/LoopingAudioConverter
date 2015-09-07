@@ -23,6 +23,7 @@ namespace LoopingAudioConverter {
 
 	public interface IAudioExporter {
 		void WriteFile(LWAV lwav, string output_dir, string original_filename_no_ext);
+		Task WriteFileAsync(LWAV lwav, string output_dir, string original_filename_no_ext);
 		string GetExporterName();
 	}
 }
