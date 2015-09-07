@@ -52,6 +52,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Brawl\LWAVAudioStream.cs" />
+    <Compile Include="Brawl\MultipleProgressTracker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Brawl\MultipleProgressTracker.Designer.cs">
+      <DependentUpon>MultipleProgressTracker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Brawl\MultipleProgressTrackerRow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Brawl\MultipleProgressTrackerRow.Designer.cs">
+      <DependentUpon>MultipleProgressTrackerRow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Brawl\RSTMExporter.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="LWAV.cs" />
@@ -67,6 +79,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Brawl\MultipleProgressTracker.resx">
+      <DependentUpon>MultipleProgressTracker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Brawl\MultipleProgressTrackerRow.resx">
+      <DependentUpon>MultipleProgressTrackerRow.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

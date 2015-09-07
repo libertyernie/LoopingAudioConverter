@@ -11,30 +11,30 @@ using System.Windows.Forms;
 
 namespace LoopingAudioConverter.Brawl {
 	public class RSTMExporter : IAudioExporter {
-		private int pwy = 20;
+		private MultipleProgressTracker t;
+
+		public RSTMExporter() {
+			new Task(() => {
+				t = new MultipleProgressTracker();
+				t.Show();
+			}).Start();
+		}
 
 		public void WriteFile(LWAV lwav, string output_dir, string original_filename_no_ext) {
-			ProgressWindow pw = new ProgressWindow();
-			pw.Show();
-			pw.Location = new Point(20, pwy);
-			pwy += pw.Height;
-
-			var bounds = Screen.GetBounds(pw);
-			if (pwy + pw.Height > bounds.Height) pwy = 0;
-
+			var pw = t.Add(original_filename_no_ext);
 			FileMap map = RSTMConverter.Encode(new LWAVAudioStream(lwav), pw);
 			if (pw.Cancelled) throw new AudioExporterException("RSTM export cancelled");
 			File.Copy(map.FilePath, Path.Combine(output_dir, original_filename_no_ext + ".brstm"), true);
 		}
 
 		public Task WriteFileAsync(LWAV lwav, string output_dir, string original_filename_no_ext) {
-			Task t = new Task(() => WriteFile(lwav, output_dir, original_filename_no_ext));
-			t.Start();
-			return t;
+			Task task = new Task(() => WriteFile(lwav, output_dir, original_filename_no_ext));
+			task.Start();
+			return task;
 		}
 
 		public string GetExporterName() {
-			throw new NotImplementedException();
+			return "RSTM (BrawlLib)";
 		}
 	}
 }

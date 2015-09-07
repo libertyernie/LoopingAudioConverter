@@ -29,6 +29,7 @@ namespace LoopingAudioConverter {
 			s.Start();
 			foreach (string inputFile in inputFiles) {
 				if (tasks.Any(t => t.IsFaulted)) break;
+				Console.WriteLine(inputFile);
 
 				LWAV w = null;
 				string extension = Path.GetExtension(inputFile);
