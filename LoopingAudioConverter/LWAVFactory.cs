@@ -171,9 +171,9 @@ namespace LoopingAudioConverter {
 		}
 
 		public static unsafe byte[] Export(this LWAV lwav) {
-			int length = 12 + sizeof(fmt) + 8 + (lwav.Samples.Length * 2);
+			int length = 12 + 8 + sizeof(fmt) + 8 + (lwav.Samples.Length * 2);
 			if (lwav.Looping) {
-				length += sizeof(smpl) + sizeof(smpl_loop);
+				length += 8 + sizeof(smpl) + sizeof(smpl_loop);
 			}
 			byte[] data = new byte[length];
 			fixed (byte* start = data) {
