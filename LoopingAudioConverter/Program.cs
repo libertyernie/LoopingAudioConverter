@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 namespace LoopingAudioConverter {
     class Program {
         static void Main(string[] args) {
+			int processors = 0;// Environment.ProcessorCount - 1;
+
             SoX sox = new SoX(@"..\..\tools\sox\sox.exe");
 
 			IAudioImporter[] importers = {
@@ -20,10 +22,12 @@ namespace LoopingAudioConverter {
 			};
 			IAudioExporter exporter = new RSTMExporter();
 
-			string[] inputFiles = Directory.EnumerateFiles(@"C:\melee\audio", "*.hps").ToArray();
+			string[] inputFiles = Directory.EnumerateFiles(@"C:\melee\audio", "*.hps").Where(n => !n.Contains("15m")).ToArray();
 
 			List<Task> tasks = new List<Task>();
-			Semaphore sem = new Semaphore(4, 4);
+			Semaphore sem = processors > 0
+				? new Semaphore(processors, processors)
+				: null;
 
 			Stopwatch s = new Stopwatch();
 			s.Start();
@@ -53,10 +57,14 @@ namespace LoopingAudioConverter {
 					throw new AggregateException("Could not read " + inputFile, exceptions);
 				}
 
-				sem.WaitOne();
-				Task task = exporter.WriteFileAsync(w, @"C:\Users\Owner\Downloads", Path.GetFileNameWithoutExtension(inputFile));
-				task.ContinueWith(t => sem.Release());
-				tasks.Add(task);
+				if (sem == null) {
+					exporter.WriteFile(w, @"C:\Users\Owner\Downloads", Path.GetFileNameWithoutExtension(inputFile));
+				} else {
+					sem.WaitOne();
+					Task task = exporter.WriteFileAsync(w, @"C:\Users\Owner\Downloads", Path.GetFileNameWithoutExtension(inputFile));
+					task.ContinueWith(t => sem.Release());
+					tasks.Add(task);
+				}
 			}
 			Task.WaitAll(tasks.ToArray());
 			s.Stop();

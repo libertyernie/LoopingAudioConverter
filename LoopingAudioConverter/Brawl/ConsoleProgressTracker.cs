@@ -8,7 +8,7 @@ using System.Windows.Forms;
 namespace LoopingAudioConverter.Brawl {
 	/// <summary>
 	/// Tracks the progress of multiple operations by using a single line on the console to show only the oldest and newest operations, along with the number of operations currently running.
-	/// The header and main rows will be written to the console when the first item is started, and a newline will be written when the last item is complete.
+	/// The header and main rows will be written to the console when the first item is started; afterwards, the main row will be written over, with the cursor being left at the beginning of the row each time.
 	/// </summary>
 	public class ConsoleProgressTracker {
 		public class TrackedItem : IProgressTracker {
@@ -70,23 +70,31 @@ namespace LoopingAudioConverter.Brawl {
 
 		private LinkedList<TrackedItem> TrackedItems = new LinkedList<TrackedItem>();
 		private string lastString;
+		private bool wroteHeader;
 
 		public ConsoleProgressTracker() {
 			TrackedItems = new LinkedList<TrackedItem>();
 		}
 
 		public void Update() {
-			if (TrackedItems.Count == 0) {
-				Console.WriteLine();
-				return;
-			}
 			StringBuilder sb = new StringBuilder();
 			sb.Append('\r');
 			sb.Append((char)(TrackedItems.Count + '0'));
 			sb.Append(' ');
-			sb.Append(TrackedItems.First.Value.BarText);
-			sb.Append(' ');
-			sb.Append(TrackedItems.Last.Value.BarText);
+			switch (TrackedItems.Count) {
+				case 0:
+					for (int i = 0; i < 77; i++) sb.Append(' ');
+					break;
+				case 1:
+					sb.Append(TrackedItems.First.Value.BarText);
+					for (int i = 0; i < 39; i++) sb.Append(' ');
+					break;
+				default:
+					sb.Append(TrackedItems.First.Value.BarText);
+					sb.Append(' ');
+					sb.Append(TrackedItems.Last.Value.BarText);
+					break;
+			}
 			if (lastString != sb.ToString()) {
 				lastString = sb.ToString();
 				Console.Write(lastString);
@@ -94,8 +102,9 @@ namespace LoopingAudioConverter.Brawl {
 		}
 
 		public TrackedItem Add(string name) {
-			if (TrackedItems.Count == 0) {
+			if (!wroteHeader) {
 				Console.WriteLine("  Longest-running:                       Most recently started:                ");
+				wroteHeader = true;
 			}
 			return new TrackedItem(this) { Name = name };
 		}
