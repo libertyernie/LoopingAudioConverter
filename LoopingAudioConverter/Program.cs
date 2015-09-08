@@ -20,7 +20,7 @@ namespace LoopingAudioConverter {
 			};
 			IAudioExporter exporter = new RSTMExporter();
 
-			string[] inputFiles = Directory.EnumerateFiles(@"C:\melee\audio", "*.hps").Take(20).ToArray();
+			string[] inputFiles = Directory.EnumerateFiles(@"C:\melee\audio", "*.hps").ToArray();
 
 			List<Task> tasks = new List<Task>();
 			Semaphore sem = new Semaphore(4, 4);

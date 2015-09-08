@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace LoopingAudioConverter.Brawl {
 	public class RSTMExporter : IAudioExporter {
-		private static ConsoleProgressTracker cpt = new ConsoleProgressTracker();
+		private ConsoleProgressTracker cpt = new ConsoleProgressTracker();
 
 		public void WriteFile(LWAV lwav, string output_dir, string original_filename_no_ext) {
 			IProgressTracker pw = cpt.Add(original_filename_no_ext);
@@ -28,7 +28,7 @@ namespace LoopingAudioConverter.Brawl {
 		}
 
 		public string GetExporterName() {
-			throw new NotImplementedException();
+			return "BRSTM (BrawlLib)";
 		}
 	}
 }
