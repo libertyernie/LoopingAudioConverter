@@ -34,7 +34,7 @@ namespace LoopingAudioConverter.Brawl {
 		}
 
 		public string GetExporterName() {
-			return "RSTM (BrawlLib)";
+			return "BRSTM (BrawlLib)";
 		}
 	}
 }

@@ -69,7 +69,7 @@ namespace LoopingAudioConverter.Brawl {
 				numSamples = Samples - SamplePosition;
 			}
 
-			Marshal.Copy(lwav.Samples, SamplePosition, destAddr, numSamples);
+			Marshal.Copy(lwav.Samples, SamplePosition * Channels, destAddr, numSamples * Channels);
 			SamplePosition += numSamples;
 			return numSamples;
 		}
@@ -78,7 +78,7 @@ namespace LoopingAudioConverter.Brawl {
 
 		public int Samples {
 			get {
-				return lwav.Samples.Length;
+				return lwav.Samples.Length / lwav.Channels;
 			}
 		}
 

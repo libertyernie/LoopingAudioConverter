@@ -41,6 +41,29 @@ namespace LoopingAudioConverter {
             }
         }
 
+		public void WriteFile(LWAV lwav, string output_filename) {
+			if (output_filename.Contains('"')) {
+				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
+			}
+			
+			byte[] wav = lwav.Export();
+
+			ProcessStartInfo psi = new ProcessStartInfo {
+				FileName = ExePath,
+				RedirectStandardInput = true,
+				UseShellExecute = false,
+				Arguments = "-V1 - \"" + output_filename + "\""
+			};
+			Process p = Process.Start(psi);
+			p.StandardInput.BaseStream.Write(wav, 0, wav.Length);
+			p.StandardInput.BaseStream.Close();
+			p.WaitForExit();
+
+			if (p.ExitCode != 0) {
+				throw new AudioExporterException("SoX quit with exit code " + p.ExitCode);
+			}
+		}
+
         public string GetImporterName() {
             return "SoX";
         }

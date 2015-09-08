@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Brawl\ConsoleProgressTracker.cs" />
     <Compile Include="Brawl\LWAVAudioStream.cs" />
     <Compile Include="Brawl\MultipleProgressTracker.cs">
       <SubType>Form</SubType>
@@ -65,6 +66,7 @@
       <DependentUpon>MultipleProgressTrackerRow.cs</DependentUpon>
     </Compile>
     <Compile Include="Brawl\RSTMExporter.cs" />
+    <Compile Include="FLACExporter.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="LWAV.cs" />
     <Compile Include="LWAVExporter.cs" />
