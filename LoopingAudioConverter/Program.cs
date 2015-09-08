@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace LoopingAudioConverter {
     class Program {
         static void Main(string[] args) {
-			int processors = 0;// Environment.ProcessorCount - 1;
+			int processors = Environment.ProcessorCount - 1;
 
             SoX sox = new SoX(@"..\..\tools\sox\sox.exe");
 
@@ -20,7 +20,7 @@ namespace LoopingAudioConverter {
 				new VGMStreamImporter("..\\..\\tools\\vgmstream\\test.exe"),
                 sox
 			};
-			IAudioExporter exporter = new RSTMExporter();
+			IAudioExporter exporter = new MP3Exporter(@"..\..\tools\lame\lame.exe");
 
 			string[] inputFiles = Directory.EnumerateFiles(@"C:\melee\audio", "*.hps").Where(n => !n.Contains("15m")).ToArray();
 

@@ -26,7 +26,7 @@ namespace LoopingAudioConverter {
 				FileName = ExePath,
 				RedirectStandardInput = true,
 				UseShellExecute = false,
-				Arguments = "- \"" + outPath + "\""
+				Arguments = "--silent - \"" + outPath + "\""
 			};
 			Process p = Process.Start(psi);
 			p.StandardInput.BaseStream.Write(wav, 0, wav.Length);
@@ -44,7 +44,7 @@ namespace LoopingAudioConverter {
 		}
 
 		public string GetExporterName() {
-			return "LAME";
+			return "MP3 (LAME)";
 		}
 	}
 }
