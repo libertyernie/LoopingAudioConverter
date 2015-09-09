@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace LoopingAudioConverter {
     class Program {
         static void Main(string[] args) {
-			int processors = Environment.ProcessorCount - 1;
+			int processors = Environment.ProcessorCount;
 
             SoX sox = new SoX(@"..\..\tools\sox\sox.exe");
 
@@ -25,18 +25,18 @@ namespace LoopingAudioConverter {
 			string[] inputFiles = Directory.EnumerateFiles(@"C:\melee\audio", "*.hps").Where(n => !n.Contains("15m")).ToArray();
 
 			List<Task> tasks = new List<Task>();
-			Semaphore sem = processors > 0
-				? new Semaphore(processors, processors)
-				: null;
+			Semaphore sem = new Semaphore(processors, processors);
 
 			MultipleProgressWindow window = new MultipleProgressWindow();
 			new Thread(new ThreadStart(() => {
+				System.Windows.Forms.Application.EnableVisualStyles();
 				window.ShowDialog();
 			})).Start();
 
 			Stopwatch s = new Stopwatch();
 			s.Start();
 			foreach (string inputFile in inputFiles) {
+				sem.WaitOne();
 				if (tasks.Any(t => t.IsFaulted)) break;
 
 				window.SetDecodingText(Path.GetFileNameWithoutExtension(inputFile));
@@ -66,11 +66,11 @@ namespace LoopingAudioConverter {
 
 				window.SetDecodingText("");
 				MultipleProgressRow row = window.AddEncodingRow(inputFile);
-				if (sem == null) {
+				if (processors == 1) {
 					exporter.WriteFile(w, @"C:\Users\Owner\Downloads", Path.GetFileNameWithoutExtension(inputFile), row);
+					sem.Release();
 					row.Finish();
 				} else {
-					sem.WaitOne();
 					Task task = exporter.WriteFileAsync(w, @"C:\Users\Owner\Downloads", Path.GetFileNameWithoutExtension(inputFile), row);
 					task.ContinueWith(t => {
 						sem.Release();
@@ -81,6 +81,9 @@ namespace LoopingAudioConverter {
 			}
 			Task.WaitAll(tasks.ToArray());
 			s.Stop();
+			window.BeginInvoke(new Action(() => {
+				window.Close();
+			}));
 			Console.WriteLine(s.Elapsed);
 			if (tasks.Any(t => t.IsFaulted)) {
 				throw new AggregateException(tasks.Where(t => t.IsFaulted).Select(t => t.Exception));
