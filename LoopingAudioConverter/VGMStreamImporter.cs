@@ -28,7 +28,7 @@ namespace LoopingAudioConverter {
 				FileName = TestExePath,
 				RedirectStandardOutput = true,
 				UseShellExecute = false,
-				Arguments = "-L -p -l 2 \"" + filename + "\""
+				Arguments = "-L -p -l 1 -f 0 \"" + filename + "\""
 			};
 			Process p = Process.Start(psi);
 			try {
