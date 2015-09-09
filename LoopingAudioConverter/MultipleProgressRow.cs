@@ -9,8 +9,7 @@ using System.Windows.Forms;
 
 namespace LoopingAudioConverter {
 	public partial class MultipleProgressRow : UserControl, IEncodingProgress {
-		public int Value { get; private set; }
-		public int Maximum { get; private set; }
+		public float Ratio { get; private set; }
 
 		public string Text {
 			get {
@@ -44,34 +43,30 @@ namespace LoopingAudioConverter {
 		}
 
 		private void pnlProgress_Paint(object sender, PaintEventArgs e) {
-			float width = pnlProgress.Width * Value / Maximum;
+			float width = pnlProgress.Width * Math.Max(0, Math.Min(Ratio, 1));
 			e.Graphics.FillRectangle(SystemBrushes.Highlight, 0, 0, width, pnlProgress.Height);
 		}
 
-		public void Begin(int value, int maximum) {
-			Maximum = maximum;
+		public void ShowProgress() {
 			if (this.InvokeRequired) {
-				this.BeginInvoke(new Action(() => {
-					pnlProgress.Visible = true;
-				}));
+				this.BeginInvoke(new Action(ShowProgress));
 			} else {
 				pnlProgress.Visible = true;
 			}
-			Update(value);
 		}
 
-		public void Finish() {
+		public void Remove() {
 			if (this.Parent != null) {
 				if (this.Parent.InvokeRequired) {
-					this.Parent.BeginInvoke(new Action(Finish));
-					return;
+					this.Parent.BeginInvoke(new Action(Remove));
+				} else {
+					this.Parent.Controls.Remove(this);
 				}
-				this.Parent.Controls.Remove(this);
 			}
 		}
 
-		public void Update(int value) {
-			Value = value;
+		public void Update(float ratio) {
+			Ratio = ratio;
 			pnlProgress.Invalidate();
 		}
 	}

@@ -22,7 +22,7 @@ namespace LoopingAudioConverter {
 			};
 			IAudioExporter exporter = new RSTMExporter();
 
-			string[] inputFiles = Directory.EnumerateFiles(@"C:\melee\audio", "*.hps").Where(n => !n.Contains("15m")).ToArray();
+			string[] inputFiles = Directory.EnumerateFiles(@"C:\melee\audio", "*.hps").Where(n => !n.Contains("15m")).Take(8).ToArray();
 
 			List<Task> tasks = new List<Task>();
 			Semaphore sem = new Semaphore(processors, processors);
@@ -69,12 +69,12 @@ namespace LoopingAudioConverter {
 				if (processors == 1) {
 					exporter.WriteFile(w, @"C:\Users\Owner\Downloads", Path.GetFileNameWithoutExtension(inputFile), row);
 					sem.Release();
-					row.Finish();
+					row.Remove();
 				} else {
 					Task task = exporter.WriteFileAsync(w, @"C:\Users\Owner\Downloads", Path.GetFileNameWithoutExtension(inputFile), row);
 					task.ContinueWith(t => {
 						sem.Release();
-						row.Finish();
+						row.Remove();
 					});
 					tasks.Add(task);
 				}

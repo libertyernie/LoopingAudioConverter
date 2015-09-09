@@ -16,9 +16,9 @@ namespace LoopingAudioConverter {
 	}
 
 	public interface IEncodingProgress {
-		void Begin(int value, int maximum);
-		void Update(int value);
-		void Finish();
+		void ShowProgress();
+		void Update(float value);
+		void Remove();
 	}
 
 	public interface IAudioImporter {

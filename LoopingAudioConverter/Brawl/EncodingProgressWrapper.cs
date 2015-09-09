@@ -13,9 +13,9 @@ namespace LoopingAudioConverter.Brawl {
 		public float CurrentValue { get; set; }
 		public bool Cancelled { get; set; }
 
-		private int IntValue {
+		private float Ratio {
 			get {
-				return (int)(1048576 * (CurrentValue - MinValue) / (MaxValue - MinValue));
+				return (CurrentValue - MinValue) / (MaxValue - MinValue);
 			}
 		}
 
@@ -28,7 +28,8 @@ namespace LoopingAudioConverter.Brawl {
 			MaxValue = max;
 			CurrentValue = current;
 
-			tracker.Begin(IntValue, 1048576);
+			tracker.ShowProgress();
+			tracker.Update(Ratio);
 		}
 
 		public void Cancel() {
@@ -36,13 +37,13 @@ namespace LoopingAudioConverter.Brawl {
 		}
 
 		public void Finish() {
-			tracker.Finish();
+			tracker.Remove();
 		}
 
 		public void Update(float value) {
 			CurrentValue = value;
 
-			tracker.Update(IntValue);
+			tracker.Update(Ratio);
 		}
 	}
 }
