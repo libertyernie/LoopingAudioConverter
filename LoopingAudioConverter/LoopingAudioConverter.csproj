@@ -52,19 +52,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Brawl\ConsoleProgressTracker.cs" />
+    <Compile Include="Brawl\EncodingProgressWrapper.cs" />
     <Compile Include="Brawl\LWAVAudioStream.cs" />
-    <Compile Include="Brawl\MultipleProgressTracker.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Brawl\MultipleProgressTracker.Designer.cs">
-      <DependentUpon>MultipleProgressTracker.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Brawl\MultipleProgressTrackerRow.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Brawl\MultipleProgressTrackerRow.Designer.cs">
-      <DependentUpon>MultipleProgressTrackerRow.cs</DependentUpon>
-    </Compile>
     <Compile Include="Brawl\RSTMExporter.cs" />
     <Compile Include="FLACExporter.cs" />
     <Compile Include="Interfaces.cs" />
@@ -74,6 +63,18 @@
     <Compile Include="LWAVImporter.cs" />
     <Compile Include="MP3Exporter.cs" />
     <Compile Include="MP3Importer.cs" />
+    <Compile Include="MultipleProgressRow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MultipleProgressRow.Designer.cs">
+      <DependentUpon>MultipleProgressRow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MultipleProgressWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MultipleProgressWindow.Designer.cs">
+      <DependentUpon>MultipleProgressWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SoX.cs" />
@@ -83,11 +84,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Brawl\MultipleProgressTracker.resx">
-      <DependentUpon>MultipleProgressTracker.cs</DependentUpon>
+    <EmbeddedResource Include="MultipleProgressRow.resx">
+      <DependentUpon>MultipleProgressRow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Brawl\MultipleProgressTrackerRow.resx">
-      <DependentUpon>MultipleProgressTrackerRow.cs</DependentUpon>
+    <EmbeddedResource Include="MultipleProgressWindow.resx">
+      <DependentUpon>MultipleProgressWindow.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

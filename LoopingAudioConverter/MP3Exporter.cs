@@ -14,7 +14,7 @@ namespace LoopingAudioConverter {
             ExePath = exePath;
         }
 
-		public void WriteFile(LWAV lwav, string output_dir, string original_filename_no_ext) {
+		public void WriteFile(LWAV lwav, string output_dir, string original_filename_no_ext, IEncodingProgress progressTracker = null) {
 			string outPath = Path.Combine(output_dir, original_filename_no_ext + ".mp3");
 			if (outPath.Contains("\"")) {
 				throw new AudioExporterException("Invalid character (\") found in output filename");
@@ -37,7 +37,7 @@ namespace LoopingAudioConverter {
 			}
 		}
 
-		public Task WriteFileAsync(LWAV lwav, string output_dir, string original_filename_no_ext) {
+		public Task WriteFileAsync(LWAV lwav, string output_dir, string original_filename_no_ext, IEncodingProgress progressTracker = null) {
 			Task t = new Task(() => WriteFile(lwav, output_dir, original_filename_no_ext));
 			t.Start();
 			return t;

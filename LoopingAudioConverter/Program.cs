@@ -20,7 +20,7 @@ namespace LoopingAudioConverter {
 				new VGMStreamImporter("..\\..\\tools\\vgmstream\\test.exe"),
                 sox
 			};
-			IAudioExporter exporter = new MP3Exporter(@"..\..\tools\lame\lame.exe");
+			IAudioExporter exporter = new RSTMExporter();
 
 			string[] inputFiles = Directory.EnumerateFiles(@"C:\melee\audio", "*.hps").Where(n => !n.Contains("15m")).ToArray();
 
@@ -29,11 +29,17 @@ namespace LoopingAudioConverter {
 				? new Semaphore(processors, processors)
 				: null;
 
+			MultipleProgressWindow window = new MultipleProgressWindow();
+			new Thread(new ThreadStart(() => {
+				window.ShowDialog();
+			})).Start();
+
 			Stopwatch s = new Stopwatch();
 			s.Start();
 			foreach (string inputFile in inputFiles) {
 				if (tasks.Any(t => t.IsFaulted)) break;
-				Console.WriteLine(inputFile);
+
+				window.SetDecodingText(Path.GetFileNameWithoutExtension(inputFile));
 
 				LWAV w = null;
 				string extension = Path.GetExtension(inputFile);
@@ -58,12 +64,18 @@ namespace LoopingAudioConverter {
 					throw new AggregateException("Could not read " + inputFile, exceptions);
 				}
 
+				window.SetDecodingText("");
+				MultipleProgressRow row = window.AddEncodingRow(inputFile);
 				if (sem == null) {
-					exporter.WriteFile(w, @"C:\Users\Owner\Downloads", Path.GetFileNameWithoutExtension(inputFile));
+					exporter.WriteFile(w, @"C:\Users\Owner\Downloads", Path.GetFileNameWithoutExtension(inputFile), row);
+					row.Finish();
 				} else {
 					sem.WaitOne();
-					Task task = exporter.WriteFileAsync(w, @"C:\Users\Owner\Downloads", Path.GetFileNameWithoutExtension(inputFile));
-					task.ContinueWith(t => sem.Release());
+					Task task = exporter.WriteFileAsync(w, @"C:\Users\Owner\Downloads", Path.GetFileNameWithoutExtension(inputFile), row);
+					task.ContinueWith(t => {
+						sem.Release();
+						row.Finish();
+					});
 					tasks.Add(task);
 				}
 			}
