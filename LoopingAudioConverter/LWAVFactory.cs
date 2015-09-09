@@ -111,7 +111,7 @@ namespace LoopingAudioConverter {
 							int total = 0;
 							while (total < buffer2.Length) {
 								total += (r = stream.Read(buffer2, total, buffer2.Length - total));
-								if (r == 0) throw new WaveDataException("Unexpected end of data in \"" + Marshal.PtrToStringAnsi((IntPtr)ptr1, 4) + "\" chunk: expected " + buffer2.Length + " bytes, got " + r + " bytes");
+								if (r == 0) throw new WaveDataException("Unexpected end of data in \"" + Marshal.PtrToStringAnsi((IntPtr)ptr1, 4) + "\" chunk: expected " + buffer2.Length + " bytes, got " + total + " bytes");
 							}
 						}
 

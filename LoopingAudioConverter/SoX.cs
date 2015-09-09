@@ -41,6 +41,33 @@ namespace LoopingAudioConverter {
             }
         }
 
+		public LWAV ApplyEffects(LWAV lwav, int channels) {
+			byte[] wav = lwav.Export();
+
+			ProcessStartInfo psi = new ProcessStartInfo {
+				FileName = ExePath,
+				RedirectStandardInput = true,
+				RedirectStandardOutput = true,
+				UseShellExecute = false,
+				Arguments = "-t wav - -c " + channels + " -t wav -"
+			};
+			Process p = Process.Start(psi);
+			new Task(() => {
+				p.StandardInput.BaseStream.Write(wav, 0, wav.Length);
+				p.StandardInput.BaseStream.Close();
+			}).Start();
+
+			try {
+				LWAV l = LWAVFactory.FromStream(p.StandardOutput.BaseStream);
+				l.Looping = lwav.Looping;
+				l.LoopStart = lwav.LoopStart;
+				l.LoopEnd = lwav.LoopEnd;
+				return l;
+			} catch (Exception e) {
+				throw new AudioImporterException("Could not read SoX output: " + e.Message);
+			}
+		}
+
 		public void WriteFile(LWAV lwav, string output_filename) {
 			if (output_filename.Contains('"')) {
 				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
@@ -52,7 +79,7 @@ namespace LoopingAudioConverter {
 				FileName = ExePath,
 				RedirectStandardInput = true,
 				UseShellExecute = false,
-				Arguments = "-V1 - \"" + output_filename + "\""
+				Arguments = "- \"" + output_filename + "\""
 			};
 			Process p = Process.Start(psi);
 			p.StandardInput.BaseStream.Write(wav, 0, wav.Length);

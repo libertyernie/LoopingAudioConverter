@@ -16,9 +16,9 @@ namespace LoopingAudioConverter {
 		public int SampleRate { get; private set; }
 		public short[] Samples { get; private set; }
 
-		public bool Looping { get; private set; }
-		public int LoopStart { get; private set; }
-		public int LoopEnd { get; private set; }
+		public bool Looping { get; set; }
+		public int LoopStart { get; set; }
+		public int LoopEnd { get; set; }
 
         /// <summary>
         /// Creates a WAV with the given metadata and length.

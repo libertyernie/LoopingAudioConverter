@@ -22,7 +22,7 @@ namespace LoopingAudioConverter {
 			};
 			IAudioExporter exporter = new RSTMExporter();
 
-			string[] inputFiles = Directory.EnumerateFiles(@"C:\melee\audio", "*.hps").Where(n => !n.Contains("15m")).Take(8).ToArray();
+			string[] inputFiles = Directory.EnumerateFiles(@"C:\Brawl\sound\strm", "*.brstm").Skip(5).Take(5).ToArray();
 
 			List<Task> tasks = new List<Task>();
 			Semaphore sem = new Semaphore(processors, processors);
@@ -52,6 +52,7 @@ namespace LoopingAudioConverter {
 
 				foreach (IAudioImporter importer in importers_supported) {
 					try {
+						Console.WriteLine("Trying to decode " + Path.GetFileName(inputFile) + " with " + importer.GetImporterName());
 						w = importer.ReadFile(inputFile);
 						break;
 					} catch (AudioImporterException e) {
@@ -64,14 +65,17 @@ namespace LoopingAudioConverter {
 					throw new AggregateException("Could not read " + inputFile, exceptions);
 				}
 
+				window.SetDecodingText("To mono");
+				w = sox.ApplyEffects(w, 1);
+
 				window.SetDecodingText("");
 				MultipleProgressRow row = window.AddEncodingRow(inputFile);
 				if (processors == 1) {
-					exporter.WriteFile(w, @"C:\Users\Owner\Downloads", Path.GetFileNameWithoutExtension(inputFile), row);
+					exporter.WriteFile(w, @"C:\Users\Owner\Downloads\a", Path.GetFileNameWithoutExtension(inputFile), row);
 					sem.Release();
 					row.Remove();
 				} else {
-					Task task = exporter.WriteFileAsync(w, @"C:\Users\Owner\Downloads", Path.GetFileNameWithoutExtension(inputFile), row);
+					Task task = exporter.WriteFileAsync(w, @"C:\Users\Owner\Downloads\a", Path.GetFileNameWithoutExtension(inputFile), row);
 					task.ContinueWith(t => {
 						sem.Release();
 						row.Remove();
