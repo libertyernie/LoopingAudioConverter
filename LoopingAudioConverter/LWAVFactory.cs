@@ -14,12 +14,30 @@ namespace LoopingAudioConverter {
 	public static class LWAVFactory {
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		private struct fmt {
-			public short format;
+			public ushort format;
 			public short channels;
 			public int sampleRate;
 			public int byteRate;
 			public short blockAlign;
 			public short bitsPerSample;
+		}
+
+		[StructLayout(LayoutKind.Explicit)]
+		private struct fmt_extensible {
+			[FieldOffset(0)]
+			public fmt fmt;
+			[FieldOffset(16)]
+			public short cbSize;
+			[FieldOffset(18)]
+			public short validBitsPerSample;
+			[FieldOffset(18)]
+			public short samplesPerBlock;
+			[FieldOffset(18)]
+			public short reserved;
+			[FieldOffset(20)]
+			public int channelMask;
+			[FieldOffset(24)]
+			public Guid subFormat;
 		}
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -59,7 +77,7 @@ namespace LoopingAudioConverter {
 			return i;
 		}
 
-		public unsafe static LWAV FromStream(Stream stream) {
+		public unsafe static LWAV FromStream(Stream stream, bool assumeDataIsLastChunk = false) {
 			byte[] buffer = new byte[12];
 			int r = stream.Read(buffer, 0, 12);
 			if (r == 0) {
@@ -96,8 +114,7 @@ namespace LoopingAudioConverter {
 
 						// Special handling for streaming output of madplay.exe
 						byte[] buffer2;
-						if (chunklength == -1) {
-							//Console.Error.WriteLine("LWAVFactory: No length given for \"" + Marshal.PtrToStringAnsi((IntPtr)ptr1, 4) + "\" chunk; will read until end of stream");
+						if (id == tag("data") && assumeDataIsLastChunk) {
 							using (MemoryStream ms = new MemoryStream()) {
 								byte[] databuffer = new byte[1024 * 1024];
 								while ((r = stream.Read(databuffer, 0, databuffer.Length)) > 0) {
@@ -120,7 +137,17 @@ namespace LoopingAudioConverter {
 								// Format chunk
 								fmt* fmt = (fmt*)ptr2;
 								if (fmt->format != 1) {
-									throw new WaveDataException("Only uncompressed wave files suppported");
+									if (fmt->format == 65534) {
+										// WAVEFORMATEXTENSIBLE
+										fmt_extensible* ext = (fmt_extensible*)fmt;
+										if (ext->subFormat == new Guid("00000001-0000-0010-8000-00aa00389b71")) {
+											// KSDATAFORMAT_SUBTYPE_PCM
+										} else {
+											throw new WaveDataException("Only uncompressed PCM suppported - found WAVEFORMATEXTENSIBLE with subformat " + ext->subFormat);
+										}
+									} else {
+										throw new WaveDataException("Only uncompressed PCM suppported - found format " + fmt->format);
+									}
 								} else if (fmt->bitsPerSample != 16) {
 									throw new WaveDataException("Only 16-bit wave files supported");
 								}
@@ -146,7 +173,7 @@ namespace LoopingAudioConverter {
 									loopEnd = loop->end;
 								}
 							} else {
-								Console.Error.WriteLine("Ignoring unknown chunk " + id);
+								Console.Error.WriteLine("Ignoring unknown chunk " + Marshal.PtrToStringAnsi((IntPtr)ptr1, 4));
 							}
 						}
 					}

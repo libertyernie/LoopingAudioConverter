@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace LoopingAudioConverter {
     class Program {
@@ -20,9 +21,9 @@ namespace LoopingAudioConverter {
 				new VGMStreamImporter("..\\..\\tools\\vgmstream\\test.exe"),
                 sox
 			};
-			IAudioExporter exporter = new RSTMExporter();
+			IAudioExporter exporter = new LWAVExporter();
 
-			string[] inputFiles = Directory.EnumerateFiles(@"C:\Brawl\sound\strm", "*.brstm").Skip(5).Take(5).ToArray();
+			string[] inputFiles = new string[] { @"C:\Users\Owner\Desktop\BrawlHacks\Music\library\Klonoa\bgm007.brstm", @"C:\Users\Owner\Music\iTunes\iTunes Media\Music\Say Hi\Endless Wonder\01 Hurt In The Morning 2.mp3" };
 
 			List<Task> tasks = new List<Task>();
 			Semaphore sem = new Semaphore(processors, processors);
@@ -38,6 +39,7 @@ namespace LoopingAudioConverter {
 			foreach (string inputFile in inputFiles) {
 				sem.WaitOne();
 				if (tasks.Any(t => t.IsFaulted)) break;
+				if (window.DialogResult == DialogResult.Cancel) break;
 
 				window.SetDecodingText(Path.GetFileNameWithoutExtension(inputFile));
 
@@ -65,11 +67,11 @@ namespace LoopingAudioConverter {
 					throw new AggregateException("Could not read " + inputFile, exceptions);
 				}
 
-				window.SetDecodingText("To mono");
-				w = sox.ApplyEffects(w, 1);
+				window.SetDecodingText("Applying SoX effects");
+				w = sox.ApplyEffects(w, null, null, null, 22050);
 
 				window.SetDecodingText("");
-				MultipleProgressRow row = window.AddEncodingRow(inputFile);
+				MultipleProgressRow row = window.AddEncodingRow(Path.GetFileNameWithoutExtension(inputFile));
 				if (processors == 1) {
 					exporter.WriteFile(w, @"C:\Users\Owner\Downloads\a", Path.GetFileNameWithoutExtension(inputFile), row);
 					sem.Release();
@@ -85,7 +87,7 @@ namespace LoopingAudioConverter {
 			}
 			Task.WaitAll(tasks.ToArray());
 			s.Stop();
-			window.BeginInvoke(new Action(() => {
+			if (window.Visible) window.BeginInvoke(new Action(() => {
 				window.Close();
 			}));
 			Console.WriteLine(s.Elapsed);

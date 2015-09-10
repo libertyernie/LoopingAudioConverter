@@ -41,15 +41,29 @@ namespace LoopingAudioConverter {
             }
         }
 
-		public LWAV ApplyEffects(LWAV lwav, int channels) {
+		public LWAV ApplyEffects(LWAV lwav, int? channels, double? db, double? amplitude, int? rate) {
 			byte[] wav = lwav.Export();
+
+			StringBuilder effects_string = new StringBuilder();
+			if (channels != null) {
+				effects_string.Append(" channels " + channels);
+			}
+			if (db != null) {
+				effects_string.Append(" vol " + db + " dB");
+			}
+			if (amplitude != null) {
+				effects_string.Append(" vol " + amplitude + " amplitude");
+			}
+			if (rate != null) {
+				effects_string.Append(" rate " + rate);
+			}
 
 			ProcessStartInfo psi = new ProcessStartInfo {
 				FileName = ExePath,
 				RedirectStandardInput = true,
 				RedirectStandardOutput = true,
 				UseShellExecute = false,
-				Arguments = "-t wav - -c " + channels + " -t wav -"
+				Arguments = @"-t wav - -t wav -" + effects_string
 			};
 			Process p = Process.Start(psi);
 			new Task(() => {
@@ -58,10 +72,16 @@ namespace LoopingAudioConverter {
 			}).Start();
 
 			try {
-				LWAV l = LWAVFactory.FromStream(p.StandardOutput.BaseStream);
+				LWAV l = LWAVFactory.FromStream(p.StandardOutput.BaseStream, true);
 				l.Looping = lwav.Looping;
 				l.LoopStart = lwav.LoopStart;
 				l.LoopEnd = lwav.LoopEnd;
+
+				if (l.Looping && l.SampleRate != lwav.SampleRate) {
+					double ratio = (double)(l.SampleRate / lwav.SampleRate);
+					l.LoopStart = (int)(l.LoopStart * ratio);
+					l.LoopEnd = (int)(l.LoopEnd * ratio);
+				}
 				return l;
 			} catch (Exception e) {
 				throw new AudioImporterException("Could not read SoX output: " + e.Message);
