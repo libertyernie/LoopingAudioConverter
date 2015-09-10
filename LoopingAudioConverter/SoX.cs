@@ -78,7 +78,7 @@ namespace LoopingAudioConverter {
 				l.LoopEnd = lwav.LoopEnd;
 
 				if (l.Looping && l.SampleRate != lwav.SampleRate) {
-					double ratio = (double)(l.SampleRate / lwav.SampleRate);
+					double ratio = (double)l.SampleRate / lwav.SampleRate;
 					l.LoopStart = (int)(l.LoopStart * ratio);
 					l.LoopEnd = (int)(l.LoopEnd * ratio);
 				}
