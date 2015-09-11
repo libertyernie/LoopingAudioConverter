@@ -11,6 +11,14 @@ namespace LoopingAudioConverter {
 		public WaveDataException(string message) : base(message) { }
 	}
 
+	/// <summary>
+	/// Convert between RIFF WAVE format (the .wav files used by Microsoft) and this application's internal LWAV class.
+	/// Input data must have 16 bits per sample and be in one of the following formats:
+	/// * WAVE_FORMAT_PCM (0x0001)
+	/// * WAVE_FORMAT_EXTENSIBLE (0xFFFE) with a subformat of KSDATAFORMAT_SUBTYPE_PCM (00000001-0000-0010-8000-00aa00389b71)
+	/// This program will read the "fmt ", "data", and (if present) "smpl" chunks; any other chunks in the file will be ignored.
+	/// Output data will use WAVE_FORMAT_PCM and have "fmt " and "data" chunks, along with a "smpl" chunk if it is a looping track.
+	/// </summary>
 	public static class LWAVFactory {
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		private struct fmt {
@@ -77,6 +85,13 @@ namespace LoopingAudioConverter {
 			return i;
 		}
 
+		/// <summary>
+		/// Reads RIFF WAVE data from a stream.
+		/// If the size of the "data" chunk is incorrect or negative, but the "data" chunk is known to be the last chunk in the file, set the assumeDataIsLastChunk parameter to true.
+		/// </summary>
+		/// <param name="stream">Stream to read from (no data will be written to the stream)</param>
+		/// <param name="assumeDataIsLastChunk">Whether the data chunk is known to be the last chunk in the file</param>
+		/// <returns></returns>
 		public unsafe static LWAV FromStream(Stream stream, bool assumeDataIsLastChunk = false) {
 			byte[] buffer = new byte[12];
 			int r = stream.Read(buffer, 0, 12);
@@ -102,19 +117,21 @@ namespace LoopingAudioConverter {
 			int? loopStart = null;
 			int? loopEnd = null;
 
+			// Keep reading chunk headers into a buffer of 8 bytes
 			while ((r = stream.Read(buffer, 0, 8)) > 0) {
 				if (r < 8) {
 					throw new WaveDataException("Unexpected end of stream in chunk header");
 				} else {
 					fixed (byte* ptr1 = buffer) {
-						// Four ASCII characters - stored here as int32
-						int id = *(int*)ptr1;
+						// Four ASCII characters
+						string id = Marshal.PtrToStringAnsi((IntPtr)ptr1, 4);
 
 						int chunklength = *(int*)(ptr1 + 4);
 
-						// Special handling for streaming output of madplay.exe
 						byte[] buffer2;
-						if (id == tag("data") && assumeDataIsLastChunk) {
+						if (id == "data" && assumeDataIsLastChunk) {
+							// Special handling for streaming output of madplay.exe and sample conversion from SoX.
+							// If we were using temporary files, this would probably not be needed, but I like a good programming challenge.
 							using (MemoryStream ms = new MemoryStream()) {
 								byte[] databuffer = new byte[1024 * 1024];
 								while ((r = stream.Read(databuffer, 0, databuffer.Length)) > 0) {
@@ -124,6 +141,7 @@ namespace LoopingAudioConverter {
 								buffer2 = ms.ToArray();
 							}
 						} else {
+							// Look at the length of the chunk and read that many bytes into a byte array.
 							buffer2 = new byte[chunklength];
 							int total = 0;
 							while (total < buffer2.Length) {
@@ -133,7 +151,7 @@ namespace LoopingAudioConverter {
 						}
 
 						fixed (byte* ptr2 = buffer2) {
-							if (id == tag("fmt ")) {
+							if (id == "fmt ") {
 								// Format chunk
 								fmt* fmt = (fmt*)ptr2;
 								if (fmt->format != 1) {
@@ -154,11 +172,11 @@ namespace LoopingAudioConverter {
 
 								channels = fmt->channels;
 								sampleRate = fmt->sampleRate;
-							} else if (id == tag("data")) {
+							} else if (id == "data") {
 								// Data chunk - contains samples
 								sample_data = new short[buffer2.Length / 2];
 								Marshal.Copy((IntPtr)ptr2, sample_data, 0, sample_data.Length);
-							} else if (id == tag("smpl")) {
+							} else if (id == "smpl") {
 								// sampler chunk
 								smpl* smpl = (smpl*)ptr2;
 								if (smpl->sampleLoopCount > 1) {
@@ -173,7 +191,7 @@ namespace LoopingAudioConverter {
 									loopEnd = loop->end;
 								}
 							} else {
-								Console.Error.WriteLine("Ignoring unknown chunk " + Marshal.PtrToStringAnsi((IntPtr)ptr1, 4));
+								Console.Error.WriteLine("Ignoring unknown chunk " + id);
 							}
 						}
 					}
@@ -191,12 +209,25 @@ namespace LoopingAudioConverter {
 			return wav;
 		}
 
+		/// <summary>
+		/// Reads RIFF WAVE data from a byte array.
+		/// This method wraps a read-only MemoryStream around the byte array and sends the stream to the FromStream method.
+		/// </summary>
+		/// <param name="p"></param>
+		/// <returns></returns>
 		public static LWAV FromByteArray(byte[] p) {
 			using (MemoryStream stream = new MemoryStream(p, false)) {
 				return FromStream(stream);
 			}
 		}
 
+		/// <summary>
+		/// Exports data to a byte array in RIFF WAVE (.wav) format.
+		/// Output data will use WAVE_FORMAT_PCM and have "fmt " and "data" chunks, along with a "smpl" chunk if it is a looping track.
+		/// Note that even files with more than 2 channels will use WAVE_FORMAT_PCM as the format, even though doing this is invalid according to the spec.
+		/// </summary>
+		/// <param name="lwav"></param>
+		/// <returns></returns>
 		public static unsafe byte[] Export(this LWAV lwav) {
 			int length = 12 + 8 + sizeof(fmt) + 8 + (lwav.Samples.Length * 2);
 			if (lwav.Looping) {
