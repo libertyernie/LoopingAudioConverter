@@ -14,7 +14,9 @@ namespace LoopingAudioConverter {
         static void Main(string[] args) {
 			Application.EnableVisualStyles();
 			OptionsForm f = new OptionsForm();
-			f.ShowDialog();
+			if (f.ShowDialog() != DialogResult.OK) {
+				return;
+			}
 			Options o = f.GetOptions();
 
 			int processors = Environment.ProcessorCount;
@@ -60,6 +62,9 @@ namespace LoopingAudioConverter {
 
 			Stopwatch s = new Stopwatch();
 			s.Start();
+			if (!o.InputFiles.Any()) {
+				MessageBox.Show("No input files were selected.");
+			}
 			foreach (string inputFile in o.InputFiles) {
 				sem.WaitOne();
 				if (tasks.Any(t => t.IsFaulted)) break;
