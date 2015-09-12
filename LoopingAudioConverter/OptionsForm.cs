@@ -8,16 +8,45 @@ using System.Text;
 using System.Windows.Forms;
 
 namespace LoopingAudioConverter {
-	public partial class MainForm : Form {
-		[STAThread]
-		public static void Main(string[] args) {
-			Application.EnableVisualStyles();
-			Application.Run(new MainForm());
+	public partial class OptionsForm : Form {
+		private class NVPair {
+			public string Name { get; set; }
+			public ExporterType Value { get; set; }
+			public NVPair(ExporterType value, string name) {
+				this.Name = name;
+				this.Value = value;
+			}
 		}
 
-		public MainForm() {
+		public OptionsForm() {
 			InitializeComponent();
+			comboBox1.DataSource = new List<NVPair>() {
+				new NVPair(ExporterType.BRSTM, "BRSTM"),
+				new NVPair(ExporterType.WAV, "WAV / Looping WAV"),
+				new NVPair(ExporterType.FLAC, "FLAC"),
+				new NVPair(ExporterType.MP3, "MP3"),
+				new NVPair(ExporterType.OggVorbis, "Ogg Vorbis")
+			};
 			if (comboBox1.SelectedIndex < 0) comboBox1.SelectedIndex = 0;
+		}
+
+		public Options GetOptions() {
+			List<string> filenames = new List<string>();
+			foreach (object item in listBox1.Items) {
+				filenames.Add(item.ToString());
+			}
+			return new Options {
+				InputFiles = filenames,
+				ExporterType = (ExporterType)comboBox1.SelectedValue,
+				ExportWholeSong = chk0End.Checked,
+				WholeSongSuffix = txt0EndFilenamePattern.Text,
+				NumberOfLoops = (int)numNumberLoops.Value,
+				FadeOutSec = numFadeOutTime.Value,
+				ExportPreLoop = chk0Start.Checked,
+				PreLoopSuffix = txt0StartFilenamePattern.Text,
+				ExportLoop = chkStartEnd.Checked,
+				LoopSuffix = txtStartEndFilenamePattern.Text
+			};
 		}
 
 		private void btnAdd_Click(object sender, EventArgs e) {

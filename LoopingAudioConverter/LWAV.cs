@@ -42,11 +42,23 @@ namespace LoopingAudioConverter {
 			Looping = (loop_start != null);
 			LoopStart = loop_start ?? 0;
 			LoopEnd = loop_end ?? Samples.Length;
-        }
+		}
+
+		public LWAV getPreLoopSegment() {
+			short[] data = new short[this.LoopStart];
+			Array.Copy(Samples, 0, data, 0, data.Length);
+			return new LWAV(Channels, SampleRate, data);
+		}
+
+		public LWAV getLoopSegment() {
+			short[] data = new short[this.LoopEnd - this.LoopStart];
+			Array.Copy(Samples, this.LoopStart, data, 0, data.Length);
+			return new LWAV(Channels, SampleRate, data, 0, data.Length);
+		}
 
         public override string ToString() {
             return SampleRate + "Hz " + Channels + " channels: " + Samples.Length + " (" + TimeSpan.FromSeconds(Samples.Length / (SampleRate * Channels)) + ")"
                 + (Looping ? (" loop " + LoopStart + "-" + LoopEnd) : "");
         }
-    }
+	}
 }

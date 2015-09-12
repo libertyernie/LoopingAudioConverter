@@ -10,7 +10,13 @@ using System.Windows.Forms;
 
 namespace LoopingAudioConverter {
     class Program {
-        static void Tmp(string[] args) {
+		[STAThread]
+        static void Main(string[] args) {
+			Application.EnableVisualStyles();
+			OptionsForm f = new OptionsForm();
+			f.ShowDialog();
+			Options o = f.GetOptions();
+
 			int processors = Environment.ProcessorCount;
 
             SoX sox = new SoX(@"..\..\tools\sox\sox.exe");
@@ -21,22 +27,37 @@ namespace LoopingAudioConverter {
 				new VGMStreamImporter("..\\..\\tools\\vgmstream\\test.exe"),
                 sox
 			};
-			IAudioExporter exporter = new RSTMExporter();
 
-			string[] inputFiles = new string[] { @"C:\Brawl\sound\strm\W01.brstm", @"C:\Users\Owner\Desktop\holiday passwords.txt", @"C:\Users\Owner\Desktop\BrawlHacks\Music\library\Klonoa\bgm007.brstm" };
+			IAudioExporter exporter;
+			switch (o.ExporterType) {
+				case ExporterType.BRSTM:
+					exporter = new RSTMExporter();
+					break;
+				case ExporterType.FLAC:
+					exporter = new FLACExporter(sox);
+					break;
+				case ExporterType.MP3:
+					exporter = new MP3Exporter(@"..\..\tools\lame\lame.exe");
+					break;
+				case ExporterType.WAV:
+					exporter = new LWAVExporter();
+					break;
+				default:
+					throw new Exception("Could not create exporter type " + o.ExporterType);
+			}
 
 			List<Task> tasks = new List<Task>();
 			Semaphore sem = new Semaphore(processors, processors);
 
 			MultipleProgressWindow window = new MultipleProgressWindow();
 			new Thread(new ThreadStart(() => {
-				System.Windows.Forms.Application.EnableVisualStyles();
+				Application.EnableVisualStyles();
 				window.ShowDialog();
 			})).Start();
 
 			Stopwatch s = new Stopwatch();
 			s.Start();
-			foreach (string inputFile in inputFiles) {
+			foreach (string inputFile in o.InputFiles) {
 				sem.WaitOne();
 				if (tasks.Any(t => t.IsFaulted)) break;
 				if (window.DialogResult == DialogResult.Cancel) break;
@@ -55,7 +76,7 @@ namespace LoopingAudioConverter {
 
 				foreach (IAudioImporter importer in importers_supported) {
 					try {
-						Console.WriteLine("Trying to decode " + Path.GetFileName(inputFile) + " with " + importer.GetImporterName());
+						Console.WriteLine("Decoding " + Path.GetFileName(inputFile) + " with " + importer.GetImporterName());
 						w = importer.ReadFile(inputFile);
 						break;
 					} catch (AudioImporterException e) {
@@ -70,20 +91,31 @@ namespace LoopingAudioConverter {
 
 				window.SetDecodingText(filename_no_ext + " (applying effects)");
 				w = sox.ApplyEffects(w, max_channels: 2);
-
 				window.SetDecodingText("");
-				MultipleProgressRow row = window.AddEncodingRow(filename_no_ext);
-				if (processors == 1) {
-					exporter.WriteFile(w, @"C:\Users\Owner\Downloads\a", filename_no_ext, row);
-					sem.Release();
-					row.Remove();
-				} else {
-					Task task = exporter.WriteFileAsync(w, @"C:\Users\Owner\Downloads\a", filename_no_ext, row);
-					task.ContinueWith(t => {
+
+				Dictionary<LWAV, string> wavsToExport = new Dictionary<LWAV, string>(3);
+
+				if (o.ExportWholeSong) wavsToExport.Add(w, filename_no_ext + o.WholeSongSuffix);
+				if (o.ExportPreLoop) wavsToExport.Add(w.getPreLoopSegment(), filename_no_ext + o.PreLoopSuffix);
+				if (o.ExportLoop) wavsToExport.Add(w.getLoopSegment(), filename_no_ext + o.LoopSuffix);
+
+				sem.Release();
+
+				foreach (KeyValuePair<LWAV, string> toExport in wavsToExport) {
+					sem.WaitOne();
+					MultipleProgressRow row = window.AddEncodingRow(toExport.Value);
+					if (processors == 1) {
+						exporter.WriteFile(toExport.Key, @"C:\Users\Owner\Downloads\b", toExport.Value, row);
 						sem.Release();
 						row.Remove();
-					});
-					tasks.Add(task);
+					} else {
+						Task task = exporter.WriteFileAsync(toExport.Key, @"C:\Users\Owner\Downloads\b", toExport.Value, row);
+						task.ContinueWith(t => {
+							sem.Release();
+							row.Remove();
+						});
+						tasks.Add(task);
+					}
 				}
 			}
 			Task.WaitAll(tasks.ToArray());
