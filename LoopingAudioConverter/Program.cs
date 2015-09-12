@@ -39,6 +39,9 @@ namespace LoopingAudioConverter {
 				case ExporterType.MP3:
 					exporter = new MP3Exporter(@"..\..\tools\lame\lame.exe");
 					break;
+				case ExporterType.OggVorbis:
+					exporter = new OggVorbisExporter(sox);
+					break;
 				case ExporterType.WAV:
 					exporter = new LWAVExporter();
 					break;
