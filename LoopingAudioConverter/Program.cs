@@ -95,9 +95,9 @@ namespace LoopingAudioConverter {
 
 				Dictionary<LWAV, string> wavsToExport = new Dictionary<LWAV, string>(3);
 
-				if (o.ExportWholeSong) wavsToExport.Add(w, filename_no_ext + o.WholeSongSuffix);
-				if (o.ExportPreLoop) wavsToExport.Add(w.getPreLoopSegment(), filename_no_ext + o.PreLoopSuffix);
-				if (o.ExportLoop) wavsToExport.Add(w.getLoopSegment(), filename_no_ext + o.LoopSuffix);
+				if (o.ExportWholeSong) wavsToExport.Add(w.PlayLoopAndFade(o.NumberOfLoops, o.FadeOutSec), filename_no_ext + o.WholeSongSuffix);
+				if (o.ExportPreLoop) wavsToExport.Add(w.GetPreLoopSegment(), filename_no_ext + o.PreLoopSuffix);
+				if (o.ExportLoop) wavsToExport.Add(w.GetLoopSegment(), filename_no_ext + o.LoopSuffix);
 
 				sem.Release();
 
