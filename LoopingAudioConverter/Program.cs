@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace LoopingAudioConverter {
     class Program {
-        static void Main(string[] args) {
+        static void Tmp(string[] args) {
 			int processors = Environment.ProcessorCount;
 
             SoX sox = new SoX(@"..\..\tools\sox\sox.exe");
@@ -21,9 +21,9 @@ namespace LoopingAudioConverter {
 				new VGMStreamImporter("..\\..\\tools\\vgmstream\\test.exe"),
                 sox
 			};
-			IAudioExporter exporter = new LWAVExporter();
+			IAudioExporter exporter = new RSTMExporter();
 
-			string[] inputFiles = new string[] { @"C:\Users\Owner\Desktop\BrawlHacks\Music\library\Klonoa\bgm007.brstm", @"C:\Users\Owner\Music\iTunes\iTunes Media\Music\Say Hi\Endless Wonder\01 Hurt In The Morning 2.mp3" };
+			string[] inputFiles = new string[] { @"C:\Brawl\sound\strm\W01.brstm", @"C:\Users\Owner\Desktop\holiday passwords.txt", @"C:\Users\Owner\Desktop\BrawlHacks\Music\library\Klonoa\bgm007.brstm" };
 
 			List<Task> tasks = new List<Task>();
 			Semaphore sem = new Semaphore(processors, processors);
@@ -41,7 +41,8 @@ namespace LoopingAudioConverter {
 				if (tasks.Any(t => t.IsFaulted)) break;
 				if (window.DialogResult == DialogResult.Cancel) break;
 
-				window.SetDecodingText(Path.GetFileNameWithoutExtension(inputFile));
+				string filename_no_ext = Path.GetFileNameWithoutExtension(inputFile);
+				window.SetDecodingText(filename_no_ext);
 
 				LWAV w = null;
 				string extension = Path.GetExtension(inputFile);
@@ -67,17 +68,17 @@ namespace LoopingAudioConverter {
 					throw new AggregateException("Could not read " + inputFile, exceptions);
 				}
 
-				window.SetDecodingText("Applying SoX effects");
-				w = sox.ApplyEffects(w, null, null, null, 22050);
+				window.SetDecodingText(filename_no_ext + " (applying effects)");
+				w = sox.ApplyEffects(w, max_channels: 2);
 
 				window.SetDecodingText("");
-				MultipleProgressRow row = window.AddEncodingRow(Path.GetFileNameWithoutExtension(inputFile));
+				MultipleProgressRow row = window.AddEncodingRow(filename_no_ext);
 				if (processors == 1) {
-					exporter.WriteFile(w, @"C:\Users\Owner\Downloads\a", Path.GetFileNameWithoutExtension(inputFile), row);
+					exporter.WriteFile(w, @"C:\Users\Owner\Downloads\a", filename_no_ext, row);
 					sem.Release();
 					row.Remove();
 				} else {
-					Task task = exporter.WriteFileAsync(w, @"C:\Users\Owner\Downloads\a", Path.GetFileNameWithoutExtension(inputFile), row);
+					Task task = exporter.WriteFileAsync(w, @"C:\Users\Owner\Downloads\a", filename_no_ext, row);
 					task.ContinueWith(t => {
 						sem.Release();
 						row.Remove();
