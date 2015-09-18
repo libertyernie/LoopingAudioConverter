@@ -39,8 +39,8 @@ namespace LoopingAudioConverter {
 			Process p = Process.Start(psi);
 
 			try {
-				return LWAVFactory.FromStream(p.StandardOutput.BaseStream, true);
-			} catch (WaveDataException e) {
+				return LWAVFactory.FromStream(p.StandardOutput.BaseStream);
+			} catch (LWAVFactoryException e) {
 				throw new AudioImporterException("Could not read madplay output: " + e.Message);
 			}
 		}

@@ -26,7 +26,7 @@ namespace LoopingAudioConverter {
 		public LWAV ReadFile(string filename) {
 			try {
 				return LWAVFactory.FromByteArray(File.ReadAllBytes(filename));
-			} catch (WaveDataException e) {
+			} catch (LWAVFactoryException e) {
 				throw new AudioImporterException(e.Message, e);
 			}
 		}
