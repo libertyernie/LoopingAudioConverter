@@ -72,8 +72,11 @@ namespace LoopingAudioConverter {
 		public LWAV ApplyEffects(LWAV lwav, int max_channels = int.MaxValue, double db = 0, double amplitude = 1, int max_rate = int.MaxValue) {
 			byte[] wav = lwav.Export();
 
+			int channels = Math.Min(max_channels, lwav.Channels);
+			int sampleRate = Math.Min(max_rate, lwav.SampleRate);
+
 			StringBuilder effects_string = new StringBuilder();
-			if (max_channels < lwav.Channels) {
+			if (channels != lwav.Channels) {
 				effects_string.Append(" channels " + max_channels);
 			}
 			if (db != 0) {
@@ -82,7 +85,7 @@ namespace LoopingAudioConverter {
 			if (amplitude != 1) {
 				effects_string.Append(" vol " + amplitude + " amplitude");
 			}
-			if (max_rate < lwav.SampleRate) {
+			if (sampleRate != lwav.SampleRate) {
 				effects_string.Append(" rate " + max_rate);
 			}
 
@@ -91,12 +94,13 @@ namespace LoopingAudioConverter {
 				return lwav;
 			}
 
+			// Sometimes when SoX changes sample rate and sends the result to stdout, it gives the wrong length in the data chunk. Let's just have it send us raw PCM data instead.
 			ProcessStartInfo psi = new ProcessStartInfo {
 				FileName = ExePath,
 				RedirectStandardInput = true,
 				RedirectStandardOutput = true,
 				UseShellExecute = false,
-				Arguments = @"-t wav - -t wav -" + effects_string
+				Arguments = @"-t wav - -t raw -" + effects_string
 			};
 			Process p = Process.Start(psi);
 			new Task(() => {
@@ -104,9 +108,19 @@ namespace LoopingAudioConverter {
 				p.StandardInput.BaseStream.Close();
 			}).Start();
 
+			short[] samples;
+			using (MemoryStream ms = new MemoryStream()) {
+				p.StandardOutput.BaseStream.CopyTo(ms);
+				byte[] result = ms.ToArray();
+
+				samples = new short[result.Length / 2];
+				for (int i = 0; i < samples.Length; i++) {
+					samples[i] = (short)(result[i * 2] | (result[i * 2 + 1] << 8));
+				}
+			}
+
 			try {
-				// When changing sample rate and sending to stdout, SoX does not always write the correct sample rate to the file. However, the data chunk will always be the last chunk in the output.
-				LWAV l = LWAVFactory.FromStream(p.StandardOutput.BaseStream, true);
+				LWAV l = new LWAV(channels, sampleRate, samples);
 				l.Looping = lwav.Looping;
 				l.LoopStart = lwav.LoopStart;
 				l.LoopEnd = lwav.LoopEnd;
