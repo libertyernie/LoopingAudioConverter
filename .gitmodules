@@ -1,0 +1,3 @@
+[submodule "RSTMLib"]
+	path = RSTMLib
+	url = https://github.com/libertyernie/RSTMLib.git

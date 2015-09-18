@@ -1,5 +1,4 @@
-﻿using BrawlLib.IO;
-using BrawlLib.Wii.Audio;
+﻿using RSTMLib;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,9 +10,9 @@ namespace LoopingAudioConverter.Brawl {
 			IProgressTracker pw = null;
 			if (progressTracker != null) pw = new EncodingProgressWrapper(progressTracker);
 
-			FileMap map = RSTMConverter.Encode(new LWAVAudioStream(lwav), pw);
+			byte[] data = RSTMConverter.EncodeToByteArray(new LWAVAudioStream(lwav), pw);
 			if (pw.Cancelled) throw new AudioExporterException("RSTM export cancelled");
-			File.Copy(map.FilePath, Path.Combine(output_dir, original_filename_no_ext + ".brstm"), true);
+			File.WriteAllBytes(Path.Combine(output_dir, original_filename_no_ext + ".brstm"), data);
 		}
 
 		public Task WriteFileAsync(LWAV lwav, string output_dir, string original_filename_no_ext, IEncodingProgress progressTracker = null) {
