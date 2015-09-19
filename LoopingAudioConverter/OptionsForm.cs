@@ -37,6 +37,10 @@ namespace LoopingAudioConverter {
 			}
 			return new Options {
 				InputFiles = filenames,
+				MaxChannels = chkMono.Checked ? 1 : (int?)null,
+				MaxSampleRate = chkMaxSampleRate.Checked ? (int)numMaxSampleRate.Value : (int?)null,
+				AmplifydB = chkAmplifydB.Checked ? numAmplifydB.Value : (decimal?)null,
+				AmplifyRatio = chkAmplifyRatio.Checked ? numAmplifyRatio.Value : (decimal?)null,
 				ExporterType = (ExporterType)comboBox1.SelectedValue,
 				ExportWholeSong = chk0End.Checked,
 				WholeSongSuffix = txt0EndFilenamePattern.Text,
@@ -98,6 +102,18 @@ namespace LoopingAudioConverter {
 		private void chkStartEnd_CheckedChanged(object sender, EventArgs e) {
 			CheckBox cb = (CheckBox)sender;
 			txtStartEndFilenamePattern.Enabled = cb.Checked;
+		}
+
+		private void chkMaxSampleRate_CheckedChanged(object sender, EventArgs e) {
+			numMaxSampleRate.Enabled = chkMaxSampleRate.Checked;
+		}
+
+		private void chkAmplifydB_CheckedChanged(object sender, EventArgs e) {
+			numAmplifydB.Enabled = chkAmplifydB.Checked;
+		}
+
+		private void chkAmplifyRatio_CheckedChanged(object sender, EventArgs e) {
+			numAmplifyRatio.Enabled = chkAmplifyRatio.Checked;
 		}
 	}
 }

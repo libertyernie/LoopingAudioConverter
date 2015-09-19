@@ -98,7 +98,11 @@ namespace LoopingAudioConverter {
 				}
 
 				window.SetDecodingText(filename_no_ext + " (applying effects)");
-				w = sox.ApplyEffects(w, max_channels: 2);
+				w = sox.ApplyEffects(w,
+					max_channels: o.MaxChannels ?? int.MaxValue,
+					max_rate: o.MaxSampleRate ?? int.MaxValue,
+					db: o.AmplifydB ?? 0M,
+					amplitude: o.AmplifyRatio ?? 1M);
 				window.SetDecodingText("");
 
 				Dictionary<LWAV, string> wavsToExport = new Dictionary<LWAV, string>(3);

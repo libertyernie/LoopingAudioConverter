@@ -69,7 +69,7 @@ namespace LoopingAudioConverter {
 		/// <param name="amplitude">Volume adjustment, in linear ratio (if 1, this effect will not be applied)</param>
 		/// <param name="max_rate">The new sample rate (if the LWAV's sample rate is less than or equal to this value, this effect will not be applied)</param>
 		/// <returns>A new LWAV object if one or more effects are applied; the same LWAV object if no effects are applied.</returns>
-		public LWAV ApplyEffects(LWAV lwav, int max_channels = int.MaxValue, double db = 0, double amplitude = 1, int max_rate = int.MaxValue) {
+		public LWAV ApplyEffects(LWAV lwav, int max_channels = int.MaxValue, decimal db = 0, decimal amplitude = 1, int max_rate = int.MaxValue) {
 			byte[] wav = lwav.Export();
 
 			int channels = Math.Min(max_channels, lwav.Channels);
