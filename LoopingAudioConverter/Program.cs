@@ -19,6 +19,14 @@ namespace LoopingAudioConverter {
 			}
 			Options o = f.GetOptions();
 
+			if (!Directory.Exists(o.OutputDir)) {
+				try {
+					Directory.CreateDirectory(o.OutputDir);
+				} catch (Exception e) {
+					MessageBox.Show("Could not create output directory " + o.OutputDir + ": " + e.Message);
+				}
+			}
+
 			int processors = Environment.ProcessorCount;
 
             SoX sox = new SoX(@"..\..\tools\sox\sox.exe");
@@ -117,11 +125,11 @@ namespace LoopingAudioConverter {
 					sem.WaitOne();
 					MultipleProgressRow row = window.AddEncodingRow(toExport.Value);
 					if (processors == 1) {
-						exporter.WriteFile(toExport.Key, @"C:\Users\Owner\Downloads\b", toExport.Value, row);
+						exporter.WriteFile(toExport.Key, o.OutputDir, toExport.Value, row);
 						sem.Release();
 						row.Remove();
 					} else {
-						Task task = exporter.WriteFileAsync(toExport.Key, @"C:\Users\Owner\Downloads\b", toExport.Value, row);
+						Task task = exporter.WriteFileAsync(toExport.Key, o.OutputDir, toExport.Value, row);
 						task.ContinueWith(t => {
 							sem.Release();
 							row.Remove();

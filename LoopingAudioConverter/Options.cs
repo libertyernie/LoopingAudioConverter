@@ -14,6 +14,7 @@ namespace LoopingAudioConverter {
 
 	public class Options {
 		public IEnumerable<string> InputFiles { get; set; }
+		public string OutputDir { get; set; }
 		public int? MaxChannels { get; set; }
 		public int? MaxSampleRate { get; set; }
 		public decimal? AmplifydB { get; set; }

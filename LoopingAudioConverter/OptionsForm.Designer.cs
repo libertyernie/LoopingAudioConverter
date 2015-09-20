@@ -34,9 +34,22 @@
 			this.btnAdd = new System.Windows.Forms.Button();
 			this.btnRemove = new System.Windows.Forms.Button();
 			this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-			this.lblOutputFormat = new System.Windows.Forms.Label();
-			this.comboBox1 = new System.Windows.Forms.ComboBox();
+			this.panel2 = new System.Windows.Forms.Panel();
+			this.numAmplifyRatio = new System.Windows.Forms.NumericUpDown();
+			this.chkAmplifyRatio = new System.Windows.Forms.CheckBox();
+			this.numAmplifydB = new System.Windows.Forms.NumericUpDown();
+			this.chkAmplifydB = new System.Windows.Forms.CheckBox();
+			this.numMaxSampleRate = new System.Windows.Forms.NumericUpDown();
+			this.chkMaxSampleRate = new System.Windows.Forms.CheckBox();
+			this.chkMono = new System.Windows.Forms.CheckBox();
+			this.pnlExportChannels = new System.Windows.Forms.Panel();
+			this.lblMoreThanOneChannel = new System.Windows.Forms.Label();
+			this.radChannelsTogether = new System.Windows.Forms.RadioButton();
+			this.radChannelsPairs = new System.Windows.Forms.RadioButton();
+			this.radChannelsSeparate = new System.Windows.Forms.RadioButton();
 			this.pnlExportSegments = new System.Windows.Forms.Panel();
+			this.comboBox1 = new System.Windows.Forms.ComboBox();
+			this.lblOutputFormat = new System.Windows.Forms.Label();
 			this.chk0End = new System.Windows.Forms.CheckBox();
 			this.txt0EndFilenamePattern = new System.Windows.Forms.TextBox();
 			this.chk0Start = new System.Windows.Forms.CheckBox();
@@ -51,37 +64,27 @@
 			this.numNumberLoops = new System.Windows.Forms.NumericUpDown();
 			this.label1 = new System.Windows.Forms.Label();
 			this.numFadeOutTime = new System.Windows.Forms.NumericUpDown();
-			this.pnlExportChannels = new System.Windows.Forms.Panel();
-			this.lblMoreThanOneChannel = new System.Windows.Forms.Label();
-			this.radChannelsTogether = new System.Windows.Forms.RadioButton();
-			this.radChannelsPairs = new System.Windows.Forms.RadioButton();
-			this.radChannelsSeparate = new System.Windows.Forms.RadioButton();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.btnCancel = new System.Windows.Forms.Button();
 			this.btnOkay = new System.Windows.Forms.Button();
-			this.panel2 = new System.Windows.Forms.Panel();
-			this.chkMono = new System.Windows.Forms.CheckBox();
-			this.chkMaxSampleRate = new System.Windows.Forms.CheckBox();
-			this.numMaxSampleRate = new System.Windows.Forms.NumericUpDown();
-			this.numAmplifydB = new System.Windows.Forms.NumericUpDown();
-			this.chkAmplifydB = new System.Windows.Forms.CheckBox();
-			this.numAmplifyRatio = new System.Windows.Forms.NumericUpDown();
-			this.chkAmplifyRatio = new System.Windows.Forms.CheckBox();
+			this.txtOutputDir = new System.Windows.Forms.TextBox();
+			this.lblOutputDir = new System.Windows.Forms.Label();
+			this.btnBrowse = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
 			this.flowLayoutPanel1.SuspendLayout();
 			this.flowLayoutPanel2.SuspendLayout();
+			this.panel2.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.numAmplifyRatio)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.numAmplifydB)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.numMaxSampleRate)).BeginInit();
+			this.pnlExportChannels.SuspendLayout();
 			this.pnlExportSegments.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numNumberLoops)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numFadeOutTime)).BeginInit();
-			this.pnlExportChannels.SuspendLayout();
 			this.panel1.SuspendLayout();
-			this.panel2.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.numMaxSampleRate)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.numAmplifydB)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.numAmplifyRatio)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// splitContainer1
@@ -94,6 +97,9 @@
 			// 
 			// splitContainer1.Panel1
 			// 
+			this.splitContainer1.Panel1.Controls.Add(this.btnBrowse);
+			this.splitContainer1.Panel1.Controls.Add(this.txtOutputDir);
+			this.splitContainer1.Panel1.Controls.Add(this.lblOutputDir);
 			this.splitContainer1.Panel1.Controls.Add(this.listBox1);
 			this.splitContainer1.Panel1.Controls.Add(this.flowLayoutPanel1);
 			// 
@@ -116,7 +122,7 @@
 			this.listBox1.Location = new System.Drawing.Point(3, 3);
 			this.listBox1.Name = "listBox1";
 			this.listBox1.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-			this.listBox1.Size = new System.Drawing.Size(449, 155);
+			this.listBox1.Size = new System.Drawing.Size(448, 129);
 			this.listBox1.TabIndex = 0;
 			this.listBox1.DragDrop += new System.Windows.Forms.DragEventHandler(this.listBox1_DragDrop);
 			this.listBox1.DragEnter += new System.Windows.Forms.DragEventHandler(this.listBox1_DragEnter);
@@ -169,26 +175,175 @@
 			this.flowLayoutPanel2.Size = new System.Drawing.Size(534, 226);
 			this.flowLayoutPanel2.TabIndex = 23;
 			// 
-			// lblOutputFormat
+			// panel2
 			// 
-			this.lblOutputFormat.Location = new System.Drawing.Point(3, 3);
-			this.lblOutputFormat.Margin = new System.Windows.Forms.Padding(3);
-			this.lblOutputFormat.Name = "lblOutputFormat";
-			this.lblOutputFormat.Size = new System.Drawing.Size(80, 21);
-			this.lblOutputFormat.TabIndex = 0;
-			this.lblOutputFormat.Text = "Output format:";
-			this.lblOutputFormat.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.panel2.AutoSize = true;
+			this.panel2.Controls.Add(this.numAmplifyRatio);
+			this.panel2.Controls.Add(this.chkAmplifyRatio);
+			this.panel2.Controls.Add(this.numAmplifydB);
+			this.panel2.Controls.Add(this.chkAmplifydB);
+			this.panel2.Controls.Add(this.numMaxSampleRate);
+			this.panel2.Controls.Add(this.chkMaxSampleRate);
+			this.panel2.Controls.Add(this.chkMono);
+			this.panel2.Location = new System.Drawing.Point(0, 3);
+			this.panel2.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
+			this.panel2.Name = "panel2";
+			this.panel2.Size = new System.Drawing.Size(227, 104);
+			this.panel2.TabIndex = 23;
 			// 
-			// comboBox1
+			// numAmplifyRatio
 			// 
-			this.comboBox1.DisplayMember = "Name";
-			this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.comboBox1.FormattingEnabled = true;
-			this.comboBox1.Location = new System.Drawing.Point(89, 3);
-			this.comboBox1.Name = "comboBox1";
-			this.comboBox1.Size = new System.Drawing.Size(121, 21);
-			this.comboBox1.TabIndex = 1;
-			this.comboBox1.ValueMember = "Value";
+			this.numAmplifyRatio.DecimalPlaces = 3;
+			this.numAmplifyRatio.Enabled = false;
+			this.numAmplifyRatio.Increment = new decimal(new int[] {
+            25,
+            0,
+            0,
+            131072});
+			this.numAmplifyRatio.Location = new System.Drawing.Point(158, 81);
+			this.numAmplifyRatio.Name = "numAmplifyRatio";
+			this.numAmplifyRatio.Size = new System.Drawing.Size(66, 20);
+			this.numAmplifyRatio.TabIndex = 6;
+			this.numAmplifyRatio.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			// 
+			// chkAmplifyRatio
+			// 
+			this.chkAmplifyRatio.Location = new System.Drawing.Point(3, 81);
+			this.chkAmplifyRatio.Name = "chkAmplifyRatio";
+			this.chkAmplifyRatio.Size = new System.Drawing.Size(149, 20);
+			this.chkAmplifyRatio.TabIndex = 5;
+			this.chkAmplifyRatio.Text = "Amplify (amplitude ratio):";
+			this.chkAmplifyRatio.UseVisualStyleBackColor = true;
+			this.chkAmplifyRatio.CheckedChanged += new System.EventHandler(this.chkAmplifyRatio_CheckedChanged);
+			// 
+			// numAmplifydB
+			// 
+			this.numAmplifydB.Enabled = false;
+			this.numAmplifydB.Location = new System.Drawing.Point(158, 55);
+			this.numAmplifydB.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+			this.numAmplifydB.Name = "numAmplifydB";
+			this.numAmplifydB.Size = new System.Drawing.Size(66, 20);
+			this.numAmplifydB.TabIndex = 4;
+			// 
+			// chkAmplifydB
+			// 
+			this.chkAmplifydB.Location = new System.Drawing.Point(3, 55);
+			this.chkAmplifydB.Name = "chkAmplifydB";
+			this.chkAmplifydB.Size = new System.Drawing.Size(149, 20);
+			this.chkAmplifydB.TabIndex = 3;
+			this.chkAmplifydB.Text = "Amplify (dB):";
+			this.chkAmplifydB.UseVisualStyleBackColor = true;
+			this.chkAmplifydB.CheckedChanged += new System.EventHandler(this.chkAmplifydB_CheckedChanged);
+			// 
+			// numMaxSampleRate
+			// 
+			this.numMaxSampleRate.Enabled = false;
+			this.numMaxSampleRate.Increment = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+			this.numMaxSampleRate.Location = new System.Drawing.Point(158, 29);
+			this.numMaxSampleRate.Maximum = new decimal(new int[] {
+            48000,
+            0,
+            0,
+            0});
+			this.numMaxSampleRate.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.numMaxSampleRate.Name = "numMaxSampleRate";
+			this.numMaxSampleRate.Size = new System.Drawing.Size(66, 20);
+			this.numMaxSampleRate.TabIndex = 2;
+			this.numMaxSampleRate.Value = new decimal(new int[] {
+            32000,
+            0,
+            0,
+            0});
+			// 
+			// chkMaxSampleRate
+			// 
+			this.chkMaxSampleRate.Location = new System.Drawing.Point(3, 29);
+			this.chkMaxSampleRate.Name = "chkMaxSampleRate";
+			this.chkMaxSampleRate.Size = new System.Drawing.Size(149, 20);
+			this.chkMaxSampleRate.TabIndex = 1;
+			this.chkMaxSampleRate.Text = "New sample rate (Hz):";
+			this.chkMaxSampleRate.UseVisualStyleBackColor = true;
+			this.chkMaxSampleRate.CheckedChanged += new System.EventHandler(this.chkMaxSampleRate_CheckedChanged);
+			// 
+			// chkMono
+			// 
+			this.chkMono.Location = new System.Drawing.Point(3, 3);
+			this.chkMono.Name = "chkMono";
+			this.chkMono.Size = new System.Drawing.Size(221, 20);
+			this.chkMono.TabIndex = 0;
+			this.chkMono.Text = "Convert to mono";
+			this.chkMono.UseVisualStyleBackColor = true;
+			// 
+			// pnlExportChannels
+			// 
+			this.pnlExportChannels.AutoSize = true;
+			this.pnlExportChannels.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.pnlExportChannels.Controls.Add(this.lblMoreThanOneChannel);
+			this.pnlExportChannels.Controls.Add(this.radChannelsTogether);
+			this.pnlExportChannels.Controls.Add(this.radChannelsPairs);
+			this.pnlExportChannels.Controls.Add(this.radChannelsSeparate);
+			this.pnlExportChannels.Location = new System.Drawing.Point(0, 113);
+			this.pnlExportChannels.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
+			this.pnlExportChannels.Name = "pnlExportChannels";
+			this.pnlExportChannels.Size = new System.Drawing.Size(230, 90);
+			this.pnlExportChannels.TabIndex = 22;
+			// 
+			// lblMoreThanOneChannel
+			// 
+			this.lblMoreThanOneChannel.Location = new System.Drawing.Point(3, 0);
+			this.lblMoreThanOneChannel.Name = "lblMoreThanOneChannel";
+			this.lblMoreThanOneChannel.Size = new System.Drawing.Size(224, 21);
+			this.lblMoreThanOneChannel.TabIndex = 0;
+			this.lblMoreThanOneChannel.Text = "For files with more than one audio channel:";
+			this.lblMoreThanOneChannel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
+			// radChannelsTogether
+			// 
+			this.radChannelsTogether.AutoSize = true;
+			this.radChannelsTogether.Checked = true;
+			this.radChannelsTogether.Location = new System.Drawing.Point(6, 24);
+			this.radChannelsTogether.Name = "radChannelsTogether";
+			this.radChannelsTogether.Size = new System.Drawing.Size(148, 17);
+			this.radChannelsTogether.TabIndex = 1;
+			this.radChannelsTogether.TabStop = true;
+			this.radChannelsTogether.Text = "Put all channels in one file";
+			this.radChannelsTogether.UseVisualStyleBackColor = true;
+			// 
+			// radChannelsPairs
+			// 
+			this.radChannelsPairs.AutoSize = true;
+			this.radChannelsPairs.Location = new System.Drawing.Point(6, 47);
+			this.radChannelsPairs.Name = "radChannelsPairs";
+			this.radChannelsPairs.Size = new System.Drawing.Size(209, 17);
+			this.radChannelsPairs.TabIndex = 2;
+			this.radChannelsPairs.Text = "Put each pair of channels in its own file";
+			this.radChannelsPairs.UseVisualStyleBackColor = true;
+			// 
+			// radChannelsSeparate
+			// 
+			this.radChannelsSeparate.AutoSize = true;
+			this.radChannelsSeparate.Location = new System.Drawing.Point(6, 70);
+			this.radChannelsSeparate.Name = "radChannelsSeparate";
+			this.radChannelsSeparate.Size = new System.Drawing.Size(172, 17);
+			this.radChannelsSeparate.TabIndex = 3;
+			this.radChannelsSeparate.Text = "Put each channel in its own file";
+			this.radChannelsSeparate.UseVisualStyleBackColor = true;
 			// 
 			// pnlExportSegments
 			// 
@@ -215,6 +370,27 @@
 			this.pnlExportSegments.Name = "pnlExportSegments";
 			this.pnlExportSegments.Size = new System.Drawing.Size(298, 157);
 			this.pnlExportSegments.TabIndex = 21;
+			// 
+			// comboBox1
+			// 
+			this.comboBox1.DisplayMember = "Name";
+			this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.comboBox1.FormattingEnabled = true;
+			this.comboBox1.Location = new System.Drawing.Point(89, 3);
+			this.comboBox1.Name = "comboBox1";
+			this.comboBox1.Size = new System.Drawing.Size(121, 21);
+			this.comboBox1.TabIndex = 1;
+			this.comboBox1.ValueMember = "Value";
+			// 
+			// lblOutputFormat
+			// 
+			this.lblOutputFormat.Location = new System.Drawing.Point(3, 3);
+			this.lblOutputFormat.Margin = new System.Windows.Forms.Padding(3);
+			this.lblOutputFormat.Name = "lblOutputFormat";
+			this.lblOutputFormat.Size = new System.Drawing.Size(80, 21);
+			this.lblOutputFormat.TabIndex = 0;
+			this.lblOutputFormat.Text = "Output format:";
+			this.lblOutputFormat.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// chk0End
 			// 
@@ -358,61 +534,6 @@
 			this.numFadeOutTime.Size = new System.Drawing.Size(80, 20);
 			this.numFadeOutTime.TabIndex = 7;
 			// 
-			// pnlExportChannels
-			// 
-			this.pnlExportChannels.AutoSize = true;
-			this.pnlExportChannels.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.pnlExportChannels.Controls.Add(this.lblMoreThanOneChannel);
-			this.pnlExportChannels.Controls.Add(this.radChannelsTogether);
-			this.pnlExportChannels.Controls.Add(this.radChannelsPairs);
-			this.pnlExportChannels.Controls.Add(this.radChannelsSeparate);
-			this.pnlExportChannels.Location = new System.Drawing.Point(0, 113);
-			this.pnlExportChannels.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
-			this.pnlExportChannels.Name = "pnlExportChannels";
-			this.pnlExportChannels.Size = new System.Drawing.Size(230, 90);
-			this.pnlExportChannels.TabIndex = 22;
-			// 
-			// lblMoreThanOneChannel
-			// 
-			this.lblMoreThanOneChannel.Location = new System.Drawing.Point(3, 0);
-			this.lblMoreThanOneChannel.Name = "lblMoreThanOneChannel";
-			this.lblMoreThanOneChannel.Size = new System.Drawing.Size(224, 21);
-			this.lblMoreThanOneChannel.TabIndex = 0;
-			this.lblMoreThanOneChannel.Text = "For files with more than one audio channel:";
-			this.lblMoreThanOneChannel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			// 
-			// radChannelsTogether
-			// 
-			this.radChannelsTogether.AutoSize = true;
-			this.radChannelsTogether.Checked = true;
-			this.radChannelsTogether.Location = new System.Drawing.Point(6, 24);
-			this.radChannelsTogether.Name = "radChannelsTogether";
-			this.radChannelsTogether.Size = new System.Drawing.Size(148, 17);
-			this.radChannelsTogether.TabIndex = 1;
-			this.radChannelsTogether.TabStop = true;
-			this.radChannelsTogether.Text = "Put all channels in one file";
-			this.radChannelsTogether.UseVisualStyleBackColor = true;
-			// 
-			// radChannelsPairs
-			// 
-			this.radChannelsPairs.AutoSize = true;
-			this.radChannelsPairs.Location = new System.Drawing.Point(6, 47);
-			this.radChannelsPairs.Name = "radChannelsPairs";
-			this.radChannelsPairs.Size = new System.Drawing.Size(209, 17);
-			this.radChannelsPairs.TabIndex = 2;
-			this.radChannelsPairs.Text = "Put each pair of channels in its own file";
-			this.radChannelsPairs.UseVisualStyleBackColor = true;
-			// 
-			// radChannelsSeparate
-			// 
-			this.radChannelsSeparate.AutoSize = true;
-			this.radChannelsSeparate.Location = new System.Drawing.Point(6, 70);
-			this.radChannelsSeparate.Name = "radChannelsSeparate";
-			this.radChannelsSeparate.Size = new System.Drawing.Size(172, 17);
-			this.radChannelsSeparate.TabIndex = 3;
-			this.radChannelsSeparate.Text = "Put each channel in its own file";
-			this.radChannelsSeparate.UseVisualStyleBackColor = true;
-			// 
 			// panel1
 			// 
 			this.panel1.AutoSize = true;
@@ -447,120 +568,37 @@
 			this.btnOkay.Text = "OK";
 			this.btnOkay.UseVisualStyleBackColor = true;
 			// 
-			// panel2
+			// txtOutputDir
 			// 
-			this.panel2.AutoSize = true;
-			this.panel2.Controls.Add(this.numAmplifyRatio);
-			this.panel2.Controls.Add(this.chkAmplifyRatio);
-			this.panel2.Controls.Add(this.numAmplifydB);
-			this.panel2.Controls.Add(this.chkAmplifydB);
-			this.panel2.Controls.Add(this.numMaxSampleRate);
-			this.panel2.Controls.Add(this.chkMaxSampleRate);
-			this.panel2.Controls.Add(this.chkMono);
-			this.panel2.Location = new System.Drawing.Point(0, 3);
-			this.panel2.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
-			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(227, 104);
-			this.panel2.TabIndex = 23;
+			this.txtOutputDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtOutputDir.Location = new System.Drawing.Point(99, 138);
+			this.txtOutputDir.Name = "txtOutputDir";
+			this.txtOutputDir.Size = new System.Drawing.Size(314, 20);
+			this.txtOutputDir.TabIndex = 5;
+			this.txtOutputDir.Text = "./output";
 			// 
-			// chkMono
+			// lblOutputDir
 			// 
-			this.chkMono.Location = new System.Drawing.Point(3, 3);
-			this.chkMono.Name = "chkMono";
-			this.chkMono.Size = new System.Drawing.Size(221, 20);
-			this.chkMono.TabIndex = 0;
-			this.chkMono.Text = "Convert to mono";
-			this.chkMono.UseVisualStyleBackColor = true;
+			this.lblOutputDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.lblOutputDir.Location = new System.Drawing.Point(3, 138);
+			this.lblOutputDir.Margin = new System.Windows.Forms.Padding(3);
+			this.lblOutputDir.Name = "lblOutputDir";
+			this.lblOutputDir.Size = new System.Drawing.Size(90, 20);
+			this.lblOutputDir.TabIndex = 4;
+			this.lblOutputDir.Text = "Output directory:";
+			this.lblOutputDir.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
-			// chkMaxSampleRate
+			// btnBrowse
 			// 
-			this.chkMaxSampleRate.Location = new System.Drawing.Point(3, 29);
-			this.chkMaxSampleRate.Name = "chkMaxSampleRate";
-			this.chkMaxSampleRate.Size = new System.Drawing.Size(149, 20);
-			this.chkMaxSampleRate.TabIndex = 1;
-			this.chkMaxSampleRate.Text = "New sample rate (Hz):";
-			this.chkMaxSampleRate.UseVisualStyleBackColor = true;
-			this.chkMaxSampleRate.CheckedChanged += new System.EventHandler(this.chkMaxSampleRate_CheckedChanged);
-			// 
-			// numMaxSampleRate
-			// 
-			this.numMaxSampleRate.Enabled = false;
-			this.numMaxSampleRate.Increment = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-			this.numMaxSampleRate.Location = new System.Drawing.Point(158, 29);
-			this.numMaxSampleRate.Maximum = new decimal(new int[] {
-            48000,
-            0,
-            0,
-            0});
-			this.numMaxSampleRate.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-			this.numMaxSampleRate.Name = "numMaxSampleRate";
-			this.numMaxSampleRate.Size = new System.Drawing.Size(66, 20);
-			this.numMaxSampleRate.TabIndex = 2;
-			this.numMaxSampleRate.Value = new decimal(new int[] {
-            32000,
-            0,
-            0,
-            0});
-			// 
-			// numAmplifydB
-			// 
-			this.numAmplifydB.Enabled = false;
-			this.numAmplifydB.Location = new System.Drawing.Point(158, 55);
-			this.numAmplifydB.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
-			this.numAmplifydB.Name = "numAmplifydB";
-			this.numAmplifydB.Size = new System.Drawing.Size(66, 20);
-			this.numAmplifydB.TabIndex = 4;
-			// 
-			// chkAmplifydB
-			// 
-			this.chkAmplifydB.Location = new System.Drawing.Point(3, 55);
-			this.chkAmplifydB.Name = "chkAmplifydB";
-			this.chkAmplifydB.Size = new System.Drawing.Size(149, 20);
-			this.chkAmplifydB.TabIndex = 3;
-			this.chkAmplifydB.Text = "Amplify (dB):";
-			this.chkAmplifydB.UseVisualStyleBackColor = true;
-			this.chkAmplifydB.CheckedChanged += new System.EventHandler(this.chkAmplifydB_CheckedChanged);
-			// 
-			// numAmplifyRatio
-			// 
-			this.numAmplifyRatio.DecimalPlaces = 3;
-			this.numAmplifyRatio.Enabled = false;
-			this.numAmplifyRatio.Increment = new decimal(new int[] {
-            25,
-            0,
-            0,
-            131072});
-			this.numAmplifyRatio.Location = new System.Drawing.Point(158, 81);
-			this.numAmplifyRatio.Name = "numAmplifyRatio";
-			this.numAmplifyRatio.Size = new System.Drawing.Size(66, 20);
-			this.numAmplifyRatio.TabIndex = 6;
-			this.numAmplifyRatio.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-			// 
-			// chkAmplifyRatio
-			// 
-			this.chkAmplifyRatio.Location = new System.Drawing.Point(3, 81);
-			this.chkAmplifyRatio.Name = "chkAmplifyRatio";
-			this.chkAmplifyRatio.Size = new System.Drawing.Size(149, 20);
-			this.chkAmplifyRatio.TabIndex = 5;
-			this.chkAmplifyRatio.Text = "Amplify (amplitude ratio):";
-			this.chkAmplifyRatio.UseVisualStyleBackColor = true;
-			this.chkAmplifyRatio.CheckedChanged += new System.EventHandler(this.chkAmplifyRatio_CheckedChanged);
+			this.btnBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnBrowse.Location = new System.Drawing.Point(419, 138);
+			this.btnBrowse.Name = "btnBrowse";
+			this.btnBrowse.Size = new System.Drawing.Size(32, 20);
+			this.btnBrowse.TabIndex = 6;
+			this.btnBrowse.Text = "...";
+			this.btnBrowse.UseVisualStyleBackColor = true;
+			this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
 			// 
 			// OptionsForm
 			// 
@@ -581,17 +619,17 @@
 			this.flowLayoutPanel1.ResumeLayout(false);
 			this.flowLayoutPanel2.ResumeLayout(false);
 			this.flowLayoutPanel2.PerformLayout();
+			this.panel2.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.numAmplifyRatio)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.numAmplifydB)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.numMaxSampleRate)).EndInit();
+			this.pnlExportChannels.ResumeLayout(false);
+			this.pnlExportChannels.PerformLayout();
 			this.pnlExportSegments.ResumeLayout(false);
 			this.pnlExportSegments.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numNumberLoops)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numFadeOutTime)).EndInit();
-			this.pnlExportChannels.ResumeLayout(false);
-			this.pnlExportChannels.PerformLayout();
 			this.panel1.ResumeLayout(false);
-			this.panel2.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.numMaxSampleRate)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.numAmplifydB)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.numAmplifyRatio)).EndInit();
 			this.ResumeLayout(false);
 
         }
@@ -637,5 +675,8 @@
 		private System.Windows.Forms.NumericUpDown numMaxSampleRate;
 		private System.Windows.Forms.NumericUpDown numAmplifyRatio;
 		private System.Windows.Forms.CheckBox chkAmplifyRatio;
+		private System.Windows.Forms.TextBox txtOutputDir;
+		private System.Windows.Forms.Label lblOutputDir;
+		private System.Windows.Forms.Button btnBrowse;
     }
 }

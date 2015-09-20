@@ -37,6 +37,7 @@ namespace LoopingAudioConverter {
 			}
 			return new Options {
 				InputFiles = filenames,
+				OutputDir = txtOutputDir.Text,
 				MaxChannels = chkMono.Checked ? 1 : (int?)null,
 				MaxSampleRate = chkMaxSampleRate.Checked ? (int)numMaxSampleRate.Value : (int?)null,
 				AmplifydB = chkAmplifydB.Checked ? numAmplifydB.Value : (decimal?)null,
@@ -114,6 +115,15 @@ namespace LoopingAudioConverter {
 
 		private void chkAmplifyRatio_CheckedChanged(object sender, EventArgs e) {
 			numAmplifyRatio.Enabled = chkAmplifyRatio.Checked;
+		}
+
+		private void btnBrowse_Click(object sender, EventArgs e) {
+			using (FolderBrowserDialog d = new FolderBrowserDialog()) {
+				d.SelectedPath = txtOutputDir.Text;
+				if (d.ShowDialog() == DialogResult.OK) {
+					txtOutputDir.Text = d.SelectedPath;
+				}
+			}
 		}
 	}
 }
