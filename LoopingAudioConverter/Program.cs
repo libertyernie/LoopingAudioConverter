@@ -113,23 +113,26 @@ namespace LoopingAudioConverter {
 					amplitude: o.AmplifyRatio ?? 1M);
 				window.SetDecodingText("");
 
-				Dictionary<LWAV, string> wavsToExport = new Dictionary<LWAV, string>(3);
+                List<NamedLWAV> wavsToExport = new List<NamedLWAV>();
 
-				if (o.ExportWholeSong) wavsToExport.Add(w.PlayLoopAndFade(o.NumberOfLoops, o.FadeOutSec), filename_no_ext + o.WholeSongSuffix);
-				if (o.ExportPreLoop) wavsToExport.Add(w.GetPreLoopSegment(), filename_no_ext + o.PreLoopSuffix);
-				if (o.ExportLoop) wavsToExport.Add(w.GetLoopSegment(), filename_no_ext + o.LoopSuffix);
+                if (o.ExportWholeSong) wavsToExport.Add(new NamedLWAV(w.PlayLoopAndFade(o.NumberOfLoops, o.FadeOutSec), filename_no_ext + o.WholeSongSuffix));
+				if (o.ExportPreLoop) wavsToExport.Add(new NamedLWAV(w.GetPreLoopSegment(), filename_no_ext + o.PreLoopSuffix));
+				if (o.ExportLoop) wavsToExport.Add(new NamedLWAV(w.GetLoopSegment(), filename_no_ext + o.LoopSuffix));
+
+                if (o.ChannelSplit == ChannelSplit.Pairs) wavsToExport = wavsToExport.SelectMany(x => x.SplitMultiChannelToStereo()).ToList();
+                if (o.ChannelSplit == ChannelSplit.Each) wavsToExport = wavsToExport.SelectMany(x => x.SplitMultiChannelToMono()).ToList();
 
 				sem.Release();
 
-				foreach (KeyValuePair<LWAV, string> toExport in wavsToExport) {
+				foreach (NamedLWAV toExport in wavsToExport) {
 					sem.WaitOne();
-					MultipleProgressRow row = window.AddEncodingRow(toExport.Value);
+					MultipleProgressRow row = window.AddEncodingRow(toExport.Name);
 					if (processors == 1) {
-						exporter.WriteFile(toExport.Key, o.OutputDir, toExport.Value, row);
+						exporter.WriteFile(toExport.LWAV, o.OutputDir, toExport.Name, row);
 						sem.Release();
 						row.Remove();
 					} else {
-						Task task = exporter.WriteFileAsync(toExport.Key, o.OutputDir, toExport.Value, row);
+						Task task = exporter.WriteFileAsync(toExport.LWAV, o.OutputDir, toExport.Name, row);
 						task.ContinueWith(t => {
 							sem.Release();
 							row.Remove();

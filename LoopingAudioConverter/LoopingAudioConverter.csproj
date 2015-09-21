@@ -72,6 +72,7 @@
     <Compile Include="MultipleProgressWindow.Designer.cs">
       <DependentUpon>MultipleProgressWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="NamedLWAV.cs" />
     <Compile Include="OggVorbisExporter.cs" />
     <Compile Include="OptionsForm.cs">
       <SubType>Form</SubType>

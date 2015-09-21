@@ -22,7 +22,7 @@ namespace LoopingAudioConverter {
 			InitializeComponent();
 			comboBox1.DataSource = new List<NVPair>() {
 				new NVPair(ExporterType.BRSTM, "BRSTM"),
-				new NVPair(ExporterType.WAV, "WAV / Looping WAV"),
+				new NVPair(ExporterType.WAV, "WAV (+smpl)"),
 				new NVPair(ExporterType.FLAC, "FLAC"),
 				new NVPair(ExporterType.MP3, "MP3"),
 				new NVPair(ExporterType.OggVorbis, "Ogg Vorbis")
@@ -42,6 +42,9 @@ namespace LoopingAudioConverter {
 				MaxSampleRate = chkMaxSampleRate.Checked ? (int)numMaxSampleRate.Value : (int?)null,
 				AmplifydB = chkAmplifydB.Checked ? numAmplifydB.Value : (decimal?)null,
 				AmplifyRatio = chkAmplifyRatio.Checked ? numAmplifyRatio.Value : (decimal?)null,
+                ChannelSplit = radChannelsPairs.Checked ? ChannelSplit.Pairs
+                    : radChannelsSeparate.Checked ? ChannelSplit.Each
+                    : ChannelSplit.OneFile,
 				ExporterType = (ExporterType)comboBox1.SelectedValue,
 				ExportWholeSong = chk0End.Checked,
 				WholeSongSuffix = txt0EndFilenamePattern.Text,
