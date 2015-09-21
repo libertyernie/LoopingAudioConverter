@@ -70,6 +70,9 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOkay = new System.Windows.Forms.Button();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.lblSimulTasks = new System.Windows.Forms.Label();
+            this.numSimulTasks = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -85,6 +88,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numNumberLoops)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numFadeOutTime)).BeginInit();
             this.panel1.SuspendLayout();
+            this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numSimulTasks)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -199,6 +204,7 @@
             this.flowLayoutPanel2.Controls.Add(this.panel2);
             this.flowLayoutPanel2.Controls.Add(this.pnlExportChannels);
             this.flowLayoutPanel2.Controls.Add(this.pnlExportSegments);
+            this.flowLayoutPanel2.Controls.Add(this.panel3);
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 0);
@@ -600,6 +606,48 @@
             this.btnOkay.Text = "OK";
             this.btnOkay.UseVisualStyleBackColor = true;
             // 
+            // panel3
+            // 
+            this.panel3.AutoSize = true;
+            this.panel3.Controls.Add(this.numSimulTasks);
+            this.panel3.Controls.Add(this.lblSimulTasks);
+            this.panel3.Location = new System.Drawing.Point(230, 166);
+            this.panel3.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(198, 28);
+            this.panel3.TabIndex = 24;
+            // 
+            // lblSimulTasks
+            // 
+            this.lblSimulTasks.Location = new System.Drawing.Point(3, 0);
+            this.lblSimulTasks.Name = "lblSimulTasks";
+            this.lblSimulTasks.Size = new System.Drawing.Size(133, 28);
+            this.lblSimulTasks.TabIndex = 0;
+            this.lblSimulTasks.Text = "Number of simultaneous encoding/decoding tasks:";
+            this.lblSimulTasks.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // numSimulTasks
+            // 
+            this.numSimulTasks.Location = new System.Drawing.Point(142, 4);
+            this.numSimulTasks.Maximum = new decimal(new int[] {
+            128,
+            0,
+            0,
+            0});
+            this.numSimulTasks.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numSimulTasks.Name = "numSimulTasks";
+            this.numSimulTasks.Size = new System.Drawing.Size(53, 20);
+            this.numSimulTasks.TabIndex = 5;
+            this.numSimulTasks.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
             // OptionsForm
             // 
             this.AcceptButton = this.btnOkay;
@@ -630,6 +678,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numNumberLoops)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numFadeOutTime)).EndInit();
             this.panel1.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numSimulTasks)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -678,5 +728,8 @@
 		private System.Windows.Forms.TextBox txtOutputDir;
 		private System.Windows.Forms.Label lblOutputDir;
 		private System.Windows.Forms.Button btnBrowse;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.NumericUpDown numSimulTasks;
+        private System.Windows.Forms.Label lblSimulTasks;
     }
 }

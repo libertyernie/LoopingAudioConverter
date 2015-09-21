@@ -28,6 +28,7 @@ namespace LoopingAudioConverter {
 				new NVPair(ExporterType.OggVorbis, "Ogg Vorbis")
 			};
 			if (comboBox1.SelectedIndex < 0) comboBox1.SelectedIndex = 0;
+            numSimulTasks.Value = Math.Min(Environment.ProcessorCount, numSimulTasks.Maximum);
 		}
 
 		public Options GetOptions() {
@@ -53,7 +54,8 @@ namespace LoopingAudioConverter {
 				ExportPreLoop = chk0Start.Checked,
 				PreLoopSuffix = txt0StartFilenamePattern.Text,
 				ExportLoop = chkStartEnd.Checked,
-				LoopSuffix = txtStartEndFilenamePattern.Text
+				LoopSuffix = txtStartEndFilenamePattern.Text,
+                NumSimulTasks = (int)numSimulTasks.Value
 			};
 		}
 

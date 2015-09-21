@@ -1,6 +1,7 @@
 ﻿using LoopingAudioConverter.Brawl;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -12,7 +13,24 @@ namespace LoopingAudioConverter {
     class Program {
 		[STAThread]
         static void Main(string[] args) {
-			Application.EnableVisualStyles();
+            Application.EnableVisualStyles();
+
+            bool appsettingserror = false;
+            foreach (string s in new string[] { "sox_path", "madplay_path", "vgmstream_path", "lame_path" }) {
+                string v = ConfigurationManager.AppSettings[s];
+                if (string.IsNullOrEmpty(v)) {
+                    appsettingserror = true;
+                    Console.Error.WriteLine("The configuration setting " + s + " is missing.");
+                } else if (!File.Exists(ConfigurationManager.AppSettings[s])) {
+                    appsettingserror = true;
+                    Console.Error.WriteLine("Could not find " + s + ": " + v);
+                }
+            }
+            if (appsettingserror) {
+                MessageBox.Show("One or more errors occurred. See the console for details.");
+                return;
+            }
+
 			OptionsForm f = new OptionsForm();
 			if (f.ShowDialog() != DialogResult.OK) {
 				return;
@@ -27,14 +45,12 @@ namespace LoopingAudioConverter {
 				}
 			}
 
-			int processors = Environment.ProcessorCount;
-
-            SoX sox = new SoX(@"..\..\tools\sox\sox.exe");
+            SoX sox = new SoX(ConfigurationManager.AppSettings["sox_path"]);
 
 			IAudioImporter[] importers = {
 				new LWAVImporter(),
-				new MP3Importer("..\\..\\tools\\madplay\\madplay.exe"),
-				new VGMStreamImporter("..\\..\\tools\\vgmstream\\test.exe"),
+				new MP3Importer(ConfigurationManager.AppSettings["madplay_path"]),
+				new VGMStreamImporter(ConfigurationManager.AppSettings["vgmstream_path"]),
                 sox
 			};
 
@@ -47,7 +63,7 @@ namespace LoopingAudioConverter {
 					exporter = new FLACExporter(sox);
 					break;
 				case ExporterType.MP3:
-					exporter = new MP3Exporter(@"..\..\tools\lame\lame.exe");
+                    exporter = new MP3Exporter(@"..\..\tools\lame\lame.exe");
 					break;
 				case ExporterType.OggVorbis:
 					exporter = new OggVorbisExporter(sox);
@@ -60,7 +76,7 @@ namespace LoopingAudioConverter {
 			}
 
 			List<Task> tasks = new List<Task>();
-			Semaphore sem = new Semaphore(processors, processors);
+            Semaphore sem = new Semaphore(o.NumSimulTasks, o.NumSimulTasks);
 
 			MultipleProgressWindow window = new MultipleProgressWindow();
 			new Thread(new ThreadStart(() => {
@@ -68,8 +84,6 @@ namespace LoopingAudioConverter {
 				window.ShowDialog();
 			})).Start();
 
-			Stopwatch s = new Stopwatch();
-			s.Start();
 			if (!o.InputFiles.Any()) {
 				MessageBox.Show("No input files were selected.");
 			}
@@ -127,7 +141,7 @@ namespace LoopingAudioConverter {
 				foreach (NamedLWAV toExport in wavsToExport) {
 					sem.WaitOne();
 					MultipleProgressRow row = window.AddEncodingRow(toExport.Name);
-					if (processors == 1) {
+                    if (o.NumSimulTasks == 1) {
 						exporter.WriteFile(toExport.LWAV, o.OutputDir, toExport.Name, row);
 						sem.Release();
 						row.Remove();
@@ -142,11 +156,11 @@ namespace LoopingAudioConverter {
 				}
 			}
 			Task.WaitAll(tasks.ToArray());
-			s.Stop();
+			
 			if (window.Visible) window.BeginInvoke(new Action(() => {
 				window.Close();
 			}));
-			Console.WriteLine(s.Elapsed);
+			
 			if (tasks.Any(t => t.IsFaulted)) {
 				throw new AggregateException(tasks.Where(t => t.IsFaulted).Select(t => t.Exception));
 			}

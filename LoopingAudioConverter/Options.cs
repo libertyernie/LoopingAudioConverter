@@ -35,5 +35,6 @@ namespace LoopingAudioConverter {
 		public string PreLoopSuffix { get; set; }
 		public bool ExportLoop { get; set; }
 		public string LoopSuffix { get; set; }
+        public int NumSimulTasks { get; set; }
 	}
 }
