@@ -10,32 +10,37 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace LoopingAudioConverter {
-    class Program {
+	class Program {
 		[STAThread]
-        static void Main(string[] args) {
-            Application.EnableVisualStyles();
+		static void Main(string[] args) {
+			Application.EnableVisualStyles();
 
-            bool appsettingserror = false;
-            foreach (string s in new string[] { "sox_path", "madplay_path", "vgmstream_path", "lame_path" }) {
-                string v = ConfigurationManager.AppSettings[s];
-                if (string.IsNullOrEmpty(v)) {
-                    appsettingserror = true;
-                    Console.Error.WriteLine("The configuration setting " + s + " is missing.");
-                } else if (!File.Exists(ConfigurationManager.AppSettings[s])) {
-                    appsettingserror = true;
-                    Console.Error.WriteLine("Could not find " + s + ": " + v);
-                }
-            }
-            if (appsettingserror) {
-                MessageBox.Show("One or more errors occurred. See the console for details.");
-                return;
-            }
+			bool appsettingserror = false;
+			foreach (string s in new string[] { "sox_path", "madplay_path", "vgmstream_path", "lame_path" }) {
+				string v = ConfigurationManager.AppSettings[s];
+				if (string.IsNullOrEmpty(v)) {
+					appsettingserror = true;
+					Console.Error.WriteLine("The configuration setting " + s + " is missing.");
+				} else if (!File.Exists(ConfigurationManager.AppSettings[s])) {
+					appsettingserror = true;
+					Console.Error.WriteLine("Could not find " + s + ": " + v);
+				}
+			}
+			if (appsettingserror) {
+				MessageBox.Show("One or more errors occurred. See the console for details.");
+				return;
+			}
 
 			OptionsForm f = new OptionsForm();
 			if (f.ShowDialog() != DialogResult.OK) {
 				return;
 			}
 			Options o = f.GetOptions();
+
+			if (o.ExporterType == ExporterType.MP3 && (o.ExportPreLoop || o.ExportLoop)) {
+				MessageBox.Show("MP3 encoding adds gaps at the start and end of each file, so the before-loop portion and the loop portion will not line up well.",
+					"Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+			}
 
 			if (!Directory.Exists(o.OutputDir)) {
 				try {
@@ -45,13 +50,13 @@ namespace LoopingAudioConverter {
 				}
 			}
 
-            SoX sox = new SoX(ConfigurationManager.AppSettings["sox_path"]);
+			SoX sox = new SoX(ConfigurationManager.AppSettings["sox_path"]);
 
 			IAudioImporter[] importers = {
 				new LWAVImporter(),
 				new MP3Importer(ConfigurationManager.AppSettings["madplay_path"]),
 				new VGMStreamImporter(ConfigurationManager.AppSettings["vgmstream_path"]),
-                sox
+				sox
 			};
 
 			IAudioExporter exporter;
@@ -63,7 +68,7 @@ namespace LoopingAudioConverter {
 					exporter = new FLACExporter(sox);
 					break;
 				case ExporterType.MP3:
-                    exporter = new MP3Exporter(@"..\..\tools\lame\lame.exe");
+					exporter = new MP3Exporter(@"..\..\tools\lame\lame.exe");
 					break;
 				case ExporterType.OggVorbis:
 					exporter = new OggVorbisExporter(sox);
@@ -76,7 +81,7 @@ namespace LoopingAudioConverter {
 			}
 
 			List<Task> tasks = new List<Task>();
-            Semaphore sem = new Semaphore(o.NumSimulTasks, o.NumSimulTasks);
+			Semaphore sem = new Semaphore(o.NumSimulTasks, o.NumSimulTasks);
 
 			MultipleProgressWindow window = new MultipleProgressWindow();
 			new Thread(new ThreadStart(() => {
@@ -127,21 +132,21 @@ namespace LoopingAudioConverter {
 					amplitude: o.AmplifyRatio ?? 1M);
 				window.SetDecodingText("");
 
-                List<NamedLWAV> wavsToExport = new List<NamedLWAV>();
+				List<NamedLWAV> wavsToExport = new List<NamedLWAV>();
 
-                if (o.ExportWholeSong) wavsToExport.Add(new NamedLWAV(w.PlayLoopAndFade(o.NumberOfLoops, o.FadeOutSec), filename_no_ext + o.WholeSongSuffix));
+				if (o.ExportWholeSong) wavsToExport.Add(new NamedLWAV(w.PlayLoopAndFade(o.NumberOfLoops, o.FadeOutSec), filename_no_ext + o.WholeSongSuffix));
 				if (o.ExportPreLoop) wavsToExport.Add(new NamedLWAV(w.GetPreLoopSegment(), filename_no_ext + o.PreLoopSuffix));
 				if (o.ExportLoop) wavsToExport.Add(new NamedLWAV(w.GetLoopSegment(), filename_no_ext + o.LoopSuffix));
 
-                if (o.ChannelSplit == ChannelSplit.Pairs) wavsToExport = wavsToExport.SelectMany(x => x.SplitMultiChannelToStereo()).ToList();
-                if (o.ChannelSplit == ChannelSplit.Each) wavsToExport = wavsToExport.SelectMany(x => x.SplitMultiChannelToMono()).ToList();
+				if (o.ChannelSplit == ChannelSplit.Pairs) wavsToExport = wavsToExport.SelectMany(x => x.SplitMultiChannelToStereo()).ToList();
+				if (o.ChannelSplit == ChannelSplit.Each) wavsToExport = wavsToExport.SelectMany(x => x.SplitMultiChannelToMono()).ToList();
 
 				sem.Release();
 
 				foreach (NamedLWAV toExport in wavsToExport) {
 					sem.WaitOne();
 					MultipleProgressRow row = window.AddEncodingRow(toExport.Name);
-                    if (o.NumSimulTasks == 1) {
+					if (o.NumSimulTasks == 1) {
 						exporter.WriteFile(toExport.LWAV, o.OutputDir, toExport.Name, row);
 						sem.Release();
 						row.Remove();
@@ -164,6 +169,6 @@ namespace LoopingAudioConverter {
 			if (tasks.Any(t => t.IsFaulted)) {
 				throw new AggregateException(tasks.Where(t => t.IsFaulted).Select(t => t.Exception));
 			}
-        }
-    }
+		}
+	}
 }

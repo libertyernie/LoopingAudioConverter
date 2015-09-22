@@ -11,7 +11,7 @@ namespace LoopingAudioConverter {
 	/// Represents 16-bit uncompressed PCM data with an arbitary number of channels and an optional loop sequence.
 	/// The total sample length of this data is immutable, but the data itself and other properties can be modified.
 	/// </summary>
-    public class LWAV {
+	public class LWAV {
 		public short Channels { get; private set; }
 		public int SampleRate { get; private set; }
 		public short[] Samples { get; private set; }
@@ -20,11 +20,11 @@ namespace LoopingAudioConverter {
 		public int LoopStart { get; set; }
 		public int LoopEnd { get; set; }
 
-        /// <summary>
-        /// Creates a WAV with the given metadata and length.
-        /// </summary>
-        /// <param name="channels">Number of channels</param>
-        /// <param name="sampleRate">Sample rate</param>
+		/// <summary>
+		/// Creates a WAV with the given metadata and length.
+		/// </summary>
+		/// <param name="channels">Number of channels</param>
+		/// <param name="sampleRate">Sample rate</param>
 		/// <param name="sample_data">Audio data (array will not be modified)</param>
 		/// <param name="loop_start">Start of loop, in samples (or null for no loop)</param>
 		/// <param name="loop_end">End of loop, in samples (or null for end of file); ignored if loop_start is null</param>
@@ -49,7 +49,7 @@ namespace LoopingAudioConverter {
 		/// </summary>
 		/// <returns>A new LWAV object</returns>
 		public LWAV GetPreLoopSegment() {
-			short[] data = new short[this.LoopStart];
+			short[] data = new short[Channels * LoopStart];
 			Array.Copy(Samples, 0, data, 0, data.Length);
 			return new LWAV(Channels, SampleRate, data);
 		}
@@ -59,9 +59,9 @@ namespace LoopingAudioConverter {
 		/// </summary>
 		/// <returns>A new LWAV object</returns>
 		public LWAV GetLoopSegment() {
-			short[] data = new short[this.LoopEnd - this.LoopStart];
-			Array.Copy(Samples, this.LoopStart, data, 0, data.Length);
-			return new LWAV(Channels, SampleRate, data, 0, data.Length);
+			short[] data = new short[Channels * (LoopEnd - LoopStart)];
+			Array.Copy(Samples, Channels * LoopStart, data, 0, data.Length);
+			return new LWAV(Channels, SampleRate, data, 0);
 		}
 
 		/// <summary>
@@ -99,9 +99,9 @@ namespace LoopingAudioConverter {
 			return new LWAV(this.Channels, this.SampleRate, data, this.LoopStart, this.LoopEnd);
 		}
 
-        public override string ToString() {
-            return SampleRate + "Hz " + Channels + " channels: " + Samples.Length + " (" + TimeSpan.FromSeconds(Samples.Length / (SampleRate * Channels)) + ")"
-                + (Looping ? (" loop " + LoopStart + "-" + LoopEnd) : "");
-        }
+		public override string ToString() {
+			return SampleRate + "Hz " + Channels + " channels: " + Samples.Length + " (" + TimeSpan.FromSeconds(Samples.Length / (SampleRate * Channels)) + ")"
+				+ (Looping ? (" loop " + LoopStart + "-" + LoopEnd) : "");
+		}
 	}
 }
