@@ -27,8 +27,7 @@ namespace LoopingAudioConverter {
 				}
 			}
 			if (appsettingserror) {
-				MessageBox.Show("One or more errors occurred. See the console for details.");
-				return;
+				MessageBox.Show("One or more programs could not be found; the program may not run properly. See the console for details.");
 			}
 
 			OptionsForm f = new OptionsForm();
