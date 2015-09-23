@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -129,6 +130,10 @@ namespace LoopingAudioConverter {
 					txtOutputDir.Text = d.SelectedPath;
 				}
 			}
+		}
+
+		private void btnHelp_Click(object sender, EventArgs e) {
+			Process.Start("About.html");
 		}
 	}
 }
