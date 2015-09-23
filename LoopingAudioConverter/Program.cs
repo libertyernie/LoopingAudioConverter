@@ -91,10 +91,12 @@ namespace LoopingAudioConverter {
 			if (!o.InputFiles.Any()) {
 				MessageBox.Show("No input files were selected.");
 			}
+
+			List<string> exported = new List<string>();
 			foreach (string inputFile in o.InputFiles) {
 				sem.WaitOne();
 				if (tasks.Any(t => t.IsFaulted)) break;
-				if (window.DialogResult == DialogResult.Cancel) break;
+				if (window.Canceled) break;
 
 				string filename_no_ext = Path.GetFileNameWithoutExtension(inputFile);
 				window.SetDecodingText(filename_no_ext);
@@ -120,7 +122,13 @@ namespace LoopingAudioConverter {
 				}
 
 				if (w == null) {
-					throw new AggregateException("Could not read " + inputFile, exceptions);
+					window.SetDecodingText("");
+					DialogResult dr = MessageBox.Show("Could not read " + inputFile + ".", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+					if (dr == DialogResult.Cancel) {
+						break;
+					} else {
+						continue;
+					}
 				}
 
 				window.SetDecodingText(filename_no_ext + " (applying effects)");
@@ -147,11 +155,17 @@ namespace LoopingAudioConverter {
 					MultipleProgressRow row = window.AddEncodingRow(toExport.Name);
 					if (o.NumSimulTasks == 1) {
 						exporter.WriteFile(toExport.LWAV, o.OutputDir, toExport.Name, row);
+						lock (exported) {
+							exported.Add(toExport.Name);
+						}
 						sem.Release();
 						row.Remove();
 					} else {
 						Task task = exporter.WriteFileAsync(toExport.LWAV, o.OutputDir, toExport.Name, row);
 						task.ContinueWith(t => {
+							lock (exported) {
+								exported.Add(toExport.Name);
+							}
 							sem.Release();
 							row.Remove();
 						});
@@ -162,12 +176,15 @@ namespace LoopingAudioConverter {
 			Task.WaitAll(tasks.ToArray());
 			
 			if (window.Visible) window.BeginInvoke(new Action(() => {
+				window.AllowClose = true;
 				window.Close();
 			}));
 			
 			if (tasks.Any(t => t.IsFaulted)) {
 				throw new AggregateException(tasks.Where(t => t.IsFaulted).Select(t => t.Exception));
 			}
+
+			MessageBox.Show("Exported " + exported.Count + " file(s).");
 		}
 	}
 }

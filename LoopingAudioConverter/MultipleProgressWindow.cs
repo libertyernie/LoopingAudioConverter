@@ -9,6 +9,9 @@ using System.Windows.Forms;
 
 namespace LoopingAudioConverter {
 	public partial class MultipleProgressWindow : Form {
+		public bool Canceled { get; private set; }
+		public bool AllowClose { get; set; }
+
 		public MultipleProgressWindow() {
 			InitializeComponent();
 		}
@@ -33,6 +36,19 @@ namespace LoopingAudioConverter {
 			row.Dock = DockStyle.Bottom;
 			pnlEncoding.Controls.Add(row);
 			return row;
+		}
+
+		private void btnCancel_Click(object sender, EventArgs e) {
+			Canceled = true;
+			btnCancel.Enabled = false;
+		}
+
+		private void MultipleProgressWindow_FormClosing(object sender, FormClosingEventArgs e) {
+			if (e.CloseReason == CloseReason.UserClosing && !AllowClose) {
+				Canceled = true;
+				btnCancel.Enabled = false;
+				e.Cancel = true;
+			}
 		}
 	}
 }
