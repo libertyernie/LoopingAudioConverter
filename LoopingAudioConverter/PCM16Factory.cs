@@ -7,8 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter {
-	public class LWAVFactoryException : Exception {
-		public LWAVFactoryException(string message) : base(message) { }
+	public class PCM16FactoryException : Exception {
+		public PCM16FactoryException(string message) : base(message) { }
 	}
 
 	/// <summary>
@@ -19,7 +19,7 @@ namespace LoopingAudioConverter {
 	/// This program will read the "fmt ", "data", and (if present) "smpl" chunks; any other chunks in the file will be ignored.
 	/// Output data will use WAVE_FORMAT_PCM and have "fmt " and "data" chunks, along with a "smpl" chunk if it is a looping track.
 	/// </summary>
-	public static class LWAVFactory {
+	public static class PCM16Factory {
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		private struct fmt {
 			public ushort format;
@@ -91,20 +91,20 @@ namespace LoopingAudioConverter {
 		/// </summary>
 		/// <param name="stream">Stream to read from (no data will be written to the stream)</param>
 		/// <returns></returns>
-		public unsafe static LWAV FromStream(Stream stream) {
+		public unsafe static PCM16Audio FromStream(Stream stream) {
 			byte[] buffer = new byte[12];
 			int r = stream.Read(buffer, 0, 12);
 			if (r == 0) {
-				throw new LWAVFactoryException("No data in stream");
+				throw new PCM16FactoryException("No data in stream");
 			} else if (r < 12) {
-				throw new LWAVFactoryException("Unexpected end of stream in first 12 bytes");
+				throw new PCM16FactoryException("Unexpected end of stream in first 12 bytes");
 			}
 			fixed (byte* bptr = buffer) {
 				if (*(int*)bptr != tag("RIFF")) {
-					throw new LWAVFactoryException("RIFF header not found");
+					throw new PCM16FactoryException("RIFF header not found");
 				}
 				if (*(int*)(bptr + 8) != tag("WAVE")) {
-					throw new LWAVFactoryException("WAVE header not found");
+					throw new PCM16FactoryException("WAVE header not found");
 				}
 			}
 
@@ -119,7 +119,7 @@ namespace LoopingAudioConverter {
 			// Keep reading chunk headers into a buffer of 8 bytes
 			while ((r = stream.Read(buffer, 0, 8)) > 0) {
 				if (r < 8) {
-					throw new LWAVFactoryException("Unexpected end of stream in chunk header");
+					throw new PCM16FactoryException("Unexpected end of stream in chunk header");
 				} else {
 					fixed (byte* ptr1 = buffer) {
 						// Four ASCII characters
@@ -145,7 +145,7 @@ namespace LoopingAudioConverter {
 							int total = 0;
 							while (total < buffer2.Length) {
 								total += (r = stream.Read(buffer2, total, buffer2.Length - total));
-								if (r == 0) throw new LWAVFactoryException("Unexpected end of data in \"" + Marshal.PtrToStringAnsi((IntPtr)ptr1, 4) + "\" chunk: expected " + buffer2.Length + " bytes, got " + total + " bytes");
+								if (r == 0) throw new PCM16FactoryException("Unexpected end of data in \"" + Marshal.PtrToStringAnsi((IntPtr)ptr1, 4) + "\" chunk: expected " + buffer2.Length + " bytes, got " + total + " bytes");
 							}
 						}
 
@@ -160,13 +160,13 @@ namespace LoopingAudioConverter {
 										if (ext->subFormat == new Guid("00000001-0000-0010-8000-00aa00389b71")) {
 											// KSDATAFORMAT_SUBTYPE_PCM
 										} else {
-											throw new LWAVFactoryException("Only uncompressed PCM suppported - found WAVEFORMATEXTENSIBLE with subformat " + ext->subFormat);
+											throw new PCM16FactoryException("Only uncompressed PCM suppported - found WAVEFORMATEXTENSIBLE with subformat " + ext->subFormat);
 										}
 									} else {
-										throw new LWAVFactoryException("Only uncompressed PCM suppported - found format " + fmt->format);
+										throw new PCM16FactoryException("Only uncompressed PCM suppported - found format " + fmt->format);
 									}
 								} else if (fmt->bitsPerSample != 16) {
-									throw new LWAVFactoryException("Only 16-bit wave files supported");
+									throw new PCM16FactoryException("Only 16-bit wave files supported");
 								}
 
 								channels = fmt->channels;
@@ -179,12 +179,12 @@ namespace LoopingAudioConverter {
 								// sampler chunk
 								smpl* smpl = (smpl*)ptr2;
 								if (smpl->sampleLoopCount > 1) {
-									throw new LWAVFactoryException("Cannot read looping .wav file with more than one loop");
+									throw new PCM16FactoryException("Cannot read looping .wav file with more than one loop");
 								} else if (smpl->sampleLoopCount == 1) {
 									// There is one loop - we only care about start and end points
 									smpl_loop* loop = (smpl_loop*)(smpl + 1);
 									if (loop->type != 0) {
-										throw new LWAVFactoryException("Cannot read looping .wav file with loop of type " + loop->type);
+										throw new PCM16FactoryException("Cannot read looping .wav file with loop of type " + loop->type);
 									}
 									loopStart = loop->start;
 									loopEnd = loop->end;
@@ -198,13 +198,13 @@ namespace LoopingAudioConverter {
 			}
 
 			if (sampleRate == 0) {
-				throw new LWAVFactoryException("Format chunk not found");
+				throw new PCM16FactoryException("Format chunk not found");
 			}
 			if (sample_data == null) {
-				throw new LWAVFactoryException("Data chunk not found");
+				throw new PCM16FactoryException("Data chunk not found");
 			}
 
-			LWAV wav = new LWAV(channels, sampleRate, sample_data, loopStart, loopEnd);
+			PCM16Audio wav = new PCM16Audio(channels, sampleRate, sample_data, loopStart, loopEnd);
 			return wav;
 		}
 
@@ -214,7 +214,7 @@ namespace LoopingAudioConverter {
 		/// </summary>
 		/// <param name="p"></param>
 		/// <returns></returns>
-		public static LWAV FromByteArray(byte[] p) {
+		public static PCM16Audio FromByteArray(byte[] p) {
 			using (MemoryStream stream = new MemoryStream(p, false)) {
 				return FromStream(stream);
 			}
@@ -227,7 +227,7 @@ namespace LoopingAudioConverter {
 		/// </summary>
 		/// <param name="lwav"></param>
 		/// <returns></returns>
-		public static unsafe byte[] Export(this LWAV lwav) {
+		public static unsafe byte[] Export(this PCM16Audio lwav) {
 			int length = 12 + 8 + sizeof(fmt) + 8 + (lwav.Samples.Length * 2);
 			if (lwav.Looping) {
 				length += 8 + sizeof(smpl) + sizeof(smpl_loop);

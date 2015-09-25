@@ -36,7 +36,7 @@ namespace LoopingAudioConverter {
 		/// </summary>
 		/// <param name="filename">The path of the file to read</param>
 		/// <returns>A non-looping LWAV</returns>
-        public LWAV ReadFile(string filename) {
+        public PCM16Audio ReadFile(string filename) {
             if (!File.Exists(ExePath)) {
                 throw new AudioImporterException("test.exe not found at path: " + ExePath);
             }
@@ -53,7 +53,7 @@ namespace LoopingAudioConverter {
             Process p = Process.Start(psi);
 
             try {
-                return LWAVFactory.FromStream(p.StandardOutput.BaseStream);
+                return PCM16Factory.FromStream(p.StandardOutput.BaseStream);
             } catch (Exception e) {
                 throw new AudioImporterException("Could not read SoX output: " + e.Message);
             }
@@ -69,7 +69,7 @@ namespace LoopingAudioConverter {
 		/// <param name="amplitude">Volume adjustment, in linear ratio (if 1, this effect will not be applied)</param>
 		/// <param name="max_rate">The new sample rate (if the LWAV's sample rate is less than or equal to this value, this effect will not be applied)</param>
 		/// <returns>A new LWAV object if one or more effects are applied; the same LWAV object if no effects are applied.</returns>
-		public LWAV ApplyEffects(LWAV lwav, int max_channels = int.MaxValue, decimal db = 0, decimal amplitude = 1, int max_rate = int.MaxValue) {
+		public PCM16Audio ApplyEffects(PCM16Audio lwav, int max_channels = int.MaxValue, decimal db = 0, decimal amplitude = 1, int max_rate = int.MaxValue) {
 			byte[] wav = lwav.Export();
 
 			int channels = Math.Min(max_channels, lwav.Channels);
@@ -120,7 +120,7 @@ namespace LoopingAudioConverter {
 			}
 
 			try {
-				LWAV l = new LWAV(channels, sampleRate, samples);
+				PCM16Audio l = new PCM16Audio(channels, sampleRate, samples);
 				l.Looping = lwav.Looping;
 				l.LoopStart = lwav.LoopStart;
 				l.LoopEnd = lwav.LoopEnd;
@@ -142,7 +142,7 @@ namespace LoopingAudioConverter {
 		/// </summary>
 		/// <param name="lwav">Input audio</param>
 		/// <param name="output_filename">Path of output file</param>
-		public void WriteFile(LWAV lwav, string output_filename) {
+		public void WriteFile(PCM16Audio lwav, string output_filename) {
 			if (output_filename.Contains('"')) {
 				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
 			}

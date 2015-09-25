@@ -10,7 +10,7 @@ namespace LoopingAudioConverter {
 	/// A wrapper around LWAVFactory that implements the IAudioImporter interface.
 	/// For .wav files, it makes sense to read them directly when possible instead of invoking SoX to convert them. If the file cannot be read, vgmstream (or SoX, if vgmstream fails) should be used to convert the file to a format LWAVFactory will recognize.
 	/// </summary>
-	public class LWAVImporter : IAudioImporter {
+	public class WAVImporter : IAudioImporter {
 		private static string[] EXTENSIONS = new string[] { "wav", "lwav" };
 
 		/// <summary>
@@ -23,10 +23,10 @@ namespace LoopingAudioConverter {
 			return EXTENSIONS.Any(s => s.Equals(extension, StringComparison.InvariantCultureIgnoreCase));
 		}
 
-		public LWAV ReadFile(string filename) {
+		public PCM16Audio ReadFile(string filename) {
 			try {
-				return LWAVFactory.FromByteArray(File.ReadAllBytes(filename));
-			} catch (LWAVFactoryException e) {
+				return PCM16Factory.FromByteArray(File.ReadAllBytes(filename));
+			} catch (PCM16FactoryException e) {
 				throw new AudioImporterException(e.Message, e);
 			}
 		}

@@ -20,7 +20,7 @@ namespace LoopingAudioConverter {
 			return extension.Equals("mp3", StringComparison.InvariantCultureIgnoreCase);
 		}
 
-		public LWAV ReadFile(string filename) {
+		public PCM16Audio ReadFile(string filename) {
 			if (!File.Exists(ExePath)) {
 				throw new AudioImporterException("test.exe not found at path: " + ExePath);
 			}
@@ -39,8 +39,8 @@ namespace LoopingAudioConverter {
 			Process p = Process.Start(psi);
 
 			try {
-				return LWAVFactory.FromStream(p.StandardOutput.BaseStream);
-			} catch (LWAVFactoryException e) {
+				return PCM16Factory.FromStream(p.StandardOutput.BaseStream);
+			} catch (PCM16FactoryException e) {
 				throw new AudioImporterException("Could not read madplay output: " + e.Message);
 			}
 		}

@@ -6,10 +6,10 @@ using System.Runtime.InteropServices;
 using System.Text;
 
 namespace LoopingAudioConverter.Brawl {
-	public class LWAVAudioStream : IAudioStream {
-		private LWAV lwav;
+	public class PCM16AudioStream : IAudioStream {
+		private PCM16Audio lwav;
 
-		public LWAVAudioStream(LWAV lwav) {
+		public PCM16AudioStream(PCM16Audio lwav) {
 			this.lwav = lwav;
 		}
 

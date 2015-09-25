@@ -52,7 +52,7 @@ namespace LoopingAudioConverter {
 			SoX sox = new SoX(ConfigurationManager.AppSettings["sox_path"]);
 
 			IAudioImporter[] importers = {
-				new LWAVImporter(),
+				new WAVImporter(),
 				new MP3Importer(ConfigurationManager.AppSettings["madplay_path"]),
 				new VGMStreamImporter(ConfigurationManager.AppSettings["vgmstream_path"]),
 				sox
@@ -73,7 +73,7 @@ namespace LoopingAudioConverter {
 					exporter = new OggVorbisExporter(sox);
 					break;
 				case ExporterType.WAV:
-					exporter = new LWAVExporter();
+					exporter = new WAVExporter();
 					break;
 				default:
 					throw new Exception("Could not create exporter type " + o.ExporterType);
@@ -101,7 +101,7 @@ namespace LoopingAudioConverter {
 				string filename_no_ext = Path.GetFileNameWithoutExtension(inputFile);
 				window.SetDecodingText(filename_no_ext);
 
-				LWAV w = null;
+				PCM16Audio w = null;
 				string extension = Path.GetExtension(inputFile);
 				List<AudioImporterException> exceptions = new List<AudioImporterException>();
 
@@ -139,18 +139,18 @@ namespace LoopingAudioConverter {
 					amplitude: o.AmplifyRatio ?? 1M);
 				window.SetDecodingText("");
 
-				List<NamedLWAV> wavsToExport = new List<NamedLWAV>();
+				List<NamedAudio> wavsToExport = new List<NamedAudio>();
 
-				if (o.ExportWholeSong) wavsToExport.Add(new NamedLWAV(w.PlayLoopAndFade(o.NumberOfLoops, o.FadeOutSec), filename_no_ext + o.WholeSongSuffix));
-				if (o.ExportPreLoop) wavsToExport.Add(new NamedLWAV(w.GetPreLoopSegment(), filename_no_ext + o.PreLoopSuffix));
-				if (o.ExportLoop) wavsToExport.Add(new NamedLWAV(w.GetLoopSegment(), filename_no_ext + o.LoopSuffix));
+				if (o.ExportWholeSong) wavsToExport.Add(new NamedAudio(w.PlayLoopAndFade(o.NumberOfLoops, o.FadeOutSec), filename_no_ext + o.WholeSongSuffix));
+				if (o.ExportPreLoop) wavsToExport.Add(new NamedAudio(w.GetPreLoopSegment(), filename_no_ext + o.PreLoopSuffix));
+				if (o.ExportLoop) wavsToExport.Add(new NamedAudio(w.GetLoopSegment(), filename_no_ext + o.LoopSuffix));
 
 				if (o.ChannelSplit == ChannelSplit.Pairs) wavsToExport = wavsToExport.SelectMany(x => x.SplitMultiChannelToStereo()).ToList();
 				if (o.ChannelSplit == ChannelSplit.Each) wavsToExport = wavsToExport.SelectMany(x => x.SplitMultiChannelToMono()).ToList();
 
 				sem.Release();
 
-				foreach (NamedLWAV toExport in wavsToExport) {
+				foreach (NamedAudio toExport in wavsToExport) {
 					sem.WaitOne();
 					MultipleProgressRow row = window.AddEncodingRow(toExport.Name);
 					if (o.NumSimulTasks == 1) {

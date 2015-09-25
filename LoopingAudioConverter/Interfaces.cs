@@ -23,13 +23,13 @@ namespace LoopingAudioConverter {
 
 	public interface IAudioImporter {
 		bool SupportsExtension(string extension);
-		LWAV ReadFile(string filename);
+		PCM16Audio ReadFile(string filename);
 		string GetImporterName();
 	}
 
 	public interface IAudioExporter {
-		void WriteFile(LWAV lwav, string output_dir, string original_filename_no_ext, IEncodingProgress progressTracker = null);
-		Task WriteFileAsync(LWAV lwav, string output_dir, string original_filename_no_ext, IEncodingProgress progressTracker = null);
+		void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IEncodingProgress progressTracker = null);
+		Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IEncodingProgress progressTracker = null);
 		string GetExporterName();
 	}
 }

@@ -34,7 +34,7 @@ namespace LoopingAudioConverter {
 		/// </summary>
 		/// <param name="filename">The path of the file to read</param>
 		/// <returns>An LWAV, which may or may not be looping</returns>
-		public LWAV ReadFile(string filename) {
+		public PCM16Audio ReadFile(string filename) {
 			if (!File.Exists(TestExePath)) {
 				throw new AudioImporterException("test.exe not found at path: " + TestExePath);
 			}
@@ -50,7 +50,7 @@ namespace LoopingAudioConverter {
 			};
 			Process p = Process.Start(psi);
 			try {
-				return LWAVFactory.FromStream(p.StandardOutput.BaseStream);
+				return PCM16Factory.FromStream(p.StandardOutput.BaseStream);
 			} catch (Exception e) {
 				throw new AudioImporterException("Could not read output of test.exe: " + e.Message);
 			}

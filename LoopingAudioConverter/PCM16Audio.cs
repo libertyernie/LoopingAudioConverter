@@ -11,7 +11,7 @@ namespace LoopingAudioConverter {
 	/// Represents 16-bit uncompressed PCM data with an arbitary number of channels and an optional loop sequence.
 	/// The total sample length of this data is immutable, but the data itself and other properties can be modified.
 	/// </summary>
-	public class LWAV {
+	public class PCM16Audio {
 		public short Channels { get; private set; }
 		public int SampleRate { get; private set; }
 		public short[] Samples { get; private set; }
@@ -28,7 +28,7 @@ namespace LoopingAudioConverter {
 		/// <param name="sample_data">Audio data (array will not be modified)</param>
 		/// <param name="loop_start">Start of loop, in samples (or null for no loop)</param>
 		/// <param name="loop_end">End of loop, in samples (or null for end of file); ignored if loop_start is null</param>
-		public LWAV(int channels, int sampleRate, short[] sample_data, int? loop_start = null, int? loop_end = null) {
+		public PCM16Audio(int channels, int sampleRate, short[] sample_data, int? loop_start = null, int? loop_end = null) {
 			if (channels > short.MaxValue) throw new ArgumentException("Streams of more than " + short.MaxValue + " channels not supported");
 			if (channels <= 0) throw new ArgumentException("Number of channels must be a positive integer");
 			if (sampleRate <= 0) throw new ArgumentException("Sample rate must be a positive integer");
@@ -48,20 +48,20 @@ namespace LoopingAudioConverter {
 		/// Creates a new non-looping LWAV object containing only the pre-loop portion of this track.
 		/// </summary>
 		/// <returns>A new LWAV object</returns>
-		public LWAV GetPreLoopSegment() {
+		public PCM16Audio GetPreLoopSegment() {
 			short[] data = new short[Channels * LoopStart];
 			Array.Copy(Samples, 0, data, 0, data.Length);
-			return new LWAV(Channels, SampleRate, data);
+			return new PCM16Audio(Channels, SampleRate, data);
 		}
 
 		/// <summary>
 		/// Creates a new looping LWAV object containing only the looping portion of this track.
 		/// </summary>
 		/// <returns>A new LWAV object</returns>
-		public LWAV GetLoopSegment() {
+		public PCM16Audio GetLoopSegment() {
 			short[] data = new short[Channels * (LoopEnd - LoopStart)];
 			Array.Copy(Samples, Channels * LoopStart, data, 0, data.Length);
-			return new LWAV(Channels, SampleRate, data, 0);
+			return new PCM16Audio(Channels, SampleRate, data, 0);
 		}
 
 		/// <summary>
@@ -71,7 +71,7 @@ namespace LoopingAudioConverter {
 		/// <param name="loopCount">Times to play the loop (must be more than 0)</param>
 		/// <param name="fadeSec">Amount of time, in seconds, to fade out at the end after the last loop (must be 0 or greater)</param>
 		/// <returns>An LWAV object (this or a new one)</returns>
-		public LWAV PlayLoopAndFade(int loopCount, decimal fadeSec) {
+		public PCM16Audio PlayLoopAndFade(int loopCount, decimal fadeSec) {
 			if (!Looping) return this;
 			if (loopCount == 1 && fadeSec == 0) return this;
 
@@ -96,7 +96,7 @@ namespace LoopingAudioConverter {
 				}
 			}
 
-			return new LWAV(this.Channels, this.SampleRate, data, this.LoopStart, this.LoopEnd);
+			return new PCM16Audio(this.Channels, this.SampleRate, data, this.LoopStart, this.LoopEnd);
 		}
 
 		public override string ToString() {
