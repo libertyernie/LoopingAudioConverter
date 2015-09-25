@@ -6,6 +6,10 @@ using System.Runtime.InteropServices;
 using System.Text;
 
 namespace LoopingAudioConverter.Brawl {
+	/// <summary>
+	/// A wrapper for PCM16Audio to conform to BrawlLib's IAudioStream interface.
+	/// IAudioStream maintains a "current position" in the audio stream, while PCM16Audio does not, so this class handles SamplePosition, Wrap, and ReadSamples.
+	/// </summary>
 	public class PCM16AudioStream : IAudioStream {
 		private PCM16Audio lwav;
 
@@ -42,7 +46,7 @@ namespace LoopingAudioConverter.Brawl {
 				return lwav.Looping;
 			}
 			set {
-				throw new NotImplementedException();
+				lwav.Looping = value;
 			}
 		}
 
@@ -51,7 +55,7 @@ namespace LoopingAudioConverter.Brawl {
 				return lwav.LoopEnd;
 			}
 			set {
-				throw new NotImplementedException();
+				lwav.LoopEnd = value;
 			}
 		}
 
@@ -60,7 +64,7 @@ namespace LoopingAudioConverter.Brawl {
 				return lwav.LoopStart;
 			}
 			set {
-				throw new NotImplementedException();
+				lwav.LoopStart = value;
 			}
 		}
 

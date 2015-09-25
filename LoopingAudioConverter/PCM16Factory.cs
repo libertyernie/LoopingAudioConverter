@@ -112,6 +112,7 @@ namespace LoopingAudioConverter {
 			int sampleRate = 0;
 
 			short[] sample_data = null;
+			bool convert_from_8_bit = false;
 
 			int? loopStart = null;
 			int? loopEnd = null;
@@ -166,7 +167,11 @@ namespace LoopingAudioConverter {
 										throw new PCM16FactoryException("Only uncompressed PCM suppported - found format " + fmt->format);
 									}
 								} else if (fmt->bitsPerSample != 16) {
-									throw new PCM16FactoryException("Only 16-bit wave files supported");
+									if (fmt->bitsPerSample == 8) {
+										convert_from_8_bit = true;
+									} else {
+										throw new PCM16FactoryException("Only 16-bit wave files supported");
+									}
 								}
 
 								channels = fmt->channels;
@@ -202,6 +207,17 @@ namespace LoopingAudioConverter {
 			}
 			if (sample_data == null) {
 				throw new PCM16FactoryException("Data chunk not found");
+			}
+
+			if (convert_from_8_bit) {
+				short[] new_sample_data = new short[sample_data.Length * 2];
+				fixed (short* short_ptr = sample_data) {
+					byte* ptr = (byte*)short_ptr;
+					for (int i = 0; i < new_sample_data.Length; i++) {
+						new_sample_data[i] = (short)((ptr[i] - 0x80) << 8);
+					}
+				}
+				sample_data = new_sample_data;
 			}
 
 			PCM16Audio wav = new PCM16Audio(channels, sampleRate, sample_data, loopStart, loopEnd);
