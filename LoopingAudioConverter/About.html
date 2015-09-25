@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
-
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <title></title>
@@ -17,6 +16,8 @@
     <ul>
       <li>WAV (with or without "smpl" chunk to denote looping audio)</li>
       <li>MP3, using madplay</li>
+      <li><a href="http://vgmrips.net/">VGM/VGZ</a>, using vgm2wav<br>
+      </li>
       <li>Any audio format supported by SoX</li>
       <li>Any audio format supported by vgmstream</li>
     </ul>
@@ -45,10 +46,9 @@
         games. test.exe is a frontend to this library and converts the
         audio to WAV format (with an smpl chunk for looping files).
         vgmstream is under the MIT/X11 license; see the file COPYING.txt
-        in the tools/vgmstream folder for more details.<br>
-        vgmstream also uses other libraries, some of which have their
-        own license terms - these are included in the tools/vgmstream
-        folder as well.</li>
+        in the tools/vgmstream folder for more details. vgmstream also
+        uses other libraries, some of which have their own license terms
+        - these are included in the tools/vgmstream folder as well.</li>
       <li>SoX (<a href="http://sox.sourceforge.net">http://sox.sourceforge.net</a>)
         is a powerful command-line application for dealing with many
         audio formats. It allows this program to read many different
@@ -62,6 +62,11 @@
         is an MP3 decoder library released under the GNU GPL, version 2
         or later. This version was obtained from:
         http://www.rarewares.org/mp3-others.php</li>
+      <li>vgm2wav is a frontend I wrote to the VGMPlay code (<a
+          href="https://github.com/vgmrips/vgmplay">https://github.com/vgmrips/vgmplay</a>)
+        which outputs 16-bit PCM data in WAV format. The source is now
+        included in the VGMPlay git repository.<br>
+      </li>
       <li>RSTMLib (<a href="https://github.com/libertyernie/rstmlib">https://github.com/libertyernie/rstmlib</a>)
         is a subset of BrawlLib (<a
           href="https://github.com/libertyernie/brawltools">https://github.com/libertyernie/brawltools</a>)
