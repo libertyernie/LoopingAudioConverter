@@ -143,7 +143,16 @@ src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAiYAAAHMCAIAAABum/RoAAAgAElEQ
         PC.</li>
     </ul>
     <hr size="2" width="100%">
-    <p><br>
+    <p>If your input files don't have loop points, but they should, you
+      can specify them in a file called <tt>loop.txt</tt> in the folder
+      you run the program from.<br>
+      Each line should have the format:<br>
     </p>
-  </body>
-</html>
+    <pre>{loop-start} {loop-end} {filename}<br></pre>
+<p>For example:<br></p>
+<pre>853168 5087322 41 Carefree Action.wav<br></pre>
+<p>Looping Audio Converter will pick up on this file if it exists.
+    </p>
+  
+
+</body></html>

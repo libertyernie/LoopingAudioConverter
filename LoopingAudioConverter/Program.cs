@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -93,6 +94,28 @@ namespace LoopingAudioConverter {
 				MessageBox.Show("No input files were selected.");
 			}
 
+			Dictionary<string, Tuple<int, int>> loopOverrides = new Dictionary<string, Tuple<int, int>>();
+			if (File.Exists("loop.txt")) {
+				using (StreamReader sr = new StreamReader("loop.txt")) {
+					string line;
+					while ((line = sr.ReadLine()) != null) {
+						line = Regex.Replace(line, "[ \t]+", " ");
+						if (line.Length > 0 && line[0] != '#' && line.Contains(' ')) {
+							try {
+								int loopStart = int.Parse(line.Substring(0, line.IndexOf(" ")));
+								line = line.Substring(line.IndexOf(" ") + 1);
+								int loopEnd = int.Parse(line.Substring(0, line.IndexOf(" ")));
+								line = line.Substring(line.IndexOf(" ") + 1);
+
+								loopOverrides.Add(line, new Tuple<int, int>(loopStart, loopEnd));
+							} catch (Exception e) {
+								Console.Error.WriteLine("Could not parse line in loop.txt: " + line + " - " + e.Message);
+							}
+						}
+					}
+				}
+			}
+
 			List<string> exported = new List<string>();
 			foreach (string inputFile in o.InputFiles) {
 				sem.WaitOne();
@@ -119,6 +142,19 @@ namespace LoopingAudioConverter {
 					} catch (AudioImporterException e) {
 						//Console.Error.WriteLine(importer.GetImporterName() + " could not read file " + inputFile + ": " + e.Message);
 						exceptions.Add(e);
+					}
+				}
+
+				if (loopOverrides.Any()) {
+					Tuple<int, int> val;
+					if (loopOverrides.TryGetValue(Path.GetFileName(inputFile), out val)) {
+						if (val.Item1 < 0) {
+							w.Looping = false;
+						} else {
+							w.Looping = true;
+							w.LoopStart = val.Item1;
+							w.LoopEnd = val.Item2;
+						}
 					}
 				}
 
@@ -163,14 +199,13 @@ namespace LoopingAudioConverter {
 						row.Remove();
 					} else {
 						Task task = exporter.WriteFileAsync(toExport.LWAV, o.OutputDir, toExport.Name, row);
-						task.ContinueWith(t => {
+						tasks.Add(task.ContinueWith(t => {
 							lock (exported) {
 								exported.Add(toExport.Name);
 							}
 							sem.Release();
 							row.Remove();
-						});
-						tasks.Add(task);
+						}));
 					}
 				}
 			}
