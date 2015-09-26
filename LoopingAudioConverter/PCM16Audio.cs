@@ -33,6 +33,10 @@ namespace LoopingAudioConverter {
 			if (channels <= 0) throw new ArgumentException("Number of channels must be a positive integer");
 			if (sampleRate <= 0) throw new ArgumentException("Sample rate must be a positive integer");
 
+			if (loop_start != null && loop_end != null && loop_end.Value > sample_data.Length / channels) {
+				throw new Exception("The end of the loop (" + loop_end + " samples) is past the end of the file (" + sample_data.Length / channels + " samples). Double-check the program that generated this data.");
+			}
+
 			Channels = (short)channels;
 			SampleRate = sampleRate;
 

@@ -49,7 +49,7 @@ namespace LoopingAudioConverter {
 				FileName = ExePath,
 				RedirectStandardOutput = true,
 				UseShellExecute = false,
-				Arguments = "--loop-count 1 --fade-ms 0 \"" + filename + "\" -"
+				Arguments = "--loop-count 1 --fade-ms 500 \"" + filename + "\" -"
 			};
 			Process p = Process.Start(psi);
 			try {

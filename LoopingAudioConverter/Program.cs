@@ -69,7 +69,7 @@ namespace LoopingAudioConverter {
 					exporter = new FLACExporter(sox);
 					break;
 				case ExporterType.MP3:
-					exporter = new MP3Exporter(@"..\..\tools\lame\lame.exe");
+					exporter = new MP3Exporter(ConfigurationManager.AppSettings["lame_path"]);
 					break;
 				case ExporterType.OggVorbis:
 					exporter = new OggVorbisExporter(sox);
