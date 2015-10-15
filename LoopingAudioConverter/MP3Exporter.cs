@@ -20,18 +20,18 @@ namespace LoopingAudioConverter {
 				throw new AudioExporterException("Invalid character (\") found in output filename");
 			}
 
-			byte[] wav = lwav.Export();
+            string infile = TempFiles.Create("wav");
+            File.WriteAllBytes(infile, lwav.Export());
 
 			ProcessStartInfo psi = new ProcessStartInfo {
 				FileName = ExePath,
-				RedirectStandardInput = true,
 				UseShellExecute = false,
-				Arguments = "--silent - \"" + outPath + "\""
+				Arguments = "--silent " + infile + " \"" + outPath + "\""
 			};
 			Process p = Process.Start(psi);
-			p.StandardInput.BaseStream.Write(wav, 0, wav.Length);
-			p.StandardInput.BaseStream.Close();
 			p.WaitForExit();
+            File.Delete(infile);
+
 			if (p.ExitCode != 0) {
 				throw new AudioExporterException("LAME quit with exit code " + p.ExitCode);
 			}

@@ -44,16 +44,18 @@ namespace LoopingAudioConverter {
                 throw new AudioImporterException("File paths with double quote marks (\") are not supported");
             }
 
+            string outfile = TempFiles.Create("wav");
+
             ProcessStartInfo psi = new ProcessStartInfo {
                 FileName = ExePath,
-                RedirectStandardOutput = true,
                 UseShellExecute = false,
-                Arguments = "\"" + filename + "\" -b 16 -t wav -"
+                Arguments = "\"" + filename + "\" -b 16 -t wav " + outfile
             };
             Process p = Process.Start(psi);
+            p.WaitForExit();
 
             try {
-                return PCM16Factory.FromStream(p.StandardOutput.BaseStream);
+                return PCM16Factory.FromFile(outfile, true);
             } catch (Exception e) {
                 throw new AudioImporterException("Could not read SoX output: " + e.Message);
             }
@@ -94,33 +96,21 @@ namespace LoopingAudioConverter {
 				return lwav;
 			}
 
+            string infile = TempFiles.Create("wav");
+            string outfile = TempFiles.Create("wav");
+
 			// Sometimes when SoX changes sample rate and sends the result to stdout, it gives the wrong length in the data chunk. Let's just have it send us raw PCM data instead.
 			ProcessStartInfo psi = new ProcessStartInfo {
 				FileName = ExePath,
-				RedirectStandardInput = true,
-				RedirectStandardOutput = true,
 				UseShellExecute = false,
-				Arguments = @"-t wav - -t raw -" + effects_string
+				Arguments = "-t wav " + infile + " -t wav " + outfile + " " + effects_string
 			};
 			Process p = Process.Start(psi);
-			new Task(() => {
-				p.StandardInput.BaseStream.Write(wav, 0, wav.Length);
-				p.StandardInput.BaseStream.Close();
-			}).Start();
-
-			short[] samples;
-			using (MemoryStream ms = new MemoryStream()) {
-				p.StandardOutput.BaseStream.CopyTo(ms);
-				byte[] result = ms.ToArray();
-
-				samples = new short[result.Length / 2];
-				for (int i = 0; i < samples.Length; i++) {
-					samples[i] = (short)(result[i * 2] | (result[i * 2 + 1] << 8));
-				}
-			}
+            p.WaitForExit();
+            File.Delete(infile);
 
 			try {
-				PCM16Audio l = new PCM16Audio(channels, sampleRate, samples);
+                PCM16Audio l = PCM16Factory.FromFile(outfile, true);
 				l.Looping = lwav.Looping;
 				l.LoopStart = lwav.LoopStart;
 				l.LoopEnd = lwav.LoopEnd;
@@ -146,19 +136,19 @@ namespace LoopingAudioConverter {
 			if (output_filename.Contains('"')) {
 				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
 			}
-			
-			byte[] wav = lwav.Export();
+
+            string infile = TempFiles.Create("wav");
+            File.WriteAllBytes(infile, lwav.Export());
 
 			ProcessStartInfo psi = new ProcessStartInfo {
 				FileName = ExePath,
-				RedirectStandardInput = true,
-				UseShellExecute = false,
-				Arguments = "- \"" + output_filename + "\""
+                Arguments = infile + " \"" + output_filename + "\"",
+                UseShellExecute = false
 			};
 			Process p = Process.Start(psi);
-			p.StandardInput.BaseStream.Write(wav, 0, wav.Length);
-			p.StandardInput.BaseStream.Close();
 			p.WaitForExit();
+
+            File.Delete(infile);
 
 			if (p.ExitCode != 0) {
 				throw new AudioExporterException("SoX quit with exit code " + p.ExitCode);

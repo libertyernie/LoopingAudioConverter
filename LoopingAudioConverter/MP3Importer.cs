@@ -28,18 +28,18 @@ namespace LoopingAudioConverter {
 				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
 			}
 
-			byte[] data = File.ReadAllBytes(filename);
+            string outfile = TempFiles.Create("wav");
 
 			ProcessStartInfo psi = new ProcessStartInfo {
 				FileName = ExePath,
-				RedirectStandardOutput = true,
 				UseShellExecute = false,
-				Arguments = "-v -o wav:- \"" + filename + "\""
+				Arguments = "-v -o wav:" + outfile + " \"" + filename + "\""
 			};
 			Process p = Process.Start(psi);
+            p.WaitForExit();
 
 			try {
-				return PCM16Factory.FromStream(p.StandardOutput.BaseStream);
+                return PCM16Factory.FromFile(outfile, true);
 			} catch (PCM16FactoryException e) {
 				throw new AudioImporterException("Could not read madplay output: " + e.Message);
 			}

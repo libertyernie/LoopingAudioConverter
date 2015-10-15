@@ -45,15 +45,15 @@ namespace LoopingAudioConverter {
 				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
 			}
 
+            string outfile = TempFiles.Create("wav");
 			ProcessStartInfo psi = new ProcessStartInfo {
 				FileName = ExePath,
-				RedirectStandardOutput = true,
 				UseShellExecute = false,
-				Arguments = "--loop-count 1 --fade-ms 500 \"" + filename + "\" -"
+				Arguments = "--loop-count 1 --fade-ms 500 \"" + filename + "\" " + outfile
 			};
 			Process p = Process.Start(psi);
 			try {
-				return PCM16Factory.FromStream(p.StandardOutput.BaseStream);
+                return PCM16Factory.FromFile(outfile, true);
 			} catch (Exception e) {
 				throw new AudioImporterException("Could not read output of test.exe: " + e.Message);
 			}
