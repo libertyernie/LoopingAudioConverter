@@ -6,33 +6,37 @@ using System.Text;
 
 namespace LoopingAudioConverter {
     public class TempFiles {
-        private static TempFiles staticInstance = new TempFiles();
+        //private static TempFiles staticInstance = new TempFiles();
         private static Random r = new Random();
         private const string TEMPDIR = "tmp";
 
         //private List<string> filesCreated;
 
-        private TempFiles() {
+        //private TempFiles() {
+        //    if (!Directory.Exists(TEMPDIR)) {
+        //        Directory.CreateDirectory(TEMPDIR);
+        //    }
+        //    /ilesCreated = new List<string>();
+        //}
+
+        //~TempFiles() {
+        //    foreach (string file in filesCreated) {
+        //        try {
+        //            File.Delete(file);
+        //            Console.WriteLine("Deleted " + file);
+        //        } catch { }
+        //    }
+        //    try {
+        //        Directory.Delete(TEMPDIR);
+        //        Console.WriteLine("Deleted " + TEMPDIR);
+        //    } catch { }
+        //}
+
+        public static string Create(string extension) {
             if (!Directory.Exists(TEMPDIR)) {
                 Directory.CreateDirectory(TEMPDIR);
             }
-            //filesCreated = new List<string>();
-        }
 
-        ~TempFiles() {
-            //foreach (string file in filesCreated) {
-            //    try {
-            //        File.Delete(file);
-            //        Console.WriteLine("Deleted " + file);
-            //    } catch { }
-            //}
-            try {
-                Directory.Delete(TEMPDIR);
-                Console.WriteLine("Deleted " + TEMPDIR);
-            } catch { }
-        }
-
-        public static string Create(string extension) {
             extension = extension ?? "";
             if (!extension.StartsWith(".") && extension.Length > 0) extension = "." + extension;
             
