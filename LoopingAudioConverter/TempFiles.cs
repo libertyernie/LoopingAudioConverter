@@ -10,13 +10,13 @@ namespace LoopingAudioConverter {
         private static Random r = new Random();
         private const string TEMPDIR = "tmp";
 
-        private List<string> filesCreated;
+        //private List<string> filesCreated;
 
         private TempFiles() {
             if (!Directory.Exists(TEMPDIR)) {
                 Directory.CreateDirectory(TEMPDIR);
             }
-            filesCreated = new List<string>();
+            //filesCreated = new List<string>();
         }
 
         ~TempFiles() {
@@ -41,7 +41,7 @@ namespace LoopingAudioConverter {
                 tempFileName = Path.Combine(TEMPDIR, r.Next(0x10000).ToString("X4") + extension);
             } while (File.Exists(tempFileName));
 
-            staticInstance.filesCreated.Add(tempFileName);
+            //staticInstance.filesCreated.Add(tempFileName);
 
             return tempFileName;
         }

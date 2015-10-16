@@ -45,7 +45,7 @@ namespace LoopingAudioConverter {
 
 			Looping = (loop_start != null);
 			LoopStart = loop_start ?? 0;
-			LoopEnd = loop_end ?? Samples.Length;
+			LoopEnd = loop_end ?? (Samples.Length / channels);
 		}
 
 		/// <summary>
