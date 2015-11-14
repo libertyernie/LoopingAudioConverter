@@ -59,6 +59,7 @@
     <Compile Include="FLACExporter.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="PCM16Audio.cs" />
+    <Compile Include="TempFiles.cs" />
     <Compile Include="VGMImporter.cs" />
     <Compile Include="WAVExporter.cs" />
     <Compile Include="PCM16Factory.cs" />

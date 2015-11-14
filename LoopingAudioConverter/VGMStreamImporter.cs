@@ -42,15 +42,21 @@ namespace LoopingAudioConverter {
 				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
 			}
 
+            if (!Directory.Exists("tmp")) {
+                Directory.CreateDirectory("tmp");
+            }
+
 			ProcessStartInfo psi = new ProcessStartInfo {
+                WorkingDirectory = "tmp",
 				FileName = TestExePath,
-				RedirectStandardOutput = true,
 				UseShellExecute = false,
-				Arguments = "-L -p -l 1 -f 0 \"" + filename + "\""
+				Arguments = "-L -l 1 -f 0 \"" + filename + "\""
 			};
 			Process p = Process.Start(psi);
+            p.WaitForExit();
+
 			try {
-				return PCM16Factory.FromStream(p.StandardOutput.BaseStream);
+                return PCM16Factory.FromFile("tmp/dump.wav", true);
 			} catch (Exception e) {
 				throw new AudioImporterException("Could not read output of test.exe: " + e.Message);
 			}

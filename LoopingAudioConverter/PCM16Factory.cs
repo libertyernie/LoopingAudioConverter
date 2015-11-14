@@ -236,6 +236,24 @@ namespace LoopingAudioConverter {
 			}
 		}
 
+        /// <summary>
+        /// Reads RIFF WAVE data from a file.
+        /// This method opens a read-only FileStream and sends the stream to the FromStream method.
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="delete">Whether to try to delete the file afterwards (no exception will be thrown if unsuccessful)</param>
+        /// <returns></returns>
+        public static PCM16Audio FromFile(string filename, bool delete) {
+            PCM16Audio w;
+            using (FileStream stream = new FileStream(filename, FileMode.Open, FileAccess.Read)) {
+                w = FromStream(stream);
+            }
+            if (delete) try {
+                File.Delete(filename);
+            } catch { }
+            return w;
+        }
+
 		/// <summary>
 		/// Exports data to a byte array in RIFF WAVE (.wav) format.
 		/// Output data will use WAVE_FORMAT_PCM and have "fmt " and "data" chunks, along with a "smpl" chunk if it is a looping track.
