@@ -71,9 +71,8 @@
 			this.numSimulTasks = new System.Windows.Forms.NumericUpDown();
 			this.lblSimulTasks = new System.Windows.Forms.Label();
 			this.panel1 = new System.Windows.Forms.Panel();
-			this.btnCancel = new System.Windows.Forms.Button();
-			this.btnOkay = new System.Windows.Forms.Button();
 			this.btnHelp = new System.Windows.Forms.Button();
+			this.btnOkay = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
@@ -617,35 +616,12 @@
 			// panel1
 			// 
 			this.panel1.Controls.Add(this.btnHelp);
-			this.panel1.Controls.Add(this.btnCancel);
 			this.panel1.Controls.Add(this.btnOkay);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this.panel1.Location = new System.Drawing.Point(0, 391);
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(534, 30);
 			this.panel1.TabIndex = 23;
-			// 
-			// btnCancel
-			// 
-			this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.btnCancel.Location = new System.Drawing.Point(457, 4);
-			this.btnCancel.Name = "btnCancel";
-			this.btnCancel.Size = new System.Drawing.Size(74, 23);
-			this.btnCancel.TabIndex = 2;
-			this.btnCancel.Text = "Cancel";
-			this.btnCancel.UseVisualStyleBackColor = true;
-			// 
-			// btnOkay
-			// 
-			this.btnOkay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnOkay.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.btnOkay.Location = new System.Drawing.Point(377, 4);
-			this.btnOkay.Name = "btnOkay";
-			this.btnOkay.Size = new System.Drawing.Size(74, 23);
-			this.btnOkay.TabIndex = 1;
-			this.btnOkay.Text = "OK";
-			this.btnOkay.UseVisualStyleBackColor = true;
 			// 
 			// btnHelp
 			// 
@@ -658,12 +634,23 @@
 			this.btnHelp.UseVisualStyleBackColor = true;
 			this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
 			// 
+			// btnOkay
+			// 
+			this.btnOkay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnOkay.DialogResult = System.Windows.Forms.DialogResult.OK;
+			this.btnOkay.Location = new System.Drawing.Point(457, 4);
+			this.btnOkay.Name = "btnOkay";
+			this.btnOkay.Size = new System.Drawing.Size(74, 23);
+			this.btnOkay.TabIndex = 1;
+			this.btnOkay.Text = "Start";
+			this.btnOkay.UseVisualStyleBackColor = true;
+			this.btnOkay.Click += new System.EventHandler(this.btnOkay_Click);
+			// 
 			// OptionsForm
 			// 
 			this.AcceptButton = this.btnOkay;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.CancelButton = this.btnCancel;
 			this.ClientSize = new System.Drawing.Size(534, 421);
 			this.Controls.Add(this.splitContainer1);
 			this.Controls.Add(this.panel1);
@@ -725,7 +712,6 @@
 		private System.Windows.Forms.Panel pnlExportSegments;
 		private System.Windows.Forms.Panel pnlExportChannels;
 		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.Button btnCancel;
 		private System.Windows.Forms.Button btnOkay;
 		private System.Windows.Forms.Panel panel2;
 		private System.Windows.Forms.CheckBox chkMaxSampleRate;

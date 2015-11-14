@@ -32,11 +32,10 @@ namespace LoopingAudioConverter {
 			}
 
 			OptionsForm f = new OptionsForm();
-			if (f.ShowDialog() != DialogResult.OK) {
-				return;
-			}
-			Options o = f.GetOptions();
+			Application.Run(f);
+		}
 
+		public static void Run(Options o, Action<string> inputFileLoadedCallback = null) {
 			if (o.ExporterType == ExporterType.MP3 && (o.ExportPreLoop || o.ExportLoop)) {
 				MessageBox.Show("MP3 encoding adds gaps at the start and end of each file, so the before-loop portion and the loop portion will not line up well.",
 					"Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -53,12 +52,12 @@ namespace LoopingAudioConverter {
 			SoX sox = new SoX(ConfigurationManager.AppSettings["sox_path"]);
 
 			IAudioImporter[] importers = {
-				new WAVImporter(),
-				new MP3Importer(ConfigurationManager.AppSettings["madplay_path"]),
-				new VGMImporter(ConfigurationManager.AppSettings["vgm2wav_path"]),
-				new VGMStreamImporter(ConfigurationManager.AppSettings["vgmstream_path"]),
-				sox
-			};
+					new WAVImporter(),
+					new MP3Importer(ConfigurationManager.AppSettings["madplay_path"]),
+					new VGMImporter(ConfigurationManager.AppSettings["vgm2wav_path"]),
+					new VGMStreamImporter(ConfigurationManager.AppSettings["vgmstream_path"]),
+					sox
+				};
 
 			IAudioExporter exporter;
 			switch (o.ExporterType) {
@@ -208,14 +207,15 @@ namespace LoopingAudioConverter {
 						}));
 					}
 				}
+				if (inputFileLoadedCallback != null) inputFileLoadedCallback(inputFile);
 			}
 			Task.WaitAll(tasks.ToArray());
-			
+
 			if (window.Visible) window.BeginInvoke(new Action(() => {
 				window.AllowClose = true;
 				window.Close();
 			}));
-			
+
 			if (tasks.Any(t => t.IsFaulted)) {
 				throw new AggregateException(tasks.Where(t => t.IsFaulted).Select(t => t.Exception));
 			}

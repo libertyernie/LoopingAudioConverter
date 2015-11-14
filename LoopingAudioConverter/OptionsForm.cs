@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace LoopingAudioConverter {
@@ -134,6 +135,13 @@ namespace LoopingAudioConverter {
 
 		private void btnHelp_Click(object sender, EventArgs e) {
 			Process.Start("About.html");
+		}
+
+		private void btnOkay_Click(object sender, EventArgs e) {
+			Options o = this.GetOptions();
+			this.listBox1.Items.Clear();
+			Task t = new Task(() => Program.Run(o));
+			t.Start();
 		}
 	}
 }
