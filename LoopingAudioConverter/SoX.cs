@@ -49,6 +49,7 @@ namespace LoopingAudioConverter {
             ProcessStartInfo psi = new ProcessStartInfo {
                 FileName = ExePath,
                 UseShellExecute = false,
+				CreateNoWindow = true,
                 Arguments = "\"" + filename + "\" -b 16 -t wav " + outfile
             };
             Process p = Process.Start(psi);
@@ -143,7 +144,8 @@ namespace LoopingAudioConverter {
 			ProcessStartInfo psi = new ProcessStartInfo {
 				FileName = ExePath,
                 Arguments = infile + " \"" + output_filename + "\"",
-                UseShellExecute = false
+                UseShellExecute = false,
+				CreateNoWindow = true
 			};
 			Process p = Process.Start(psi);
 			p.WaitForExit();

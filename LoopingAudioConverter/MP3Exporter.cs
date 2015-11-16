@@ -26,6 +26,7 @@ namespace LoopingAudioConverter {
 			ProcessStartInfo psi = new ProcessStartInfo {
 				FileName = ExePath,
 				UseShellExecute = false,
+				CreateNoWindow = true,
 				Arguments = "--silent " + infile + " \"" + outPath + "\""
 			};
 			Process p = Process.Start(psi);

@@ -49,9 +49,11 @@ namespace LoopingAudioConverter {
 			ProcessStartInfo psi = new ProcessStartInfo {
 				FileName = ExePath,
 				UseShellExecute = false,
+				CreateNoWindow = true,
 				Arguments = "--loop-count 1 --fade-ms 500 \"" + filename + "\" " + outfile
 			};
 			Process p = Process.Start(psi);
+			p.WaitForExit();
 			try {
                 return PCM16Factory.FromFile(outfile, true);
 			} catch (Exception e) {

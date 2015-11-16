@@ -50,6 +50,7 @@ namespace LoopingAudioConverter {
                 WorkingDirectory = "tmp",
 				FileName = TestExePath,
 				UseShellExecute = false,
+				CreateNoWindow = true,
 				Arguments = "-L -l 1 -f 0 \"" + filename + "\""
 			};
 			Process p = Process.Start(psi);
