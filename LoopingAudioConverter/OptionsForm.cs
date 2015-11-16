@@ -20,6 +20,14 @@ namespace LoopingAudioConverter {
 			}
 		}
 
+		private HashSet<Task> runningTasks;
+
+		public IEnumerable<Task> RunningTasks {
+			get {
+				return runningTasks;
+			}
+		}
+
 		public OptionsForm() {
 			InitializeComponent();
 			comboBox1.DataSource = new List<NVPair>() {
@@ -31,6 +39,8 @@ namespace LoopingAudioConverter {
 			};
 			if (comboBox1.SelectedIndex < 0) comboBox1.SelectedIndex = 0;
             numSimulTasks.Value = Math.Min(Environment.ProcessorCount, numSimulTasks.Maximum);
+
+			runningTasks = new HashSet<Task>();
 		}
 
 		public Options GetOptions() {
@@ -141,7 +151,33 @@ namespace LoopingAudioConverter {
 			Options o = this.GetOptions();
 			this.listBox1.Items.Clear();
 			Task t = new Task(() => Program.Run(o));
+			runningTasks.Add(t);
+			UpdateTitle();
 			t.Start();
+			t.ContinueWith(x => {
+				runningTasks.Remove(x);
+				UpdateTitle();
+			});
+		}
+
+		private void UpdateTitle() {
+			if (this.InvokeRequired) {
+				this.BeginInvoke(new Action(UpdateTitle));
+				return;
+			}
+			string text = this.Text + ":";
+			text = text.Substring(0, text.IndexOf(':'));
+			switch (runningTasks.Count) {
+				case 0:
+					break;
+				case 1:
+					text += ": batch running";
+					break;
+				default:
+					text += ": " + runningTasks.Count + " batches running";
+					break;
+			}
+			this.Text = text;
 		}
 	}
 }

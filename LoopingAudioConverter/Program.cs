@@ -33,6 +33,8 @@ namespace LoopingAudioConverter {
 
 			OptionsForm f = new OptionsForm();
 			Application.Run(f);
+
+			Task.WaitAll(f.RunningTasks.ToArray());
 		}
 
 		public static void Run(Options o, Action<string> inputFileLoadedCallback = null) {
