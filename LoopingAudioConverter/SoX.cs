@@ -100,10 +100,13 @@ namespace LoopingAudioConverter {
             string infile = TempFiles.Create("wav");
             string outfile = TempFiles.Create("wav");
 
+			File.WriteAllBytes(infile, wav);
+
 			// Sometimes when SoX changes sample rate and sends the result to stdout, it gives the wrong length in the data chunk. Let's just have it send us raw PCM data instead.
 			ProcessStartInfo psi = new ProcessStartInfo {
 				FileName = ExePath,
 				UseShellExecute = false,
+				CreateNoWindow = true,
 				Arguments = "-t wav " + infile + " -t wav " + outfile + " " + effects_string
 			};
 			Process p = Process.Start(psi);
