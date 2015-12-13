@@ -117,6 +117,10 @@ namespace LoopingAudioConverter {
 				}
 			}
 
+			int i = 0;
+			float maxProgress = o.InputFiles.Count() * 2;
+			window.ShowProgress();
+
 			List<string> exported = new List<string>();
 			foreach (string inputFile in o.InputFiles) {
 				sem.WaitOne();
@@ -130,7 +134,7 @@ namespace LoopingAudioConverter {
 				string extension = Path.GetExtension(inputFile);
 				List<AudioImporterException> exceptions = new List<AudioImporterException>();
 
-				var importers_supported = importers.Where(i => i.SupportsExtension(extension));
+				var importers_supported = importers.Where(im => im.SupportsExtension(extension));
 				if (!importers_supported.Any()) {
 					throw new Exception("No importers supported for file extension " + extension);
 				}
@@ -196,6 +200,7 @@ namespace LoopingAudioConverter {
 						lock (exported) {
 							exported.Add(toExport.Name);
 						}
+						window.Update(++i / maxProgress);
 						sem.Release();
 						row.Remove();
 					} else {
@@ -204,12 +209,15 @@ namespace LoopingAudioConverter {
 							lock (exported) {
 								exported.Add(toExport.Name);
 							}
+							window.Update(++i / maxProgress);
 							sem.Release();
 							row.Remove();
 						}));
 					}
 				}
 				if (inputFileLoadedCallback != null) inputFileLoadedCallback(inputFile);
+
+				window.Update(++i / maxProgress);
 			}
 			Task.WaitAll(tasks.ToArray());
 

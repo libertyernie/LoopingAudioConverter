@@ -8,12 +8,17 @@ using System.Text;
 using System.Windows.Forms;
 
 namespace LoopingAudioConverter {
-	public partial class MultipleProgressWindow : Form {
+	public partial class MultipleProgressWindow : Form, IEncodingProgress {
 		public bool Canceled { get; private set; }
 		public bool AllowClose { get; set; }
 
+		private MultipleProgressRow totalProgressRow;
+
 		public MultipleProgressWindow() {
 			InitializeComponent();
+
+			totalProgressRow = new MultipleProgressRow("Total progress");
+			this.pnlTotalProgress2.Controls.Add(totalProgressRow);
 		}
 
 		public void SetDecodingText(string text) {
@@ -49,6 +54,19 @@ namespace LoopingAudioConverter {
 				btnCancel.Enabled = false;
 				e.Cancel = true;
 			}
+		}
+
+		public void ShowProgress() {
+			pnlTotalProgress.Visible = true;
+			totalProgressRow.ShowProgress();
+		}
+
+		public void Update(float value) {
+			totalProgressRow.Update(value);
+		}
+
+		public void Remove() {
+			throw new NotImplementedException();
 		}
 	}
 }
