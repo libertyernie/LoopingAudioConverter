@@ -8,21 +8,24 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter {
-	public class MP3Importer : IAudioImporter {
+	public class MP4Importer : IAudioImporter {
 		private string ExePath;
 
-        public MP3Importer(string exePath) {
+        public MP4Importer(string exePath) {
             ExePath = exePath;
         }
 
 		public bool SupportsExtension(string extension) {
 			if (extension.StartsWith(".")) extension = extension.Substring(1);
-			return extension.Equals("mp3", StringComparison.InvariantCultureIgnoreCase);
+			foreach (string ext in new string[] { "m4a", "mp4", "aac" }) {
+				if (extension.Equals(ext, StringComparison.InvariantCultureIgnoreCase)) return true;
+			}
+			return false;
 		}
 
 		public PCM16Audio ReadFile(string filename) {
 			if (!File.Exists(ExePath)) {
-				throw new AudioImporterException("madplay not found at path: " + ExePath);
+				throw new AudioImporterException("faad not found at path: " + ExePath);
 			}
 			if (filename.Contains('"')) {
 				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
@@ -34,7 +37,7 @@ namespace LoopingAudioConverter {
 				FileName = ExePath,
 				UseShellExecute = false,
 				CreateNoWindow = true,
-				Arguments = "-v -o wav:" + outfile + " \"" + filename + "\""
+				Arguments = "-o " + outfile + " \"" + filename + "\""
 			};
 			Process p = Process.Start(psi);
             p.WaitForExit();
@@ -42,12 +45,12 @@ namespace LoopingAudioConverter {
 			try {
                 return PCM16Factory.FromFile(outfile, true);
 			} catch (PCM16FactoryException e) {
-				throw new AudioImporterException("Could not read madplay output: " + e.Message);
+				throw new AudioImporterException("Could not read faad output: " + e.Message);
 			}
 		}
 
 		public string GetImporterName() {
-			return "madplay";
+			return "FAAD";
 		}
 	}
 }

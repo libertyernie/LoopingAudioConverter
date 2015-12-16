@@ -58,6 +58,7 @@
     <Compile Include="Brawl\RSTMExporter.cs" />
     <Compile Include="FLACExporter.cs" />
     <Compile Include="Interfaces.cs" />
+    <Compile Include="MP4Importer.cs" />
     <Compile Include="PCM16Audio.cs" />
     <Compile Include="TempFiles.cs" />
     <Compile Include="VGMImporter.cs" />
