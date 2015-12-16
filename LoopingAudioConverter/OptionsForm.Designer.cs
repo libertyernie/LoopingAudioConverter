@@ -29,12 +29,16 @@
         private void InitializeComponent()
         {
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+			this.btnSuffixFilter = new System.Windows.Forms.Button();
+			this.txtSuffixFilter = new System.Windows.Forms.TextBox();
+			this.label4 = new System.Windows.Forms.Label();
 			this.btnBrowse = new System.Windows.Forms.Button();
 			this.txtOutputDir = new System.Windows.Forms.TextBox();
 			this.lblOutputDir = new System.Windows.Forms.Label();
 			this.listBox1 = new System.Windows.Forms.ListBox();
 			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
 			this.btnAdd = new System.Windows.Forms.Button();
+			this.btnAddDir = new System.Windows.Forms.Button();
 			this.btnRemove = new System.Windows.Forms.Button();
 			this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
 			this.panel2 = new System.Windows.Forms.Panel();
@@ -73,6 +77,7 @@
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.btnHelp = new System.Windows.Forms.Button();
 			this.btnOkay = new System.Windows.Forms.Button();
+			this.lblEnumerationStatus = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
@@ -102,6 +107,9 @@
 			// 
 			// splitContainer1.Panel1
 			// 
+			this.splitContainer1.Panel1.Controls.Add(this.btnSuffixFilter);
+			this.splitContainer1.Panel1.Controls.Add(this.txtSuffixFilter);
+			this.splitContainer1.Panel1.Controls.Add(this.label4);
 			this.splitContainer1.Panel1.Controls.Add(this.btnBrowse);
 			this.splitContainer1.Panel1.Controls.Add(this.txtOutputDir);
 			this.splitContainer1.Panel1.Controls.Add(this.lblOutputDir);
@@ -114,6 +122,35 @@
 			this.splitContainer1.Size = new System.Drawing.Size(534, 391);
 			this.splitContainer1.SplitterDistance = 161;
 			this.splitContainer1.TabIndex = 0;
+			// 
+			// btnSuffixFilter
+			// 
+			this.btnSuffixFilter.Location = new System.Drawing.Point(271, 113);
+			this.btnSuffixFilter.Name = "btnSuffixFilter";
+			this.btnSuffixFilter.Size = new System.Drawing.Size(75, 19);
+			this.btnSuffixFilter.TabIndex = 6;
+			this.btnSuffixFilter.Text = "Filter";
+			this.btnSuffixFilter.UseVisualStyleBackColor = true;
+			this.btnSuffixFilter.Click += new System.EventHandler(this.btnSuffixFilter_Click);
+			// 
+			// txtSuffixFilter
+			// 
+			this.txtSuffixFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.txtSuffixFilter.Location = new System.Drawing.Point(137, 113);
+			this.txtSuffixFilter.Name = "txtSuffixFilter";
+			this.txtSuffixFilter.Size = new System.Drawing.Size(128, 20);
+			this.txtSuffixFilter.TabIndex = 5;
+			// 
+			// label4
+			// 
+			this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.label4.Location = new System.Drawing.Point(3, 112);
+			this.label4.Margin = new System.Windows.Forms.Padding(3);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(128, 20);
+			this.label4.TabIndex = 4;
+			this.label4.Text = "Only files ending with:";
+			this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// btnBrowse
 			// 
@@ -158,7 +195,7 @@
 			this.listBox1.Location = new System.Drawing.Point(3, 3);
 			this.listBox1.Name = "listBox1";
 			this.listBox1.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-			this.listBox1.Size = new System.Drawing.Size(448, 129);
+			this.listBox1.Size = new System.Drawing.Size(448, 103);
 			this.listBox1.TabIndex = 0;
 			this.listBox1.DragDrop += new System.Windows.Forms.DragEventHandler(this.listBox1_DragDrop);
 			this.listBox1.DragEnter += new System.Windows.Forms.DragEventHandler(this.listBox1_DragEnter);
@@ -167,7 +204,9 @@
 			// 
 			this.flowLayoutPanel1.AutoSize = true;
 			this.flowLayoutPanel1.Controls.Add(this.btnAdd);
+			this.flowLayoutPanel1.Controls.Add(this.btnAddDir);
 			this.flowLayoutPanel1.Controls.Add(this.btnRemove);
+			this.flowLayoutPanel1.Controls.Add(this.lblEnumerationStatus);
 			this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Right;
 			this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
 			this.flowLayoutPanel1.Location = new System.Drawing.Point(454, 0);
@@ -186,10 +225,21 @@
 			this.btnAdd.UseVisualStyleBackColor = true;
 			this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
 			// 
+			// btnAddDir
+			// 
+			this.btnAddDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnAddDir.Location = new System.Drawing.Point(3, 32);
+			this.btnAddDir.Name = "btnAddDir";
+			this.btnAddDir.Size = new System.Drawing.Size(74, 23);
+			this.btnAddDir.TabIndex = 2;
+			this.btnAddDir.Text = "Add Folder";
+			this.btnAddDir.UseVisualStyleBackColor = true;
+			this.btnAddDir.Click += new System.EventHandler(this.btnAddDir_Click);
+			// 
 			// btnRemove
 			// 
 			this.btnRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnRemove.Location = new System.Drawing.Point(3, 32);
+			this.btnRemove.Location = new System.Drawing.Point(3, 61);
 			this.btnRemove.Name = "btnRemove";
 			this.btnRemove.Size = new System.Drawing.Size(74, 23);
 			this.btnRemove.TabIndex = 1;
@@ -646,6 +696,15 @@
 			this.btnOkay.UseVisualStyleBackColor = true;
 			this.btnOkay.Click += new System.EventHandler(this.btnOkay_Click);
 			// 
+			// lblEnumerationStatus
+			// 
+			this.lblEnumerationStatus.AutoSize = true;
+			this.lblEnumerationStatus.Location = new System.Drawing.Point(3, 87);
+			this.lblEnumerationStatus.Name = "lblEnumerationStatus";
+			this.lblEnumerationStatus.Size = new System.Drawing.Size(22, 13);
+			this.lblEnumerationStatus.TabIndex = 2;
+			this.lblEnumerationStatus.Text = "     ";
+			// 
 			// OptionsForm
 			// 
 			this.AcceptButton = this.btnOkay;
@@ -662,6 +721,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
 			this.splitContainer1.ResumeLayout(false);
 			this.flowLayoutPanel1.ResumeLayout(false);
+			this.flowLayoutPanel1.PerformLayout();
 			this.flowLayoutPanel2.ResumeLayout(false);
 			this.flowLayoutPanel2.PerformLayout();
 			this.panel2.ResumeLayout(false);
@@ -728,5 +788,10 @@
         private System.Windows.Forms.NumericUpDown numSimulTasks;
         private System.Windows.Forms.Label lblSimulTasks;
 		private System.Windows.Forms.Button btnHelp;
+		private System.Windows.Forms.TextBox txtSuffixFilter;
+		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.Button btnAddDir;
+		private System.Windows.Forms.Button btnSuffixFilter;
+		private System.Windows.Forms.Label lblEnumerationStatus;
     }
 }

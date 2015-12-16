@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -80,6 +81,32 @@ namespace LoopingAudioConverter {
 			}
 		}
 
+		private void btnAddDir_Click(object sender, EventArgs e) {
+			using (FolderBrowserDialog d = new FolderBrowserDialog()) {
+				if (d.ShowDialog() == DialogResult.OK) {
+					btnAddDir.Enabled = false;
+					lblEnumerationStatus.Text = "Finding files...";
+					Task<string[]> enumerateFiles = new Task<string[]>(() => {
+						return Directory.EnumerateFiles(d.SelectedPath, "*.*", SearchOption.AllDirectories).ToArray();
+					});
+					enumerateFiles.ContinueWith(t => {
+						if (t.IsFaulted) {
+							MessageBox.Show("Could not enumerate files in this directory.");
+						} else {
+							this.BeginInvoke(new Action(() => {
+								listBox1.Items.AddRange(t.Result);
+							}));
+						}
+						this.BeginInvoke(new Action(() => {
+							btnAddDir.Enabled = true;
+							lblEnumerationStatus.Text = "";
+						}));
+					});
+					enumerateFiles.Start();
+				}
+			}
+		}
+
 		private void btnRemove_Click(object sender, EventArgs e) {
 			SortedSet<int> set = new SortedSet<int>();
 			foreach (int index in listBox1.SelectedIndices) {
@@ -148,6 +175,10 @@ namespace LoopingAudioConverter {
 		}
 
 		private void btnOkay_Click(object sender, EventArgs e) {
+			if (txtSuffixFilter.Text != "") {
+				MessageBox.Show(this, "\"Copy files ending with\" has text in it, but you didn't click Filter. You might want to do this before continuing. If not, clear the text field and try again.");
+				return;
+			}
 			Options o = this.GetOptions();
 			this.listBox1.Items.Clear();
 			Task t = new Task(() => Program.Run(o));
@@ -178,6 +209,18 @@ namespace LoopingAudioConverter {
 					break;
 			}
 			this.Text = text;
+		}
+
+		private void btnSuffixFilter_Click(object sender, EventArgs e) {
+			List<string> filenames = new List<string>();
+			string suffix = txtSuffixFilter.Text;
+			foreach (object item in listBox1.Items) {
+				string s = item.ToString();
+				if (s.EndsWith(suffix, StringComparison.InvariantCultureIgnoreCase)) filenames.Add(s);
+			}
+			listBox1.Items.Clear();
+			listBox1.Items.AddRange(filenames.ToArray());
+			txtSuffixFilter.Text = "";
 		}
 	}
 }

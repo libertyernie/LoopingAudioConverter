@@ -18,6 +18,7 @@ namespace LoopingAudioConverter {
 			InitializeComponent();
 
 			totalProgressRow = new MultipleProgressRow("Total progress");
+			totalProgressRow.Dock = DockStyle.Fill;
 			this.pnlTotalProgress2.Controls.Add(totalProgressRow);
 		}
 

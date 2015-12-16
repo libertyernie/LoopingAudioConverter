@@ -43,14 +43,6 @@ namespace LoopingAudioConverter {
 					"Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
 
-			if (!Directory.Exists(o.OutputDir)) {
-				try {
-					Directory.CreateDirectory(o.OutputDir);
-				} catch (Exception e) {
-					MessageBox.Show("Could not create output directory " + o.OutputDir + ": " + e.Message);
-				}
-			}
-
 			SoX sox = new SoX(ConfigurationManager.AppSettings["sox_path"]);
 
 			IAudioImporter[] importers = {
@@ -92,10 +84,6 @@ namespace LoopingAudioConverter {
 				window.ShowDialog();
 			})).Start();
 
-			if (!o.InputFiles.Any()) {
-				MessageBox.Show("No input files were selected.");
-			}
-
 			Dictionary<string, Tuple<int, int>> loopOverrides = new Dictionary<string, Tuple<int, int>>();
 			if (File.Exists("loop.txt")) {
 				using (StreamReader sr = new StreamReader("loop.txt")) {
@@ -118,9 +106,13 @@ namespace LoopingAudioConverter {
 				}
 			}
 
+			if (!o.InputFiles.Any()) {
+				MessageBox.Show("No input files were selected.");
+			}
+
 			int i = 0;
 			float maxProgress = o.InputFiles.Count() * 2;
-			window.ShowProgress();
+			if (o.InputFiles.Any()) window.ShowProgress();
 
 			List<string> exported = new List<string>();
 			foreach (string inputFile in o.InputFiles) {
@@ -191,13 +183,32 @@ namespace LoopingAudioConverter {
 				if (o.ChannelSplit == ChannelSplit.Pairs) wavsToExport = wavsToExport.SelectMany(x => x.SplitMultiChannelToStereo()).ToList();
 				if (o.ChannelSplit == ChannelSplit.Each) wavsToExport = wavsToExport.SelectMany(x => x.SplitMultiChannelToMono()).ToList();
 
+				string outputDir = o.OutputDir;
+				string inputDir = Path.GetDirectoryName(inputFile);
+				for (int x = 0; x < 100; x++) {
+					int index = outputDir.LastIndexOf('*');
+					if (index < 0) break;
+
+					string replacement = Path.GetFileName(inputDir);
+					outputDir = outputDir.Substring(0, index) + replacement + outputDir.Substring(index + 1);
+					inputDir = Path.GetDirectoryName(inputDir);
+				}
+
+				if (!Directory.Exists(outputDir)) {
+					try {
+						Directory.CreateDirectory(outputDir);
+					} catch (Exception e) {
+						MessageBox.Show("Could not create output directory " + o.OutputDir + ": " + e.Message);
+					}
+				}
+
 				sem.Release();
 
 				foreach (NamedAudio toExport in wavsToExport) {
 					sem.WaitOne();
 					MultipleProgressRow row = window.AddEncodingRow(toExport.Name);
 					if (o.NumSimulTasks == 1) {
-						exporter.WriteFile(toExport.LWAV, o.OutputDir, toExport.Name, row);
+						exporter.WriteFile(toExport.LWAV, outputDir, toExport.Name, row);
 						lock (exported) {
 							exported.Add(toExport.Name);
 						}
@@ -205,7 +216,7 @@ namespace LoopingAudioConverter {
 						sem.Release();
 						row.Remove();
 					} else {
-						Task task = exporter.WriteFileAsync(toExport.LWAV, o.OutputDir, toExport.Name, row);
+						Task task = exporter.WriteFileAsync(toExport.LWAV, outputDir, toExport.Name, row);
 						tasks.Add(task.ContinueWith(t => {
 							lock (exported) {
 								exported.Add(toExport.Name);

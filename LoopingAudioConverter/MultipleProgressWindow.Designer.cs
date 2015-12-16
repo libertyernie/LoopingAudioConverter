@@ -115,6 +115,9 @@
 			// 
 			// pnlTotalProgress2
 			// 
+			this.pnlTotalProgress2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.pnlTotalProgress2.Location = new System.Drawing.Point(12, 12);
 			this.pnlTotalProgress2.Name = "pnlTotalProgress2";
 			this.pnlTotalProgress2.Size = new System.Drawing.Size(260, 33);
