@@ -6,6 +6,7 @@ Supported input formats:
 
     WAV (with or without "smpl" chunk to denote looping audio)
     MP3, using madplay
+	M4A/AAC, using faad
     VGM/VGZ, using vgm2wav
     Any audio format supported by SoX
     Any audio format supported by vgmstream
