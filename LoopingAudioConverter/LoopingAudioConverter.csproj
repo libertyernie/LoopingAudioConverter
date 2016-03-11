@@ -108,15 +108,15 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RSTMLib\RSTMLib.csproj">
-      <Project>{41c94979-ce5a-4582-888a-1bee98dd43d3}</Project>
-      <Name>RSTMLib</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="About.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\brawltools\BrawlLib\RSTMLib.csproj">
+      <Project>{41c94979-ce5a-4582-888a-1bee98dd43d3}</Project>
+      <Name>RSTMLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,3 +1,6 @@
 [submodule "RSTMLib"]
 	path = RSTMLib
 	url = https://github.com/libertyernie/RSTMLib.git
+[submodule "brawltools"]
+	path = brawltools
+	url = https://github.com/libertyernie/brawltools
