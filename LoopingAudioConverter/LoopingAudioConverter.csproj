@@ -55,6 +55,7 @@
     <Compile Include="Brawl\ConsoleProgressTracker.cs" />
     <Compile Include="Brawl\EncodingProgressWrapper.cs" />
     <Compile Include="Brawl\PCM16AudioStream.cs" />
+    <Compile Include="Brawl\CSTMExporter.cs" />
     <Compile Include="Brawl\RSTMExporter.cs" />
     <Compile Include="FLACExporter.cs" />
     <Compile Include="Interfaces.cs" />

@@ -59,7 +59,10 @@ namespace LoopingAudioConverter {
 				case ExporterType.BRSTM:
 					exporter = new RSTMExporter();
 					break;
-				case ExporterType.FLAC:
+                case ExporterType.BCSTM:
+                    exporter = new CSTMExporter();
+                    break;
+                case ExporterType.FLAC:
 					exporter = new FLACExporter(sox);
 					break;
 				case ExporterType.MP3:

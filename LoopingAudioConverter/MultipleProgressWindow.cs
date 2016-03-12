@@ -58,6 +58,10 @@ namespace LoopingAudioConverter {
 		}
 
 		public void ShowProgress() {
+            if (this.InvokeRequired) {
+                this.BeginInvoke(new Action(ShowProgress));
+                return;
+            }
 			pnlTotalProgress.Visible = true;
 			totalProgressRow.ShowProgress();
 		}

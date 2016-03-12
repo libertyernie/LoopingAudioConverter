@@ -6,6 +6,7 @@ using System.Text;
 namespace LoopingAudioConverter {
 	public enum ExporterType {
 		BRSTM,
+        BCSTM,
 		WAV,
 		FLAC,
 		MP3,

@@ -33,6 +33,7 @@ namespace LoopingAudioConverter {
 			InitializeComponent();
 			comboBox1.DataSource = new List<NVPair>() {
 				new NVPair(ExporterType.BRSTM, "BRSTM"),
+				new NVPair(ExporterType.BCSTM, "BCSTM"),
 				new NVPair(ExporterType.WAV, "WAV (+smpl)"),
 				new NVPair(ExporterType.FLAC, "FLAC"),
 				new NVPair(ExporterType.MP3, "MP3"),
