@@ -6,18 +6,18 @@ using System.Text;
 namespace LoopingAudioConverter {
 	public enum ExporterType {
 		BRSTM,
-        BCSTM,
+		BCSTM,
 		WAV,
 		FLAC,
 		MP3,
 		OggVorbis
 	}
 
-    public enum ChannelSplit {
-        OneFile,
-        Pairs,
-        Each
-    }
+	public enum ChannelSplit {
+		OneFile,
+		Pairs,
+		Each
+	}
 
 	public class Options {
 		public IEnumerable<string> InputFiles { get; set; }
@@ -26,7 +26,7 @@ namespace LoopingAudioConverter {
 		public int? MaxSampleRate { get; set; }
 		public decimal? AmplifydB { get; set; }
 		public decimal? AmplifyRatio { get; set; }
-        public ChannelSplit ChannelSplit { get; set; }
+		public ChannelSplit ChannelSplit { get; set; }
 		public ExporterType ExporterType { get; set; }
 		public bool ExportWholeSong { get; set; }
 		public string WholeSongSuffix { get; set; }
@@ -36,6 +36,7 @@ namespace LoopingAudioConverter {
 		public string PreLoopSuffix { get; set; }
 		public bool ExportLoop { get; set; }
 		public string LoopSuffix { get; set; }
-        public int NumSimulTasks { get; set; }
+		public int NumSimulTasks { get; set; }
+		public bool ShortCircuit { get; set; }
 	}
 }

@@ -69,7 +69,8 @@ namespace LoopingAudioConverter {
 				PreLoopSuffix = txt0StartFilenamePattern.Text,
 				ExportLoop = chkStartEnd.Checked,
 				LoopSuffix = txtStartEndFilenamePattern.Text,
-                NumSimulTasks = (int)numSimulTasks.Value
+                NumSimulTasks = (int)numSimulTasks.Value,
+                ShortCircuit = chkShortCircuit.Checked
 			};
 		}
 

@@ -1,4 +1,5 @@
-﻿using LoopingAudioConverter.Brawl;
+﻿using BrawlLib.Wii.Audio;
+using LoopingAudioConverter.Brawl;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -59,10 +60,10 @@ namespace LoopingAudioConverter {
 				case ExporterType.BRSTM:
 					exporter = new RSTMExporter();
 					break;
-                case ExporterType.BCSTM:
-                    exporter = new CSTMExporter();
-                    break;
-                case ExporterType.FLAC:
+				case ExporterType.BCSTM:
+					exporter = new CSTMExporter();
+					break;
+				case ExporterType.FLAC:
 					exporter = new FLACExporter(sox);
 					break;
 				case ExporterType.MP3:
@@ -123,11 +124,55 @@ namespace LoopingAudioConverter {
 				if (tasks.Any(t => t.IsFaulted)) break;
 				if (window.Canceled) break;
 
+				string outputDir = o.OutputDir;
+				string inputDir = Path.GetDirectoryName(inputFile);
+				for (int x = 0; x < 100; x++) {
+					int index = outputDir.LastIndexOf('*');
+					if (index < 0) break;
+
+					string replacement = Path.GetFileName(inputDir);
+					outputDir = outputDir.Substring(0, index) + replacement + outputDir.Substring(index + 1);
+					inputDir = Path.GetDirectoryName(inputDir);
+				}
+
+				if (!Directory.Exists(outputDir)) {
+					try {
+						Directory.CreateDirectory(outputDir);
+					} catch (Exception e) {
+						MessageBox.Show("Could not create output directory " + o.OutputDir + ": " + e.Message);
+					}
+				}
+
 				string filename_no_ext = Path.GetFileNameWithoutExtension(inputFile);
 				window.SetDecodingText(filename_no_ext);
 
-				PCM16Audio w = null;
 				string extension = Path.GetExtension(inputFile);
+
+				if (o.ShortCircuit) {
+					if (o.ExporterType == ExporterType.BCSTM && extension.Equals(".brstm", StringComparison.InvariantCultureIgnoreCase)) {
+						byte[] rstm = File.ReadAllBytes(inputFile);
+						byte[] cstm = CSTMConverter.FromRSTM(rstm);
+						string outputFile = filename_no_ext + ".bcstm";
+						File.WriteAllBytes(Path.Combine(outputDir, outputFile), cstm);
+						lock (exported) {
+							exported.Add(outputFile);
+						}
+						sem.Release();
+						continue;
+					} else if (o.ExporterType == ExporterType.BRSTM && extension.Equals(".bcstm", StringComparison.InvariantCultureIgnoreCase)) {
+						byte[] cstm = File.ReadAllBytes(inputFile);
+						byte[] rstm = CSTMConverter.ToRSTM(cstm);
+						string outputFile = filename_no_ext + ".brstm";
+						File.WriteAllBytes(Path.Combine(outputDir, outputFile), rstm);
+						lock (exported) {
+							exported.Add(outputFile);
+						}
+						sem.Release();
+						continue;
+					}
+				}
+
+				PCM16Audio w = null;
 				List<AudioImporterException> exceptions = new List<AudioImporterException>();
 
 				var importers_supported = importers.Where(im => im.SupportsExtension(extension));
@@ -185,25 +230,6 @@ namespace LoopingAudioConverter {
 
 				if (o.ChannelSplit == ChannelSplit.Pairs) wavsToExport = wavsToExport.SelectMany(x => x.SplitMultiChannelToStereo()).ToList();
 				if (o.ChannelSplit == ChannelSplit.Each) wavsToExport = wavsToExport.SelectMany(x => x.SplitMultiChannelToMono()).ToList();
-
-				string outputDir = o.OutputDir;
-				string inputDir = Path.GetDirectoryName(inputFile);
-				for (int x = 0; x < 100; x++) {
-					int index = outputDir.LastIndexOf('*');
-					if (index < 0) break;
-
-					string replacement = Path.GetFileName(inputDir);
-					outputDir = outputDir.Substring(0, index) + replacement + outputDir.Substring(index + 1);
-					inputDir = Path.GetDirectoryName(inputDir);
-				}
-
-				if (!Directory.Exists(outputDir)) {
-					try {
-						Directory.CreateDirectory(outputDir);
-					} catch (Exception e) {
-						MessageBox.Show("Could not create output directory " + o.OutputDir + ": " + e.Message);
-					}
-				}
 
 				sem.Release();
 

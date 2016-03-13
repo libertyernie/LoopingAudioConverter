@@ -1,33 +1,33 @@
 ﻿namespace LoopingAudioConverter
 {
-    partial class OptionsForm
-    {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
+	partial class OptionsForm
+	{
+		/// <summary>
+		/// Required designer variable.
+		/// </summary>
+		private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+		/// <summary>
+		/// Clean up any resources being used.
+		/// </summary>
+		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing && (components != null))
+			{
+				components.Dispose();
+			}
+			base.Dispose(disposing);
+		}
 
-        #region Windows Form Designer generated code
+		#region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
+		/// <summary>
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
+		/// </summary>
+		private void InitializeComponent()
+		{
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.btnSuffixFilter = new System.Windows.Forms.Button();
 			this.txtSuffixFilter = new System.Windows.Forms.TextBox();
@@ -40,6 +40,7 @@
 			this.btnAdd = new System.Windows.Forms.Button();
 			this.btnAddDir = new System.Windows.Forms.Button();
 			this.btnRemove = new System.Windows.Forms.Button();
+			this.lblEnumerationStatus = new System.Windows.Forms.Label();
 			this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
 			this.panel2 = new System.Windows.Forms.Panel();
 			this.numAmplifyRatio = new System.Windows.Forms.NumericUpDown();
@@ -77,7 +78,7 @@
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.btnHelp = new System.Windows.Forms.Button();
 			this.btnOkay = new System.Windows.Forms.Button();
-			this.lblEnumerationStatus = new System.Windows.Forms.Label();
+			this.chkShortCircuit = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
@@ -119,7 +120,7 @@
 			// splitContainer1.Panel2
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.flowLayoutPanel2);
-			this.splitContainer1.Size = new System.Drawing.Size(534, 391);
+			this.splitContainer1.Size = new System.Drawing.Size(534, 411);
 			this.splitContainer1.SplitterDistance = 161;
 			this.splitContainer1.TabIndex = 0;
 			// 
@@ -166,7 +167,7 @@
 			// txtOutputDir
 			// 
 			this.txtOutputDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.txtOutputDir.Location = new System.Drawing.Point(99, 138);
 			this.txtOutputDir.Name = "txtOutputDir";
 			this.txtOutputDir.Size = new System.Drawing.Size(314, 20);
@@ -188,8 +189,8 @@
 			// 
 			this.listBox1.AllowDrop = true;
 			this.listBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Left) 
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.listBox1.FormattingEnabled = true;
 			this.listBox1.IntegralHeight = false;
 			this.listBox1.Location = new System.Drawing.Point(3, 3);
@@ -247,19 +248,29 @@
 			this.btnRemove.UseVisualStyleBackColor = true;
 			this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
 			// 
+			// lblEnumerationStatus
+			// 
+			this.lblEnumerationStatus.AutoSize = true;
+			this.lblEnumerationStatus.Location = new System.Drawing.Point(3, 87);
+			this.lblEnumerationStatus.Name = "lblEnumerationStatus";
+			this.lblEnumerationStatus.Size = new System.Drawing.Size(22, 13);
+			this.lblEnumerationStatus.TabIndex = 2;
+			this.lblEnumerationStatus.Text = "	 ";
+			// 
 			// flowLayoutPanel2
 			// 
 			this.flowLayoutPanel2.AutoScroll = true;
 			this.flowLayoutPanel2.Controls.Add(this.panel2);
 			this.flowLayoutPanel2.Controls.Add(this.pnlExportChannels);
 			this.flowLayoutPanel2.Controls.Add(this.pnlExportSegments);
+			this.flowLayoutPanel2.Controls.Add(this.chkShortCircuit);
 			this.flowLayoutPanel2.Controls.Add(this.panel3);
 			this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
 			this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 0);
 			this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
 			this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-			this.flowLayoutPanel2.Size = new System.Drawing.Size(534, 226);
+			this.flowLayoutPanel2.Size = new System.Drawing.Size(534, 246);
 			this.flowLayoutPanel2.TabIndex = 23;
 			// 
 			// panel2
@@ -283,19 +294,19 @@
 			this.numAmplifyRatio.DecimalPlaces = 3;
 			this.numAmplifyRatio.Enabled = false;
 			this.numAmplifyRatio.Increment = new decimal(new int[] {
-            25,
-            0,
-            0,
-            131072});
+			25,
+			0,
+			0,
+			131072});
 			this.numAmplifyRatio.Location = new System.Drawing.Point(158, 81);
 			this.numAmplifyRatio.Name = "numAmplifyRatio";
 			this.numAmplifyRatio.Size = new System.Drawing.Size(66, 20);
 			this.numAmplifyRatio.TabIndex = 6;
 			this.numAmplifyRatio.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+			1,
+			0,
+			0,
+			0});
 			// 
 			// chkAmplifyRatio
 			// 
@@ -312,10 +323,10 @@
 			this.numAmplifydB.Enabled = false;
 			this.numAmplifydB.Location = new System.Drawing.Point(158, 55);
 			this.numAmplifydB.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
+			100,
+			0,
+			0,
+			-2147483648});
 			this.numAmplifydB.Name = "numAmplifydB";
 			this.numAmplifydB.Size = new System.Drawing.Size(66, 20);
 			this.numAmplifydB.TabIndex = 4;
@@ -334,29 +345,29 @@
 			// 
 			this.numMaxSampleRate.Enabled = false;
 			this.numMaxSampleRate.Increment = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
+			100,
+			0,
+			0,
+			0});
 			this.numMaxSampleRate.Location = new System.Drawing.Point(158, 29);
 			this.numMaxSampleRate.Maximum = new decimal(new int[] {
-            48000,
-            0,
-            0,
-            0});
+			48000,
+			0,
+			0,
+			0});
 			this.numMaxSampleRate.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+			1,
+			0,
+			0,
+			0});
 			this.numMaxSampleRate.Name = "numMaxSampleRate";
 			this.numMaxSampleRate.Size = new System.Drawing.Size(66, 20);
 			this.numMaxSampleRate.TabIndex = 2;
 			this.numMaxSampleRate.Value = new decimal(new int[] {
-            32000,
-            0,
-            0,
-            0});
+			32000,
+			0,
+			0,
+			0});
 			// 
 			// chkMaxSampleRate
 			// 
@@ -590,18 +601,18 @@
 			// 
 			this.numNumberLoops.Location = new System.Drawing.Point(172, 56);
 			this.numNumberLoops.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+			1,
+			0,
+			0,
+			0});
 			this.numNumberLoops.Name = "numNumberLoops";
 			this.numNumberLoops.Size = new System.Drawing.Size(53, 20);
 			this.numNumberLoops.TabIndex = 6;
 			this.numNumberLoops.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+			1,
+			0,
+			0,
+			0});
 			// 
 			// label1
 			// 
@@ -626,7 +637,7 @@
 			this.panel3.AutoSize = true;
 			this.panel3.Controls.Add(this.numSimulTasks);
 			this.panel3.Controls.Add(this.lblSimulTasks);
-			this.panel3.Location = new System.Drawing.Point(230, 166);
+			this.panel3.Location = new System.Drawing.Point(230, 189);
 			this.panel3.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
 			this.panel3.Name = "panel3";
 			this.panel3.Size = new System.Drawing.Size(198, 28);
@@ -636,23 +647,23 @@
 			// 
 			this.numSimulTasks.Location = new System.Drawing.Point(142, 4);
 			this.numSimulTasks.Maximum = new decimal(new int[] {
-            128,
-            0,
-            0,
-            0});
+			128,
+			0,
+			0,
+			0});
 			this.numSimulTasks.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+			1,
+			0,
+			0,
+			0});
 			this.numSimulTasks.Name = "numSimulTasks";
 			this.numSimulTasks.Size = new System.Drawing.Size(53, 20);
 			this.numSimulTasks.TabIndex = 1;
 			this.numSimulTasks.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+			1,
+			0,
+			0,
+			0});
 			// 
 			// lblSimulTasks
 			// 
@@ -668,7 +679,7 @@
 			this.panel1.Controls.Add(this.btnHelp);
 			this.panel1.Controls.Add(this.btnOkay);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.panel1.Location = new System.Drawing.Point(0, 391);
+			this.panel1.Location = new System.Drawing.Point(0, 411);
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(534, 30);
 			this.panel1.TabIndex = 23;
@@ -696,21 +707,24 @@
 			this.btnOkay.UseVisualStyleBackColor = true;
 			this.btnOkay.Click += new System.EventHandler(this.btnOkay_Click);
 			// 
-			// lblEnumerationStatus
+			// chkShortCircuit
 			// 
-			this.lblEnumerationStatus.AutoSize = true;
-			this.lblEnumerationStatus.Location = new System.Drawing.Point(3, 87);
-			this.lblEnumerationStatus.Name = "lblEnumerationStatus";
-			this.lblEnumerationStatus.Size = new System.Drawing.Size(22, 13);
-			this.lblEnumerationStatus.TabIndex = 2;
-			this.lblEnumerationStatus.Text = "     ";
+			this.chkShortCircuit.AutoSize = true;
+			this.chkShortCircuit.Checked = true;
+			this.chkShortCircuit.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.chkShortCircuit.Location = new System.Drawing.Point(233, 166);
+			this.chkShortCircuit.Name = "chkShortCircuit";
+			this.chkShortCircuit.Size = new System.Drawing.Size(227, 17);
+			this.chkShortCircuit.TabIndex = 1;
+			this.chkShortCircuit.Text = "Convert directly between BRSTM, BCSTM";
+			this.chkShortCircuit.UseVisualStyleBackColor = false;
 			// 
 			// OptionsForm
 			// 
 			this.AcceptButton = this.btnOkay;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(534, 421);
+			this.ClientSize = new System.Drawing.Size(534, 441);
 			this.Controls.Add(this.splitContainer1);
 			this.Controls.Add(this.panel1);
 			this.Name = "OptionsForm";
@@ -739,13 +753,13 @@
 			this.panel1.ResumeLayout(false);
 			this.ResumeLayout(false);
 
-        }
+		}
 
-        #endregion
+		#endregion
 
-        private System.Windows.Forms.SplitContainer splitContainer1;
+		private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.Button btnRemove;
+		private System.Windows.Forms.Button btnRemove;
 		private System.Windows.Forms.Button btnAdd;
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
 		private System.Windows.Forms.ComboBox comboBox1;
@@ -784,14 +798,15 @@
 		private System.Windows.Forms.TextBox txtOutputDir;
 		private System.Windows.Forms.Label lblOutputDir;
 		private System.Windows.Forms.Button btnBrowse;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.NumericUpDown numSimulTasks;
-        private System.Windows.Forms.Label lblSimulTasks;
+		private System.Windows.Forms.Panel panel3;
+		private System.Windows.Forms.NumericUpDown numSimulTasks;
+		private System.Windows.Forms.Label lblSimulTasks;
 		private System.Windows.Forms.Button btnHelp;
 		private System.Windows.Forms.TextBox txtSuffixFilter;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.Button btnAddDir;
 		private System.Windows.Forms.Button btnSuffixFilter;
 		private System.Windows.Forms.Label lblEnumerationStatus;
-    }
+		private System.Windows.Forms.CheckBox chkShortCircuit;
+	}
 }
