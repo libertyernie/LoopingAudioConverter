@@ -52,19 +52,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Brawl\ConsoleProgressTracker.cs" />
     <Compile Include="Brawl\EncodingProgressWrapper.cs" />
-    <Compile Include="Brawl\PCM16AudioStream.cs" />
     <Compile Include="Brawl\CSTMExporter.cs" />
     <Compile Include="Brawl\RSTMExporter.cs" />
     <Compile Include="FLACExporter.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="MP4Importer.cs" />
-    <Compile Include="PCM16Audio.cs" />
     <Compile Include="TempFiles.cs" />
     <Compile Include="VGMImporter.cs" />
     <Compile Include="WAVExporter.cs" />
-    <Compile Include="PCM16Factory.cs" />
     <Compile Include="WAVImporter.cs" />
     <Compile Include="MP3Exporter.cs" />
     <Compile Include="MP3Importer.cs" />
@@ -118,8 +114,16 @@
       <Project>{41c94979-ce5a-4582-888a-1bee98dd43d3}</Project>
       <Name>RSTMLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RSTMLib.WAV\RSTMLib.WAV.csproj">
+      <Project>{6a05884b-9b0d-4a19-b4b3-e0bcc0505f9a}</Project>
+      <Name>RSTMLib.WAV</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
