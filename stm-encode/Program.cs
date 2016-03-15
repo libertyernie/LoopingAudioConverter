@@ -12,6 +12,7 @@ namespace stm_encode {
         static int usage() {
             Console.Error.WriteLine(@"stm-encode - encode and convert between RSTM and CSTM
 Based on code from BrawlLib
+https://github.com/libertyernie/LoopingAudioConverter/stm-encode
 
 This program is provided as-is without any warranty, implied or otherwise.
 By using this program, the end user agrees to take full responsibility
