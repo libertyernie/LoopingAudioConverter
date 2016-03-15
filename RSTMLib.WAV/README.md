@@ -8,3 +8,7 @@ of BrawlLib's IAudioStream that wraps around WAV data.
 
 This library does not decode RSTM or CSTM streams; it's recommended to use
 vgmstream for that.
+
+RSTMLib.WAV may be used under the same terms as RSTMLib, under the terms of
+the MIT License (https://opensource.org/licenses/MIT), or under the terms of
+the GNU Lesser General Public License, version 3.0, or any later version.
