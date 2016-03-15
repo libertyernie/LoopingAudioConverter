@@ -20,13 +20,23 @@ held responsible for any damage resulting in the use of this program, nor can
 they be held accountable for the manner in which it is used.
 
 Usage:
-stm-encode [-l<start-end>] <inputfile> <outputfile>
+stm-encode [options] <inputfile> <outputfile>
 
-inputfile can be RSTM, CSTM, or WAV. outputfile can be RSTM or CSTM.");
+inputfile can be RSTM, CSTM, or WAV. outputfile can be RSTM or CSTM.
+
+Options (WAV input only):
+    -l             Loop from start of file until end of file
+    -l<start>      Loop from sample <start> until end of file
+    -l<start-end>  Loop from sample <start> until sample <end>
+    -noloop        Do not loop (ignore smpl chunk in WAV file if one exists)");
             return 1;
         }
 
         unsafe static int Main(string[] args) {
+            if (args.Length == 0) {
+                return usage();
+            }
+
             bool? looping = null;
             int? loopStart = null, loopEnd = null;
             string inputFile = null, outputFile = null;
@@ -35,14 +45,16 @@ inputfile can be RSTM, CSTM, or WAV. outputfile can be RSTM or CSTM.");
                 if (s == "/?" || s == "-h" || s == "--help") {
                     return usage();
                 } else if (s.StartsWith("-l")) {
+                    looping = true;
                     string[] split = s.Substring(2).Split('-');
-                    if (split.Length == 0) {
-                        looping = false;
-                    } else {
-                        looping = true;
+                    if (split.Length > 0) {
                         loopStart = int.Parse(split[0]);
-                        if (split.Length > 1) loopEnd = int.Parse(split[1]);
+                        if (split.Length > 1) {
+                            loopEnd = int.Parse(split[1]);
+                        }
                     }
+                } else if (s == "-noloop") {
+                    looping = false;
                 } else if (inputFile == null) {
                     inputFile = s;
                 } else if (outputFile == null) {
@@ -90,6 +102,9 @@ inputfile can be RSTM, CSTM, or WAV. outputfile can be RSTM or CSTM.");
             switch (tag) {
                 case "RIFF":
                     PCM16Audio wav = PCM16Factory.FromByteArray(inputarr);
+                    wav.Looping = looping ?? wav.Looping;
+                    wav.LoopStart = loopStart ?? wav.LoopStart;
+                    wav.LoopEnd = loopEnd ?? wav.LoopEnd;
                     rstm = RSTMConverter.EncodeToByteArray(new PCM16AudioStream(wav), new ConsoleProgressTracker());
                     break;
                 case "RSTM":
