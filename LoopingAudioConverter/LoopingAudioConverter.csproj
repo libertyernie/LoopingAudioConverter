@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Brawl\FSTMExporter.cs" />
     <Compile Include="Brawl\EncodingProgressWrapper.cs" />
     <Compile Include="Brawl\CSTMExporter.cs" />
     <Compile Include="Brawl\RSTMExporter.cs" />

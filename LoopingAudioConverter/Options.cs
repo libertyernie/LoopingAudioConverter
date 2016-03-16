@@ -7,6 +7,7 @@ namespace LoopingAudioConverter {
 	public enum ExporterType {
 		BRSTM,
 		BCSTM,
+		BFSTM,
 		WAV,
 		FLAC,
 		MP3,

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace stm_encode {
     class Program {
         static int usage() {
-            Console.Error.WriteLine(@"stm-encode - encode and convert between RSTM and CSTM
+            Console.Error.WriteLine(@"stm-encode - encode and convert between RSTM, CSTM, and FSTM
 Based on code from BrawlLib
 https://github.com/libertyernie/LoopingAudioConverter/stm-encode
 
@@ -23,7 +23,8 @@ they be held accountable for the manner in which it is used.
 Usage:
 stm-encode [options] <inputfile> <outputfile>
 
-inputfile can be RSTM, CSTM, or WAV. outputfile can be RSTM or CSTM.
+inputfile can be .brstm, .bcstm, .bfstm, or .wav.
+outputfile can be .brstm, .bcstm, or .bfstm.
 
 Options (WAV input only):
     -l             Loop from start of file until end of file
@@ -94,7 +95,7 @@ Options (WAV input only):
             }
 
             string ext = Path.GetExtension(outputFile).ToLowerInvariant();
-            if (ext != ".brstm" && ext != ".bcstm") {
+            if (ext != ".brstm" && ext != ".bcstm" && ext != ".bfstm") {
                 Console.Error.WriteLine("Unsupported output format: " + ext);
                 return 1;
             }
@@ -114,6 +115,9 @@ Options (WAV input only):
                 case "CSTM":
                     rstm = CSTMConverter.ToRSTM(inputarr);
                     break;
+                case "FSTM":
+                    rstm = FSTMConverter.ToRSTM(inputarr);
+                    break;
                 default:
                     Console.Error.WriteLine("Unknown file format: " + tag);
                     return 1;
@@ -121,6 +125,7 @@ Options (WAV input only):
 
             byte[] outputarr =
                 ext == ".bcstm" ? CSTMConverter.FromRSTM(rstm)
+                : ext == ".bfstm" ? FSTMConverter.FromRSTM(rstm)
                 : rstm;
             File.WriteAllBytes(outputFile, outputarr);
 

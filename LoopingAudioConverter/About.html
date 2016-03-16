@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -29,13 +29,13 @@
         read these loops)</li>
       <li>MP3, using lame</li>
       <li>FLAC or Ogg Vorbis, using SoX</li>
-      <li>RSTM (.brstm) and CSTM (.bcstm), using RSTMLib, a subset of
-        BrawlLib</li>
+      <li>RSTM (.brstm) / CSTM (.bcstm) / FSTM (.bfstm), using RSTMLib,
+        a subset of BrawlLib</li>
     </ul>
     <hr size="2" width="100%">
     <p>The source code to Looping Audio Converter is released under the
-      GNU LGPL, version 3 or later. This license does not include RSTMLib
-      (see below.)<br>
+      GNU LGPL, version 3 or later. This license does not include
+      RSTMLib (see below.)<br>
     </p>
     <p>Looping Audio Converter does not do any encoding or decoding
       itself of any format besides WAV. Other formats are handled by
@@ -86,8 +86,7 @@
         authors/hosts/distributors cannot be held responsible for any
         damage resulting in the use of this program, nor can they be
         held accountable for the manner in which it is used."<br>
-        RSTMLib is included inside LoopingAudioConverter.exe.
-      </li>
+        RSTMLib is included inside LoopingAudioConverter.exe. </li>
     </ul>
     <hr size="2" width="100%">
     <p><img
@@ -157,11 +156,11 @@ src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhgAAAHZCAIAAABLutXLAAAgAElEQ
       <li><b>Export loop segment</b>: exports the section from the loop
         start until the loop end. The text in "suffix" will be appended
         to the filename.</li>
-      <li><b>Convert directly between BRSTM, BCSTM: </b>BrawlLib can
-        copy data between the BRSTM and BCSTM formats without
-        re-encoding. This provides a lossless conversion and is much
-        faster, but it will bypass any other conversions you specify
-        (such as sample rate or stereo-&gt;mono conversion.)<br>
+      <li><b>Convert directly between B*STM: </b>BrawlLib can copy data
+        between the BRSTM, BCSTM, and BFSTM formats without re-encoding.
+        This provides a lossless conversion* and is much faster, but it
+        will bypass any other conversions you specify (such as sample
+        rate or stereo-&gt;mono conversion.)<br>
       </li>
       <li><b>Number of simultaneous encoding/decoding tasks</b>: Audio
         encoding can take a long time, so this program lets you launch
@@ -171,6 +170,11 @@ src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhgAAAHZCAIAAABLutXLAAAgAElEQ
         (recommended) is the number of logical processor cores in your
         PC.</li>
     </ul>
+    <p><font size="-1">*Assuming there aren't any minor format
+        differences that BrawlLib doesn't know about, if you convert
+        from CSTM/FSTM to RSTM and back, the resulting file should be
+        identical to the original input.</font><br>
+    </p>
     <hr size="2" width="100%">
     <p>If your input files don't have loop points, but they should, you
       can specify them in a file called <tt>loop.txt</tt> in the folder
