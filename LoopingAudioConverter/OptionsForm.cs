@@ -29,9 +29,10 @@ namespace LoopingAudioConverter {
 			}
 		}
 
-		public OptionsForm() {
+		public OptionsForm(Options o) {
 			InitializeComponent();
-			comboBox1.DataSource = new List<NVPair>() {
+
+			var exporters = new List<NVPair>() {
 				new NVPair(ExporterType.BRSTM, "BRSTM"),
 				new NVPair(ExporterType.BCSTM, "BCSTM"),
 				new NVPair(ExporterType.BFSTM, "BFSTM"),
@@ -40,10 +41,46 @@ namespace LoopingAudioConverter {
 				new NVPair(ExporterType.MP3, "MP3"),
 				new NVPair(ExporterType.OggVorbis, "Ogg Vorbis")
 			};
+			comboBox1.DataSource = exporters;
 			if (comboBox1.SelectedIndex < 0) comboBox1.SelectedIndex = 0;
-            numSimulTasks.Value = Math.Min(Environment.ProcessorCount, numSimulTasks.Maximum);
+			numSimulTasks.Value = Math.Min(Environment.ProcessorCount, numSimulTasks.Maximum);
 
 			runningTasks = new HashSet<Task>();
+
+			LoadOptions(o);
+		}
+
+		public void LoadOptions(Options o) {
+			if (o != null) {
+				if (o.OutputDir != null)
+					txtOutputDir.Text = o.OutputDir;
+				chkMono.Checked = o.MaxChannels == 1;
+				chkMaxSampleRate.Checked = o.MaxSampleRate != null;
+				if (o.MaxSampleRate != null)
+					numMaxSampleRate.Value = o.MaxSampleRate.Value;
+				chkAmplifydB.Checked = o.AmplifydB != null;
+				if (o.AmplifydB != null)
+					numAmplifydB.Value = o.AmplifydB.Value;
+				chkAmplifyRatio.Checked = o.AmplifyRatio != null;
+				if (o.AmplifyRatio != null)
+					numAmplifyRatio.Value = o.AmplifyRatio.Value;
+				if (o.ChannelSplit == ChannelSplit.Pairs)
+					radChannelsPairs.Checked = true;
+				else if (o.ChannelSplit == ChannelSplit.Each)
+					radChannelsSeparate.Checked = true;
+				else if (o.ChannelSplit == ChannelSplit.OneFile)
+					radChannelsTogether.Checked = true;
+				comboBox1.SelectedValue = o.ExporterType;
+				chk0End.Checked = o.ExportWholeSong;
+				txt0EndFilenamePattern.Text = o.WholeSongSuffix;
+				numNumberLoops.Value = o.NumberOfLoops;
+				numFadeOutTime.Value = o.FadeOutSec;
+				chk0Start.Checked = o.ExportPreLoop;
+				txt0StartFilenamePattern.Text = o.PreLoopSuffix;
+				chkStartEnd.Checked = o.ExportLoop;
+				txtStartEndFilenamePattern.Text = o.LoopSuffix;
+				numSimulTasks.Value = o.NumSimulTasks;
+			}
 		}
 
 		public Options GetOptions() {
@@ -58,9 +95,9 @@ namespace LoopingAudioConverter {
 				MaxSampleRate = chkMaxSampleRate.Checked ? (int)numMaxSampleRate.Value : (int?)null,
 				AmplifydB = chkAmplifydB.Checked ? numAmplifydB.Value : (decimal?)null,
 				AmplifyRatio = chkAmplifyRatio.Checked ? numAmplifyRatio.Value : (decimal?)null,
-                ChannelSplit = radChannelsPairs.Checked ? ChannelSplit.Pairs
-                    : radChannelsSeparate.Checked ? ChannelSplit.Each
-                    : ChannelSplit.OneFile,
+				ChannelSplit = radChannelsPairs.Checked ? ChannelSplit.Pairs
+					: radChannelsSeparate.Checked ? ChannelSplit.Each
+					: ChannelSplit.OneFile,
 				ExporterType = (ExporterType)comboBox1.SelectedValue,
 				ExportWholeSong = chk0End.Checked,
 				WholeSongSuffix = txt0EndFilenamePattern.Text,
@@ -70,8 +107,8 @@ namespace LoopingAudioConverter {
 				PreLoopSuffix = txt0StartFilenamePattern.Text,
 				ExportLoop = chkStartEnd.Checked,
 				LoopSuffix = txtStartEndFilenamePattern.Text,
-                NumSimulTasks = (int)numSimulTasks.Value,
-                ShortCircuit = chkShortCircuit.Checked
+				NumSimulTasks = (int)numSimulTasks.Value,
+				ShortCircuit = chkShortCircuit.Checked
 			};
 		}
 
@@ -224,6 +261,25 @@ namespace LoopingAudioConverter {
 			listBox1.Items.Clear();
 			listBox1.Items.AddRange(filenames.ToArray());
 			txtSuffixFilter.Text = "";
+		}
+
+        private void btnLoadOptions_Click(object sender, EventArgs ea) {
+            using (OpenFileDialog d = new OpenFileDialog()) {
+				d.FileName = "LoopingAudioConverter.json";
+				if (d.ShowDialog() == DialogResult.OK) {
+                    LoadOptions(OptionsSerialization.FromFile(d.FileName));
+				}
+			}
+        }
+
+		private void btnSaveOptions_Click(object sender, EventArgs ea) {
+			using (SaveFileDialog d = new SaveFileDialog()) {
+				d.InitialDirectory = Environment.CurrentDirectory;
+				d.FileName = "LoopingAudioConverter.json";
+				if (d.ShowDialog() == DialogResult.OK) {
+                    OptionsSerialization.ToFile(d.FileName, GetOptions());
+				}
+			}
 		}
 	}
 }

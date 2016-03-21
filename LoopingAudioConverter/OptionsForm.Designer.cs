@@ -79,6 +79,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnHelp = new System.Windows.Forms.Button();
             this.btnOkay = new System.Windows.Forms.Button();
+            this.btnSaveOptions = new System.Windows.Forms.Button();
+            this.btnLoadOptions = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -129,7 +131,7 @@
             this.btnSuffixFilter.Location = new System.Drawing.Point(271, 113);
             this.btnSuffixFilter.Name = "btnSuffixFilter";
             this.btnSuffixFilter.Size = new System.Drawing.Size(75, 19);
-            this.btnSuffixFilter.TabIndex = 6;
+            this.btnSuffixFilter.TabIndex = 3;
             this.btnSuffixFilter.Text = "Filter";
             this.btnSuffixFilter.UseVisualStyleBackColor = true;
             this.btnSuffixFilter.Click += new System.EventHandler(this.btnSuffixFilter_Click);
@@ -140,7 +142,7 @@
             this.txtSuffixFilter.Location = new System.Drawing.Point(137, 113);
             this.txtSuffixFilter.Name = "txtSuffixFilter";
             this.txtSuffixFilter.Size = new System.Drawing.Size(128, 20);
-            this.txtSuffixFilter.TabIndex = 5;
+            this.txtSuffixFilter.TabIndex = 2;
             // 
             // label4
             // 
@@ -149,7 +151,7 @@
             this.label4.Margin = new System.Windows.Forms.Padding(3);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(128, 20);
-            this.label4.TabIndex = 4;
+            this.label4.TabIndex = 1;
             this.label4.Text = "Only files ending with:";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -159,7 +161,7 @@
             this.btnBrowse.Location = new System.Drawing.Point(419, 138);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(32, 20);
-            this.btnBrowse.TabIndex = 3;
+            this.btnBrowse.TabIndex = 6;
             this.btnBrowse.Text = "...";
             this.btnBrowse.UseVisualStyleBackColor = true;
             this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
@@ -171,7 +173,7 @@
             this.txtOutputDir.Location = new System.Drawing.Point(99, 138);
             this.txtOutputDir.Name = "txtOutputDir";
             this.txtOutputDir.Size = new System.Drawing.Size(314, 20);
-            this.txtOutputDir.TabIndex = 2;
+            this.txtOutputDir.TabIndex = 5;
             this.txtOutputDir.Text = "./output";
             // 
             // lblOutputDir
@@ -181,7 +183,7 @@
             this.lblOutputDir.Margin = new System.Windows.Forms.Padding(3);
             this.lblOutputDir.Name = "lblOutputDir";
             this.lblOutputDir.Size = new System.Drawing.Size(90, 20);
-            this.lblOutputDir.TabIndex = 1;
+            this.lblOutputDir.TabIndex = 4;
             this.lblOutputDir.Text = "Output directory:";
             this.lblOutputDir.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -197,7 +199,7 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.listBox1.Size = new System.Drawing.Size(448, 103);
-            this.listBox1.TabIndex = 0;
+            this.listBox1.TabIndex = 7;
             this.listBox1.DragDrop += new System.Windows.Forms.DragEventHandler(this.listBox1_DragDrop);
             this.listBox1.DragEnter += new System.Windows.Forms.DragEventHandler(this.listBox1_DragEnter);
             // 
@@ -232,7 +234,7 @@
             this.btnAddDir.Location = new System.Drawing.Point(3, 32);
             this.btnAddDir.Name = "btnAddDir";
             this.btnAddDir.Size = new System.Drawing.Size(74, 23);
-            this.btnAddDir.TabIndex = 2;
+            this.btnAddDir.TabIndex = 1;
             this.btnAddDir.Text = "Add Folder";
             this.btnAddDir.UseVisualStyleBackColor = true;
             this.btnAddDir.Click += new System.EventHandler(this.btnAddDir_Click);
@@ -243,7 +245,7 @@
             this.btnRemove.Location = new System.Drawing.Point(3, 61);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(74, 23);
-            this.btnRemove.TabIndex = 1;
+            this.btnRemove.TabIndex = 2;
             this.btnRemove.Text = "Remove";
             this.btnRemove.UseVisualStyleBackColor = true;
             this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
@@ -254,7 +256,7 @@
             this.lblEnumerationStatus.Location = new System.Drawing.Point(3, 87);
             this.lblEnumerationStatus.Name = "lblEnumerationStatus";
             this.lblEnumerationStatus.Size = new System.Drawing.Size(10, 13);
-            this.lblEnumerationStatus.TabIndex = 2;
+            this.lblEnumerationStatus.TabIndex = 3;
             this.lblEnumerationStatus.Text = "\t ";
             // 
             // flowLayoutPanel2
@@ -640,7 +642,7 @@
             this.chkShortCircuit.Location = new System.Drawing.Point(233, 166);
             this.chkShortCircuit.Name = "chkShortCircuit";
             this.chkShortCircuit.Size = new System.Drawing.Size(269, 17);
-            this.chkShortCircuit.TabIndex = 1;
+            this.chkShortCircuit.TabIndex = 0;
             this.chkShortCircuit.Text = "Convert directly between BRSTM, BCSTM, BFSTM";
             this.chkShortCircuit.UseVisualStyleBackColor = false;
             // 
@@ -688,8 +690,10 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnLoadOptions);
             this.panel1.Controls.Add(this.btnHelp);
             this.panel1.Controls.Add(this.btnOkay);
+            this.panel1.Controls.Add(this.btnSaveOptions);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Location = new System.Drawing.Point(0, 411);
             this.panel1.Name = "panel1";
@@ -714,10 +718,32 @@
             this.btnOkay.Location = new System.Drawing.Point(457, 4);
             this.btnOkay.Name = "btnOkay";
             this.btnOkay.Size = new System.Drawing.Size(74, 23);
-            this.btnOkay.TabIndex = 1;
+            this.btnOkay.TabIndex = 2;
             this.btnOkay.Text = "Start";
             this.btnOkay.UseVisualStyleBackColor = true;
             this.btnOkay.Click += new System.EventHandler(this.btnOkay_Click);
+            // 
+            // btnSaveOptions
+            // 
+            this.btnSaveOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSaveOptions.Location = new System.Drawing.Point(190, 4);
+            this.btnSaveOptions.Name = "btnSaveOptions";
+            this.btnSaveOptions.Size = new System.Drawing.Size(100, 23);
+            this.btnSaveOptions.TabIndex = 1;
+            this.btnSaveOptions.Text = "Save Options";
+            this.btnSaveOptions.UseVisualStyleBackColor = true;
+            this.btnSaveOptions.Click += new System.EventHandler(this.btnSaveOptions_Click);
+            // 
+            // btnLoadOptions
+            // 
+            this.btnLoadOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnLoadOptions.Location = new System.Drawing.Point(84, 4);
+            this.btnLoadOptions.Name = "btnLoadOptions";
+            this.btnLoadOptions.Size = new System.Drawing.Size(100, 23);
+            this.btnLoadOptions.TabIndex = 3;
+            this.btnLoadOptions.Text = "Load Options";
+            this.btnLoadOptions.UseVisualStyleBackColor = true;
+            this.btnLoadOptions.Click += new System.EventHandler(this.btnLoadOptions_Click);
             // 
             // OptionsForm
             // 
@@ -808,5 +834,7 @@
 		private System.Windows.Forms.Button btnSuffixFilter;
 		private System.Windows.Forms.Label lblEnumerationStatus;
 		private System.Windows.Forms.CheckBox chkShortCircuit;
+        private System.Windows.Forms.Button btnSaveOptions;
+        private System.Windows.Forms.Button btnLoadOptions;
 	}
 }

@@ -32,7 +32,16 @@ namespace LoopingAudioConverter {
 				MessageBox.Show("One or more programs could not be found; the program may not run properly. See the console for details.");
 			}
 
-			OptionsForm f = new OptionsForm();
+			Options o = null;
+			if (File.Exists("LoopingAudioConverter.json")) {
+				try {
+					o = OptionsSerialization.FromFile("LoopingAudioConverter.json");
+				} catch (Exception e) {
+					MessageBox.Show(e.Message);
+				}
+			}
+
+			OptionsForm f = new OptionsForm(o);
 			Application.Run(f);
 
 			Task.WaitAll(f.RunningTasks.ToArray());
