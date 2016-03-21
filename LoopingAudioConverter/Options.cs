@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,9 +28,7 @@ namespace LoopingAudioConverter {
 		public int? MaxSampleRate { get; set; }
 		public decimal? AmplifydB { get; set; }
 		public decimal? AmplifyRatio { get; set; }
-        [JsonConverter(typeof(StringEnumConverter))]
 		public ChannelSplit ChannelSplit { get; set; }
-        [JsonConverter(typeof(StringEnumConverter))]
 		public ExporterType ExporterType { get; set; }
 		public bool ExportWholeSong { get; set; }
 		public string WholeSongSuffix { get; set; }
@@ -44,7 +40,5 @@ namespace LoopingAudioConverter {
 		public string LoopSuffix { get; set; }
 		public bool ShortCircuit { get; set; }
 		public int NumSimulTasks { get; set; }
-
-		public bool ShouldSerializeInputFiles() { return false; }
 	}
 }

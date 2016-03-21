@@ -29,7 +29,7 @@ namespace LoopingAudioConverter {
 			}
 		}
 
-		public OptionsForm(Options o) {
+		public OptionsForm() {
 			InitializeComponent();
 
 			var exporters = new List<NVPair>() {
@@ -46,12 +46,13 @@ namespace LoopingAudioConverter {
 			numSimulTasks.Value = Math.Min(Environment.ProcessorCount, numSimulTasks.Maximum);
 
 			runningTasks = new HashSet<Task>();
-
-			LoadOptions(o);
 		}
 
-		public void LoadOptions(Options o) {
-			if (o != null) {
+		public void LoadOptions(string filename) {
+			Options o = GetOptions();
+			try {
+				OptionsSerialization.PopulateFromFile(filename, o);
+
 				if (o.OutputDir != null)
 					txtOutputDir.Text = o.OutputDir;
 				chkMono.Checked = o.MaxChannels == 1;
@@ -80,6 +81,8 @@ namespace LoopingAudioConverter {
 				chkStartEnd.Checked = o.ExportLoop;
 				txtStartEndFilenamePattern.Text = o.LoopSuffix;
 				numSimulTasks.Value = o.NumSimulTasks;
+			} catch (Exception e) {
+				MessageBox.Show(e.Message);
 			}
 		}
 
@@ -263,21 +266,21 @@ namespace LoopingAudioConverter {
 			txtSuffixFilter.Text = "";
 		}
 
-        private void btnLoadOptions_Click(object sender, EventArgs ea) {
-            using (OpenFileDialog d = new OpenFileDialog()) {
-				d.FileName = "LoopingAudioConverter.json";
+		private void btnLoadOptions_Click(object sender, EventArgs ea) {
+			using (OpenFileDialog d = new OpenFileDialog()) {
+				d.FileName = "LoopingAudioConverter.ini";
 				if (d.ShowDialog() == DialogResult.OK) {
-                    LoadOptions(OptionsSerialization.FromFile(d.FileName));
+					LoadOptions(d.FileName);
 				}
 			}
-        }
+		}
 
 		private void btnSaveOptions_Click(object sender, EventArgs ea) {
 			using (SaveFileDialog d = new SaveFileDialog()) {
 				d.InitialDirectory = Environment.CurrentDirectory;
-				d.FileName = "LoopingAudioConverter.json";
+				d.FileName = "LoopingAudioConverter.ini";
 				if (d.ShowDialog() == DialogResult.OK) {
-                    OptionsSerialization.ToFile(d.FileName, GetOptions());
+					OptionsSerialization.WriteToFile(d.FileName, GetOptions());
 				}
 			}
 		}
