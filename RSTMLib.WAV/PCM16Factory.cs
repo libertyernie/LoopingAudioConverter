@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Audio;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -79,6 +80,20 @@ namespace RSTMLib.WAV {
             ptr[2] = (byte)s[2];
             ptr[3] = (byte)s[3];
             return i;
+        }
+
+        public unsafe static PCM16Audio FromAudioStream(IAudioStream source) {
+            short[] sample_data = new short[source.Samples * source.Channels];
+            fixed (short* ptr = sample_data)
+            {
+                source.ReadSamples(ptr, sample_data.Length);
+            }
+            return new PCM16Audio(
+                source.Channels,
+                source.Frequency,
+                sample_data,
+                source.IsLooping ? source.LoopStartSample : (int?)null,
+                source.IsLooping ? source.LoopEndSample : (int?)null);
         }
 
         /// <summary>

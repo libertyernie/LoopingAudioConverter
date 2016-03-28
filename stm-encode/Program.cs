@@ -126,6 +126,7 @@ Options (WAV input only):
             byte[] outputarr =
                 ext == ".bcstm" ? CSTMConverter.FromRSTM(rstm)
                 : ext == ".bfstm" ? FSTMConverter.FromRSTM(rstm)
+                : ext == ".wav" ? PCM16Factory.FromAudioStream(RSTMConverter.CreateStreams(rstm)[0]).Export()
                 : rstm;
             File.WriteAllBytes(outputFile, outputarr);
 
