@@ -23,8 +23,7 @@ they be held accountable for the manner in which it is used.
 Usage:
 stm-encode [options] <inputfile> <outputfile>
 
-inputfile can be .brstm, .bcstm, .bfstm, or .wav.
-outputfile can be .brstm, .bcstm, or .bfstm.
+Supported formats are .brstm, .bcstm, .bfstm, or .wav.
 
 Options (WAV input only):
     -l             Loop from start of file until end of file
@@ -95,7 +94,7 @@ Options (WAV input only):
             }
 
             string ext = Path.GetExtension(outputFile).ToLowerInvariant();
-            if (ext != ".brstm" && ext != ".bcstm" && ext != ".bfstm") {
+            if (ext != ".brstm" && ext != ".bcstm" && ext != ".bfstm" && ext != ".wav") {
                 Console.Error.WriteLine("Unsupported output format: " + ext);
                 return 1;
             }
