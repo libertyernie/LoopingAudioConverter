@@ -49,7 +49,7 @@ namespace LoopingAudioConverter {
 
 			SoX sox = new SoX(ConfigurationManager.AppSettings["sox_path"]);
 
-			IAudioImporter[] importers = {
+			List<IAudioImporter> importers = new List<IAudioImporter> {
 					new WAVImporter(),
 					new MP3Importer(ConfigurationManager.AppSettings["madplay_path"]),
 					new MP4Importer(ConfigurationManager.AppSettings["faad_path"]),
@@ -57,6 +57,10 @@ namespace LoopingAudioConverter {
 					new VGMStreamImporter(ConfigurationManager.AppSettings["vgmstream_path"]),
 					sox
 				};
+			if (o.BrawlLibDecoder)
+			{
+				importers.Insert(1, new RSTMImporter());
+			}
 
 			IAudioExporter exporter;
 			switch (o.ExporterType) {

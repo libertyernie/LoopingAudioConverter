@@ -55,6 +55,7 @@
     <Compile Include="Brawl\FSTMExporter.cs" />
     <Compile Include="Brawl\EncodingProgressWrapper.cs" />
     <Compile Include="Brawl\CSTMExporter.cs" />
+    <Compile Include="Brawl\RSTMImporter.cs" />
     <Compile Include="Brawl\RSTMExporter.cs" />
     <Compile Include="FLACExporter.cs" />
     <Compile Include="Interfaces.cs" />

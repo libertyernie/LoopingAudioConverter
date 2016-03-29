@@ -73,14 +73,15 @@
             this.label1 = new System.Windows.Forms.Label();
             this.numFadeOutTime = new System.Windows.Forms.NumericUpDown();
             this.chkShortCircuit = new System.Windows.Forms.CheckBox();
+            this.chkBrawlLibDecoder = new System.Windows.Forms.CheckBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.numSimulTasks = new System.Windows.Forms.NumericUpDown();
             this.lblSimulTasks = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnLoadOptions = new System.Windows.Forms.Button();
             this.btnHelp = new System.Windows.Forms.Button();
             this.btnOkay = new System.Windows.Forms.Button();
             this.btnSaveOptions = new System.Windows.Forms.Button();
-            this.btnLoadOptions = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -266,6 +267,7 @@
             this.flowLayoutPanel2.Controls.Add(this.pnlExportChannels);
             this.flowLayoutPanel2.Controls.Add(this.pnlExportSegments);
             this.flowLayoutPanel2.Controls.Add(this.chkShortCircuit);
+            this.flowLayoutPanel2.Controls.Add(this.chkBrawlLibDecoder);
             this.flowLayoutPanel2.Controls.Add(this.panel3);
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
@@ -646,12 +648,22 @@
             this.chkShortCircuit.Text = "Convert directly between BRSTM, BCSTM, BFSTM";
             this.chkShortCircuit.UseVisualStyleBackColor = false;
             // 
+            // chkBrawlLibDecoder
+            // 
+            this.chkBrawlLibDecoder.AutoSize = true;
+            this.chkBrawlLibDecoder.Location = new System.Drawing.Point(233, 189);
+            this.chkBrawlLibDecoder.Name = "chkBrawlLibDecoder";
+            this.chkBrawlLibDecoder.Size = new System.Drawing.Size(164, 17);
+            this.chkBrawlLibDecoder.TabIndex = 25;
+            this.chkBrawlLibDecoder.Text = "Use BrawlLib RSTM decoder";
+            this.chkBrawlLibDecoder.UseVisualStyleBackColor = false;
+            // 
             // panel3
             // 
             this.panel3.AutoSize = true;
             this.panel3.Controls.Add(this.numSimulTasks);
             this.panel3.Controls.Add(this.lblSimulTasks);
-            this.panel3.Location = new System.Drawing.Point(230, 189);
+            this.panel3.Location = new System.Drawing.Point(230, 212);
             this.panel3.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(198, 28);
@@ -700,6 +712,17 @@
             this.panel1.Size = new System.Drawing.Size(534, 30);
             this.panel1.TabIndex = 23;
             // 
+            // btnLoadOptions
+            // 
+            this.btnLoadOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnLoadOptions.Location = new System.Drawing.Point(84, 4);
+            this.btnLoadOptions.Name = "btnLoadOptions";
+            this.btnLoadOptions.Size = new System.Drawing.Size(100, 23);
+            this.btnLoadOptions.TabIndex = 3;
+            this.btnLoadOptions.Text = "Load Options";
+            this.btnLoadOptions.UseVisualStyleBackColor = true;
+            this.btnLoadOptions.Click += new System.EventHandler(this.btnLoadOptions_Click);
+            // 
             // btnHelp
             // 
             this.btnHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -733,17 +756,6 @@
             this.btnSaveOptions.Text = "Save Options";
             this.btnSaveOptions.UseVisualStyleBackColor = true;
             this.btnSaveOptions.Click += new System.EventHandler(this.btnSaveOptions_Click);
-            // 
-            // btnLoadOptions
-            // 
-            this.btnLoadOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnLoadOptions.Location = new System.Drawing.Point(84, 4);
-            this.btnLoadOptions.Name = "btnLoadOptions";
-            this.btnLoadOptions.Size = new System.Drawing.Size(100, 23);
-            this.btnLoadOptions.TabIndex = 3;
-            this.btnLoadOptions.Text = "Load Options";
-            this.btnLoadOptions.UseVisualStyleBackColor = true;
-            this.btnLoadOptions.Click += new System.EventHandler(this.btnLoadOptions_Click);
             // 
             // OptionsForm
             // 
@@ -836,5 +848,6 @@
 		private System.Windows.Forms.CheckBox chkShortCircuit;
         private System.Windows.Forms.Button btnSaveOptions;
         private System.Windows.Forms.Button btnLoadOptions;
-	}
+        private System.Windows.Forms.CheckBox chkBrawlLibDecoder;
+    }
 }
