@@ -41,7 +41,12 @@ namespace LoopingAudioConverter {
 			Task.WaitAll(f.RunningTasks.ToArray());
 		}
 
-		public static void Run(Options o, Action<string> inputFileLoadedCallback = null) {
+        /// <summary>
+        /// Runs a batch conversion process.
+        /// </summary>
+        /// <param name="o">Options for the batch.</param>
+        /// <param name="audioFilter">If defined, NamedAudio data will be sent through this function after transformations are applied, before being converted and exported.</param>
+		public static void Run(Options o, Func<NamedAudio, NamedAudio> audioDump = null) {
 			if (o.ExporterType == ExporterType.MP3 && (o.ExportPreLoop || o.ExportLoop)) {
 				MessageBox.Show("MP3 encoding adds gaps at the start and end of each file, so the before-loop portion and the loop portion will not line up well.",
 					"Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -253,30 +258,33 @@ namespace LoopingAudioConverter {
 
 				sem.Release();
 
-				foreach (NamedAudio toExport in wavsToExport) {
-					sem.WaitOne();
-					MultipleProgressRow row = window.AddEncodingRow(toExport.Name);
-					if (o.NumSimulTasks == 1) {
-						exporter.WriteFile(toExport.LWAV, outputDir, toExport.Name, row);
-						lock (exported) {
-							exported.Add(toExport.Name);
-						}
-						window.Update(++i / maxProgress);
-						sem.Release();
-						row.Remove();
-					} else {
-						Task task = exporter.WriteFileAsync(toExport.LWAV, outputDir, toExport.Name, row);
-						tasks.Add(task.ContinueWith(t => {
-							lock (exported) {
-								exported.Add(toExport.Name);
-							}
-							window.Update(++i / maxProgress);
-							sem.Release();
-							row.Remove();
-						}));
-					}
+				foreach (NamedAudio n in wavsToExport) {
+                    NamedAudio toExport = n;
+                    sem.WaitOne();
+                    if (audioDump != null) {
+                        toExport = audioDump(toExport);
+                    }
+                    MultipleProgressRow row = window.AddEncodingRow(toExport.Name);
+                    if (o.NumSimulTasks == 1) {
+                        exporter.WriteFile(toExport.LWAV, outputDir, toExport.Name, row);
+                        lock (exported) {
+                            exported.Add(toExport.Name);
+                        }
+                        window.Update(++i / maxProgress);
+                        sem.Release();
+                        row.Remove();
+                    } else {
+                        Task task = exporter.WriteFileAsync(toExport.LWAV, outputDir, toExport.Name, row);
+                        tasks.Add(task.ContinueWith(t => {
+                            lock (exported) {
+                                exported.Add(toExport.Name);
+                            }
+                            window.Update(++i / maxProgress);
+                            sem.Release();
+                            row.Remove();
+                        }));
+                    }
 				}
-				if (inputFileLoadedCallback != null) inputFileLoadedCallback(inputFile);
 
 				window.Update(++i / maxProgress);
 			}

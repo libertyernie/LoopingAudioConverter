@@ -82,6 +82,7 @@
             this.btnHelp = new System.Windows.Forms.Button();
             this.btnOkay = new System.Windows.Forms.Button();
             this.btnSaveOptions = new System.Windows.Forms.Button();
+            this.btnSingleFile = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -132,7 +133,7 @@
             this.btnSuffixFilter.Location = new System.Drawing.Point(271, 113);
             this.btnSuffixFilter.Name = "btnSuffixFilter";
             this.btnSuffixFilter.Size = new System.Drawing.Size(75, 19);
-            this.btnSuffixFilter.TabIndex = 3;
+            this.btnSuffixFilter.TabIndex = 2;
             this.btnSuffixFilter.Text = "Filter";
             this.btnSuffixFilter.UseVisualStyleBackColor = true;
             this.btnSuffixFilter.Click += new System.EventHandler(this.btnSuffixFilter_Click);
@@ -143,7 +144,7 @@
             this.txtSuffixFilter.Location = new System.Drawing.Point(137, 113);
             this.txtSuffixFilter.Name = "txtSuffixFilter";
             this.txtSuffixFilter.Size = new System.Drawing.Size(128, 20);
-            this.txtSuffixFilter.TabIndex = 2;
+            this.txtSuffixFilter.TabIndex = 1;
             // 
             // label4
             // 
@@ -162,7 +163,7 @@
             this.btnBrowse.Location = new System.Drawing.Point(419, 138);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(32, 20);
-            this.btnBrowse.TabIndex = 6;
+            this.btnBrowse.TabIndex = 4;
             this.btnBrowse.Text = "...";
             this.btnBrowse.UseVisualStyleBackColor = true;
             this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
@@ -174,7 +175,7 @@
             this.txtOutputDir.Location = new System.Drawing.Point(99, 138);
             this.txtOutputDir.Name = "txtOutputDir";
             this.txtOutputDir.Size = new System.Drawing.Size(314, 20);
-            this.txtOutputDir.TabIndex = 5;
+            this.txtOutputDir.TabIndex = 3;
             this.txtOutputDir.Text = "./output";
             // 
             // lblOutputDir
@@ -200,7 +201,7 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.listBox1.Size = new System.Drawing.Size(448, 103);
-            this.listBox1.TabIndex = 7;
+            this.listBox1.TabIndex = 0;
             this.listBox1.DragDrop += new System.Windows.Forms.DragEventHandler(this.listBox1_DragDrop);
             this.listBox1.DragEnter += new System.Windows.Forms.DragEventHandler(this.listBox1_DragEnter);
             // 
@@ -654,7 +655,7 @@
             this.chkBrawlLibDecoder.Location = new System.Drawing.Point(233, 189);
             this.chkBrawlLibDecoder.Name = "chkBrawlLibDecoder";
             this.chkBrawlLibDecoder.Size = new System.Drawing.Size(164, 17);
-            this.chkBrawlLibDecoder.TabIndex = 25;
+            this.chkBrawlLibDecoder.TabIndex = 1;
             this.chkBrawlLibDecoder.Text = "Use BrawlLib RSTM decoder";
             this.chkBrawlLibDecoder.UseVisualStyleBackColor = false;
             // 
@@ -702,6 +703,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnSingleFile);
             this.panel1.Controls.Add(this.btnLoadOptions);
             this.panel1.Controls.Add(this.btnHelp);
             this.panel1.Controls.Add(this.btnOkay);
@@ -718,7 +720,7 @@
             this.btnLoadOptions.Location = new System.Drawing.Point(84, 4);
             this.btnLoadOptions.Name = "btnLoadOptions";
             this.btnLoadOptions.Size = new System.Drawing.Size(100, 23);
-            this.btnLoadOptions.TabIndex = 3;
+            this.btnLoadOptions.TabIndex = 1;
             this.btnLoadOptions.Text = "Load Options";
             this.btnLoadOptions.UseVisualStyleBackColor = true;
             this.btnLoadOptions.Click += new System.EventHandler(this.btnLoadOptions_Click);
@@ -741,7 +743,7 @@
             this.btnOkay.Location = new System.Drawing.Point(457, 4);
             this.btnOkay.Name = "btnOkay";
             this.btnOkay.Size = new System.Drawing.Size(74, 23);
-            this.btnOkay.TabIndex = 2;
+            this.btnOkay.TabIndex = 4;
             this.btnOkay.Text = "Start";
             this.btnOkay.UseVisualStyleBackColor = true;
             this.btnOkay.Click += new System.EventHandler(this.btnOkay_Click);
@@ -752,10 +754,20 @@
             this.btnSaveOptions.Location = new System.Drawing.Point(190, 4);
             this.btnSaveOptions.Name = "btnSaveOptions";
             this.btnSaveOptions.Size = new System.Drawing.Size(100, 23);
-            this.btnSaveOptions.TabIndex = 1;
+            this.btnSaveOptions.TabIndex = 2;
             this.btnSaveOptions.Text = "Save Options";
             this.btnSaveOptions.UseVisualStyleBackColor = true;
             this.btnSaveOptions.Click += new System.EventHandler(this.btnSaveOptions_Click);
+            // 
+            // btnSingleFile
+            // 
+            this.btnSingleFile.Location = new System.Drawing.Point(380, 4);
+            this.btnSingleFile.Name = "btnSingleFile";
+            this.btnSingleFile.Size = new System.Drawing.Size(75, 23);
+            this.btnSingleFile.TabIndex = 3;
+            this.btnSingleFile.Text = "Single File";
+            this.btnSingleFile.UseVisualStyleBackColor = true;
+            this.btnSingleFile.Click += new System.EventHandler(this.btnSingleFile_Click);
             // 
             // OptionsForm
             // 
@@ -849,5 +861,6 @@
         private System.Windows.Forms.Button btnSaveOptions;
         private System.Windows.Forms.Button btnLoadOptions;
         private System.Windows.Forms.CheckBox chkBrawlLibDecoder;
+        private System.Windows.Forms.Button btnSingleFile;
     }
 }

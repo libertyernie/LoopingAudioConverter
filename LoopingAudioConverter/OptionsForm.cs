@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RSTMLib.WAV;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -285,5 +286,26 @@ namespace LoopingAudioConverter {
 				}
 			}
 		}
-	}
+
+        private void btnSingleFile_Click(object sender, EventArgs e) {
+            using (OpenFileDialog openDialog = new OpenFileDialog()) {
+                openDialog.Multiselect = false;
+                if (openDialog.ShowDialog() == DialogResult.OK) {
+                    Options o = this.GetOptions();
+                    o.InputFiles = openDialog.FileNames;
+                    Program.Run(o, namedAudio => {
+                        PCM16AudioStream audioStream = new PCM16AudioStream(namedAudio.LWAV);
+                        using (BrstmConverterDialog dialog = new BrstmConverterDialog(audioStream)) {
+                            dialog.AudioSource = openDialog.FileName;
+                            if (dialog.ShowDialog() == DialogResult.OK) {
+                                return namedAudio;
+                            } else {
+                                return null;
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    }
 }
