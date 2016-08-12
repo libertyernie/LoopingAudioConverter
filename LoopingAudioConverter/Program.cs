@@ -263,6 +263,10 @@ namespace LoopingAudioConverter {
                     sem.WaitOne();
                     if (audioDump != null) {
                         toExport = audioDump(toExport);
+                        if (toExport == null) {
+                            i++;
+                            break;
+                        }
                     }
                     MultipleProgressRow row = window.AddEncodingRow(toExport.Name);
                     if (o.NumSimulTasks == 1) {
