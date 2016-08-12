@@ -82,7 +82,9 @@
             this.btnHelp = new System.Windows.Forms.Button();
             this.btnOkay = new System.Windows.Forms.Button();
             this.btnSaveOptions = new System.Windows.Forms.Button();
-            this.btnSingleFile = new System.Windows.Forms.Button();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.lblNonLoopingBehavior = new System.Windows.Forms.Label();
+            this.ddlNonLoopingBehavior = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -100,6 +102,7 @@
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSimulTasks)).BeginInit();
             this.panel1.SuspendLayout();
+            this.panel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -124,7 +127,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.flowLayoutPanel2);
-            this.splitContainer1.Size = new System.Drawing.Size(534, 411);
+            this.splitContainer1.Size = new System.Drawing.Size(534, 451);
             this.splitContainer1.SplitterDistance = 161;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -133,7 +136,7 @@
             this.btnSuffixFilter.Location = new System.Drawing.Point(271, 113);
             this.btnSuffixFilter.Name = "btnSuffixFilter";
             this.btnSuffixFilter.Size = new System.Drawing.Size(75, 19);
-            this.btnSuffixFilter.TabIndex = 2;
+            this.btnSuffixFilter.TabIndex = 3;
             this.btnSuffixFilter.Text = "Filter";
             this.btnSuffixFilter.UseVisualStyleBackColor = true;
             this.btnSuffixFilter.Click += new System.EventHandler(this.btnSuffixFilter_Click);
@@ -144,7 +147,7 @@
             this.txtSuffixFilter.Location = new System.Drawing.Point(137, 113);
             this.txtSuffixFilter.Name = "txtSuffixFilter";
             this.txtSuffixFilter.Size = new System.Drawing.Size(128, 20);
-            this.txtSuffixFilter.TabIndex = 1;
+            this.txtSuffixFilter.TabIndex = 2;
             // 
             // label4
             // 
@@ -163,7 +166,7 @@
             this.btnBrowse.Location = new System.Drawing.Point(419, 138);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(32, 20);
-            this.btnBrowse.TabIndex = 4;
+            this.btnBrowse.TabIndex = 7;
             this.btnBrowse.Text = "...";
             this.btnBrowse.UseVisualStyleBackColor = true;
             this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
@@ -175,7 +178,7 @@
             this.txtOutputDir.Location = new System.Drawing.Point(99, 138);
             this.txtOutputDir.Name = "txtOutputDir";
             this.txtOutputDir.Size = new System.Drawing.Size(314, 20);
-            this.txtOutputDir.TabIndex = 3;
+            this.txtOutputDir.TabIndex = 6;
             this.txtOutputDir.Text = "./output";
             // 
             // lblOutputDir
@@ -185,7 +188,7 @@
             this.lblOutputDir.Margin = new System.Windows.Forms.Padding(3);
             this.lblOutputDir.Name = "lblOutputDir";
             this.lblOutputDir.Size = new System.Drawing.Size(90, 20);
-            this.lblOutputDir.TabIndex = 4;
+            this.lblOutputDir.TabIndex = 5;
             this.lblOutputDir.Text = "Output directory:";
             this.lblOutputDir.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -265,6 +268,7 @@
             // 
             this.flowLayoutPanel2.AutoScroll = true;
             this.flowLayoutPanel2.Controls.Add(this.panel2);
+            this.flowLayoutPanel2.Controls.Add(this.panel4);
             this.flowLayoutPanel2.Controls.Add(this.pnlExportChannels);
             this.flowLayoutPanel2.Controls.Add(this.pnlExportSegments);
             this.flowLayoutPanel2.Controls.Add(this.chkShortCircuit);
@@ -275,7 +279,7 @@
             this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(534, 246);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(534, 286);
             this.flowLayoutPanel2.TabIndex = 23;
             // 
             // panel2
@@ -401,7 +405,7 @@
             this.pnlExportChannels.Controls.Add(this.radChannelsTogether);
             this.pnlExportChannels.Controls.Add(this.radChannelsPairs);
             this.pnlExportChannels.Controls.Add(this.radChannelsSeparate);
-            this.pnlExportChannels.Location = new System.Drawing.Point(0, 113);
+            this.pnlExportChannels.Location = new System.Drawing.Point(0, 167);
             this.pnlExportChannels.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.pnlExportChannels.Name = "pnlExportChannels";
             this.pnlExportChannels.Size = new System.Drawing.Size(230, 90);
@@ -703,13 +707,12 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.btnSingleFile);
             this.panel1.Controls.Add(this.btnLoadOptions);
             this.panel1.Controls.Add(this.btnHelp);
             this.panel1.Controls.Add(this.btnOkay);
             this.panel1.Controls.Add(this.btnSaveOptions);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 411);
+            this.panel1.Location = new System.Drawing.Point(0, 451);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(534, 30);
             this.panel1.TabIndex = 23;
@@ -743,7 +746,7 @@
             this.btnOkay.Location = new System.Drawing.Point(457, 4);
             this.btnOkay.Name = "btnOkay";
             this.btnOkay.Size = new System.Drawing.Size(74, 23);
-            this.btnOkay.TabIndex = 4;
+            this.btnOkay.TabIndex = 3;
             this.btnOkay.Text = "Start";
             this.btnOkay.UseVisualStyleBackColor = true;
             this.btnOkay.Click += new System.EventHandler(this.btnOkay_Click);
@@ -759,22 +762,44 @@
             this.btnSaveOptions.UseVisualStyleBackColor = true;
             this.btnSaveOptions.Click += new System.EventHandler(this.btnSaveOptions_Click);
             // 
-            // btnSingleFile
+            // panel4
             // 
-            this.btnSingleFile.Location = new System.Drawing.Point(380, 4);
-            this.btnSingleFile.Name = "btnSingleFile";
-            this.btnSingleFile.Size = new System.Drawing.Size(75, 23);
-            this.btnSingleFile.TabIndex = 3;
-            this.btnSingleFile.Text = "Single File";
-            this.btnSingleFile.UseVisualStyleBackColor = true;
-            this.btnSingleFile.Click += new System.EventHandler(this.btnSingleFile_Click);
+            this.panel4.AutoSize = true;
+            this.panel4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel4.Controls.Add(this.ddlNonLoopingBehavior);
+            this.panel4.Controls.Add(this.lblNonLoopingBehavior);
+            this.panel4.Location = new System.Drawing.Point(0, 113);
+            this.panel4.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(227, 48);
+            this.panel4.TabIndex = 23;
+            // 
+            // lblNonLoopingBehavior
+            // 
+            this.lblNonLoopingBehavior.Location = new System.Drawing.Point(3, 0);
+            this.lblNonLoopingBehavior.Name = "lblNonLoopingBehavior";
+            this.lblNonLoopingBehavior.Size = new System.Drawing.Size(221, 21);
+            this.lblNonLoopingBehavior.TabIndex = 0;
+            this.lblNonLoopingBehavior.Text = "For non-looping files:";
+            this.lblNonLoopingBehavior.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // ddlNonLoopingBehavior
+            // 
+            this.ddlNonLoopingBehavior.DisplayMember = "Name";
+            this.ddlNonLoopingBehavior.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ddlNonLoopingBehavior.FormattingEnabled = true;
+            this.ddlNonLoopingBehavior.Location = new System.Drawing.Point(6, 24);
+            this.ddlNonLoopingBehavior.Name = "ddlNonLoopingBehavior";
+            this.ddlNonLoopingBehavior.Size = new System.Drawing.Size(218, 21);
+            this.ddlNonLoopingBehavior.TabIndex = 1;
+            this.ddlNonLoopingBehavior.ValueMember = "Value";
             // 
             // OptionsForm
             // 
             this.AcceptButton = this.btnOkay;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(534, 441);
+            this.ClientSize = new System.Drawing.Size(534, 481);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.panel1);
             this.Name = "OptionsForm";
@@ -801,6 +826,7 @@
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numSimulTasks)).EndInit();
             this.panel1.ResumeLayout(false);
+            this.panel4.ResumeLayout(false);
             this.ResumeLayout(false);
 
 		}
@@ -861,6 +887,8 @@
         private System.Windows.Forms.Button btnSaveOptions;
         private System.Windows.Forms.Button btnLoadOptions;
         private System.Windows.Forms.CheckBox chkBrawlLibDecoder;
-        private System.Windows.Forms.Button btnSingleFile;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.ComboBox ddlNonLoopingBehavior;
+        private System.Windows.Forms.Label lblNonLoopingBehavior;
     }
 }

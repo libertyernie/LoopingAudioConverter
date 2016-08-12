@@ -45,8 +45,7 @@ namespace LoopingAudioConverter {
         /// Runs a batch conversion process.
         /// </summary>
         /// <param name="o">Options for the batch.</param>
-        /// <param name="audioFilter">If defined, NamedAudio data will be sent through this function after transformations are applied, before being converted and exported.</param>
-		public static void Run(Options o, Func<NamedAudio, NamedAudio> audioDump = null) {
+		public static void Run(Options o) {
 			if (o.ExporterType == ExporterType.MP3 && (o.ExportPreLoop || o.ExportLoop)) {
 				MessageBox.Show("MP3 encoding adds gaps at the start and end of each file, so the before-loop portion and the loop portion will not line up well.",
 					"Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -261,13 +260,29 @@ namespace LoopingAudioConverter {
 				foreach (NamedAudio n in wavsToExport) {
                     NamedAudio toExport = n;
                     sem.WaitOne();
-                    if (audioDump != null) {
-                        toExport = audioDump(toExport);
-                        if (toExport == null) {
-                            i++;
+                    switch (o.NonLoopingBehavior) {
+                        case NonLoopingBehavior.ForceLoop:
+                            if (!toExport.LWAV.Looping) {
+                                toExport.LWAV.Looping = true;
+                                toExport.LWAV.LoopStart = 0;
+                                toExport.LWAV.LoopEnd = toExport.LWAV.Samples.Length / toExport.LWAV.Channels;
+                            }
                             break;
-                        }
+                        case NonLoopingBehavior.AskAll:
+                            PCM16AudioStream audioStream = new PCM16AudioStream(toExport.LWAV);
+                            using (BrstmConverterDialog dialog = new BrstmConverterDialog(audioStream)) {
+                                dialog.AudioSource = n.Name;
+                                if (dialog.ShowDialog() != DialogResult.OK) {
+                                    toExport = null;
+                                }
+                            }
+                            break;
                     }
+                    if (toExport == null) {
+                        i++;
+                        break;
+                    }
+
                     MultipleProgressRow row = window.AddEncodingRow(toExport.Name);
                     if (o.NumSimulTasks == 1) {
                         exporter.WriteFile(toExport.LWAV, outputDir, toExport.Name, row);

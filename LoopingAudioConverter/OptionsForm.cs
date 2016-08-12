@@ -15,8 +15,8 @@ namespace LoopingAudioConverter {
 	public partial class OptionsForm : Form {
 		private class NVPair {
 			public string Name { get; set; }
-			public ExporterType Value { get; set; }
-			public NVPair(ExporterType value, string name) {
+			public object Value { get; set; }
+			public NVPair(object value, string name) {
 				this.Name = name;
 				this.Value = value;
 			}
@@ -44,7 +44,14 @@ namespace LoopingAudioConverter {
 			};
 			comboBox1.DataSource = exporters;
 			if (comboBox1.SelectedIndex < 0) comboBox1.SelectedIndex = 0;
-			numSimulTasks.Value = Math.Min(Environment.ProcessorCount, numSimulTasks.Maximum);
+            var nonLoopingBehaviors = new List<NVPair>() {
+                new NVPair(NonLoopingBehavior.NoChange, "Keep as non-looping"),
+                new NVPair(NonLoopingBehavior.ForceLoop, "Force start-to-end loop"),
+                new NVPair(NonLoopingBehavior.AskAll, "Ask for all files")
+            };
+            ddlNonLoopingBehavior.DataSource = nonLoopingBehaviors;
+            if (ddlNonLoopingBehavior.SelectedIndex < 0) ddlNonLoopingBehavior.SelectedIndex = 0;
+            numSimulTasks.Value = Math.Min(Environment.ProcessorCount, numSimulTasks.Maximum);
 
 			runningTasks = new HashSet<Task>();
 		}
@@ -73,6 +80,7 @@ namespace LoopingAudioConverter {
 				else if (o.ChannelSplit == ChannelSplit.OneFile)
 					radChannelsTogether.Checked = true;
 				comboBox1.SelectedValue = o.ExporterType;
+                ddlNonLoopingBehavior.SelectedValue = o.NonLoopingBehavior;
 				chk0End.Checked = o.ExportWholeSong;
 				txt0EndFilenamePattern.Text = o.WholeSongSuffix;
 				numNumberLoops.Value = o.NumberOfLoops;
@@ -103,6 +111,7 @@ namespace LoopingAudioConverter {
 					: radChannelsSeparate.Checked ? ChannelSplit.Each
 					: ChannelSplit.OneFile,
 				ExporterType = (ExporterType)comboBox1.SelectedValue,
+                NonLoopingBehavior = (NonLoopingBehavior)ddlNonLoopingBehavior.SelectedValue,
 				ExportWholeSong = chk0End.Checked,
 				WholeSongSuffix = txt0EndFilenamePattern.Text,
 				NumberOfLoops = (int)numNumberLoops.Value,
@@ -286,26 +295,5 @@ namespace LoopingAudioConverter {
 				}
 			}
 		}
-
-        private void btnSingleFile_Click(object sender, EventArgs e) {
-            using (OpenFileDialog openDialog = new OpenFileDialog()) {
-                openDialog.Multiselect = false;
-                if (openDialog.ShowDialog() == DialogResult.OK) {
-                    Options o = this.GetOptions();
-                    o.InputFiles = openDialog.FileNames;
-                    Program.Run(o, namedAudio => {
-                        PCM16AudioStream audioStream = new PCM16AudioStream(namedAudio.LWAV);
-                        using (BrstmConverterDialog dialog = new BrstmConverterDialog(audioStream)) {
-                            dialog.AudioSource = openDialog.FileName;
-                            if (dialog.ShowDialog() == DialogResult.OK) {
-                                return namedAudio;
-                            } else {
-                                return null;
-                            }
-                        }
-                    });
-                }
-            }
-        }
     }
 }

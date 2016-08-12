@@ -21,7 +21,13 @@ namespace LoopingAudioConverter {
 		Each
 	}
 
-	public class Options {
+    public enum NonLoopingBehavior {
+        NoChange,
+        ForceLoop,
+        AskAll
+    }
+
+    public class Options {
 		public IEnumerable<string> InputFiles { get; set; }
 		public string OutputDir { get; set; }
 		public int? MaxChannels { get; set; }
@@ -30,7 +36,8 @@ namespace LoopingAudioConverter {
 		public decimal? AmplifyRatio { get; set; }
 		public ChannelSplit ChannelSplit { get; set; }
 		public ExporterType ExporterType { get; set; }
-		public bool ExportWholeSong { get; set; }
+        public NonLoopingBehavior NonLoopingBehavior { get; set; }
+        public bool ExportWholeSong { get; set; }
 		public string WholeSongSuffix { get; set; }
 		public int NumberOfLoops { get; set; }
 		public decimal FadeOutSec { get; set; }
