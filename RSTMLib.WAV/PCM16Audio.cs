@@ -14,6 +14,10 @@ namespace RSTMLib.WAV {
         public int LoopStart { get; set; }
         public int LoopEnd { get; set; }
 
+        // Path to the original file.
+        // Used if input and output are both the same lossy format (e.g. Ogg Vorbis) and this PCM16Audio represents the exact data with no changes.
+        public string OriginalFilePath { get; set; }
+
         /// <summary>
         /// Creates a WAV with the given metadata and length.
         /// </summary>

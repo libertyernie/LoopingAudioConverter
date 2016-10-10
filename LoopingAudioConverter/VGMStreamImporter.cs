@@ -57,7 +57,9 @@ namespace LoopingAudioConverter {
             p.WaitForExit();
 
 			try {
-                return PCM16Factory.FromFile("tmp/dump.wav", true);
+                PCM16Audio lwav = PCM16Factory.FromFile("tmp/dump.wav", true);
+                lwav.OriginalFilePath = filename;
+                return lwav;
 			} catch (Exception e) {
 				throw new AudioImporterException("Could not read output of test.exe: " + e.Message);
 			}

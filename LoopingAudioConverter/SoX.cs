@@ -55,7 +55,9 @@ namespace LoopingAudioConverter {
             p.WaitForExit();
 
             try {
-                return PCM16Factory.FromFile(outfile, true);
+                PCM16Audio lwav = PCM16Factory.FromFile(outfile, true);
+                lwav.OriginalFilePath = filename;
+                return lwav;
             } catch (Exception e) {
                 throw new AudioImporterException("Could not read SoX output: " + e.Message);
             }
@@ -139,6 +141,14 @@ namespace LoopingAudioConverter {
 			if (output_filename.Contains('"')) {
 				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
 			}
+
+            string[] ogg_exts = new string[] { ".ogg", ".logg" };
+            if (ogg_exts.Contains(Path.GetExtension(output_filename), StringComparer.InvariantCultureIgnoreCase)) {
+                if (ogg_exts.Contains(Path.GetExtension(lwav.OriginalFilePath), StringComparer.InvariantCultureIgnoreCase)) {
+                    File.Copy(lwav.OriginalFilePath, output_filename, true);
+                    return;
+                }
+            }
 
             string infile = TempFiles.Create("wav");
             File.WriteAllBytes(infile, lwav.Export());
