@@ -50,6 +50,9 @@
             this.numMaxSampleRate = new System.Windows.Forms.NumericUpDown();
             this.chkMaxSampleRate = new System.Windows.Forms.CheckBox();
             this.chkMono = new System.Windows.Forms.CheckBox();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.ddlNonLoopingBehavior = new System.Windows.Forms.ComboBox();
+            this.lblNonLoopingBehavior = new System.Windows.Forms.Label();
             this.pnlExportChannels = new System.Windows.Forms.Panel();
             this.lblMoreThanOneChannel = new System.Windows.Forms.Label();
             this.radChannelsTogether = new System.Windows.Forms.RadioButton();
@@ -82,9 +85,6 @@
             this.btnHelp = new System.Windows.Forms.Button();
             this.btnOkay = new System.Windows.Forms.Button();
             this.btnSaveOptions = new System.Windows.Forms.Button();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.lblNonLoopingBehavior = new System.Windows.Forms.Label();
-            this.ddlNonLoopingBehavior = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -95,6 +95,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numAmplifyRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAmplifydB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxSampleRate)).BeginInit();
+            this.panel4.SuspendLayout();
             this.pnlExportChannels.SuspendLayout();
             this.pnlExportSegments.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numNumberLoops)).BeginInit();
@@ -102,7 +103,6 @@
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSimulTasks)).BeginInit();
             this.panel1.SuspendLayout();
-            this.panel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -397,6 +397,38 @@
             this.chkMono.Text = "Convert to mono";
             this.chkMono.UseVisualStyleBackColor = true;
             // 
+            // panel4
+            // 
+            this.panel4.AutoSize = true;
+            this.panel4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel4.Controls.Add(this.ddlNonLoopingBehavior);
+            this.panel4.Controls.Add(this.lblNonLoopingBehavior);
+            this.panel4.Location = new System.Drawing.Point(0, 113);
+            this.panel4.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(227, 48);
+            this.panel4.TabIndex = 23;
+            // 
+            // ddlNonLoopingBehavior
+            // 
+            this.ddlNonLoopingBehavior.DisplayMember = "Name";
+            this.ddlNonLoopingBehavior.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ddlNonLoopingBehavior.FormattingEnabled = true;
+            this.ddlNonLoopingBehavior.Location = new System.Drawing.Point(6, 24);
+            this.ddlNonLoopingBehavior.Name = "ddlNonLoopingBehavior";
+            this.ddlNonLoopingBehavior.Size = new System.Drawing.Size(218, 21);
+            this.ddlNonLoopingBehavior.TabIndex = 1;
+            this.ddlNonLoopingBehavior.ValueMember = "Value";
+            // 
+            // lblNonLoopingBehavior
+            // 
+            this.lblNonLoopingBehavior.Location = new System.Drawing.Point(3, 0);
+            this.lblNonLoopingBehavior.Name = "lblNonLoopingBehavior";
+            this.lblNonLoopingBehavior.Size = new System.Drawing.Size(221, 21);
+            this.lblNonLoopingBehavior.TabIndex = 0;
+            this.lblNonLoopingBehavior.Text = "For non-looping files:";
+            this.lblNonLoopingBehavior.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // pnlExportChannels
             // 
             this.pnlExportChannels.AutoSize = true;
@@ -558,7 +590,7 @@
             // 
             // lblSeconds
             // 
-            this.lblSeconds.Location = new System.Drawing.Point(231, 55);
+            this.lblSeconds.Location = new System.Drawing.Point(231, 81);
             this.lblSeconds.Margin = new System.Windows.Forms.Padding(3);
             this.lblSeconds.Name = "lblSeconds";
             this.lblSeconds.Size = new System.Drawing.Size(40, 21);
@@ -638,7 +670,7 @@
             this.numFadeOutTime.DecimalPlaces = 3;
             this.numFadeOutTime.Location = new System.Drawing.Point(172, 82);
             this.numFadeOutTime.Name = "numFadeOutTime";
-            this.numFadeOutTime.Size = new System.Drawing.Size(80, 20);
+            this.numFadeOutTime.Size = new System.Drawing.Size(53, 20);
             this.numFadeOutTime.TabIndex = 9;
             // 
             // chkShortCircuit
@@ -762,38 +794,6 @@
             this.btnSaveOptions.UseVisualStyleBackColor = true;
             this.btnSaveOptions.Click += new System.EventHandler(this.btnSaveOptions_Click);
             // 
-            // panel4
-            // 
-            this.panel4.AutoSize = true;
-            this.panel4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.panel4.Controls.Add(this.ddlNonLoopingBehavior);
-            this.panel4.Controls.Add(this.lblNonLoopingBehavior);
-            this.panel4.Location = new System.Drawing.Point(0, 113);
-            this.panel4.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(227, 48);
-            this.panel4.TabIndex = 23;
-            // 
-            // lblNonLoopingBehavior
-            // 
-            this.lblNonLoopingBehavior.Location = new System.Drawing.Point(3, 0);
-            this.lblNonLoopingBehavior.Name = "lblNonLoopingBehavior";
-            this.lblNonLoopingBehavior.Size = new System.Drawing.Size(221, 21);
-            this.lblNonLoopingBehavior.TabIndex = 0;
-            this.lblNonLoopingBehavior.Text = "For non-looping files:";
-            this.lblNonLoopingBehavior.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // ddlNonLoopingBehavior
-            // 
-            this.ddlNonLoopingBehavior.DisplayMember = "Name";
-            this.ddlNonLoopingBehavior.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ddlNonLoopingBehavior.FormattingEnabled = true;
-            this.ddlNonLoopingBehavior.Location = new System.Drawing.Point(6, 24);
-            this.ddlNonLoopingBehavior.Name = "ddlNonLoopingBehavior";
-            this.ddlNonLoopingBehavior.Size = new System.Drawing.Size(218, 21);
-            this.ddlNonLoopingBehavior.TabIndex = 1;
-            this.ddlNonLoopingBehavior.ValueMember = "Value";
-            // 
             // OptionsForm
             // 
             this.AcceptButton = this.btnOkay;
@@ -817,6 +817,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numAmplifyRatio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAmplifydB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxSampleRate)).EndInit();
+            this.panel4.ResumeLayout(false);
             this.pnlExportChannels.ResumeLayout(false);
             this.pnlExportChannels.PerformLayout();
             this.pnlExportSegments.ResumeLayout(false);
@@ -826,7 +827,6 @@
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numSimulTasks)).EndInit();
             this.panel1.ResumeLayout(false);
-            this.panel4.ResumeLayout(false);
             this.ResumeLayout(false);
 
 		}
