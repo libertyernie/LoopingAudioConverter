@@ -137,7 +137,7 @@ namespace LoopingAudioConverter {
 		/// </summary>
 		/// <param name="lwav">Input audio</param>
 		/// <param name="output_filename">Path of output file</param>
-		public void WriteFile(PCM16Audio lwav, string output_filename) {
+		public void WriteFile(PCM16Audio lwav, string output_filename, string encodingParameters = null) {
 			if (output_filename.Contains('"')) {
 				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
 			}
@@ -155,7 +155,7 @@ namespace LoopingAudioConverter {
 
 			ProcessStartInfo psi = new ProcessStartInfo {
 				FileName = ExePath,
-                Arguments = infile + " \"" + output_filename + "\"",
+                Arguments = infile + " " + (encodingParameters ?? "") + " \"" + output_filename + "\"",
                 UseShellExecute = false,
 				CreateNoWindow = true
 			};

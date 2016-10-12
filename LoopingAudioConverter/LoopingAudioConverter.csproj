@@ -59,6 +59,18 @@
     <Compile Include="Brawl\RSTMExporter.cs" />
     <Compile Include="FLACExporter.cs" />
     <Compile Include="Interfaces.cs" />
+    <Compile Include="OggVorbisQualityForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OggVorbisQualityForm.Designer.cs">
+      <DependentUpon>OggVorbisQualityForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MP3QualityForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MP3QualityForm.Designer.cs">
+      <DependentUpon>MP3QualityForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MP4Importer.cs" />
     <Compile Include="OptionsSerialization.cs" />
     <Compile Include="TempFiles.cs" />
@@ -97,6 +109,12 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="OggVorbisQualityForm.resx">
+      <DependentUpon>OggVorbisQualityForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MP3QualityForm.resx">
+      <DependentUpon>MP3QualityForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="OptionsForm.resx">
       <DependentUpon>OptionsForm.cs</DependentUpon>
     </EmbeddedResource>

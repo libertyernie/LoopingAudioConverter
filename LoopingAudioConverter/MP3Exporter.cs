@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 namespace LoopingAudioConverter {
 	public class MP3Exporter : IAudioExporter {
 		private string ExePath;
+        private string EncodingParameters;
 
-		public MP3Exporter(string exePath) {
+		public MP3Exporter(string exePath, string encodingParameters = null) {
             ExePath = exePath;
+            EncodingParameters = encodingParameters ?? "";
         }
 
 		public void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IEncodingProgress progressTracker = null) {
@@ -24,7 +26,7 @@ namespace LoopingAudioConverter {
 				FileName = ExePath,
 				UseShellExecute = false,
 				CreateNoWindow = true,
-				Arguments = "--silent " + infile + " \"" + outPath + "\""
+				Arguments = "--silent " + EncodingParameters + " " + infile + " \"" + outPath + "\""
 			};
 			Process p = Process.Start(psi);
 			p.WaitForExit();
