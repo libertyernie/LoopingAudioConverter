@@ -51,6 +51,12 @@ namespace LoopingAudioConverter
                                 case "ExporterType":
                                     o.ExporterType = (ExporterType)Enum.Parse(typeof(ExporterType), v, true);
                                     break;
+                                case "MP3EncodingParameters":
+                                    o.MP3EncodingParameters = v;
+                                    break;
+                                case "OggVorbisEncodingParameters":
+                                    o.OggVorbisEncodingParameters = v;
+                                    break;
                                 case "ExportWholeSong":
                                     o.ExportWholeSong = bool.Parse(v);
                                     break;
@@ -105,6 +111,8 @@ namespace LoopingAudioConverter
                     if (o.AmplifyRatio != null) sw.WriteLine("AmplifyRatio=" + o.AmplifyRatio);
                     if (o.ChannelSplit != null) sw.WriteLine("ChannelSplit=" + o.ChannelSplit);
                     if (o.ExporterType != null) sw.WriteLine("ExporterType=" + o.ExporterType);
+                    if (o.MP3EncodingParameters != null) sw.WriteLine("MP3EncodingParameters=" + o.MP3EncodingParameters);
+                    if (o.OggVorbisEncodingParameters != null) sw.WriteLine("OggVorbisEncodingParameters=" + o.OggVorbisEncodingParameters);
                     if (o.ExportWholeSong != null) sw.WriteLine("ExportWholeSong=" + o.ExportWholeSong);
                     if (o.WholeSongSuffix != null) sw.WriteLine("WholeSongSuffix=" + o.WholeSongSuffix);
                     if (o.NumberOfLoops != null) sw.WriteLine("NumberOfLoops=" + o.NumberOfLoops);

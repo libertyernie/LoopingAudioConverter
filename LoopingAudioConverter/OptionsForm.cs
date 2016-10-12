@@ -24,6 +24,8 @@ namespace LoopingAudioConverter {
 
 		private HashSet<Task> runningTasks;
 
+        private Dictionary<ExporterType, string> encodingParameters;
+
 		public IEnumerable<Task> RunningTasks {
 			get {
 				return runningTasks;
@@ -32,6 +34,11 @@ namespace LoopingAudioConverter {
 
 		public OptionsForm() {
 			InitializeComponent();
+
+            encodingParameters = new Dictionary<ExporterType, string>() {
+                [ExporterType.MP3] = "",
+                [ExporterType.OggVorbis] = ""
+            };
 
 			var exporters = new List<NVPair>() {
 				new NVPair(ExporterType.BRSTM, "BRSTM"),
@@ -44,6 +51,18 @@ namespace LoopingAudioConverter {
 			};
 			comboBox1.DataSource = exporters;
 			if (comboBox1.SelectedIndex < 0) comboBox1.SelectedIndex = 0;
+            comboBox1.SelectedIndexChanged += (o, e) => {
+                switch ((ExporterType)comboBox1.SelectedValue) {
+                    case ExporterType.MP3:
+                    case ExporterType.OggVorbis:
+                        btnEncodingOptions.Visible = true;
+                        break;
+                    default:
+                        btnEncodingOptions.Visible = false;
+                        break;
+                }
+            };
+
             var nonLoopingBehaviors = new List<NVPair>() {
                 new NVPair(NonLoopingBehavior.NoChange, "Keep as non-looping"),
                 new NVPair(NonLoopingBehavior.ForceLoop, "Force start-to-end loop"),
@@ -80,6 +99,8 @@ namespace LoopingAudioConverter {
 				else if (o.ChannelSplit == ChannelSplit.OneFile)
 					radChannelsTogether.Checked = true;
 				comboBox1.SelectedValue = o.ExporterType;
+                encodingParameters[ExporterType.MP3] = o.MP3EncodingParameters;
+                encodingParameters[ExporterType.OggVorbis] = o.OggVorbisEncodingParameters;
                 ddlNonLoopingBehavior.SelectedValue = o.NonLoopingBehavior;
 				chk0End.Checked = o.ExportWholeSong;
 				txt0EndFilenamePattern.Text = o.WholeSongSuffix;
@@ -111,6 +132,8 @@ namespace LoopingAudioConverter {
 					: radChannelsSeparate.Checked ? ChannelSplit.Each
 					: ChannelSplit.OneFile,
 				ExporterType = (ExporterType)comboBox1.SelectedValue,
+                MP3EncodingParameters = encodingParameters[ExporterType.MP3],
+                OggVorbisEncodingParameters = encodingParameters[ExporterType.OggVorbis],
                 NonLoopingBehavior = (NonLoopingBehavior)ddlNonLoopingBehavior.SelectedValue,
 				ExportWholeSong = chk0End.Checked,
 				WholeSongSuffix = txt0EndFilenamePattern.Text,
@@ -295,5 +318,28 @@ namespace LoopingAudioConverter {
 				}
 			}
 		}
+
+        private void btnEncodingOptions_Click(object sender, EventArgs e) {
+            switch ((ExporterType)comboBox1.SelectedValue) {
+                case ExporterType.MP3:
+                    using (var form = new MP3QualityForm(encodingParameters[ExporterType.MP3])) {
+                        if (form.ShowDialog() != DialogResult.OK) {
+                            return;
+                        }
+                        encodingParameters[ExporterType.MP3] = form.EncodingParameters;
+                    }
+                    break;
+                case ExporterType.OggVorbis:
+                    using (var form = new OggVorbisQualityForm(encodingParameters[ExporterType.OggVorbis])) {
+                        if (form.ShowDialog() != DialogResult.OK) {
+                            return;
+                        }
+                        encodingParameters[ExporterType.OggVorbis] = form.EncodingParameters;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

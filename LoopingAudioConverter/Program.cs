@@ -66,23 +66,6 @@ namespace LoopingAudioConverter {
 				importers.Insert(1, new RSTMImporter());
 			}
 
-            string encodingParameters = null;
-            if (o.ExporterType == ExporterType.MP3) {
-                using (var form = new MP3QualityForm()) {
-                    if (form.ShowDialog() != DialogResult.OK) {
-                        return;
-                    }
-                    encodingParameters = form.EncodingParameters;
-                }
-            } else if (o.ExporterType == ExporterType.OggVorbis) {
-                using (var form = new OggVorbisQualityForm()) {
-                    if (form.ShowDialog() != DialogResult.OK) {
-                        return;
-                    }
-                    encodingParameters = form.EncodingParameters;
-                }
-            }
-
 			IAudioExporter exporter;
 			switch (o.ExporterType) {
 				case ExporterType.BRSTM:
@@ -98,10 +81,10 @@ namespace LoopingAudioConverter {
 					exporter = new FLACExporter(sox);
 					break;
 				case ExporterType.MP3:
-					exporter = new MP3Exporter(ConfigurationManager.AppSettings["lame_path"], encodingParameters);
+					exporter = new MP3Exporter(ConfigurationManager.AppSettings["lame_path"], o.MP3EncodingParameters);
 					break;
 				case ExporterType.OggVorbis:
-					exporter = new OggVorbisExporter(sox, encodingParameters);
+					exporter = new OggVorbisExporter(sox, o.OggVorbisEncodingParameters);
 					break;
 				case ExporterType.WAV:
 					exporter = new WAVExporter();

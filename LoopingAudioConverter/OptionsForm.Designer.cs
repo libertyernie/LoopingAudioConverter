@@ -85,6 +85,7 @@
             this.btnHelp = new System.Windows.Forms.Button();
             this.btnOkay = new System.Windows.Forms.Button();
             this.btnSaveOptions = new System.Windows.Forms.Button();
+            this.btnEncodingOptions = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -166,7 +167,7 @@
             this.btnBrowse.Location = new System.Drawing.Point(419, 138);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(32, 20);
-            this.btnBrowse.TabIndex = 7;
+            this.btnBrowse.TabIndex = 6;
             this.btnBrowse.Text = "...";
             this.btnBrowse.UseVisualStyleBackColor = true;
             this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
@@ -178,7 +179,7 @@
             this.txtOutputDir.Location = new System.Drawing.Point(99, 138);
             this.txtOutputDir.Name = "txtOutputDir";
             this.txtOutputDir.Size = new System.Drawing.Size(314, 20);
-            this.txtOutputDir.TabIndex = 6;
+            this.txtOutputDir.TabIndex = 5;
             this.txtOutputDir.Text = "./output";
             // 
             // lblOutputDir
@@ -188,7 +189,7 @@
             this.lblOutputDir.Margin = new System.Windows.Forms.Padding(3);
             this.lblOutputDir.Name = "lblOutputDir";
             this.lblOutputDir.Size = new System.Drawing.Size(90, 20);
-            this.lblOutputDir.TabIndex = 5;
+            this.lblOutputDir.TabIndex = 4;
             this.lblOutputDir.Text = "Output directory:";
             this.lblOutputDir.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -220,7 +221,7 @@
             this.flowLayoutPanel1.Location = new System.Drawing.Point(454, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(80, 161);
-            this.flowLayoutPanel1.TabIndex = 3;
+            this.flowLayoutPanel1.TabIndex = 0;
             // 
             // btnAdd
             // 
@@ -280,7 +281,7 @@
             this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(534, 286);
-            this.flowLayoutPanel2.TabIndex = 23;
+            this.flowLayoutPanel2.TabIndex = 0;
             // 
             // panel2
             // 
@@ -296,7 +297,7 @@
             this.panel2.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(227, 104);
-            this.panel2.TabIndex = 23;
+            this.panel2.TabIndex = 0;
             // 
             // numAmplifyRatio
             // 
@@ -407,7 +408,7 @@
             this.panel4.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(227, 48);
-            this.panel4.TabIndex = 23;
+            this.panel4.TabIndex = 1;
             // 
             // ddlNonLoopingBehavior
             // 
@@ -441,7 +442,7 @@
             this.pnlExportChannels.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.pnlExportChannels.Name = "pnlExportChannels";
             this.pnlExportChannels.Size = new System.Drawing.Size(230, 90);
-            this.pnlExportChannels.TabIndex = 22;
+            this.pnlExportChannels.TabIndex = 2;
             // 
             // lblMoreThanOneChannel
             // 
@@ -488,6 +489,7 @@
             // 
             this.pnlExportSegments.AutoSize = true;
             this.pnlExportSegments.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlExportSegments.Controls.Add(this.btnEncodingOptions);
             this.pnlExportSegments.Controls.Add(this.comboBox1);
             this.pnlExportSegments.Controls.Add(this.lblOutputFormat);
             this.pnlExportSegments.Controls.Add(this.chk0End);
@@ -508,7 +510,7 @@
             this.pnlExportSegments.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.pnlExportSegments.Name = "pnlExportSegments";
             this.pnlExportSegments.Size = new System.Drawing.Size(298, 157);
-            this.pnlExportSegments.TabIndex = 21;
+            this.pnlExportSegments.TabIndex = 3;
             // 
             // comboBox1
             // 
@@ -538,7 +540,7 @@
             this.chk0End.Location = new System.Drawing.Point(3, 30);
             this.chk0End.Name = "chk0End";
             this.chk0End.Size = new System.Drawing.Size(160, 20);
-            this.chk0End.TabIndex = 2;
+            this.chk0End.TabIndex = 3;
             this.chk0End.Text = "Export whole song";
             this.chk0End.UseVisualStyleBackColor = true;
             this.chk0End.CheckedChanged += new System.EventHandler(this.chk0End_CheckedChanged);
@@ -548,14 +550,14 @@
             this.txt0EndFilenamePattern.Location = new System.Drawing.Point(215, 30);
             this.txt0EndFilenamePattern.Name = "txt0EndFilenamePattern";
             this.txt0EndFilenamePattern.Size = new System.Drawing.Size(80, 20);
-            this.txt0EndFilenamePattern.TabIndex = 4;
+            this.txt0EndFilenamePattern.TabIndex = 5;
             // 
             // chk0Start
             // 
             this.chk0Start.Location = new System.Drawing.Point(3, 108);
             this.chk0Start.Name = "chk0Start";
             this.chk0Start.Size = new System.Drawing.Size(168, 20);
-            this.chk0Start.TabIndex = 10;
+            this.chk0Start.TabIndex = 11;
             this.chk0Start.Text = "Export segment before loop";
             this.chk0Start.UseVisualStyleBackColor = true;
             this.chk0Start.CheckedChanged += new System.EventHandler(this.chk0Start_CheckedChanged);
@@ -566,7 +568,7 @@
             this.txt0StartFilenamePattern.Location = new System.Drawing.Point(215, 108);
             this.txt0StartFilenamePattern.Name = "txt0StartFilenamePattern";
             this.txt0StartFilenamePattern.Size = new System.Drawing.Size(80, 20);
-            this.txt0StartFilenamePattern.TabIndex = 12;
+            this.txt0StartFilenamePattern.TabIndex = 13;
             this.txt0StartFilenamePattern.Text = " (beginning)";
             // 
             // chkStartEnd
@@ -574,7 +576,7 @@
             this.chkStartEnd.Location = new System.Drawing.Point(3, 134);
             this.chkStartEnd.Name = "chkStartEnd";
             this.chkStartEnd.Size = new System.Drawing.Size(160, 20);
-            this.chkStartEnd.TabIndex = 13;
+            this.chkStartEnd.TabIndex = 14;
             this.chkStartEnd.Text = "Export loop segment";
             this.chkStartEnd.UseVisualStyleBackColor = true;
             this.chkStartEnd.CheckedChanged += new System.EventHandler(this.chkStartEnd_CheckedChanged);
@@ -585,7 +587,7 @@
             this.txtStartEndFilenamePattern.Location = new System.Drawing.Point(215, 134);
             this.txtStartEndFilenamePattern.Name = "txtStartEndFilenamePattern";
             this.txtStartEndFilenamePattern.Size = new System.Drawing.Size(80, 20);
-            this.txtStartEndFilenamePattern.TabIndex = 15;
+            this.txtStartEndFilenamePattern.TabIndex = 16;
             this.txtStartEndFilenamePattern.Text = " (loop)";
             // 
             // lblSeconds
@@ -594,7 +596,7 @@
             this.lblSeconds.Margin = new System.Windows.Forms.Padding(3);
             this.lblSeconds.Name = "lblSeconds";
             this.lblSeconds.Size = new System.Drawing.Size(40, 21);
-            this.lblSeconds.TabIndex = 7;
+            this.lblSeconds.TabIndex = 10;
             this.lblSeconds.Text = "sec";
             this.lblSeconds.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -604,7 +606,7 @@
             this.lblNumberLoops.Margin = new System.Windows.Forms.Padding(3);
             this.lblNumberLoops.Name = "lblNumberLoops";
             this.lblNumberLoops.Size = new System.Drawing.Size(96, 20);
-            this.lblNumberLoops.TabIndex = 5;
+            this.lblNumberLoops.TabIndex = 6;
             this.lblNumberLoops.Text = "Number of loops:";
             this.lblNumberLoops.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -614,7 +616,7 @@
             this.label3.Margin = new System.Windows.Forms.Padding(3);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(40, 20);
-            this.label3.TabIndex = 14;
+            this.label3.TabIndex = 15;
             this.label3.Text = "Suffix:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -634,7 +636,7 @@
             this.label2.Margin = new System.Windows.Forms.Padding(3);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(40, 20);
-            this.label2.TabIndex = 11;
+            this.label2.TabIndex = 12;
             this.label2.Text = "Suffix:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -648,7 +650,7 @@
             0});
             this.numNumberLoops.Name = "numNumberLoops";
             this.numNumberLoops.Size = new System.Drawing.Size(53, 20);
-            this.numNumberLoops.TabIndex = 6;
+            this.numNumberLoops.TabIndex = 7;
             this.numNumberLoops.Value = new decimal(new int[] {
             1,
             0,
@@ -661,7 +663,7 @@
             this.label1.Margin = new System.Windows.Forms.Padding(3);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(40, 20);
-            this.label1.TabIndex = 3;
+            this.label1.TabIndex = 4;
             this.label1.Text = "Suffix:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -681,7 +683,7 @@
             this.chkShortCircuit.Location = new System.Drawing.Point(233, 166);
             this.chkShortCircuit.Name = "chkShortCircuit";
             this.chkShortCircuit.Size = new System.Drawing.Size(269, 17);
-            this.chkShortCircuit.TabIndex = 0;
+            this.chkShortCircuit.TabIndex = 4;
             this.chkShortCircuit.Text = "Convert directly between BRSTM, BCSTM, BFSTM";
             this.chkShortCircuit.UseVisualStyleBackColor = false;
             // 
@@ -691,7 +693,7 @@
             this.chkBrawlLibDecoder.Location = new System.Drawing.Point(233, 189);
             this.chkBrawlLibDecoder.Name = "chkBrawlLibDecoder";
             this.chkBrawlLibDecoder.Size = new System.Drawing.Size(164, 17);
-            this.chkBrawlLibDecoder.TabIndex = 1;
+            this.chkBrawlLibDecoder.TabIndex = 5;
             this.chkBrawlLibDecoder.Text = "Use BrawlLib RSTM decoder";
             this.chkBrawlLibDecoder.UseVisualStyleBackColor = false;
             // 
@@ -704,7 +706,7 @@
             this.panel3.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(198, 28);
-            this.panel3.TabIndex = 24;
+            this.panel3.TabIndex = 6;
             // 
             // numSimulTasks
             // 
@@ -747,7 +749,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 451);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(534, 30);
-            this.panel1.TabIndex = 23;
+            this.panel1.TabIndex = 1;
             // 
             // btnLoadOptions
             // 
@@ -793,6 +795,17 @@
             this.btnSaveOptions.Text = "Save Options";
             this.btnSaveOptions.UseVisualStyleBackColor = true;
             this.btnSaveOptions.Click += new System.EventHandler(this.btnSaveOptions_Click);
+            // 
+            // btnEncodingOptions
+            // 
+            this.btnEncodingOptions.Location = new System.Drawing.Point(216, 3);
+            this.btnEncodingOptions.Name = "btnEncodingOptions";
+            this.btnEncodingOptions.Size = new System.Drawing.Size(76, 21);
+            this.btnEncodingOptions.TabIndex = 2;
+            this.btnEncodingOptions.Text = "Options";
+            this.btnEncodingOptions.UseVisualStyleBackColor = true;
+            this.btnEncodingOptions.Visible = false;
+            this.btnEncodingOptions.Click += new System.EventHandler(this.btnEncodingOptions_Click);
             // 
             // OptionsForm
             // 
@@ -890,5 +903,6 @@
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.ComboBox ddlNonLoopingBehavior;
         private System.Windows.Forms.Label lblNonLoopingBehavior;
+        private System.Windows.Forms.Button btnEncodingOptions;
     }
 }

@@ -5,20 +5,21 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace LoopingAudioConverter {
     public partial class MP3QualityForm : Form {
         public string EncodingParameters {
             get {
-                return radVBR.Checked ? ("-V " + ((KeyValuePair<int, string>)ddlVBRSetting.SelectedItem).Key)
+                return radVBR.Checked ? ("-V " + ddlVBRSetting.SelectedIndex)
                     : radCBR.Checked ? ("--cbr -b " + numBitrate.Value)
                     : radCustom.Checked ? txtParameters.Text
                     : "";
             }
         }
 
-        public MP3QualityForm() {
+        public MP3QualityForm(string encodingParameters = null) {
             InitializeComponent();
             
             ddlVBRSetting.DisplayMember = "Value";
@@ -35,7 +36,22 @@ namespace LoopingAudioConverter {
                 [9] = "-V 9",
             }) {
                 ddlVBRSetting.Items.Add(p);
-                if (p.Key == 2) ddlVBRSetting.SelectedItem = p;
+            }
+            ddlVBRSetting.SelectedIndex = 2;
+
+            if (encodingParameters != null) {
+                var vbr = Regex.Match(encodingParameters, "^-V ?([0-9]*)$");
+                var cbr = Regex.Match(encodingParameters, "^--cbr -b ?([0-9]*)$");
+                if (vbr.Success) {
+                    radVBR.Checked = true;
+                    ddlVBRSetting.SelectedIndex = int.Parse(vbr.Groups[1].Value);
+                } else if (cbr.Success) {
+                    radCBR.Checked = true;
+                    numBitrate.Value = int.Parse(cbr.Groups[1].Value);
+                } else {
+                    radCustom.Checked = true;
+                    txtParameters.Text = encodingParameters;
+                }
             }
         }
     }
