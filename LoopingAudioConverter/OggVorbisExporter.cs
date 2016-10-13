@@ -1,5 +1,7 @@
 ﻿using RSTMLib.WAV;
+using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter {
@@ -13,7 +15,14 @@ namespace LoopingAudioConverter {
 		}
 
 		public void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IEncodingProgress progressTracker = null) {
-			sox.WriteFile(lwav, Path.Combine(output_dir, original_filename_no_ext + ".ogg"), encodingParameters);
+            string output_filename = Path.Combine(output_dir, original_filename_no_ext + ".ogg");
+
+            // Don't re-encode if the original input file was also Ogg Vorbis
+            if (new string[] { ".ogg", ".logg" }.Contains(Path.GetExtension(lwav.OriginalFilePath), StringComparer.InvariantCultureIgnoreCase)) {
+                File.Copy(lwav.OriginalFilePath, output_filename, true);
+            } else {
+                sox.WriteFile(lwav, output_filename, encodingParameters);
+            }
 		}
 
 		public Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IEncodingProgress progressTracker = null) {
