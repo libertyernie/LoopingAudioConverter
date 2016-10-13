@@ -162,40 +162,6 @@ namespace LoopingAudioConverter {
 
 				string extension = Path.GetExtension(inputFile);
 
-				if (o.ShortCircuit) {
-					if (o.ExporterType == ExporterType.BRSTM || o.ExporterType == ExporterType.BCSTM || o.ExporterType == ExporterType.BFSTM) {
-						byte[] rstm = null;
-						if (extension.Equals(".brstm", StringComparison.InvariantCultureIgnoreCase)) {
-							rstm = File.ReadAllBytes(inputFile);
-						} else if (extension.Equals(".bcstm", StringComparison.InvariantCultureIgnoreCase)) {
-							byte[] cstm = File.ReadAllBytes(inputFile);
-							rstm = CSTMConverter.ToRSTM(cstm);
-						} else if (extension.Equals(".bfstm", StringComparison.InvariantCultureIgnoreCase)) {
-							byte[] fstm = File.ReadAllBytes(inputFile);
-							rstm = FSTMConverter.ToRSTM(fstm);
-						}
-
-						if (rstm != null) {
-							string outputFile = null;
-							if (o.ExporterType == ExporterType.BRSTM) {
-								outputFile = filename_no_ext + ".brstm";
-								File.WriteAllBytes(Path.Combine(outputDir, outputFile), rstm);
-							} else if (o.ExporterType == ExporterType.BCSTM) {
-								outputFile = filename_no_ext + ".bcstm";
-								File.WriteAllBytes(Path.Combine(outputDir, outputFile), CSTMConverter.FromRSTM(rstm));
-							} else if (o.ExporterType == ExporterType.BFSTM) {
-								outputFile = filename_no_ext + ".bfstm";
-								File.WriteAllBytes(Path.Combine(outputDir, outputFile), FSTMConverter.FromRSTM(rstm));
-							}
-							lock (exported) {
-								exported.Add(outputFile);
-							}
-							sem.Release();
-							continue;
-						}
-					}
-				}
-
 				PCM16Audio w = null;
 				List<AudioImporterException> exceptions = new List<AudioImporterException>();
 
