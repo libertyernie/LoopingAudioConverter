@@ -249,6 +249,12 @@ namespace LoopingAudioConverter {
                         break;
                     }
 
+                    if (!o.ShortCircuit) {
+                        if (toExport.LWAV.OriginalFilePath != null) {
+                            toExport.LWAV.OriginalFilePath = null;
+                        }
+                    }
+
                     MultipleProgressRow row = window.AddEncodingRow(toExport.Name);
                     if (o.NumSimulTasks == 1) {
                         exporter.WriteFile(toExport.LWAV, outputDir, toExport.Name, row);

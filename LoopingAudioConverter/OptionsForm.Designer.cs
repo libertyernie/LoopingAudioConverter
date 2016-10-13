@@ -59,6 +59,7 @@
             this.radChannelsPairs = new System.Windows.Forms.RadioButton();
             this.radChannelsSeparate = new System.Windows.Forms.RadioButton();
             this.pnlExportSegments = new System.Windows.Forms.Panel();
+            this.btnEncodingOptions = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.lblOutputFormat = new System.Windows.Forms.Label();
             this.chk0End = new System.Windows.Forms.CheckBox();
@@ -85,7 +86,6 @@
             this.btnHelp = new System.Windows.Forms.Button();
             this.btnOkay = new System.Windows.Forms.Button();
             this.btnSaveOptions = new System.Windows.Forms.Button();
-            this.btnEncodingOptions = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -512,6 +512,17 @@
             this.pnlExportSegments.Size = new System.Drawing.Size(298, 157);
             this.pnlExportSegments.TabIndex = 3;
             // 
+            // btnEncodingOptions
+            // 
+            this.btnEncodingOptions.Location = new System.Drawing.Point(216, 3);
+            this.btnEncodingOptions.Name = "btnEncodingOptions";
+            this.btnEncodingOptions.Size = new System.Drawing.Size(76, 21);
+            this.btnEncodingOptions.TabIndex = 2;
+            this.btnEncodingOptions.Text = "Options";
+            this.btnEncodingOptions.UseVisualStyleBackColor = true;
+            this.btnEncodingOptions.Visible = false;
+            this.btnEncodingOptions.Click += new System.EventHandler(this.btnEncodingOptions_Click);
+            // 
             // comboBox1
             // 
             this.comboBox1.DisplayMember = "Name";
@@ -682,9 +693,9 @@
             this.chkShortCircuit.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkShortCircuit.Location = new System.Drawing.Point(233, 166);
             this.chkShortCircuit.Name = "chkShortCircuit";
-            this.chkShortCircuit.Size = new System.Drawing.Size(269, 17);
+            this.chkShortCircuit.Size = new System.Drawing.Size(259, 17);
             this.chkShortCircuit.TabIndex = 4;
-            this.chkShortCircuit.Text = "Convert directly between BRSTM, BCSTM, BFSTM";
+            this.chkShortCircuit.Text = "Skip re-encoding for similar formats when possible";
             this.chkShortCircuit.UseVisualStyleBackColor = false;
             // 
             // chkBrawlLibDecoder
@@ -795,17 +806,6 @@
             this.btnSaveOptions.Text = "Save Options";
             this.btnSaveOptions.UseVisualStyleBackColor = true;
             this.btnSaveOptions.Click += new System.EventHandler(this.btnSaveOptions_Click);
-            // 
-            // btnEncodingOptions
-            // 
-            this.btnEncodingOptions.Location = new System.Drawing.Point(216, 3);
-            this.btnEncodingOptions.Name = "btnEncodingOptions";
-            this.btnEncodingOptions.Size = new System.Drawing.Size(76, 21);
-            this.btnEncodingOptions.TabIndex = 2;
-            this.btnEncodingOptions.Text = "Options";
-            this.btnEncodingOptions.UseVisualStyleBackColor = true;
-            this.btnEncodingOptions.Visible = false;
-            this.btnEncodingOptions.Click += new System.EventHandler(this.btnEncodingOptions_Click);
             // 
             // OptionsForm
             // 
