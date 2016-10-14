@@ -139,6 +139,10 @@
       <Project>{6a05884b-9b0d-4a19-b4b3-e0bcc0505f9a}</Project>
       <Name>RSTMLib.WAV</Name>
     </ProjectReference>
+    <ProjectReference Include="..\VorbisCommentSharp\VorbisCommentSharp.csproj">
+      <Project>{5BD4854F-481B-4AA6-B838-32C21B2B069F}</Project>
+      <Name>VorbisCommentSharp</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using VorbisCommentSharp;
 
 namespace LoopingAudioConverter {
 	public class OggVorbisExporter : IAudioExporter {
@@ -22,6 +23,35 @@ namespace LoopingAudioConverter {
                 File.Copy(lwav.OriginalFilePath, output_filename, true);
             } else {
                 sox.WriteFile(lwav, output_filename, encodingParameters);
+            }
+
+            using (VorbisFile file = new VorbisFile(File.ReadAllBytes(output_filename))) { 
+                var commentHeader = file.GetPageHeaders().Select(p => p.GetCommentHeader()).Where(h => h != null).FirstOrDefault();
+                var comments = commentHeader?.ExtractComments() ?? new VorbisComments();
+                if (lwav.Looping) {
+                    if (commentHeader == null) throw new Exception("No comment header found in Ogg Vorbis file - cannot edit it to make it loop.");
+
+                    string loopStart = null;
+                    string loopLength = null;
+                    comments.Comments.TryGetValue("LOOPSTART", out loopStart);
+                    comments.Comments.TryGetValue("LOOPLENGTH", out loopLength);
+
+                    if (loopStart != lwav.LoopStart.ToString() || loopLength != lwav.LoopEnd.ToString()) {
+                        comments.Comments["LOOPSTART"] = lwav.LoopStart.ToString();
+                        comments.Comments["LOOPLENGTH"] = lwav.LoopEnd.ToString();
+                        using (VorbisFile newFile = new VorbisFile(file, comments)) {
+                            File.WriteAllBytes(output_filename, newFile.ToByteArray());
+                        }
+                    }
+                } else {
+                    if (comments.Comments.ContainsKey("LOOPSTART") || comments.Comments.ContainsKey("LOOPLENGTH")) {
+                        comments.Comments.Remove("LOOPSTART");
+                        comments.Comments.Remove("LOOPLENGTH");
+                        using (VorbisFile newFile = new VorbisFile(file, comments)) {
+                            File.WriteAllBytes(output_filename, newFile.ToByteArray());
+                        }
+                    }
+                }
             }
 		}
 
