@@ -36,9 +36,9 @@ namespace LoopingAudioConverter {
                     comments.Comments.TryGetValue("LOOPSTART", out loopStart);
                     comments.Comments.TryGetValue("LOOPLENGTH", out loopLength);
 
-                    if (loopStart != lwav.LoopStart.ToString() || loopLength != lwav.LoopEnd.ToString()) {
+                    if (loopStart != lwav.LoopStart.ToString() || loopLength != lwav.LoopLength.ToString()) {
                         comments.Comments["LOOPSTART"] = lwav.LoopStart.ToString();
-                        comments.Comments["LOOPLENGTH"] = lwav.LoopEnd.ToString();
+                        comments.Comments["LOOPLENGTH"] = lwav.LoopLength.ToString();
                         using (VorbisFile newFile = new VorbisFile(file, comments)) {
                             File.WriteAllBytes(output_filename, newFile.ToByteArray());
                         }
