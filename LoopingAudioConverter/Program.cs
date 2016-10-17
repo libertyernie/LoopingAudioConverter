@@ -254,6 +254,9 @@ namespace LoopingAudioConverter {
                             toExport.LWAV.OriginalFilePath = null;
                         }
                     }
+                    if (!o.WriteLoopingMetadata) {
+                        toExport.LWAV.Looping = false;
+                    }
 
                     MultipleProgressRow row = window.AddEncodingRow(toExport.Name);
                     if (o.NumSimulTasks == 1) {

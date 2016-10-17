@@ -44,7 +44,7 @@ namespace LoopingAudioConverter {
 				new NVPair(ExporterType.BRSTM, "BRSTM"),
 				new NVPair(ExporterType.BCSTM, "BCSTM"),
 				new NVPair(ExporterType.BFSTM, "BFSTM"),
-				new NVPair(ExporterType.WAV, "WAV (+smpl)"),
+				new NVPair(ExporterType.WAV, "WAV"),
 				new NVPair(ExporterType.FLAC, "FLAC"),
 				new NVPair(ExporterType.MP3, "MP3"),
 				new NVPair(ExporterType.OggVorbis, "Ogg Vorbis")
@@ -59,6 +59,15 @@ namespace LoopingAudioConverter {
                         break;
                     default:
                         btnEncodingOptions.Visible = false;
+                        break;
+                }
+                switch ((ExporterType)comboBox1.SelectedValue) {
+                    case ExporterType.MP3:
+                    case ExporterType.FLAC:
+                        chkWriteLoopingMetadata.Enabled = false;
+                        break;
+                    default:
+                        chkWriteLoopingMetadata.Enabled = true;
                         break;
                 }
             };
@@ -106,6 +115,7 @@ namespace LoopingAudioConverter {
 				txt0EndFilenamePattern.Text = o.WholeSongSuffix;
 				numNumberLoops.Value = o.NumberOfLoops;
 				numFadeOutTime.Value = o.FadeOutSec;
+                chkWriteLoopingMetadata.Checked = o.WriteLoopingMetadata;
 				chk0Start.Checked = o.ExportPreLoop;
 				txt0StartFilenamePattern.Text = o.PreLoopSuffix;
 				chkStartEnd.Checked = o.ExportLoop;
@@ -121,24 +131,25 @@ namespace LoopingAudioConverter {
 			foreach (object item in listBox1.Items) {
 				filenames.Add(item.ToString());
 			}
-			return new Options {
-				InputFiles = filenames,
-				OutputDir = txtOutputDir.Text,
-				MaxChannels = chkMono.Checked ? 1 : (int?)null,
-				MaxSampleRate = chkMaxSampleRate.Checked ? (int)numMaxSampleRate.Value : (int?)null,
-				AmplifydB = chkAmplifydB.Checked ? numAmplifydB.Value : (decimal?)null,
-				AmplifyRatio = chkAmplifyRatio.Checked ? numAmplifyRatio.Value : (decimal?)null,
-				ChannelSplit = radChannelsPairs.Checked ? ChannelSplit.Pairs
-					: radChannelsSeparate.Checked ? ChannelSplit.Each
-					: ChannelSplit.OneFile,
-				ExporterType = (ExporterType)comboBox1.SelectedValue,
+            return new Options {
+                InputFiles = filenames,
+                OutputDir = txtOutputDir.Text,
+                MaxChannels = chkMono.Checked ? 1 : (int?)null,
+                MaxSampleRate = chkMaxSampleRate.Checked ? (int)numMaxSampleRate.Value : (int?)null,
+                AmplifydB = chkAmplifydB.Checked ? numAmplifydB.Value : (decimal?)null,
+                AmplifyRatio = chkAmplifyRatio.Checked ? numAmplifyRatio.Value : (decimal?)null,
+                ChannelSplit = radChannelsPairs.Checked ? ChannelSplit.Pairs
+                    : radChannelsSeparate.Checked ? ChannelSplit.Each
+                    : ChannelSplit.OneFile,
+                ExporterType = (ExporterType)comboBox1.SelectedValue,
                 MP3EncodingParameters = encodingParameters[ExporterType.MP3],
                 OggVorbisEncodingParameters = encodingParameters[ExporterType.OggVorbis],
                 NonLoopingBehavior = (NonLoopingBehavior)ddlNonLoopingBehavior.SelectedValue,
-				ExportWholeSong = chk0End.Checked,
-				WholeSongSuffix = txt0EndFilenamePattern.Text,
-				NumberOfLoops = (int)numNumberLoops.Value,
-				FadeOutSec = numFadeOutTime.Value,
+                ExportWholeSong = chk0End.Checked,
+                WholeSongSuffix = txt0EndFilenamePattern.Text,
+                NumberOfLoops = (int)numNumberLoops.Value,
+                FadeOutSec = numFadeOutTime.Value,
+                WriteLoopingMetadata = chkWriteLoopingMetadata.Checked,
 				ExportPreLoop = chk0Start.Checked,
 				PreLoopSuffix = txt0StartFilenamePattern.Text,
 				ExportLoop = chkStartEnd.Checked,

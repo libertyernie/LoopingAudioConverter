@@ -43,6 +43,7 @@ namespace LoopingAudioConverter {
 		public string WholeSongSuffix { get; set; }
 		public int NumberOfLoops { get; set; }
 		public decimal FadeOutSec { get; set; }
+        public bool WriteLoopingMetadata { get; set; }
 		public bool ExportPreLoop { get; set; }
 		public string PreLoopSuffix { get; set; }
 		public bool ExportLoop { get; set; }

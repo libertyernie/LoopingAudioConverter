@@ -69,6 +69,9 @@ namespace LoopingAudioConverter
                                 case "FadeOutSec":
                                     o.FadeOutSec = decimal.Parse(v);
                                     break;
+                                case "WriteLoopingMetadata":
+                                    o.WriteLoopingMetadata = bool.Parse(v);
+                                    break;
                                 case "ExportPreLoop":
                                     o.ExportPreLoop = bool.Parse(v);
                                     break;
@@ -117,6 +120,7 @@ namespace LoopingAudioConverter
                     if (o.WholeSongSuffix != null) sw.WriteLine("WholeSongSuffix=" + o.WholeSongSuffix);
                     if (o.NumberOfLoops != null) sw.WriteLine("NumberOfLoops=" + o.NumberOfLoops);
                     if (o.FadeOutSec != null) sw.WriteLine("FadeOutSec=" + o.FadeOutSec);
+                    if (o.WriteLoopingMetadata != null) sw.WriteLine("WriteLoopingMetadata=" + o.WriteLoopingMetadata);
                     if (o.ExportPreLoop != null) sw.WriteLine("ExportPreLoop=" + o.ExportPreLoop);
                     if (o.PreLoopSuffix != null) sw.WriteLine("PreLoopSuffix=" + o.PreLoopSuffix);
                     if (o.ExportLoop != null) sw.WriteLine("ExportLoop=" + o.ExportLoop);
