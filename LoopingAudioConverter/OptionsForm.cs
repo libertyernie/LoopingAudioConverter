@@ -274,6 +274,10 @@ namespace LoopingAudioConverter {
 			UpdateTitle();
 			t.Start();
 			t.ContinueWith(x => {
+                if (x.Exception != null) {
+                    Console.Error.WriteLine(x.Exception + ": " + x.Exception.Message);
+                    Console.Error.WriteLine(x.Exception.StackTrace);
+                }
 				runningTasks.Remove(x);
 				UpdateTitle();
 			});
