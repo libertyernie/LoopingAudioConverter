@@ -29,11 +29,11 @@ namespace LoopingAudioConverter.Brawl {
 				} else if (data[0] == 'F') {
 					data = FSTMConverter.ToRSTM(data);
 				}
+
+			    return PCM16Factory.FromAudioStream(RSTMConverter.CreateStreams(data)[0]);
 			} catch (Exception e) {
 				throw new AudioImporterException("Could not convert from B" + (char)data[0] + "STM: " + e.Message);
 			}
-
-			return PCM16Factory.FromAudioStream(RSTMConverter.CreateStreams(data)[0]);
 		}
 
 		public string GetImporterName() {

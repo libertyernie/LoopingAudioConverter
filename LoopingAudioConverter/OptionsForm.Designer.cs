@@ -59,6 +59,7 @@
             this.radChannelsPairs = new System.Windows.Forms.RadioButton();
             this.radChannelsSeparate = new System.Windows.Forms.RadioButton();
             this.pnlExportSegments = new System.Windows.Forms.Panel();
+            this.chkWriteLoopingMetadata = new System.Windows.Forms.CheckBox();
             this.btnEncodingOptions = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.lblOutputFormat = new System.Windows.Forms.Label();
@@ -86,7 +87,6 @@
             this.btnHelp = new System.Windows.Forms.Button();
             this.btnOkay = new System.Windows.Forms.Button();
             this.btnSaveOptions = new System.Windows.Forms.Button();
-            this.chkWriteLoopingMetadata = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -514,6 +514,17 @@
             this.pnlExportSegments.Size = new System.Drawing.Size(298, 183);
             this.pnlExportSegments.TabIndex = 3;
             // 
+            // chkWriteLoopingMetadata
+            // 
+            this.chkWriteLoopingMetadata.Checked = true;
+            this.chkWriteLoopingMetadata.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkWriteLoopingMetadata.Location = new System.Drawing.Point(41, 108);
+            this.chkWriteLoopingMetadata.Name = "chkWriteLoopingMetadata";
+            this.chkWriteLoopingMetadata.Size = new System.Drawing.Size(184, 20);
+            this.chkWriteLoopingMetadata.TabIndex = 11;
+            this.chkWriteLoopingMetadata.Text = "Write looping metadata";
+            this.chkWriteLoopingMetadata.UseVisualStyleBackColor = true;
+            // 
             // btnEncodingOptions
             // 
             this.btnEncodingOptions.Location = new System.Drawing.Point(216, 3);
@@ -705,9 +716,9 @@
             this.chkBrawlLibDecoder.AutoSize = true;
             this.chkBrawlLibDecoder.Location = new System.Drawing.Point(233, 215);
             this.chkBrawlLibDecoder.Name = "chkBrawlLibDecoder";
-            this.chkBrawlLibDecoder.Size = new System.Drawing.Size(164, 17);
+            this.chkBrawlLibDecoder.Size = new System.Drawing.Size(219, 17);
             this.chkBrawlLibDecoder.TabIndex = 5;
-            this.chkBrawlLibDecoder.Text = "Use BrawlLib RSTM decoder";
+            this.chkBrawlLibDecoder.Text = "Use BrawlLib RSTM decoder (if possible)";
             this.chkBrawlLibDecoder.UseVisualStyleBackColor = false;
             // 
             // panel3
@@ -808,17 +819,6 @@
             this.btnSaveOptions.Text = "Save Options";
             this.btnSaveOptions.UseVisualStyleBackColor = true;
             this.btnSaveOptions.Click += new System.EventHandler(this.btnSaveOptions_Click);
-            // 
-            // chkWriteLoopingMetadata
-            // 
-            this.chkWriteLoopingMetadata.Checked = true;
-            this.chkWriteLoopingMetadata.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkWriteLoopingMetadata.Location = new System.Drawing.Point(41, 108);
-            this.chkWriteLoopingMetadata.Name = "chkWriteLoopingMetadata";
-            this.chkWriteLoopingMetadata.Size = new System.Drawing.Size(184, 20);
-            this.chkWriteLoopingMetadata.TabIndex = 11;
-            this.chkWriteLoopingMetadata.Text = "Write looping metadata";
-            this.chkWriteLoopingMetadata.UseVisualStyleBackColor = true;
             // 
             // OptionsForm
             // 
