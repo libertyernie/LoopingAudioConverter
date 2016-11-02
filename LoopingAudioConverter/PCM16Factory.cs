@@ -3,7 +3,7 @@ using System.Audio;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace RSTMLib.WAV {
+namespace LoopingAudioConverter {
     public class PCM16FactoryException : Exception {
         public PCM16FactoryException(string message) : base(message) { }
     }

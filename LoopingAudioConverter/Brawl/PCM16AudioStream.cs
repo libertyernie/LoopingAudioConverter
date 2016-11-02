@@ -2,7 +2,7 @@
 using System.Audio;
 using System.Runtime.InteropServices;
 
-namespace RSTMLib.WAV {
+namespace LoopingAudioConverter.Brawl {
     /// <summary>
     /// A wrapper for PCM16Audio to conform to BrawlLib's IAudioStream interface.
     /// IAudioStream maintains a "current position" in the audio stream, while PCM16Audio does not, so this class handles SamplePosition, Wrap, and ReadSamples.

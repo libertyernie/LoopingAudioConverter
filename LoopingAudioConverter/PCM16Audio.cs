@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RSTMLib.WAV {
+namespace LoopingAudioConverter {
     /// <summary>
     /// Represents 16-bit uncompressed PCM data with an arbitary number of channels and an optional loop sequence.
     /// The total sample length of this data is immutable, but the data itself and other properties can be modified.

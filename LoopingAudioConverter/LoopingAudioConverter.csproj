@@ -73,6 +73,9 @@
     </Compile>
     <Compile Include="MP4Importer.cs" />
     <Compile Include="OptionsSerialization.cs" />
+    <Compile Include="PCM16Audio.cs" />
+    <Compile Include="Brawl\PCM16AudioStream.cs" />
+    <Compile Include="PCM16Factory.cs" />
     <Compile Include="TempFiles.cs" />
     <Compile Include="VGMImporter.cs" />
     <Compile Include="WAVExporter.cs" />
@@ -134,10 +137,6 @@
     <ProjectReference Include="..\brawltools\BrawlLib\RSTMLib.csproj">
       <Project>{41c94979-ce5a-4582-888a-1bee98dd43d3}</Project>
       <Name>RSTMLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RSTMLib.WAV\RSTMLib.WAV.csproj">
-      <Project>{6a05884b-9b0d-4a19-b4b3-e0bcc0505f9a}</Project>
-      <Name>RSTMLib.WAV</Name>
     </ProjectReference>
     <ProjectReference Include="..\VorbisCommentSharp\VorbisCommentSharp.csproj">
       <Project>{5BD4854F-481B-4AA6-B838-32C21B2B069F}</Project>

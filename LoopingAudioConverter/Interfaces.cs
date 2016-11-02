@@ -1,5 +1,4 @@
-﻿using RSTMLib.WAV;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter {

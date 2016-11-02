@@ -1,6 +1,4 @@
-﻿using RSTMLib.WAV;
-
-namespace LoopingAudioConverter {
+﻿namespace LoopingAudioConverter {
     public class NamedAudio {
         public PCM16Audio LWAV { get; private set; }
         public string Name { get; private set; }

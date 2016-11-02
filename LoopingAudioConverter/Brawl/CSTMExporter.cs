@@ -1,5 +1,4 @@
 ﻿using BrawlLib.Wii.Audio;
-using RSTMLib.WAV;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
