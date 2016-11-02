@@ -1,6 +1,6 @@
 ﻿using BrawlLib.Wii.Audio;
-using RSTMLib.WAV;
 using System;
+using System.Audio;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace stm_encode {
     class Program {
         static int usage() {
-            Console.Error.WriteLine(@"stm-encode - encode and convert between RSTM, CSTM, and FSTM
+            Console.Error.WriteLine(@"stm-encode - encode, decode, and convert between RSTM, CSTM, and FSTM
 Based on code from BrawlLib
 https://github.com/libertyernie/LoopingAudioConverter/stm-encode
 
@@ -25,11 +25,14 @@ stm-encode [options] <inputfile> <outputfile>
 
 Supported formats are .brstm, .bcstm, .bfstm, or .wav.
 
-Options (WAV input only):
+Options (WAV input):
     -l             Loop from start of file until end of file
     -l<start>      Loop from sample <start> until end of file
     -l<start-end>  Loop from sample <start> until sample <end>
-    -noloop        Do not loop (ignore smpl chunk in WAV file if one exists)");
+    -noloop        Do not loop (ignore looping info in input file if any)
+
+Options (WAV output):
+    -L             Include looping information in smpl chunk");
             return 1;
         }
 
@@ -41,6 +44,7 @@ Options (WAV input only):
             bool? looping = null;
             int? loopStart = null, loopEnd = null;
             string inputFile = null, outputFile = null;
+            bool includeSmpl = false;
 
             foreach (string s in args) {
                 if (s == "/?" || s == "-h" || s == "--help") {
@@ -56,6 +60,8 @@ Options (WAV input only):
                     }
                 } else if (s == "-noloop") {
                     looping = false;
+                } else if (s == "-L") {
+                    includeSmpl = true;
                 } else if (inputFile == null) {
                     inputFile = s;
                 } else if (outputFile == null) {
@@ -102,11 +108,11 @@ Options (WAV input only):
             byte[] rstm;
             switch (tag) {
                 case "RIFF":
-                    PCM16Audio wav = PCM16Factory.FromByteArray(inputarr);
-                    wav.Looping = looping ?? wav.Looping;
-                    wav.LoopStart = loopStart ?? wav.LoopStart;
-                    wav.LoopEnd = loopEnd ?? wav.LoopEnd;
-                    rstm = RSTMConverter.EncodeToByteArray(new PCM16AudioStream(wav), new ConsoleProgressTracker());
+                    IAudioStream wav = new PCMStream(inputarr);
+                    wav.IsLooping = looping ?? wav.IsLooping;
+                    wav.LoopStartSample = loopStart ?? wav.LoopStartSample;
+                    wav.LoopEndSample = loopEnd ?? wav.LoopEndSample;
+                    rstm = RSTMConverter.EncodeToByteArray(wav, new ConsoleProgressTracker());
                     break;
                 case "RSTM":
                     rstm = inputarr;
@@ -125,7 +131,7 @@ Options (WAV input only):
             byte[] outputarr =
                 ext == ".bcstm" ? CSTMConverter.FromRSTM(rstm)
                 : ext == ".bfstm" ? FSTMConverter.FromRSTM(rstm)
-                : ext == ".wav" ? PCM16Factory.FromAudioStream(RSTMConverter.CreateStreams(rstm)[0]).Export()
+                : ext == ".wav" ? WAV.ToByteArray(RSTMConverter.CreateStreams(rstm)[0], appendSmplChunk: includeSmpl)
                 : rstm;
             File.WriteAllBytes(outputFile, outputarr);
 
