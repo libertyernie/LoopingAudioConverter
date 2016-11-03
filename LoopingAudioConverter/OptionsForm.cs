@@ -40,9 +40,10 @@ namespace LoopingAudioConverter {
             };
 
 			var exporters = new List<NVPair>() {
-				new NVPair(ExporterType.BRSTM, "BRSTM"),
-				new NVPair(ExporterType.BCSTM, "BCSTM"),
-				new NVPair(ExporterType.BFSTM, "BFSTM"),
+				new NVPair(ExporterType.BRSTM, "BRSTM (ADPCM)"),
+				new NVPair(ExporterType.BRSTM_PCM16, "BRSTM (PCM16)"),
+				new NVPair(ExporterType.BCSTM, "BCSTM (ADPCM)"),
+				new NVPair(ExporterType.BFSTM, "BFSTM (ADPCM)"),
 				new NVPair(ExporterType.WAV, "WAV"),
 				new NVPair(ExporterType.FLAC, "FLAC"),
 				new NVPair(ExporterType.MP3, "MP3"),

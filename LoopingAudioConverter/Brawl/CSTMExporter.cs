@@ -1,4 +1,5 @@
 ﻿using BrawlLib.Wii.Audio;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -9,21 +10,26 @@ namespace LoopingAudioConverter.Brawl {
 			IProgressTracker pw = null;
 			if (progressTracker != null) pw = new EncodingProgressWrapper(progressTracker);
 
-            byte[] data;
-            switch (Path.GetExtension(lwav.OriginalFilePath ?? "").ToLowerInvariant()) {
-                case ".brstm":
-                    data = CSTMConverter.FromRSTM(File.ReadAllBytes(lwav.OriginalFilePath));
-                    break;
-                case ".bcstm":
-                    data = File.ReadAllBytes(lwav.OriginalFilePath);
-                    break;
-                case ".bfstm":
-                    data = CSTMConverter.FromRSTM(FSTMConverter.ToRSTM(File.ReadAllBytes(lwav.OriginalFilePath)));
-                    break;
-                default:
-                    data = CSTMConverter.EncodeToByteArray(new PCM16AudioStream(lwav), pw);
-			        if (pw.Cancelled) throw new AudioExporterException("CSTM export cancelled");
-                    break;
+            byte[] data = null;
+            try {
+                switch (Path.GetExtension(lwav.OriginalFilePath ?? "").ToLowerInvariant()) {
+                    case ".brstm":
+                        data = CSTMConverter.FromRSTM(File.ReadAllBytes(lwav.OriginalFilePath));
+                        break;
+                    case ".bcstm":
+                        data = File.ReadAllBytes(lwav.OriginalFilePath);
+                        break;
+                    case ".bfstm":
+                        data = CSTMConverter.FromRSTM(FSTMConverter.ToRSTM(File.ReadAllBytes(lwav.OriginalFilePath)));
+                        break;
+                }
+            } catch (Exception e) {
+                Console.WriteLine(e.GetType().Name + ": " + e.Message);
+            }
+
+            if (data == null) {
+                data = CSTMConverter.EncodeToByteArray(new PCM16AudioStream(lwav), pw);
+			    if (pw.Cancelled) throw new AudioExporterException("CSTM export cancelled");
             }
 			File.WriteAllBytes(Path.Combine(output_dir, original_filename_no_ext + ".bcstm"), data);
 		}

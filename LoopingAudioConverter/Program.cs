@@ -68,7 +68,10 @@ namespace LoopingAudioConverter {
 			IAudioExporter exporter;
 			switch (o.ExporterType) {
 				case ExporterType.BRSTM:
-					exporter = new RSTMExporter();
+					exporter = new RSTMExporter(BrawlLib.SSBBTypes.WaveEncoding.ADPCM);
+					break;
+				case ExporterType.BRSTM_PCM16:
+					exporter = new RSTMExporter(BrawlLib.SSBBTypes.WaveEncoding.PCM16);
 					break;
 				case ExporterType.BCSTM:
 					exporter = new CSTMExporter();

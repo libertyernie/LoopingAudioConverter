@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -6,7 +6,7 @@
     <title></title>
   </head>
   <body>
-    <h1>Looping Audio Converter 1.3.2</h1>
+    <h1>Looping Audio Converter 1.3.3</h1>
     <p>This application acts as a frontend to other programs and
       libraries, and allows conversion between the Wii .brstm format and
       a variety of other formats.<br>
@@ -25,16 +25,37 @@
     <p>Supported output formats:<br>
     </p>
     <ul>
-      <li>WAV (with "smpl" chunk if the audio should loop; vgmstream can
-        read these loops)</li>
-      <li>MP3, using lame</li>
-      <li>FLAC or Ogg Vorbis, using SoX</li>
+      <li>Nintendo formats<br>
+      </li>
       <ul>
-        <li>Ogg Vorbis output supports looping (LOOPSTART/LOOPLENGTH)<br>
+        <li>RSTM (.brstm) - ADPCM compressed</li>
+        <li>RSTM (.brstm) - uncompressed 16-bit PCM</li>
+        <ul>
+          <li>Using 16-bit PCM instead of ADPCM provides a lossless
+            conversion (better quality), but the resulting file size is
+            usually 3-4 times larger (comparable to a standard WAV file
+            of the same length.)<br>
+          </li>
+        </ul>
+        <li>CSTM (.bcstm) - ADPCM compressed</li>
+        <li>FSTM (.bfstm) - ADPCM compressed</li>
+      </ul>
+      <li>WAV</li>
+      <ul>
+        <li>If the input is a looping audio file, or you have specified
+          a loop point, the WAV file will be exported with a "smpl"
+          chunk that specifies the loop start and end.<br>
         </li>
       </ul>
-      <li>RSTM (.brstm) / CSTM (.bcstm) / FSTM (.bfstm), using RSTMLib,
-        a subset of BrawlLib</li>
+      <li>MP3</li>
+      <li>FLAC</li>
+      <li>Ogg Vorbis<br>
+      </li>
+      <ul>
+        <li>If the input is a looping audio file, or you have specified
+          a loop point, the Ogg Vorbis file will be exported with
+          comments that specify the loop start and length.</li>
+      </ul>
     </ul>
     <hr width="100%" size="2">
     <p>The source code to Looping Audio Converter is released under the
