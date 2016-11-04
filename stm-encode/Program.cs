@@ -1,4 +1,5 @@
-﻿using BrawlLib.Wii.Audio;
+﻿using BrawlLib.SSBBTypes;
+using BrawlLib.Wii.Audio;
 using System;
 using System.Audio;
 using System.Collections.Generic;
@@ -32,7 +33,11 @@ Options (WAV input):
     -noloop        Do not loop (ignore looping info in input file if any)
 
 Options (WAV output):
-    -L             Include looping information in smpl chunk");
+    -L             Include looping information in smpl chunk
+
+Options (WAV input + BRSTM output):
+    -adpcm         Use ADPCM compression (default)
+    -pcm16         Use uncompressed 16-bit PCM encoding");
             return 1;
         }
 
@@ -45,6 +50,7 @@ Options (WAV output):
             int? loopStart = null, loopEnd = null;
             string inputFile = null, outputFile = null;
             bool includeSmpl = false;
+            WaveEncoding outputEncoding = WaveEncoding.ADPCM;
 
             foreach (string s in args) {
                 if (s == "/?" || s == "-h" || s == "--help") {
@@ -62,6 +68,10 @@ Options (WAV output):
                     looping = false;
                 } else if (s == "-L") {
                     includeSmpl = true;
+                } else if (s == "-adpcm") {
+                    outputEncoding = WaveEncoding.ADPCM;
+                } else if (s == "-pcm16") {
+                    outputEncoding = WaveEncoding.PCM16;
                 } else if (inputFile == null) {
                     inputFile = s;
                 } else if (outputFile == null) {
@@ -112,7 +122,7 @@ Options (WAV output):
                     wav.IsLooping = looping ?? wav.IsLooping;
                     wav.LoopStartSample = loopStart ?? wav.LoopStartSample;
                     wav.LoopEndSample = loopEnd ?? wav.LoopEndSample;
-                    rstm = RSTMConverter.EncodeToByteArray(wav, new ConsoleProgressTracker());
+                    rstm = RSTMConverter.EncodeToByteArray(wav, new ConsoleProgressTracker(), outputEncoding);
                     break;
                 case "RSTM":
                     rstm = inputarr;
