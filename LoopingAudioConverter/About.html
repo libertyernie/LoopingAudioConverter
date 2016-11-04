@@ -222,14 +222,24 @@ src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhgAAAIBCAIAAACEP1EUAAAgAElEQ
         input/output formats line up.</li>
       <ul>
         <li>Input/output are both Nintendo formats (BRSTM, BCSTM,
-          BFSTM): BrawlLib can copy data between thes3e formats without
-          re-encoding. This provides a lossless conversion* and is much
-          faster.</li>
-        <li>Input/output are both Ogg Vorbis: The file will be copied,
-          but loop information will still be added (or removed) as
-          appropriate. (Note: if the input file does not have a comment
-          header, you may run into an error.)<br>
-        </li>
+          BFSTM):</li>
+        <ul>
+          <li>BrawlLib can copy ADPCM data between these formats without
+            re-encoding. This provides a lossless conversion and is much
+            faster. However, if the conversion process runs into an
+            error (for example, if the input file uses raw PCM), Looping
+            Audio Converter will fall back to re-encoding the file as if
+            this option was off.<br>
+          </li>
+        </ul>
+        <li>Input/output are both Ogg Vorbis:</li>
+        <ul>
+          <li>The file will be copied, but loop information will still
+            be added (or removed) as appropriate. (Note: if the input
+            file does not have a comment header, you may run into an
+            error.)<br>
+          </li>
+        </ul>
       </ul>
       <li><b>Number of simultaneous encoding/decoding tasks</b>: Audio
         encoding can take a long time, so this program lets you launch
@@ -242,14 +252,8 @@ src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhgAAAIBCAIAAACEP1EUAAAgAElEQ
         allow you to load and save the options listed above to a .ini
         file. If there is a file in the current directory named
         LoopingAudioConverter.ini when the program starts, it will try
-        to load options from this file automatically.<br>
-      </li>
+        to load options from this file automatically.</li>
     </ul>
-    <p><font size="-1">*Assuming there aren't any minor format
-        differences that BrawlLib doesn't know about, if you convert
-        from CSTM/FSTM to RSTM and back, the resulting file should be
-        identical to the original input.</font><br>
-    </p>
     <hr width="100%" size="2">
     <p>If your input files don't have loop points, but they should, you
       can specify them in a file called <tt>loop.txt</tt> in the folder
