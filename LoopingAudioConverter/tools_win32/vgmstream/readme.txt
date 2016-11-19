@@ -8,7 +8,7 @@ line decoder called "test.exe", and a Winamp plugin called "in_vgmstream".
 --- needed files (for Windows)  ---
 Since Ogg Vorbis, MPEG audio,and other formats are now supported, you will
 need to have certain DLL files.
-You can get these from https://github.com/kode54/vgmstream/tree/master/ext_libs
+You can get these from https://gitlab.kode54.net/kode54/vgmstream/tree/master/ext_libs
 
 Put libvorbis.dll, libmpg123-0.dll, libg7221_decode.dll, libg719_decode.dll,
 and at3plusdecoder.dll somewhere Windows can find them.
