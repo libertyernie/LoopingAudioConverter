@@ -1,4 +1,5 @@
-﻿using BrawlLib.Wii.Audio;
+﻿using DspAdpcm;
+using DspAdpcm.Adpcm.Formats;
 using System;
 using System.IO;
 using System.Linq;
@@ -21,21 +22,25 @@ namespace LoopingAudioConverter.Brawl {
 			if (data.Length == 0) {
 				throw new AudioImporterException("Empty input file");
 			}
+
+            LoopingTrackStream stream = null;
 			try {
 				if (data[0] == 'C') {
-					data = CSTMConverter.ToRSTM(data);
+                    stream = new Bcstm(data).AudioStream;
 				} else if (data[0] == 'F') {
-					data = FSTMConverter.ToRSTM(data);
-				}
-
-			    return PCM16Factory.FromAudioStream(RSTMConverter.CreateStreams(data)[0]);
+					stream = new Brstm(data).AudioStream;
+				} else {
+                    stream = new Brstm(data).AudioStream;
+                }
 			} catch (Exception e) {
 				throw new AudioImporterException("Could not convert from B" + (char)data[0] + "STM: " + e.Message);
 			}
+
+            return PCM16Factory.FromAudioStream(stream);
 		}
 
 		public string GetImporterName() {
-			return "BrawlLib/RSTMLib";
+			return "LibDspAdpcm";
 		}
 	}
 }
