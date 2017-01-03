@@ -1,5 +1,8 @@
-﻿using System;
-using System.Audio;
+﻿using DspAdpcm;
+using DspAdpcm.Adpcm;
+using DspAdpcm.Pcm;
+using DspAdpcm.Pcm.Formats;
+using System;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -82,18 +85,21 @@ namespace LoopingAudioConverter {
             return i;
         }
 
-        public unsafe static PCM16Audio FromAudioStream(IAudioStream source) {
-            short[] sample_data = new short[source.Samples * source.Channels];
-            fixed (short* ptr = sample_data)
-            {
-                source.ReadSamples(ptr, sample_data.Length);
+        public static PCM16Audio FromAudioStream(LoopingTrackStream source) {
+            var adpcm = source as AdpcmStream;
+            var pcm = source as PcmStream ?? Decode.AdpcmtoPcmParallel(adpcm);
+            Wave wave = new Wave(pcm);
+            using (var stream = new MemoryStream()) {
+                wave.WriteFile(stream);
+
+                stream.Seek(0, SeekOrigin.Begin);
+
+                PCM16Audio p = FromStream(stream);
+                p.Looping = pcm.Looping;
+                p.LoopStart = pcm.LoopStart;
+                p.LoopEnd = pcm.LoopEnd;
+                return p;
             }
-            return new PCM16Audio(
-                source.Channels,
-                source.Frequency,
-                sample_data,
-                source.IsLooping ? source.LoopStartSample : (int?)null,
-                source.IsLooping ? source.LoopEndSample : (int?)null);
         }
 
         /// <summary>

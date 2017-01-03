@@ -1,5 +1,10 @@
-﻿using BrawlLib.SSBBTypes;
-using BrawlLib.Wii.Audio;
+﻿using DspAdpcm;
+using DspAdpcm.Adpcm;
+using DspAdpcm.Adpcm.Formats;
+using DspAdpcm.Adpcm.Formats.Configuration;
+using DspAdpcm.Adpcm.Formats.Structures;
+using DspAdpcm.Pcm;
+using DspAdpcm.Pcm.Formats;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -7,42 +12,56 @@ using System.Windows.Forms;
 
 namespace LoopingAudioConverter.Brawl {
     public class RSTMExporter : IAudioExporter {
-        private WaveEncoding encoding;
+        private B_stmCodec encoding;
 
         /// <summary>
         /// Creates a new RSTMExporter instance that uses the given encoding when it has to re-encode a file.
         /// </summary>
         /// <param name="defaultEncoding">The encoding to use (ADPCM or PCM16)</param>
-        public RSTMExporter(WaveEncoding defaultEncoding) {
+        public RSTMExporter(B_stmCodec defaultEncoding) {
             this.encoding = defaultEncoding;
         }
 
 		public void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IEncodingProgress progressTracker = null) {
-			IProgressTracker pw = null;
-			if (progressTracker != null) pw = new EncodingProgressWrapper(progressTracker);
-            
-            byte[] data = null;
+            LoopingTrackStream stream = null;
+
             try {
                 switch (Path.GetExtension(lwav.OriginalFilePath ?? "").ToLowerInvariant()) {
                     case ".brstm":
-                        data = File.ReadAllBytes(lwav.OriginalFilePath);
+                        stream = new Brstm(File.ReadAllBytes(lwav.OriginalFilePath)).AudioStream;
                         break;
                     case ".bcstm":
-                        data = CSTMConverter.ToRSTM(File.ReadAllBytes(lwav.OriginalFilePath));
+                        stream = new Bcstm(File.ReadAllBytes(lwav.OriginalFilePath)).AudioStream;
                         break;
                     case ".bfstm":
-                        data = FSTMConverter.ToRSTM(File.ReadAllBytes(lwav.OriginalFilePath));
+                        stream = new Bfstm(File.ReadAllBytes(lwav.OriginalFilePath)).AudioStream;
                         break;
                 }
             } catch (Exception e) {
                 Console.WriteLine(e.GetType().Name + ": " + e.Message);
             }
 
-            if (data == null) {
-                data = RSTMConverter.EncodeToByteArray(new PCM16AudioStream(lwav), pw, encoding);
-			        if (pw.Cancelled) throw new AudioExporterException("RSTM export cancelled");
+            stream = new Wave(lwav.Export()).AudioStream;
+
+            LoopingTrackStream encoded = stream != null ? stream
+                : stream is PcmStream && encoding == B_stmCodec.Adpcm ? Encode.PcmToAdpcmParallel(stream as PcmStream)
+                : stream;
+
+            if (lwav.Looping) {
+                encoded.SetLoop(lwav.LoopStart, lwav.LoopEnd);
+            } else {
+                encoded.SetLoop(false);
             }
-			File.WriteAllBytes(Path.Combine(output_dir, original_filename_no_ext + ".brstm"), data);
+
+            using (Stream s = new FileStream(
+                Path.Combine(output_dir, original_filename_no_ext + ".brstm"),
+                FileMode.Create,
+                FileAccess.Write))
+            {
+                var b = new Brstm(encoded);
+                b.Configuration.TrackType = BrstmTrackType.Short;
+                b.WriteFile(s);
+            }
 		}
 
 		public Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IEncodingProgress progressTracker = null) {
