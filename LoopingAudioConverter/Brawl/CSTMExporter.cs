@@ -2,15 +2,16 @@
 using System.IO;
 using System.Threading.Tasks;
 using VGAudio.Containers;
+using VGAudio.Containers.Wave;
+using VGAudio.Formats;
 
 namespace LoopingAudioConverter.Brawl {
 	public class CSTMExporter : IAudioExporter {
 		public void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IEncodingProgress progressTracker = null) {
-            byte[] wav = lwav.Export();
-            AudioWithConfig audio = new WaveReader().ReadWithConfig(wav);
-            var newAudio = audio.Audio;
-            newAudio.SetLoop(lwav.Looping, lwav.LoopStart, lwav.LoopEnd);
-            byte[] data = new BrstmWriter().GetFile(newAudio, audio.Configuration);
+            AudioData audio = (lwav as PCM16Audio_FromVGAudio)?.Audio;
+            if (audio == null) audio = new WaveReader().Read(lwav.Export());
+            audio.SetLoop(lwav.Looping, lwav.LoopStart, lwav.LoopEnd);
+            byte[] data = new BcstmWriter().GetFile(audio);
             File.WriteAllBytes(Path.Combine(output_dir, original_filename_no_ext + ".bcstm"), data);
 		}
 

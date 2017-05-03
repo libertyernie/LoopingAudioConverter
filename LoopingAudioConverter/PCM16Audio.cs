@@ -1,4 +1,5 @@
 ﻿using System;
+using VGAudio.Formats;
 
 namespace LoopingAudioConverter {
     /// <summary>
@@ -110,6 +111,24 @@ namespace LoopingAudioConverter {
         public override string ToString() {
             return SampleRate + "Hz " + Channels + " channels: " + Samples.Length + " (" + TimeSpan.FromSeconds(Samples.Length / (SampleRate * Channels)) + ")"
                 + (Looping ? (" loop " + LoopStart + "-" + LoopEnd) : "");
+        }
+    }
+
+    public class PCM16Audio_FromVGAudio : PCM16Audio {
+        public AudioData Audio { get; set; }
+
+        public PCM16Audio_FromVGAudio(AudioData audio, PCM16Audio decoded)
+            : base(
+                  decoded.Channels,
+                  decoded.SampleRate,
+                  decoded.Samples,
+                  decoded.Looping ? decoded.LoopStart : (int?)null,
+                  decoded.Looping ? decoded.LoopEnd : (int?)null) {
+            this.Audio = audio;
+        }
+
+        public override string ToString() {
+            return base.ToString() + "/" + Audio?.ToString();
         }
     }
 }

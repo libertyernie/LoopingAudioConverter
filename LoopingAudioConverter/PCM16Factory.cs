@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using VGAudio.Containers;
+using VGAudio.Formats;
 
 namespace LoopingAudioConverter {
     public class PCM16FactoryException : Exception {
@@ -234,6 +236,11 @@ namespace LoopingAudioConverter {
             using (MemoryStream stream = new MemoryStream(p, false)) {
                 return FromStream(stream);
             }
+        }
+        
+        public static PCM16Audio_FromVGAudio FromAudioData(AudioData a) {
+            byte[] data = new WaveWriter().GetFile(a);
+            return new PCM16Audio_FromVGAudio(a, FromByteArray(data));
         }
 
         /// <summary>

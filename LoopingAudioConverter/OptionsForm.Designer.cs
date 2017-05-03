@@ -702,7 +702,8 @@
             // chkShortCircuit
             // 
             this.chkShortCircuit.AutoSize = true;
-            this.chkShortCircuit.Enabled = false;
+            this.chkShortCircuit.Checked = true;
+            this.chkShortCircuit.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkShortCircuit.Location = new System.Drawing.Point(233, 192);
             this.chkShortCircuit.Name = "chkShortCircuit";
             this.chkShortCircuit.Size = new System.Drawing.Size(259, 17);
@@ -712,11 +713,13 @@
             // chkBrawlLibDecoder
             // 
             this.chkBrawlLibDecoder.AutoSize = true;
+            this.chkBrawlLibDecoder.Checked = true;
+            this.chkBrawlLibDecoder.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkBrawlLibDecoder.Location = new System.Drawing.Point(233, 215);
             this.chkBrawlLibDecoder.Name = "chkBrawlLibDecoder";
-            this.chkBrawlLibDecoder.Size = new System.Drawing.Size(221, 17);
+            this.chkBrawlLibDecoder.Size = new System.Drawing.Size(187, 17);
             this.chkBrawlLibDecoder.TabIndex = 5;
-            this.chkBrawlLibDecoder.Text = "Use VGAudio RSTM decoder (if possible)";
+            this.chkBrawlLibDecoder.Text = "Use VGAudio decoder (if possible)";
             this.chkBrawlLibDecoder.UseVisualStyleBackColor = false;
             // 
             // panel3

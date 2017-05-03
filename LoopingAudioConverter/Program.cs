@@ -183,17 +183,16 @@ namespace LoopingAudioConverter {
 				}
 
 				if (loopOverrides.Any()) {
-					Tuple<int, int> val;
-					if (loopOverrides.TryGetValue(Path.GetFileName(inputFile), out val)) {
-						if (val.Item1 < 0) {
-							w.Looping = false;
-						} else {
-							w.Looping = true;
-							w.LoopStart = val.Item1;
-							w.LoopEnd = val.Item2;
-						}
-					}
-				}
+                    if (loopOverrides.TryGetValue(Path.GetFileName(inputFile), out Tuple<int, int> val)) {
+                        if (val.Item1 < 0) {
+                            w.Looping = false;
+                        } else {
+                            w.Looping = true;
+                            w.LoopStart = val.Item1;
+                            w.LoopEnd = val.Item2;
+                        }
+                    }
+                }
 
 				if (w == null) {
 					window.SetDecodingText("");
@@ -254,6 +253,9 @@ namespace LoopingAudioConverter {
                     if (!o.ShortCircuit) {
                         if (toExport.LWAV.OriginalFilePath != null) {
                             toExport.LWAV.OriginalFilePath = null;
+                        }
+                        if ((toExport.LWAV as PCM16Audio_FromVGAudio)?.Audio != null) {
+                            (toExport.LWAV as PCM16Audio_FromVGAudio).Audio = null;
                         }
                     }
                     if (!o.WriteLoopingMetadata) {

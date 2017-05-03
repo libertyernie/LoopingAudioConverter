@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using VGAudio.Containers;
+using VGAudio.Formats;
 
 namespace LoopingAudioConverter.Brawl {
 	public class RSTMImporter : IAudioImporter {
@@ -12,14 +13,14 @@ namespace LoopingAudioConverter.Brawl {
 				|| extension.Equals("bfstm", StringComparison.InvariantCultureIgnoreCase);
 		}
 
-        private static AudioWithConfig ReadWithConfig(byte[] data) {
+        private static AudioData Read(byte[] data) {
             switch ((char)data[0]) {
                 case 'R':
-                    return new BrstmReader().ReadWithConfig(data);
+                    return new BrstmReader().Read(data);
                 case 'C':
-                    return new BcstmReader().ReadWithConfig(data);
+                    return new BcstmReader().Read(data);
                 case 'F':
-                    return new BfstmReader().ReadWithConfig(data);
+                    return new BfstmReader().Read(data);
                 default:
                     throw new NotImplementedException();
             }
@@ -36,10 +37,7 @@ namespace LoopingAudioConverter.Brawl {
             }
             
             try {
-                AudioWithConfig audio = ReadWithConfig(data);
-                byte[] wav = new WaveWriter().GetFile(audio.Audio, audio.Configuration);
-
-                return PCM16Factory.FromByteArray(wav);
+                return PCM16Factory.FromAudioData(Read(data));
 			} catch (Exception e) {
 				throw new AudioImporterException("Could not convert from B" + (char)data[0] + "STM: " + e.Message);
 			}
