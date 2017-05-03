@@ -4,3 +4,6 @@
 [submodule "VorbisCommentSharp"]
 	path = VorbisCommentSharp
 	url = https://github.com/libertyernie/VorbisCommentSharp
+[submodule "VGAudio"]
+	path = VGAudio
+	url = https://github.com/Thealexbarney/VGAudio

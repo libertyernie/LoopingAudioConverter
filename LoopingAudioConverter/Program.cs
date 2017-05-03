@@ -1,5 +1,4 @@
-﻿using BrawlLib.Wii.Audio;
-using LoopingAudioConverter.Brawl;
+﻿using LoopingAudioConverter.Brawl;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -68,10 +67,10 @@ namespace LoopingAudioConverter {
 			IAudioExporter exporter;
 			switch (o.ExporterType) {
 				case ExporterType.BRSTM:
-					exporter = new RSTMExporter(BrawlLib.SSBBTypes.WaveEncoding.ADPCM);
+					exporter = new RSTMExporter(VGAudio.Containers.Bxstm.BxstmCodec.Adpcm);
 					break;
 				case ExporterType.BRSTM_PCM16:
-					exporter = new RSTMExporter(BrawlLib.SSBBTypes.WaveEncoding.PCM16);
+					exporter = new RSTMExporter(VGAudio.Containers.Bxstm.BxstmCodec.Pcm16Bit);
 					break;
 				case ExporterType.BCSTM:
 					exporter = new CSTMExporter();
@@ -237,14 +236,15 @@ namespace LoopingAudioConverter {
                             }
                             break;
                         case NonLoopingBehavior.AskAll:
-                            PCM16AudioStream audioStream = new PCM16AudioStream(toExport.LWAV);
+                            throw new NotImplementedException();
+                            /*PCM16AudioStream audioStream = new PCM16AudioStream(toExport.LWAV);
                             using (BrstmConverterDialog dialog = new BrstmConverterDialog(audioStream)) {
                                 dialog.AudioSource = n.Name;
                                 if (dialog.ShowDialog() != DialogResult.OK) {
                                     toExport = null;
                                 }
                             }
-                            break;
+                            break;*/
                     }
                     if (toExport == null) {
                         i++;

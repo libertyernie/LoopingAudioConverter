@@ -1,38 +1,17 @@
-﻿using BrawlLib.Wii.Audio;
-using System;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using VGAudio.Containers;
 
 namespace LoopingAudioConverter.Brawl {
 	public class FSTMExporter : IAudioExporter {
 		public void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IEncodingProgress progressTracker = null) {
-			IProgressTracker pw = null;
-			if (progressTracker != null) pw = new EncodingProgressWrapper(progressTracker);
-            
-            byte[] data = null;
-            try {
-                switch (Path.GetExtension(lwav.OriginalFilePath ?? "").ToLowerInvariant()) {
-                    case ".brstm":
-                        data = FSTMConverter.FromRSTM(File.ReadAllBytes(lwav.OriginalFilePath));
-                        break;
-                    case ".bcstm":
-                        data = FSTMConverter.FromRSTM(CSTMConverter.ToRSTM(File.ReadAllBytes(lwav.OriginalFilePath)));
-                        break;
-                    case ".bfstm":
-                        data = File.ReadAllBytes(lwav.OriginalFilePath);
-                        break;
-                }
-            } catch (Exception e) {
-                Console.WriteLine(e.GetType().Name + ": " + e.Message);
-            }
-
-            if (data == null) {
-                data = FSTMConverter.EncodeToByteArray(new PCM16AudioStream(lwav), pw);
-			    if (pw.Cancelled) throw new AudioExporterException("FSTM export cancelled");
-            }
-			File.WriteAllBytes(Path.Combine(output_dir, original_filename_no_ext + ".bfstm"), data);
-		}
+            byte[] wav = lwav.Export();
+            AudioWithConfig audio = new WaveReader().ReadWithConfig(wav);
+            var newAudio = audio.Audio;
+            newAudio.SetLoop(lwav.Looping, lwav.LoopStart, lwav.LoopEnd);
+            byte[] data = new BrstmWriter().GetFile(newAudio, audio.Configuration);
+            File.WriteAllBytes(Path.Combine(output_dir, original_filename_no_ext + ".bfstm"), data);
+        }
 
 		public Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IEncodingProgress progressTracker = null) {
 			Task task = new Task(() => WriteFile(lwav, output_dir, original_filename_no_ext, progressTracker));
@@ -41,7 +20,7 @@ namespace LoopingAudioConverter.Brawl {
 		}
 
 		public string GetExporterName() {
-			return "BFSTM (BrawlLib)";
+			return "BFSTM (VGAudio)";
 		}
 	}
 }
