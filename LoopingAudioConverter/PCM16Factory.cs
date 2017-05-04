@@ -238,9 +238,11 @@ namespace LoopingAudioConverter {
             }
         }
         
-        public static PCM16Audio_FromVGAudio FromAudioData(AudioData a) {
+        public static PCM16Audio FromAudioData(AudioData a) {
             byte[] data = new WaveWriter().GetFile(a);
-            return new PCM16Audio_FromVGAudio(a, FromByteArray(data));
+            var w = FromByteArray(data);
+            w.OriginalAudioData = a;
+            return w;
         }
 
         /// <summary>

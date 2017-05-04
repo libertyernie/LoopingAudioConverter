@@ -55,7 +55,6 @@ namespace LoopingAudioConverter {
 
             try {
                 PCM16Audio lwav = PCM16Factory.FromFile(outfile, true);
-                lwav.OriginalFilePath = filename;
                 return lwav;
             } catch (Exception e) {
                 throw new AudioImporterException("Could not read SoX output: " + e.Message);

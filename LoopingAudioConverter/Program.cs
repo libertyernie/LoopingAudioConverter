@@ -175,7 +175,10 @@ namespace LoopingAudioConverter {
 					try {
 						Console.WriteLine("Decoding " + Path.GetFileName(inputFile) + " with " + importer.GetImporterName());
 						w = importer.ReadFile(inputFile);
-						break;
+                        if (new string[] { ".ogg", ".logg" }.Contains(Path.GetExtension(inputFile), StringComparer.InvariantCultureIgnoreCase)) {
+                            w.OriginalOggPath = inputFile;
+                        }
+                        break;
 					} catch (AudioImporterException e) {
 						//Console.Error.WriteLine(importer.GetImporterName() + " could not read file " + inputFile + ": " + e.Message);
 						exceptions.Add(e);
@@ -251,11 +254,11 @@ namespace LoopingAudioConverter {
                     }
 
                     if (!o.ShortCircuit) {
-                        if (toExport.LWAV.OriginalFilePath != null) {
-                            toExport.LWAV.OriginalFilePath = null;
+                        if (toExport.LWAV.OriginalOggPath != null) {
+                            toExport.LWAV.OriginalOggPath = null;
                         }
-                        if ((toExport.LWAV as PCM16Audio_FromVGAudio)?.Audio != null) {
-                            (toExport.LWAV as PCM16Audio_FromVGAudio).Audio = null;
+                        if (toExport.LWAV.OriginalAudioData != null) {
+                            toExport.LWAV.OriginalAudioData = null;
                         }
                     }
                     if (!o.WriteLoopingMetadata) {

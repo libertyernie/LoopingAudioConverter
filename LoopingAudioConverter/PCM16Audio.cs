@@ -21,9 +21,8 @@ namespace LoopingAudioConverter {
             }
         }
 
-        // Path to the original file.
-        // Used if input and output are both the same lossy format (e.g. Ogg Vorbis) and this PCM16Audio represents the exact data with no changes.
-        public string OriginalFilePath { get; set; }
+        public string OriginalOggPath { get; set; }
+        public AudioData OriginalAudioData { get; set; }
 
         /// <summary>
         /// Creates a WAV with the given metadata and length.
@@ -111,24 +110,6 @@ namespace LoopingAudioConverter {
         public override string ToString() {
             return SampleRate + "Hz " + Channels + " channels: " + Samples.Length + " (" + TimeSpan.FromSeconds(Samples.Length / (SampleRate * Channels)) + ")"
                 + (Looping ? (" loop " + LoopStart + "-" + LoopEnd) : "");
-        }
-    }
-
-    public class PCM16Audio_FromVGAudio : PCM16Audio {
-        public AudioData Audio { get; set; }
-
-        public PCM16Audio_FromVGAudio(AudioData audio, PCM16Audio decoded)
-            : base(
-                  decoded.Channels,
-                  decoded.SampleRate,
-                  decoded.Samples,
-                  decoded.Looping ? decoded.LoopStart : (int?)null,
-                  decoded.Looping ? decoded.LoopEnd : (int?)null) {
-            this.Audio = audio;
-        }
-
-        public override string ToString() {
-            return base.ToString() + "/" + Audio?.ToString();
         }
     }
 }
