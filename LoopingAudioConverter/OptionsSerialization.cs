@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using VGAudio.Containers.Bxstm;
 
 namespace LoopingAudioConverter
 {
@@ -56,6 +57,9 @@ namespace LoopingAudioConverter
                                     break;
                                 case "OggVorbisEncodingParameters":
                                     o.OggVorbisEncodingParameters = v;
+                                    break;
+                                case "BxstmCodec":
+                                    o.BxstmCodec = (BxstmCodec)Enum.Parse(typeof(BxstmCodec), v, true);
                                     break;
                                 case "ExportWholeSong":
                                     o.ExportWholeSong = bool.Parse(v);
@@ -116,6 +120,7 @@ namespace LoopingAudioConverter
                     if (o.ExporterType != null) sw.WriteLine("ExporterType=" + o.ExporterType);
                     if (o.MP3EncodingParameters != null) sw.WriteLine("MP3EncodingParameters=" + o.MP3EncodingParameters);
                     if (o.OggVorbisEncodingParameters != null) sw.WriteLine("OggVorbisEncodingParameters=" + o.OggVorbisEncodingParameters);
+                    if (o.BxstmCodec != null) sw.WriteLine("BxstmCodec=" + o.BxstmCodec);
                     if (o.ExportWholeSong != null) sw.WriteLine("ExportWholeSong=" + o.ExportWholeSong);
                     if (o.WholeSongSuffix != null) sw.WriteLine("WholeSongSuffix=" + o.WholeSongSuffix);
                     if (o.NumberOfLoops != null) sw.WriteLine("NumberOfLoops=" + o.NumberOfLoops);

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using VGAudio.Containers.Bxstm;
 
 namespace LoopingAudioConverter {
 	public enum ExporterType {
 		BRSTM,
-		BRSTM_PCM16,
 		BCSTM,
 		BFSTM,
 		WAV,
@@ -39,6 +39,7 @@ namespace LoopingAudioConverter {
 		public ExporterType ExporterType { get; set; }
         public string MP3EncodingParameters { get; set; }
         public string OggVorbisEncodingParameters { get; set; }
+        public BxstmCodec BxstmCodec { get; set; }
         public NonLoopingBehavior NonLoopingBehavior { get; set; }
         public bool ExportWholeSong { get; set; }
 		public string WholeSongSuffix { get; set; }

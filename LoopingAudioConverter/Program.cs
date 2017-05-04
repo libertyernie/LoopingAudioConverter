@@ -67,16 +67,13 @@ namespace LoopingAudioConverter {
 			IAudioExporter exporter;
 			switch (o.ExporterType) {
 				case ExporterType.BRSTM:
-					exporter = new RSTMExporter(VGAudio.Containers.Bxstm.BxstmCodec.Adpcm);
-					break;
-				case ExporterType.BRSTM_PCM16:
-					exporter = new RSTMExporter(VGAudio.Containers.Bxstm.BxstmCodec.Pcm16Bit);
+					exporter = new RSTMExporter(o.BxstmCodec);
 					break;
 				case ExporterType.BCSTM:
-					exporter = new CSTMExporter();
+					exporter = new CSTMExporter(o.BxstmCodec);
 					break;
 				case ExporterType.BFSTM:
-					exporter = new FSTMExporter();
+					exporter = new FSTMExporter(o.BxstmCodec);
 					break;
 				case ExporterType.FLAC:
 					exporter = new FLACExporter(sox);

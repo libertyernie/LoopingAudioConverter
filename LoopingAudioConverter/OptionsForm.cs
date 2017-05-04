@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VGAudio.Containers.Bxstm;
 
 namespace LoopingAudioConverter {
 	public partial class OptionsForm : Form {
@@ -40,10 +41,9 @@ namespace LoopingAudioConverter {
             };
 
 			var exporters = new List<NVPair>() {
-				new NVPair(ExporterType.BRSTM, "BRSTM (ADPCM)"),
-				new NVPair(ExporterType.BRSTM_PCM16, "BRSTM (PCM16)"),
-				new NVPair(ExporterType.BCSTM, "BCSTM (ADPCM)"),
-				new NVPair(ExporterType.BFSTM, "BFSTM (ADPCM)"),
+				new NVPair(ExporterType.BRSTM, "BRSTM"),
+				new NVPair(ExporterType.BCSTM, "BCSTM"),
+				new NVPair(ExporterType.BFSTM, "BFSTM"),
 				new NVPair(ExporterType.WAV, "WAV"),
 				new NVPair(ExporterType.FLAC, "FLAC"),
 				new NVPair(ExporterType.MP3, "MP3"),
@@ -53,12 +53,20 @@ namespace LoopingAudioConverter {
 			if (comboBox1.SelectedIndex < 0) comboBox1.SelectedIndex = 0;
             comboBox1.SelectedIndexChanged += (o, e) => {
                 switch ((ExporterType)comboBox1.SelectedValue) {
+                    case ExporterType.BRSTM:
+                    case ExporterType.BCSTM:
+                    case ExporterType.BFSTM:
+                        btnEncodingOptions.Visible = false;
+                        ddlBxstmCodec.Visible = true;
+                        break;
                     case ExporterType.MP3:
                     case ExporterType.OggVorbis:
                         btnEncodingOptions.Visible = true;
+                        ddlBxstmCodec.Visible = false;
                         break;
                     default:
                         btnEncodingOptions.Visible = false;
+                        ddlBxstmCodec.Visible = false;
                         break;
                 }
                 switch ((ExporterType)comboBox1.SelectedValue) {
@@ -70,6 +78,12 @@ namespace LoopingAudioConverter {
                         chkWriteLoopingMetadata.Enabled = true;
                         break;
                 }
+            };
+
+            ddlBxstmCodec.DataSource = new BxstmCodec[] {
+                BxstmCodec.Adpcm,
+                BxstmCodec.Pcm16Bit,
+                BxstmCodec.Pcm8Bit
             };
 
             var nonLoopingBehaviors = new List<NVPair>() {
@@ -110,6 +124,7 @@ namespace LoopingAudioConverter {
 				comboBox1.SelectedValue = o.ExporterType;
                 encodingParameters[ExporterType.MP3] = o.MP3EncodingParameters;
                 encodingParameters[ExporterType.OggVorbis] = o.OggVorbisEncodingParameters;
+                ddlBxstmCodec.SelectedValue = o.BxstmCodec;
                 ddlNonLoopingBehavior.SelectedValue = o.NonLoopingBehavior;
 				chk0End.Checked = o.ExportWholeSong;
 				txt0EndFilenamePattern.Text = o.WholeSongSuffix;
@@ -144,6 +159,7 @@ namespace LoopingAudioConverter {
                 ExporterType = (ExporterType)comboBox1.SelectedValue,
                 MP3EncodingParameters = encodingParameters[ExporterType.MP3],
                 OggVorbisEncodingParameters = encodingParameters[ExporterType.OggVorbis],
+                BxstmCodec = (BxstmCodec)ddlBxstmCodec.SelectedValue,
                 NonLoopingBehavior = (NonLoopingBehavior)ddlNonLoopingBehavior.SelectedValue,
                 ExportWholeSong = chk0End.Checked,
                 WholeSongSuffix = txt0EndFilenamePattern.Text,
@@ -156,7 +172,7 @@ namespace LoopingAudioConverter {
 				LoopSuffix = txtStartEndFilenamePattern.Text,
 				NumSimulTasks = (int)numSimulTasks.Value,
 				ShortCircuit = chkShortCircuit.Checked,
-				BrawlLibDecoder = chkBrawlLibDecoder.Checked
+				BrawlLibDecoder = chkVGAudioDecoder.Checked
 			};
 		}
 

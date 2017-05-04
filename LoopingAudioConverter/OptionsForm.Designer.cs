@@ -59,6 +59,7 @@
             this.radChannelsPairs = new System.Windows.Forms.RadioButton();
             this.radChannelsSeparate = new System.Windows.Forms.RadioButton();
             this.pnlExportSegments = new System.Windows.Forms.Panel();
+            this.ddlBxstmCodec = new System.Windows.Forms.ComboBox();
             this.chkWriteLoopingMetadata = new System.Windows.Forms.CheckBox();
             this.btnEncodingOptions = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -78,7 +79,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.numFadeOutTime = new System.Windows.Forms.NumericUpDown();
             this.chkShortCircuit = new System.Windows.Forms.CheckBox();
-            this.chkBrawlLibDecoder = new System.Windows.Forms.CheckBox();
+            this.chkVGAudioDecoder = new System.Windows.Forms.CheckBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.numSimulTasks = new System.Windows.Forms.NumericUpDown();
             this.lblSimulTasks = new System.Windows.Forms.Label();
@@ -274,7 +275,7 @@
             this.flowLayoutPanel2.Controls.Add(this.pnlExportChannels);
             this.flowLayoutPanel2.Controls.Add(this.pnlExportSegments);
             this.flowLayoutPanel2.Controls.Add(this.chkShortCircuit);
-            this.flowLayoutPanel2.Controls.Add(this.chkBrawlLibDecoder);
+            this.flowLayoutPanel2.Controls.Add(this.chkVGAudioDecoder);
             this.flowLayoutPanel2.Controls.Add(this.panel3);
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
@@ -490,6 +491,7 @@
             // 
             this.pnlExportSegments.AutoSize = true;
             this.pnlExportSegments.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlExportSegments.Controls.Add(this.ddlBxstmCodec);
             this.pnlExportSegments.Controls.Add(this.chkWriteLoopingMetadata);
             this.pnlExportSegments.Controls.Add(this.btnEncodingOptions);
             this.pnlExportSegments.Controls.Add(this.comboBox1);
@@ -513,6 +515,15 @@
             this.pnlExportSegments.Name = "pnlExportSegments";
             this.pnlExportSegments.Size = new System.Drawing.Size(298, 183);
             this.pnlExportSegments.TabIndex = 3;
+            // 
+            // ddlBxstmCodec
+            // 
+            this.ddlBxstmCodec.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ddlBxstmCodec.FormattingEnabled = true;
+            this.ddlBxstmCodec.Location = new System.Drawing.Point(215, 3);
+            this.ddlBxstmCodec.Name = "ddlBxstmCodec";
+            this.ddlBxstmCodec.Size = new System.Drawing.Size(80, 21);
+            this.ddlBxstmCodec.TabIndex = 18;
             // 
             // chkWriteLoopingMetadata
             // 
@@ -710,17 +721,17 @@
             this.chkShortCircuit.TabIndex = 4;
             this.chkShortCircuit.Text = "Skip re-encoding for similar formats when possible";
             // 
-            // chkBrawlLibDecoder
+            // chkVGAudioDecoder
             // 
-            this.chkBrawlLibDecoder.AutoSize = true;
-            this.chkBrawlLibDecoder.Checked = true;
-            this.chkBrawlLibDecoder.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkBrawlLibDecoder.Location = new System.Drawing.Point(233, 215);
-            this.chkBrawlLibDecoder.Name = "chkBrawlLibDecoder";
-            this.chkBrawlLibDecoder.Size = new System.Drawing.Size(187, 17);
-            this.chkBrawlLibDecoder.TabIndex = 5;
-            this.chkBrawlLibDecoder.Text = "Use VGAudio decoder (if possible)";
-            this.chkBrawlLibDecoder.UseVisualStyleBackColor = false;
+            this.chkVGAudioDecoder.AutoSize = true;
+            this.chkVGAudioDecoder.Checked = true;
+            this.chkVGAudioDecoder.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkVGAudioDecoder.Location = new System.Drawing.Point(233, 215);
+            this.chkVGAudioDecoder.Name = "chkVGAudioDecoder";
+            this.chkVGAudioDecoder.Size = new System.Drawing.Size(132, 17);
+            this.chkVGAudioDecoder.TabIndex = 5;
+            this.chkVGAudioDecoder.Text = "Use VGAudio decoder";
+            this.chkVGAudioDecoder.UseVisualStyleBackColor = false;
             // 
             // panel3
             // 
@@ -913,11 +924,12 @@
 		private System.Windows.Forms.CheckBox chkShortCircuit;
         private System.Windows.Forms.Button btnSaveOptions;
         private System.Windows.Forms.Button btnLoadOptions;
-        private System.Windows.Forms.CheckBox chkBrawlLibDecoder;
+        private System.Windows.Forms.CheckBox chkVGAudioDecoder;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.ComboBox ddlNonLoopingBehavior;
         private System.Windows.Forms.Label lblNonLoopingBehavior;
         private System.Windows.Forms.Button btnEncodingOptions;
         private System.Windows.Forms.CheckBox chkWriteLoopingMetadata;
+        private System.Windows.Forms.ComboBox ddlBxstmCodec;
     }
 }

@@ -12,7 +12,7 @@ namespace LoopingAudioConverter.Brawl {
         /// <summary>
         /// Creates a new RSTMExporter instance that uses the given encoding when it has to re-encode a file.
         /// </summary>
-        /// <param name="defaultEncoding">The encoding to use (ADPCM or PCM16)</param>
+        /// <param name="defaultEncoding">The encoding to use</param>
         public RSTMExporter(BxstmCodec defaultEncoding) {
             this.encoding = defaultEncoding;
         }
