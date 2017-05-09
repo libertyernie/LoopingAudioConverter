@@ -235,15 +235,14 @@ namespace LoopingAudioConverter {
                             }
                             break;
                         case NonLoopingBehavior.AskAll:
-                            throw new NotImplementedException();
-                            /*PCM16AudioStream audioStream = new PCM16AudioStream(toExport.LWAV);
+                            PCM16LoopWrapper audioStream = new PCM16LoopWrapper(toExport.LWAV);
                             using (BrstmConverterDialog dialog = new BrstmConverterDialog(audioStream)) {
                                 dialog.AudioSource = n.Name;
                                 if (dialog.ShowDialog() != DialogResult.OK) {
                                     toExport = null;
                                 }
                             }
-                            break;*/
+                            break;
                     }
                     if (toExport == null) {
                         i++;

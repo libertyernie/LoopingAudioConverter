@@ -75,6 +75,7 @@
     <Compile Include="OptionsSerialization.cs" />
     <Compile Include="PCM16Audio.cs" />
     <Compile Include="PCM16Factory.cs" />
+    <Compile Include="PCM16LoopWrapper.cs" />
     <Compile Include="TempFiles.cs" />
     <Compile Include="VGMImporter.cs" />
     <Compile Include="WAVExporter.cs" />
@@ -133,6 +134,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\brawltools\BrawlLib\LoopSelectionDialogLib.csproj">
+      <Project>{41c94979-ce5a-4582-888a-1bee98dd43d3}</Project>
+      <Name>LoopSelectionDialogLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VGAudio\src\VGAudio\VGAudio.csproj">
       <Project>{3d90b7b5-05d4-42e5-84bd-3ddeb6b21689}</Project>
       <Name>VGAudio</Name>
