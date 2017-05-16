@@ -34,7 +34,7 @@ namespace LoopingAudioConverter {
             File.Delete(infile);
 
 			if (p.ExitCode != 0) {
-				throw new AudioExporterException("LAME quit with exit code " + p.ExitCode);
+				throw new AudioExporterException("qaac quit with exit code " + p.ExitCode);
 			}
 		}
 
@@ -45,7 +45,7 @@ namespace LoopingAudioConverter {
 		}
 
 		public string GetExporterName() {
-			return "MP3 (LAME)";
+			return "AAC (qaac)";
 		}
 	}
 }

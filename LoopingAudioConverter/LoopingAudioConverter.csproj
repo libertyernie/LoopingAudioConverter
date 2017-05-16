@@ -60,6 +60,12 @@
     <Compile Include="FLACExporter.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="AACExporter.cs" />
+    <Compile Include="AACQualityForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AACQualityForm.Designer.cs">
+      <DependentUpon>AACQualityForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="OggVorbisQualityForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -113,6 +119,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AACQualityForm.resx">
+      <DependentUpon>AACQualityForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="OggVorbisQualityForm.resx">
       <DependentUpon>OggVorbisQualityForm.cs</DependentUpon>
     </EmbeddedResource>

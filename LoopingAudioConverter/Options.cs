@@ -40,6 +40,7 @@ namespace LoopingAudioConverter {
 		public ChannelSplit ChannelSplit { get; set; }
 		public ExporterType ExporterType { get; set; }
         public string MP3EncodingParameters { get; set; }
+        public string AACEncodingParameters { get; set; }
         public string OggVorbisEncodingParameters { get; set; }
         public NonLoopingBehavior NonLoopingBehavior { get; set; }
         public bool ExportWholeSong { get; set; }

@@ -37,7 +37,8 @@ namespace LoopingAudioConverter {
 
             encodingParameters = new Dictionary<ExporterType, string>() {
                 [ExporterType.MP3] = "",
-                [ExporterType.OggVorbis] = ""
+                [ExporterType.OggVorbis] = "",
+                [ExporterType.AAC_M4A] = "",
             };
 
 			var exporters = new List<NVPair<ExporterType>>() {
@@ -52,15 +53,14 @@ namespace LoopingAudioConverter {
                 new NVPair<ExporterType>(ExporterType.AAC_ADTS, "AAC (ADTS .aac)"),
                 new NVPair<ExporterType>(ExporterType.OggVorbis, "Ogg Vorbis")
 			};
-            if (ConfigurationManager.AppSettings["qaac_path"] == null) {
-                exporters = exporters.Where(e => e.Value != ExporterType.AAC_M4A && e.Value != ExporterType.AAC_ADTS).ToList();
-            }
 			comboBox1.DataSource = exporters;
 			if (comboBox1.SelectedIndex < 0) comboBox1.SelectedIndex = 0;
             comboBox1.SelectedIndexChanged += (o, e) => {
                 switch ((ExporterType)comboBox1.SelectedValue) {
                     case ExporterType.MP3:
                     case ExporterType.OggVorbis:
+                    case ExporterType.AAC_M4A:
+                    case ExporterType.AAC_ADTS:
                         btnEncodingOptions.Visible = true;
                         break;
                     default:
@@ -118,6 +118,7 @@ namespace LoopingAudioConverter {
 				comboBox1.SelectedValue = o.ExporterType;
                 encodingParameters[ExporterType.MP3] = o.MP3EncodingParameters;
                 encodingParameters[ExporterType.OggVorbis] = o.OggVorbisEncodingParameters;
+                encodingParameters[ExporterType.AAC_M4A] = o.AACEncodingParameters;
                 ddlNonLoopingBehavior.SelectedValue = o.NonLoopingBehavior;
 				chk0End.Checked = o.ExportWholeSong;
 				txt0EndFilenamePattern.Text = o.WholeSongSuffix;
@@ -152,6 +153,7 @@ namespace LoopingAudioConverter {
                 ExporterType = (ExporterType)comboBox1.SelectedValue,
                 MP3EncodingParameters = encodingParameters[ExporterType.MP3],
                 OggVorbisEncodingParameters = encodingParameters[ExporterType.OggVorbis],
+                AACEncodingParameters = encodingParameters[ExporterType.AAC_M4A],
                 NonLoopingBehavior = (NonLoopingBehavior)ddlNonLoopingBehavior.SelectedValue,
                 ExportWholeSong = chk0End.Checked,
                 WholeSongSuffix = txt0EndFilenamePattern.Text,
@@ -276,7 +278,13 @@ namespace LoopingAudioConverter {
 				return;
 			}
 			Options o = this.GetOptions();
-			this.listBox1.Items.Clear();
+            if (ConfigurationManager.AppSettings["qaac_path"] == null) {
+                if (o.ExporterType == ExporterType.AAC_M4A || o.ExporterType == ExporterType.AAC_ADTS) {
+                    MessageBox.Show("AAC encoding is not supported on this system because no qaac_path is defined in the .config file.");
+                    return;
+                }
+            }
+            this.listBox1.Items.Clear();
 			Task t = new Task(() => Program.Run(o));
 			runningTasks.Add(t);
 			UpdateTitle();
@@ -358,6 +366,15 @@ namespace LoopingAudioConverter {
                             return;
                         }
                         encodingParameters[ExporterType.OggVorbis] = form.EncodingParameters;
+                    }
+                    break;
+                case ExporterType.AAC_M4A:
+                case ExporterType.AAC_ADTS:
+                    using (var form = new AACQualityForm(encodingParameters[ExporterType.AAC_M4A])) {
+                        if (form.ShowDialog() != DialogResult.OK) {
+                            return;
+                        }
+                        encodingParameters[ExporterType.AAC_M4A] = form.EncodingParameters;
                     }
                     break;
                 default:

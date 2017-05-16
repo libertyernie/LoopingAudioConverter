@@ -93,10 +93,10 @@ namespace LoopingAudioConverter {
 					exporter = new MP3Exporter(ConfigurationManager.AppSettings["lame_path"], o.MP3EncodingParameters);
 					break;
                 case ExporterType.AAC_M4A:
-                    exporter = new AACExporter(ConfigurationManager.AppSettings["qaac_path"], "", adts: false);
+                    exporter = new AACExporter(ConfigurationManager.AppSettings["qaac_path"], o.AACEncodingParameters, adts: false);
                     break;
                 case ExporterType.AAC_ADTS:
-                    exporter = new AACExporter(ConfigurationManager.AppSettings["qaac_path"], "", adts: true);
+                    exporter = new AACExporter(ConfigurationManager.AppSettings["qaac_path"], o.AACEncodingParameters, adts: true);
                     break;
                 case ExporterType.OggVorbis:
 					exporter = new OggVorbisExporter(sox, o.OggVorbisEncodingParameters);
