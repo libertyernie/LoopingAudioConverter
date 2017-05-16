@@ -59,6 +59,7 @@
     <Compile Include="Brawl\RSTMExporter.cs" />
     <Compile Include="FLACExporter.cs" />
     <Compile Include="Interfaces.cs" />
+    <Compile Include="AACExporter.cs" />
     <Compile Include="OggVorbisQualityForm.cs">
       <SubType>Form</SubType>
     </Compile>

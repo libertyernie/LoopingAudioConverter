@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
@@ -12,10 +13,10 @@ using System.Windows.Forms;
 
 namespace LoopingAudioConverter {
 	public partial class OptionsForm : Form {
-		private class NVPair {
+		private class NVPair<T> {
 			public string Name { get; set; }
-			public object Value { get; set; }
-			public NVPair(object value, string name) {
+			public T Value { get; set; }
+			public NVPair(T value, string name) {
 				this.Name = name;
 				this.Value = value;
 			}
@@ -39,16 +40,21 @@ namespace LoopingAudioConverter {
                 [ExporterType.OggVorbis] = ""
             };
 
-			var exporters = new List<NVPair>() {
-				new NVPair(ExporterType.BRSTM, "BRSTM (ADPCM)"),
-				new NVPair(ExporterType.BRSTM_PCM16, "BRSTM (PCM16)"),
-				new NVPair(ExporterType.BCSTM, "BCSTM (ADPCM)"),
-				new NVPair(ExporterType.BFSTM, "BFSTM (ADPCM)"),
-				new NVPair(ExporterType.WAV, "WAV"),
-				new NVPair(ExporterType.FLAC, "FLAC"),
-				new NVPair(ExporterType.MP3, "MP3"),
-				new NVPair(ExporterType.OggVorbis, "Ogg Vorbis")
+			var exporters = new List<NVPair<ExporterType>>() {
+				new NVPair<ExporterType>(ExporterType.BRSTM, "BRSTM (ADPCM)"),
+				new NVPair<ExporterType>(ExporterType.BRSTM_PCM16, "BRSTM (PCM16)"),
+				new NVPair<ExporterType>(ExporterType.BCSTM, "BCSTM (ADPCM)"),
+				new NVPair<ExporterType>(ExporterType.BFSTM, "BFSTM (ADPCM)"),
+				new NVPair<ExporterType>(ExporterType.WAV, "WAV"),
+				new NVPair<ExporterType>(ExporterType.FLAC, "FLAC"),
+				new NVPair<ExporterType>(ExporterType.MP3, "MP3"),
+                new NVPair<ExporterType>(ExporterType.AAC_M4A, "AAC (.m4a)"),
+                new NVPair<ExporterType>(ExporterType.AAC_ADTS, "AAC (ADTS .aac)"),
+                new NVPair<ExporterType>(ExporterType.OggVorbis, "Ogg Vorbis")
 			};
+            if (ConfigurationManager.AppSettings["qaac_path"] == null) {
+                exporters = exporters.Where(e => e.Value != ExporterType.AAC_M4A && e.Value != ExporterType.AAC_ADTS).ToList();
+            }
 			comboBox1.DataSource = exporters;
 			if (comboBox1.SelectedIndex < 0) comboBox1.SelectedIndex = 0;
             comboBox1.SelectedIndexChanged += (o, e) => {
@@ -64,6 +70,8 @@ namespace LoopingAudioConverter {
                 switch ((ExporterType)comboBox1.SelectedValue) {
                     case ExporterType.MP3:
                     case ExporterType.FLAC:
+                    case ExporterType.AAC_M4A:
+                    case ExporterType.AAC_ADTS:
                         chkWriteLoopingMetadata.Enabled = false;
                         break;
                     default:
@@ -72,10 +80,10 @@ namespace LoopingAudioConverter {
                 }
             };
 
-            var nonLoopingBehaviors = new List<NVPair>() {
-                new NVPair(NonLoopingBehavior.NoChange, "Keep as non-looping"),
-                new NVPair(NonLoopingBehavior.ForceLoop, "Force start-to-end loop"),
-                new NVPair(NonLoopingBehavior.AskAll, "Ask for all files")
+            var nonLoopingBehaviors = new List<NVPair<NonLoopingBehavior>>() {
+                new NVPair<NonLoopingBehavior>(NonLoopingBehavior.NoChange, "Keep as non-looping"),
+                new NVPair<NonLoopingBehavior>(NonLoopingBehavior.ForceLoop, "Force start-to-end loop"),
+                new NVPair<NonLoopingBehavior>(NonLoopingBehavior.AskAll, "Ask for all files")
             };
             ddlNonLoopingBehavior.DataSource = nonLoopingBehaviors;
             if (ddlNonLoopingBehavior.SelectedIndex < 0) ddlNonLoopingBehavior.SelectedIndex = 0;

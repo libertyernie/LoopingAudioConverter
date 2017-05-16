@@ -27,7 +27,14 @@ namespace LoopingAudioConverter {
 					Console.Error.WriteLine("Could not find " + s + ": " + v);
 				}
 			}
-			if (appsettingserror) {
+
+            string qaac_path = ConfigurationManager.AppSettings["qaac_path"];
+            if (qaac_path != null && !File.Exists(qaac_path)) {
+                appsettingserror = true;
+                Console.Error.WriteLine("Could not find qaac_path: " + qaac_path);
+            }
+
+            if (appsettingserror) {
 				MessageBox.Show("One or more programs could not be found; the program may not run properly. See the console for details.");
 			}
 
@@ -85,7 +92,13 @@ namespace LoopingAudioConverter {
 				case ExporterType.MP3:
 					exporter = new MP3Exporter(ConfigurationManager.AppSettings["lame_path"], o.MP3EncodingParameters);
 					break;
-				case ExporterType.OggVorbis:
+                case ExporterType.AAC_M4A:
+                    exporter = new AACExporter(ConfigurationManager.AppSettings["qaac_path"], "", adts: false);
+                    break;
+                case ExporterType.AAC_ADTS:
+                    exporter = new AACExporter(ConfigurationManager.AppSettings["qaac_path"], "", adts: true);
+                    break;
+                case ExporterType.OggVorbis:
 					exporter = new OggVorbisExporter(sox, o.OggVorbisEncodingParameters);
 					break;
 				case ExporterType.WAV:

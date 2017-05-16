@@ -13,6 +13,8 @@ namespace LoopingAudioConverter {
 		WAV,
 		FLAC,
 		MP3,
+        AAC_M4A,
+        AAC_ADTS,
 		OggVorbis
 	}
 
