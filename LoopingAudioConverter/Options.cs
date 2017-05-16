@@ -7,9 +7,11 @@ using VGAudio.Containers.Bxstm;
 
 namespace LoopingAudioConverter {
 	public enum ExporterType {
-		BRSTM,
+        BRSTM,
 		BCSTM,
 		BFSTM,
+        DSP,
+        IDSP,
 		WAV,
 		FLAC,
 		MP3,

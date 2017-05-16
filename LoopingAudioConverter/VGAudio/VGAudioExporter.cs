@@ -1,26 +1,22 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using VGAudio.Containers;
-using VGAudio.Containers.Bxstm;
 using VGAudio.Formats;
 
-namespace LoopingAudioConverter.Brawl {
-	public class FSTMExporter : IAudioExporter {
-        private BxstmCodec encoding;
-
-        /// <summary>
-        /// Creates a new FSTMExporter instance that uses the given encoding when it has to re-encode a file.
-        /// </summary>
-        /// <param name="defaultEncoding">The encoding to use</param>
-        public FSTMExporter(BxstmCodec defaultEncoding) {
-            this.encoding = defaultEncoding;
-        }
+namespace LoopingAudioConverter.VGAudio {
+    public abstract class VGAudioExporter : IAudioExporter {
+        protected abstract byte[] GetData(AudioData audio);
+        protected abstract string GetExtension();
 
         public void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IEncodingProgress progressTracker = null) {
             AudioData audio = lwav.OriginalAudioData ?? new WaveReader().Read(lwav.Export());
             audio.SetLoop(lwav.Looping, lwav.LoopStart, lwav.LoopEnd);
-            byte[] data = new BfstmWriter().GetFile(audio, new BfstmConfiguration { Codec = this.encoding });
-            File.WriteAllBytes(Path.Combine(output_dir, original_filename_no_ext + ".bfstm"), data);
+            byte[] data = GetData(audio);
+            File.WriteAllBytes(Path.Combine(output_dir, original_filename_no_ext + GetExtension()), data);
         }
 
         public Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IEncodingProgress progressTracker = null) {
@@ -30,7 +26,7 @@ namespace LoopingAudioConverter.Brawl {
         }
 
         public string GetExporterName() {
-            return "BFSTM (VGAudio): " + encoding;
+            return $"{GetExtension()} (VGAudio)";
         }
     }
 }

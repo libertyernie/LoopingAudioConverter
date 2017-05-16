@@ -44,7 +44,9 @@ namespace LoopingAudioConverter {
 				new NVPair(ExporterType.BRSTM, "BRSTM"),
 				new NVPair(ExporterType.BCSTM, "BCSTM"),
 				new NVPair(ExporterType.BFSTM, "BFSTM"),
-				new NVPair(ExporterType.WAV, "WAV"),
+                new NVPair(ExporterType.DSP, "DSP"),
+                new NVPair(ExporterType.IDSP, "IDSP"),
+                new NVPair(ExporterType.WAV, "WAV"),
 				new NVPair(ExporterType.FLAC, "FLAC"),
 				new NVPair(ExporterType.MP3, "MP3"),
 				new NVPair(ExporterType.OggVorbis, "Ogg Vorbis")

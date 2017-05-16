@@ -53,10 +53,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Brawl\FSTMExporter.cs" />
-    <Compile Include="Brawl\CSTMExporter.cs" />
-    <Compile Include="Brawl\RSTMImporter.cs" />
-    <Compile Include="Brawl\RSTMExporter.cs" />
+    <Compile Include="VGAudio\IDSPExporter.cs" />
+    <Compile Include="VGAudio\DSPExporter.cs" />
+    <Compile Include="VGAudio\FSTMExporter.cs" />
+    <Compile Include="VGAudio\CSTMExporter.cs" />
+    <Compile Include="VGAudio\VGAudioExporter.cs" />
+    <Compile Include="VGAudio\VGAudioImporter.cs" />
+    <Compile Include="VGAudio\RSTMExporter.cs" />
     <Compile Include="FLACExporter.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="OggVorbisQualityForm.cs">

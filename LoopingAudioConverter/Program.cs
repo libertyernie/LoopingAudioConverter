@@ -1,4 +1,4 @@
-﻿using LoopingAudioConverter.Brawl;
+﻿using LoopingAudioConverter.VGAudio;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -61,12 +61,12 @@ namespace LoopingAudioConverter {
 				};
 			if (o.BrawlLibDecoder)
 			{
-				importers.Insert(1, new RSTMImporter());
+				importers.Insert(1, new VGAudioImporter());
 			}
 
 			IAudioExporter exporter;
 			switch (o.ExporterType) {
-				case ExporterType.BRSTM:
+                case ExporterType.BRSTM:
 					exporter = new RSTMExporter(o.BxstmCodec);
 					break;
 				case ExporterType.BCSTM:
@@ -75,7 +75,13 @@ namespace LoopingAudioConverter {
 				case ExporterType.BFSTM:
 					exporter = new FSTMExporter(o.BxstmCodec);
 					break;
-				case ExporterType.FLAC:
+                case ExporterType.DSP:
+                    exporter = new DSPExporter();
+                    break;
+                case ExporterType.IDSP:
+                    exporter = new IDSPExporter();
+                    break;
+                case ExporterType.FLAC:
 					exporter = new FLACExporter(sox);
 					break;
 				case ExporterType.MP3:
