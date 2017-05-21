@@ -6,7 +6,7 @@
     <title></title>
   </head>
   <body>
-    <h1>Looping Audio Converter 1.3.3</h1>
+    <h1>Looping Audio Converter 1.4.0</h1>
     <p>This application acts as a frontend to other programs and
       libraries, and allows conversion between the Wii .brstm format and
       a variety of other formats.<br>
@@ -15,9 +15,9 @@
     </p>
     <ul>
       <li>WAV (with or without "smpl" chunk to denote looping audio)</li>
-      <li>MP3, using madplay</li>
-      <li>AAC (including .m4a), using faad</li>
-      <li><a href="http://vgmrips.net/">VGM/VGZ</a>, using vgm2wav<br>
+      <li>MP3</li>
+      <li>AAC/.m4a</li>
+      <li><a href="http://vgmrips.net/">VGM/VGZ</a><br>
       </li>
       <li>Any audio format supported by SoX</li>
       <li>Any audio format supported by vgmstream</li>
@@ -48,6 +48,7 @@
         </li>
       </ul>
       <li>MP3</li>
+      <li>AAC/.m4a (requires iTunes to be installed)</li>
       <li>FLAC</li>
       <li>Ogg Vorbis<br>
       </li>
@@ -86,7 +87,13 @@
       <li>LAME (<a href="http://lame.sourceforge.net">http://lame.sourceforge.net</a>)
         is an MP3 encoder released under the GNU LGPL, version 2 or
         later. This version was obtained from:
-        http://www.rarewares.org/mp3-lame-bundle.php</li>
+        http://www.foobar2000.org/encoderpack</li>
+      <li>qaac (<a href="https://github.com/nu774/qaac">https://github.com/nu774/qaac</a>)
+        is a frontend to Apple's AAC encoder. Most of the code is public
+        domain (see <a
+          href="https://github.com/nu774/qaac/blob/master/COPYING">COPYING</a>).
+        This version was obtained from:
+        http://www.foobar2000.org/encoderpack</li>
       <li>MAD (<a href="http://www.underbit.com/products/mad">http://www.underbit.com/products/mad</a>)
         is an MP3 decoder library released under the GNU GPL, version 2
         or later. This version was obtained from:
@@ -261,9 +268,11 @@ src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhgAAAIBCAIAAACEP1EUAAAgAElEQ
       Each line should have the format:<br>
     </p>
     <pre>{loop-start} {loop-end} {filename}<br></pre>
-<p>For example:<br></p>
-<pre>853168 5087322 41 Carefree Action.wav<br></pre>
-<p>Looping Audio Converter will pick up on this file if it exists. To prevent a song from looping, use a negative number as the loop start value.</p>
-  
-
-</body></html>
+    <p>For example:<br>
+    </p>
+    <pre>853168 5087322 41 Carefree Action.wav<br></pre>
+    <p>Looping Audio Converter will pick up on this file if it exists.
+      To prevent a song from looping, use a negative number as the loop
+      start value.</p>
+  </body>
+</html>
