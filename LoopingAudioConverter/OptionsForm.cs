@@ -171,17 +171,20 @@ namespace LoopingAudioConverter {
 		}
 
 		private void btnAdd_Click(object sender, EventArgs e) {
-			using (OpenFileDialog d = new OpenFileDialog()) {
-				d.Multiselect = true;
+            string oldDir = Environment.CurrentDirectory;
+            using (OpenFileDialog d = new OpenFileDialog()) {
+                d.Multiselect = true;
 				if (d.ShowDialog() == DialogResult.OK) {
-					listBox1.Items.AddRange(d.FileNames);
+                    listBox1.Items.AddRange(d.FileNames);
 				}
+                // Reset directory (Windows XP?)
+                Environment.CurrentDirectory = oldDir;
 			}
 		}
 
 		private void btnAddDir_Click(object sender, EventArgs e) {
 			using (FolderBrowserDialog d = new FolderBrowserDialog()) {
-				if (d.ShowDialog() == DialogResult.OK) {
+                if (d.ShowDialog() == DialogResult.OK) {
 					btnAddDir.Enabled = false;
 					lblEnumerationStatus.Text = "Finding files...";
 					Task<string[]> enumerateFiles = new Task<string[]>(() => {
@@ -287,7 +290,12 @@ namespace LoopingAudioConverter {
                     MessageBox.Show($"AAC encoding is not supported: path {qaac_path} not found.");
                     return;
                 } else {
-                    Process p = Process.Start(qaac_path, "--check");
+                    Process p = Process.Start(new ProcessStartInfo {
+                        FileName = qaac_path,
+                        UseShellExecute = false,
+                        CreateNoWindow = true,
+                        Arguments = "--check"
+                    });
                     p.WaitForExit();
                     if (p.ExitCode != 0) {
                         MessageBox.Show($"AAC encoding is not supported: CoreAudioToolbox not found. Please intall iTunes.");
