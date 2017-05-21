@@ -278,10 +278,21 @@ namespace LoopingAudioConverter {
 				return;
 			}
 			Options o = this.GetOptions();
-            if (ConfigurationManager.AppSettings["qaac_path"] == null) {
-                if (o.ExporterType == ExporterType.AAC_M4A || o.ExporterType == ExporterType.AAC_ADTS) {
-                    MessageBox.Show("AAC encoding is not supported on this system because no qaac_path is defined in the .config file.");
+            if (o.ExporterType == ExporterType.AAC_M4A || o.ExporterType == ExporterType.AAC_ADTS) {
+                string qaac_path = ConfigurationManager.AppSettings["qaac_path"];
+                if (qaac_path == null) {
+                    MessageBox.Show("AAC encoding is not supported: no qaac_path is defined in the .config file.");
                     return;
+                } else if (!File.Exists(qaac_path)) {
+                    MessageBox.Show($"AAC encoding is not supported: path {qaac_path} not found.");
+                    return;
+                } else {
+                    Process p = Process.Start(qaac_path, "--check");
+                    p.WaitForExit();
+                    if (p.ExitCode != 0) {
+                        MessageBox.Show($"AAC encoding is not supported: CoreAudioToolbox not found. Please intall iTunes.");
+                        return;
+                    }
                 }
             }
             this.listBox1.Items.Clear();

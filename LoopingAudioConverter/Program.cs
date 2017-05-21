@@ -28,12 +28,6 @@ namespace LoopingAudioConverter {
 				}
 			}
 
-            string qaac_path = ConfigurationManager.AppSettings["qaac_path"];
-            if (qaac_path != null && !File.Exists(qaac_path)) {
-                appsettingserror = true;
-                Console.Error.WriteLine("Could not find qaac_path: " + qaac_path);
-            }
-
             if (appsettingserror) {
 				MessageBox.Show("One or more programs could not be found; the program may not run properly. See the console for details.");
 			}
