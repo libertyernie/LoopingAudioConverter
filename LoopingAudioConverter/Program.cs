@@ -238,7 +238,14 @@ namespace LoopingAudioConverter {
 
 				foreach (NamedAudio n in wavsToExport) {
                     NamedAudio toExport = n;
-                    sem.WaitOne();
+                    int claims = 1;
+                    if (exporter is VGAudioExporter) {
+                        // VGAudio runs tasks in parallel for each channel, so let's consider that when deciding how many tasks to run.
+                        claims = Math.Min(n.LWAV.Channels, o.NumSimulTasks);
+                    }
+                    for (int j = 0; j < claims; j++) {
+                        sem.WaitOne();
+                    }
                     switch (o.NonLoopingBehavior) {
                         case NonLoopingBehavior.ForceLoop:
                             if (!toExport.LWAV.Looping) {
@@ -275,23 +282,27 @@ namespace LoopingAudioConverter {
                     }
 
                     var row = window.AddEncodingRow(toExport.Name);
-                    if (o.NumSimulTasks == 1) {
-                        exporter.WriteFile(toExport.LWAV, outputDir, toExport.Name);
-                        lock (exported) {
-                            exported.Add(toExport.Name);
-                        }
-                        sem.Release();
-                        row.Remove();
-                    } else {
-                        Task task = exporter.WriteFileAsync(toExport.LWAV, outputDir, toExport.Name);
+                    //if (o.NumSimulTasks == 1) {
+                    //    exporter.WriteFile(toExport.LWAV, outputDir, toExport.Name);
+                    //    lock (exported) {
+                    //        exported.Add(toExport.Name);
+                    //    }
+                    //    for (int j = 0; j < claims; j++) {
+                    //        sem.Release();
+                    //    }
+                    //    row.Remove();
+                    //} else {
+                    Task task = exporter.WriteFileAsync(toExport.LWAV, outputDir, toExport.Name);
                         tasks.Add(task.ContinueWith(t => {
                             lock (exported) {
                                 exported.Add(toExport.Name);
                             }
-                            sem.Release();
+                            for (int j = 0; j < claims; j++) {
+                                sem.Release();
+                            }
                             row.Remove();
                         }));
-                    }
+                    //}
 				}
 			}
 			Task.WaitAll(tasks.ToArray());
