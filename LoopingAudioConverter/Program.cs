@@ -143,7 +143,8 @@ namespace LoopingAudioConverter {
 			float maxProgress = o.InputFiles.Count() * 2;
 
 			List<string> exported = new List<string>();
-			foreach (string inputFile in o.InputFiles) {
+            DateTime start = DateTime.UtcNow;
+            foreach (string inputFile in o.InputFiles) {
 				sem.WaitOne();
 				if (tasks.Any(t => t.IsFaulted)) break;
 				if (window.Canceled) break;
@@ -294,6 +295,7 @@ namespace LoopingAudioConverter {
 				}
 			}
 			Task.WaitAll(tasks.ToArray());
+            DateTime end = DateTime.UtcNow;
 
 			if (window.Visible) window.BeginInvoke(new Action(() => {
 				window.AllowClose = true;
@@ -304,7 +306,7 @@ namespace LoopingAudioConverter {
 				throw new AggregateException(tasks.Where(t => t.IsFaulted).Select(t => t.Exception));
 			}
 
-			MessageBox.Show("Exported " + exported.Count + " file(s).");
+			MessageBox.Show("Exported " + exported.Count + " file(s), total time: " + (end - start));
 		}
 	}
 }
