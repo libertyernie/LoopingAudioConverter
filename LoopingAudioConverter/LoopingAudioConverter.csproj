@@ -92,12 +92,6 @@
     <Compile Include="WAVImporter.cs" />
     <Compile Include="MP3Exporter.cs" />
     <Compile Include="MP3Importer.cs" />
-    <Compile Include="MultipleProgressRow.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="MultipleProgressRow.Designer.cs">
-      <DependentUpon>MultipleProgressRow.cs</DependentUpon>
-    </Compile>
     <Compile Include="MultipleProgressWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -133,9 +127,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="OptionsForm.resx">
       <DependentUpon>OptionsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MultipleProgressRow.resx">
-      <DependentUpon>MultipleProgressRow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MultipleProgressWindow.resx">
       <DependentUpon>MultipleProgressWindow.cs</DependentUpon>

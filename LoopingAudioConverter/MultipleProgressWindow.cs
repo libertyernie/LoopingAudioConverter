@@ -8,18 +8,12 @@ using System.Text;
 using System.Windows.Forms;
 
 namespace LoopingAudioConverter {
-	public partial class MultipleProgressWindow : Form, IEncodingProgress {
+	public partial class MultipleProgressWindow : Form {
 		public bool Canceled { get; private set; }
 		public bool AllowClose { get; set; }
 
-		private MultipleProgressRow totalProgressRow;
-
 		public MultipleProgressWindow() {
 			InitializeComponent();
-
-			totalProgressRow = new MultipleProgressRow("Total progress");
-			totalProgressRow.Dock = DockStyle.Fill;
-			this.pnlTotalProgress2.Controls.Add(totalProgressRow);
 		}
 
 		public void SetDecodingText(string text) {
@@ -32,16 +26,30 @@ namespace LoopingAudioConverter {
 			lblDecoding.Text = text;
 		}
 
-		public MultipleProgressRow AddEncodingRow(string text) {
+        public interface IEncodingRow {
+            void Remove();
+        }
+
+        private class EncodingRow : IEncodingRow {
+            public Label label;
+
+            public void Remove() {
+                this.label.BeginInvoke(new Action(() => {
+                    this.label.Parent.Controls.Remove(label);
+                }));
+            }
+        }
+
+		public IEncodingRow AddEncodingRow(string text) {
 			if (this.InvokeRequired) {
-				return (MultipleProgressRow)this.Invoke(new Func<MultipleProgressRow>(() => {
+				return (IEncodingRow)this.Invoke(new Func<IEncodingRow>(() => {
 					return AddEncodingRow(text);
 				}));
 			}
-			MultipleProgressRow row = new MultipleProgressRow(text);
+            Label row = new Label() { Text = text };
 			row.Dock = DockStyle.Bottom;
 			pnlEncoding.Controls.Add(row);
-			return row;
+			return new EncodingRow { label = row };
 		}
 
 		private void btnCancel_Click(object sender, EventArgs e) {
@@ -55,23 +63,6 @@ namespace LoopingAudioConverter {
 				btnCancel.Enabled = false;
 				e.Cancel = true;
 			}
-		}
-
-		public void ShowProgress() {
-            if (this.InvokeRequired) {
-                this.BeginInvoke(new Action(ShowProgress));
-                return;
-            }
-			pnlTotalProgress.Visible = true;
-			totalProgressRow.ShowProgress();
-		}
-
-		public void Update(float value) {
-			totalProgressRow.Update(value);
-		}
-
-		public void Remove() {
-			throw new NotImplementedException();
 		}
 	}
 }

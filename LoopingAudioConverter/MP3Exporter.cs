@@ -12,7 +12,7 @@ namespace LoopingAudioConverter {
             EncodingParameters = encodingParameters ?? "";
         }
 
-		public void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IEncodingProgress progressTracker = null) {
+		public void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
 			string outPath = Path.Combine(output_dir, original_filename_no_ext + ".mp3");
 			if (outPath.Contains("\"")) {
 				throw new AudioExporterException("Invalid character (\") found in output filename");
@@ -36,7 +36,7 @@ namespace LoopingAudioConverter {
 			}
 		}
 
-		public Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IEncodingProgress progressTracker = null) {
+		public Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
 			Task t = new Task(() => WriteFile(lwav, output_dir, original_filename_no_ext));
 			t.Start();
 			return t;

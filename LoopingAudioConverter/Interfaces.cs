@@ -12,12 +12,6 @@ namespace LoopingAudioConverter {
 		public AudioExporterException(string message, Exception innerException) : base(message, innerException) { }
 	}
 
-	public interface IEncodingProgress {
-		void ShowProgress();
-		void Update(float value);
-		void Remove();
-	}
-
 	public interface IAudioImporter {
 		bool SupportsExtension(string extension);
 		PCM16Audio ReadFile(string filename);
@@ -25,8 +19,8 @@ namespace LoopingAudioConverter {
     }
 
     public interface IAudioExporter {
-		void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IEncodingProgress progressTracker = null);
-		Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IEncodingProgress progressTracker = null);
+		void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext);
+		Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext);
 		string GetExporterName();
 	}
 }

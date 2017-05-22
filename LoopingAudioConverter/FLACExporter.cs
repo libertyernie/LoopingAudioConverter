@@ -9,11 +9,11 @@ namespace LoopingAudioConverter {
 			this.sox = sox;
 		}
 
-		public void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IEncodingProgress progressTracker = null) {
+		public void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
 			sox.WriteFile(lwav, Path.Combine(output_dir, original_filename_no_ext + ".flac"));
 		}
 
-		public Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IEncodingProgress progressTracker = null) {
+		public Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
 			Task t = new Task(() => WriteFile(lwav, output_dir, original_filename_no_ext));
 			t.Start();
 			return t;

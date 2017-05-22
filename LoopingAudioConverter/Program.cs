@@ -141,7 +141,6 @@ namespace LoopingAudioConverter {
 
 			int i = 0;
 			float maxProgress = o.InputFiles.Count() * 2;
-			if (o.InputFiles.Any()) window.ShowProgress();
 
 			List<string> exported = new List<string>();
 			foreach (string inputFile in o.InputFiles) {
@@ -274,29 +273,25 @@ namespace LoopingAudioConverter {
                         toExport.LWAV.Looping = false;
                     }
 
-                    MultipleProgressRow row = window.AddEncodingRow(toExport.Name);
+                    var row = window.AddEncodingRow(toExport.Name);
                     if (o.NumSimulTasks == 1) {
-                        exporter.WriteFile(toExport.LWAV, outputDir, toExport.Name, row);
+                        exporter.WriteFile(toExport.LWAV, outputDir, toExport.Name);
                         lock (exported) {
                             exported.Add(toExport.Name);
                         }
-                        window.Update(++i / maxProgress);
                         sem.Release();
                         row.Remove();
                     } else {
-                        Task task = exporter.WriteFileAsync(toExport.LWAV, outputDir, toExport.Name, row);
+                        Task task = exporter.WriteFileAsync(toExport.LWAV, outputDir, toExport.Name);
                         tasks.Add(task.ContinueWith(t => {
                             lock (exported) {
                                 exported.Add(toExport.Name);
                             }
-                            window.Update(++i / maxProgress);
                             sem.Release();
                             row.Remove();
                         }));
                     }
 				}
-
-				window.Update(++i / maxProgress);
 			}
 			Task.WaitAll(tasks.ToArray());
 

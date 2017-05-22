@@ -14,7 +14,7 @@ namespace LoopingAudioConverter {
             this.encodingParameters = encodingParameters;
 		}
 
-		public void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IEncodingProgress progressTracker = null) {
+		public void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
             string output_filename = Path.Combine(output_dir, original_filename_no_ext + ".ogg");
 
             // Don't re-encode if the original input file was also Ogg Vorbis
@@ -54,7 +54,7 @@ namespace LoopingAudioConverter {
             }
 		}
 
-		public Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IEncodingProgress progressTracker = null) {
+		public Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
 			Task t = new Task(() => WriteFile(lwav, output_dir, original_filename_no_ext));
 			t.Start();
 			return t;
