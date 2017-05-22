@@ -15,6 +15,8 @@ namespace LoopingAudioConverter {
 		WAV,
 		FLAC,
 		MP3,
+        AAC_M4A,
+        AAC_ADTS,
 		OggVorbis
 	}
 
@@ -40,6 +42,7 @@ namespace LoopingAudioConverter {
 		public ChannelSplit ChannelSplit { get; set; }
 		public ExporterType ExporterType { get; set; }
         public string MP3EncodingParameters { get; set; }
+        public string AACEncodingParameters { get; set; }
         public string OggVorbisEncodingParameters { get; set; }
         public BxstmCodec BxstmCodec { get; set; }
         public NonLoopingBehavior NonLoopingBehavior { get; set; }

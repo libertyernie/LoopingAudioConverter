@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
@@ -13,10 +14,10 @@ using VGAudio.Containers.Bxstm;
 
 namespace LoopingAudioConverter {
 	public partial class OptionsForm : Form {
-		private class NVPair {
+		private class NVPair<T> {
 			public string Name { get; set; }
-			public object Value { get; set; }
-			public NVPair(object value, string name) {
+			public T Value { get; set; }
+			public NVPair(T value, string name) {
 				this.Name = name;
 				this.Value = value;
 			}
@@ -37,19 +38,22 @@ namespace LoopingAudioConverter {
 
             encodingParameters = new Dictionary<ExporterType, string>() {
                 [ExporterType.MP3] = "",
-                [ExporterType.OggVorbis] = ""
+                [ExporterType.OggVorbis] = "",
+                [ExporterType.AAC_M4A] = "",
             };
 
-			var exporters = new List<NVPair>() {
-				new NVPair(ExporterType.BRSTM, "BRSTM"),
-				new NVPair(ExporterType.BCSTM, "BCSTM"),
-				new NVPair(ExporterType.BFSTM, "BFSTM"),
-                new NVPair(ExporterType.DSP, "DSP"),
-                new NVPair(ExporterType.IDSP, "IDSP"),
-                new NVPair(ExporterType.WAV, "WAV"),
-				new NVPair(ExporterType.FLAC, "FLAC"),
-				new NVPair(ExporterType.MP3, "MP3"),
-				new NVPair(ExporterType.OggVorbis, "Ogg Vorbis")
+			var exporters = new List<NVPair<ExporterType>>() {
+				new NVPair<ExporterType>(ExporterType.BRSTM, "BRSTM"),
+				new NVPair<ExporterType>(ExporterType.BCSTM, "BCSTM"),
+				new NVPair<ExporterType>(ExporterType.BFSTM, "BFSTM"),
+                new NVPair<ExporterType>(ExporterType.DSP, "DSP"),
+                new NVPair<ExporterType>(ExporterType.IDSP, "IDSP"),
+                new NVPair<ExporterType>(ExporterType.WAV, "WAV"),
+				new NVPair<ExporterType>(ExporterType.FLAC, "FLAC"),
+				new NVPair<ExporterType>(ExporterType.MP3, "MP3"),
+                new NVPair<ExporterType>(ExporterType.AAC_M4A, "AAC (.m4a)"),
+                new NVPair<ExporterType>(ExporterType.AAC_ADTS, "AAC (ADTS .aac)"),
+                new NVPair<ExporterType>(ExporterType.OggVorbis, "Ogg Vorbis")
 			};
 			comboBox1.DataSource = exporters;
 			if (comboBox1.SelectedIndex < 0) comboBox1.SelectedIndex = 0;
@@ -63,6 +67,8 @@ namespace LoopingAudioConverter {
                         break;
                     case ExporterType.MP3:
                     case ExporterType.OggVorbis:
+                    case ExporterType.AAC_M4A:
+                    case ExporterType.AAC_ADTS:
                         btnEncodingOptions.Visible = true;
                         ddlBxstmCodec.Visible = false;
                         break;
@@ -74,6 +80,8 @@ namespace LoopingAudioConverter {
                 switch ((ExporterType)comboBox1.SelectedValue) {
                     case ExporterType.MP3:
                     case ExporterType.FLAC:
+                    case ExporterType.AAC_M4A:
+                    case ExporterType.AAC_ADTS:
                         chkWriteLoopingMetadata.Enabled = false;
                         break;
                     default:
@@ -88,10 +96,10 @@ namespace LoopingAudioConverter {
                 BxstmCodec.Pcm8Bit
             };
 
-            var nonLoopingBehaviors = new List<NVPair>() {
-                new NVPair(NonLoopingBehavior.NoChange, "Keep as non-looping"),
-                new NVPair(NonLoopingBehavior.ForceLoop, "Force start-to-end loop"),
-                new NVPair(NonLoopingBehavior.AskAll, "Ask for all files")
+            var nonLoopingBehaviors = new List<NVPair<NonLoopingBehavior>>() {
+                new NVPair<NonLoopingBehavior>(NonLoopingBehavior.NoChange, "Keep as non-looping"),
+                new NVPair<NonLoopingBehavior>(NonLoopingBehavior.ForceLoop, "Force start-to-end loop"),
+                new NVPair<NonLoopingBehavior>(NonLoopingBehavior.AskAll, "Ask for all files")
             };
             ddlNonLoopingBehavior.DataSource = nonLoopingBehaviors;
             if (ddlNonLoopingBehavior.SelectedIndex < 0) ddlNonLoopingBehavior.SelectedIndex = 0;
@@ -126,6 +134,7 @@ namespace LoopingAudioConverter {
 				comboBox1.SelectedValue = o.ExporterType;
                 encodingParameters[ExporterType.MP3] = o.MP3EncodingParameters;
                 encodingParameters[ExporterType.OggVorbis] = o.OggVorbisEncodingParameters;
+                encodingParameters[ExporterType.AAC_M4A] = o.AACEncodingParameters;
                 ddlBxstmCodec.SelectedValue = o.BxstmCodec;
                 ddlNonLoopingBehavior.SelectedValue = o.NonLoopingBehavior;
 				chk0End.Checked = o.ExportWholeSong;
@@ -161,6 +170,7 @@ namespace LoopingAudioConverter {
                 ExporterType = (ExporterType)comboBox1.SelectedValue,
                 MP3EncodingParameters = encodingParameters[ExporterType.MP3],
                 OggVorbisEncodingParameters = encodingParameters[ExporterType.OggVorbis],
+                AACEncodingParameters = encodingParameters[ExporterType.AAC_M4A],
                 BxstmCodec = (BxstmCodec)ddlBxstmCodec.SelectedValue,
                 NonLoopingBehavior = (NonLoopingBehavior)ddlNonLoopingBehavior.SelectedValue,
                 ExportWholeSong = chk0End.Checked,
@@ -179,17 +189,20 @@ namespace LoopingAudioConverter {
 		}
 
 		private void btnAdd_Click(object sender, EventArgs e) {
-			using (OpenFileDialog d = new OpenFileDialog()) {
-				d.Multiselect = true;
+            string oldDir = Environment.CurrentDirectory;
+            using (OpenFileDialog d = new OpenFileDialog()) {
+                d.Multiselect = true;
 				if (d.ShowDialog() == DialogResult.OK) {
-					listBox1.Items.AddRange(d.FileNames);
+                    listBox1.Items.AddRange(d.FileNames);
 				}
+                // Reset directory (Windows XP?)
+                Environment.CurrentDirectory = oldDir;
 			}
 		}
 
 		private void btnAddDir_Click(object sender, EventArgs e) {
 			using (FolderBrowserDialog d = new FolderBrowserDialog()) {
-				if (d.ShowDialog() == DialogResult.OK) {
+                if (d.ShowDialog() == DialogResult.OK) {
 					btnAddDir.Enabled = false;
 					lblEnumerationStatus.Text = "Finding files...";
 					Task<string[]> enumerateFiles = new Task<string[]>(() => {
@@ -286,7 +299,29 @@ namespace LoopingAudioConverter {
 				return;
 			}
 			Options o = this.GetOptions();
-			this.listBox1.Items.Clear();
+            if (o.ExporterType == ExporterType.AAC_M4A || o.ExporterType == ExporterType.AAC_ADTS) {
+                string qaac_path = ConfigurationManager.AppSettings["qaac_path"];
+                if (qaac_path == null) {
+                    MessageBox.Show("AAC encoding is not supported: no qaac_path is defined in the .config file.");
+                    return;
+                } else if (!File.Exists(qaac_path)) {
+                    MessageBox.Show($"AAC encoding is not supported: path {qaac_path} not found.");
+                    return;
+                } else {
+                    Process p = Process.Start(new ProcessStartInfo {
+                        FileName = qaac_path,
+                        UseShellExecute = false,
+                        CreateNoWindow = true,
+                        Arguments = "--check"
+                    });
+                    p.WaitForExit();
+                    if (p.ExitCode != 0) {
+                        MessageBox.Show($"AAC encoding is not supported: CoreAudioToolbox not found. Please intall iTunes.");
+                        return;
+                    }
+                }
+            }
+            this.listBox1.Items.Clear();
 			Task t = new Task(() => Program.Run(o));
 			runningTasks.Add(t);
 			UpdateTitle();
@@ -368,6 +403,15 @@ namespace LoopingAudioConverter {
                             return;
                         }
                         encodingParameters[ExporterType.OggVorbis] = form.EncodingParameters;
+                    }
+                    break;
+                case ExporterType.AAC_M4A:
+                case ExporterType.AAC_ADTS:
+                    using (var form = new AACQualityForm(encodingParameters[ExporterType.AAC_M4A])) {
+                        if (form.ShowDialog() != DialogResult.OK) {
+                            return;
+                        }
+                        encodingParameters[ExporterType.AAC_M4A] = form.EncodingParameters;
                     }
                     break;
                 default:
