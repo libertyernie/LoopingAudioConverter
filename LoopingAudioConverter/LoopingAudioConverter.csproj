@@ -51,6 +51,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="VGAudio, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VGAudio.2.0.0-beta2\lib\net45\VGAudio.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="VGAudio\IDSPExporter.cs" />
@@ -114,6 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AACQualityForm.resx">
@@ -141,10 +145,6 @@
     <ProjectReference Include="..\brawltools\BrawlLib\LoopSelectionDialogLib.csproj">
       <Project>{41c94979-ce5a-4582-888a-1bee98dd43d3}</Project>
       <Name>LoopSelectionDialogLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\VGAudio\src\VGAudio\VGAudio.csproj">
-      <Project>{3d90b7b5-05d4-42e5-84bd-3ddeb6b21689}</Project>
-      <Name>VGAudio</Name>
     </ProjectReference>
     <ProjectReference Include="..\VorbisCommentSharp\VorbisCommentSharp.csproj">
       <Project>{5BD4854F-481B-4AA6-B838-32C21B2B069F}</Project>
