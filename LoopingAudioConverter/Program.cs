@@ -82,6 +82,9 @@ namespace LoopingAudioConverter {
                 case ExporterType.IDSP:
                     exporter = new IDSPExporter();
                     break;
+                case ExporterType.HPS:
+                    exporter = new HPSExporter();
+                    break;
                 case ExporterType.FLAC:
 					exporter = new FLACExporter(sox);
 					break;

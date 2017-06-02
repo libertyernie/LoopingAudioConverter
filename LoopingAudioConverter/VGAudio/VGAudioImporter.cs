@@ -10,7 +10,7 @@ namespace LoopingAudioConverter.VGAudio {
 			if (extension.StartsWith(".")) extension = extension.Substring(1);
             foreach (string s in new string[] {
                 "brstm", "bcstm", "bfstm",
-                "dsp", "idsp", "genh"
+                "dsp", "idsp", "hps", "genh"
             }) {
                 if (extension.Equals(s, StringComparison.InvariantCultureIgnoreCase)) return true;
             }
