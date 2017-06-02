@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -60,8 +60,7 @@
     </ul>
     <hr width="100%" size="2">
     <p>The source code to Looping Audio Converter is released under the
-      GNU LGPL, version 3 or later. This license does not include
-      RSTMLib (see below.) <br>
+      GNU LGPL, version 3 or later.<br>
     </p>
     <p>Looping Audio Converter does not do any encoding or decoding
       itself of any format besides WAV. Other formats are handled by
@@ -70,6 +69,12 @@
       it to store temporary WAV files.<br>
     </p>
     <ul>
+      <li>VGAudio (<a href="https://github.com/Thealexbarney/VGAudio">https://github.com/Thealexbarney/VGAudio</a>)
+        is a library for encoding, decoding, and manipulating audio
+        files from video games, available under the <a
+          href="https://github.com/Thealexbarney/VGAudio/blob/2.0/LICENSE">MIT
+          license</a>.<br>
+      </li>
       <li>vgmstream (<a
           href="https://gitlab.kode54.net/kode54/vgmstream">https://gitlab.kode54.net/kode54/vgmstream</a>)
         is a library for reading audio data from many different video
@@ -92,6 +97,7 @@
         is a frontend to Apple's AAC encoder. Most of the code is public
         domain (see <a
           href="https://github.com/nu774/qaac/blob/master/COPYING">COPYING</a>).
+
         This version was obtained from:
         http://www.foobar2000.org/encoderpack</li>
       <li>MAD (<a href="http://www.underbit.com/products/mad">http://www.underbit.com/products/mad</a>)
@@ -107,11 +113,9 @@
         which outputs 16-bit PCM data in WAV format. The source is now
         included in the VGMPlay git repository.<br>
       </li>
-      <li>RSTMLib (<a href="https://github.com/libertyernie/rstmlib">https://github.com/libertyernie/rstmlib</a>)
-        is a subset of BrawlLib (<a
-          href="https://github.com/libertyernie/brawltools">https://github.com/libertyernie/brawltools</a>)
-        containing only the RSTM encoder. RSTMLib is included inside
-        LoopingAudioConverter.exe. <br>
+      <li>LoopingAudioConverter contains the loop selection dialog from
+        BrawlLib (<a href="https://github.com/libertyernie/brawltools">https://github.com/libertyernie/brawltools</a>).
+
         BrawlLib comes with the following disclaimer: "This program is
         provided as-is without any warranty, implied or otherwise. By
         using this program, the end user agrees to take full
@@ -225,6 +229,7 @@ src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhgAAAIBCAIAAACEP1EUAAAgAElEQ
         start until the loop end. The text in "suffix" will be appended
         to the filename.</li>
       <li><b>Skip re-encoding for similar formats when possible: </b>This
+
         option takes effect when no audio effects are selected and the
         input/output formats line up.</li>
       <ul>
