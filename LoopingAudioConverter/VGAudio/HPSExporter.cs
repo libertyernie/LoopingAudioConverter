@@ -1,4 +1,4 @@
-﻿using VGAudio.Containers;
+﻿using VGAudio.Containers.Hps;
 using VGAudio.Formats;
 
 namespace LoopingAudioConverter.VGAudio {

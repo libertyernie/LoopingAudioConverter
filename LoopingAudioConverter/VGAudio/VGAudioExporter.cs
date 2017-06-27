@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VGAudio.Containers;
+using VGAudio.Containers.Wave;
 using VGAudio.Formats;
 
 namespace LoopingAudioConverter.VGAudio {

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using VGAudio.Containers;
+using VGAudio.Containers.Bxstm;
+using VGAudio.Containers.Dsp;
+using VGAudio.Containers.Idsp;
 using VGAudio.Formats;
 
 namespace LoopingAudioConverter.VGAudio {

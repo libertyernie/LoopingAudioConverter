@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using VGAudio.Containers;
 using VGAudio.Containers.Bxstm;
 using VGAudio.Formats;
 

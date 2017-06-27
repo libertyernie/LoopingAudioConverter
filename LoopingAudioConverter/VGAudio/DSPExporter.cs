@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using VGAudio.Containers;
+using VGAudio.Containers.Dsp;
 using VGAudio.Formats;
 
 namespace LoopingAudioConverter.VGAudio {
