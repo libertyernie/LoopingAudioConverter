@@ -24,6 +24,10 @@ namespace LoopingAudioConverter {
 		string GetImporterName();
 	}
 
+	public interface IRenderingAudioImporter : IAudioImporter {
+		int? SampleRate { set; }
+	}
+
 	public interface IAudioExporter {
 		void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IEncodingProgress progressTracker = null);
 		Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IEncodingProgress progressTracker = null);

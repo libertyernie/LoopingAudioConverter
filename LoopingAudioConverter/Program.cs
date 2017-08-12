@@ -182,6 +182,9 @@ namespace LoopingAudioConverter {
 				foreach (IAudioImporter importer in importers_supported) {
 					try {
 						Console.WriteLine("Decoding " + Path.GetFileName(inputFile) + " with " + importer.GetImporterName());
+						if (importer is IRenderingAudioImporter) {
+							((IRenderingAudioImporter)importer).SampleRate = o.MaxSampleRate;
+						}
 						w = importer.ReadFile(inputFile);
 						break;
 					} catch (AudioImporterException e) {

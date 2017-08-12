@@ -8,8 +8,10 @@ namespace LoopingAudioConverter {
 	/// <summary>
 	/// A class to use vgm2wav to render VGM/VGM files to WAV format.
 	/// </summary>
-	public class VGMImporter : IAudioImporter {
+	public class VGMImporter : IRenderingAudioImporter {
 		private string ExePath;
+
+		public int? SampleRate { get; set; }
 
 		/// <summary>
 		/// Initializes the VGM importer.
@@ -17,6 +19,7 @@ namespace LoopingAudioConverter {
 		/// <param name="exePath">Path to vgm2wav.exe (relative or absolute.)</param>
 		public VGMImporter(string exePath) {
 			ExePath = exePath;
+			SampleRate = null;
 		}
 
 		/// <summary>
@@ -69,8 +72,6 @@ namespace LoopingAudioConverter {
 		}
 
 		private PCM16Audio ReadFile_VGMPlay(string filename) {
-			int? preferredSampleRate = null;
-
 			string tmpDir = Path.Combine(Path.GetTempPath(), "LoopingaudioConverter-" + Guid.NewGuid());
 			Directory.CreateDirectory(tmpDir);
 
@@ -78,8 +79,8 @@ namespace LoopingAudioConverter {
 			File.Copy(filename, inFile);
 			using (var sw = new StreamWriter(new FileStream(Path.Combine(tmpDir, "VGMPlay.ini"), FileMode.Create, FileAccess.Write))) {
 				sw.WriteLine("[General]");
-				if (preferredSampleRate != null) {
-					sw.WriteLine("SampleRate = " + preferredSampleRate);
+				if (SampleRate != null) {
+					sw.WriteLine("SampleRate = " + SampleRate);
 				}
 				sw.WriteLine("FadeTime = 500");
 				sw.WriteLine("LogSound = 1");
