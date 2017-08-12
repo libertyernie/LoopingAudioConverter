@@ -7,9 +7,9 @@ namespace LoopingAudioConverter {
 	public class MP4Importer : IAudioImporter {
 		private string ExePath;
 
-        public MP4Importer(string exePath) {
-            ExePath = exePath;
-        }
+		public MP4Importer(string exePath) {
+			ExePath = exePath;
+		}
 
 		public bool SupportsExtension(string extension) {
 			if (extension.StartsWith(".")) extension = extension.Substring(1);
@@ -27,7 +27,7 @@ namespace LoopingAudioConverter {
 				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
 			}
 
-            string outfile = TempFiles.Create("wav");
+			string outfile = TempFiles.Create("wav");
 
 			ProcessStartInfo psi = new ProcessStartInfo {
 				FileName = ExePath,
@@ -36,10 +36,10 @@ namespace LoopingAudioConverter {
 				Arguments = "-o " + outfile + " \"" + filename + "\""
 			};
 			Process p = Process.Start(psi);
-            p.WaitForExit();
+			p.WaitForExit();
 
 			try {
-                return PCM16Factory.FromFile(outfile, true);
+				return PCM16Factory.FromFile(outfile, true);
 			} catch (PCM16FactoryException e) {
 				throw new AudioImporterException("Could not read faad output: " + e.Message);
 			}

@@ -47,7 +47,7 @@ namespace LoopingAudioConverter {
 				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
 			}
 
-            if (Path.GetFileNameWithoutExtension(filename).Equals("vgm2wav", StringComparison.CurrentCultureIgnoreCase)) {
+			if (Path.GetFileNameWithoutExtension(filename).Equals("vgm2wav", StringComparison.CurrentCultureIgnoreCase)) {
 				return ReadFile_vgm2wav(filename);
 			} else {
 				return ReadFile_VGMPlay(filename);
@@ -117,7 +117,7 @@ namespace LoopingAudioConverter {
 					double sampleRateRatio = data.SampleRate / 44100.0;
 					samples = (int)(samples * sampleRateRatio);
 					loopSamples = (int)(loopSamples * sampleRateRatio);
-					
+
 					data.Looping = true;
 					data.LoopStart = samples - loopSamples;
 					data.LoopEnd = samples;

@@ -5,49 +5,49 @@ using System.Linq;
 using System.Text;
 
 namespace LoopingAudioConverter {
-    public class TempFiles {
-        //private static TempFiles staticInstance = new TempFiles();
-        private static Random r = new Random();
-        private const string TEMPDIR = "tmp";
+	public class TempFiles {
+		//private static TempFiles staticInstance = new TempFiles();
+		private static Random r = new Random();
+		private const string TEMPDIR = "tmp";
 
-        //private List<string> filesCreated;
+		//private List<string> filesCreated;
 
-        //private TempFiles() {
-        //    if (!Directory.Exists(TEMPDIR)) {
-        //        Directory.CreateDirectory(TEMPDIR);
-        //    }
-        //    /ilesCreated = new List<string>();
-        //}
+		//private TempFiles() {
+		//    if (!Directory.Exists(TEMPDIR)) {
+		//        Directory.CreateDirectory(TEMPDIR);
+		//    }
+		//    /ilesCreated = new List<string>();
+		//}
 
-        //~TempFiles() {
-        //    foreach (string file in filesCreated) {
-        //        try {
-        //            File.Delete(file);
-        //            Console.WriteLine("Deleted " + file);
-        //        } catch { }
-        //    }
-        //    try {
-        //        Directory.Delete(TEMPDIR);
-        //        Console.WriteLine("Deleted " + TEMPDIR);
-        //    } catch { }
-        //}
+		//~TempFiles() {
+		//    foreach (string file in filesCreated) {
+		//        try {
+		//            File.Delete(file);
+		//            Console.WriteLine("Deleted " + file);
+		//        } catch { }
+		//    }
+		//    try {
+		//        Directory.Delete(TEMPDIR);
+		//        Console.WriteLine("Deleted " + TEMPDIR);
+		//    } catch { }
+		//}
 
-        public static string Create(string extension) {
-            if (!Directory.Exists(TEMPDIR)) {
-                Directory.CreateDirectory(TEMPDIR);
-            }
+		public static string Create(string extension) {
+			if (!Directory.Exists(TEMPDIR)) {
+				Directory.CreateDirectory(TEMPDIR);
+			}
 
-            extension = extension ?? "";
-            if (!extension.StartsWith(".") && extension.Length > 0) extension = "." + extension;
-            
-            string tempFileName;
-            do {
-                tempFileName = Path.Combine(TEMPDIR, r.Next(0x10000).ToString("X4") + extension);
-            } while (File.Exists(tempFileName));
+			extension = extension ?? "";
+			if (!extension.StartsWith(".") && extension.Length > 0) extension = "." + extension;
 
-            //staticInstance.filesCreated.Add(tempFileName);
+			string tempFileName;
+			do {
+				tempFileName = Path.Combine(TEMPDIR, r.Next(0x10000).ToString("X4") + extension);
+			} while (File.Exists(tempFileName));
 
-            return tempFileName;
-        }
-    }
+			//staticInstance.filesCreated.Add(tempFileName);
+
+			return tempFileName;
+		}
+	}
 }
