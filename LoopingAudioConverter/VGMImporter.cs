@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 
 namespace LoopingAudioConverter {
 	/// <summary>
 	/// A class to use vgm2wav to render VGM/VGM files to WAV format.
 	/// </summary>
-	public class VGMImporter : IAudioImporter {
+	public class VGMImporter : IRenderingAudioImporter {
 		private string ExePath;
+
+		public int? SampleRate { get; set; }
 
 		/// <summary>
 		/// Initializes the VGM importer.
@@ -16,6 +19,7 @@ namespace LoopingAudioConverter {
 		/// <param name="exePath">Path to vgm2wav.exe (relative or absolute.)</param>
 		public VGMImporter(string exePath) {
 			ExePath = exePath;
+			SampleRate = null;
 		}
 
 		/// <summary>
@@ -30,20 +34,28 @@ namespace LoopingAudioConverter {
 		}
 
 		/// <summary>
-		/// Renders a file to WAV using vgm2wav and reads it into a PCM16Audio object.
-		/// If the format is not supported, vgm2wav will write a message to the console and this function will throw an AudioImporterException.
+		/// Renders a file to WAV using vgm2wav or VGMPlay and reads it into a PCM16Audio object.
 		/// </summary>
 		/// <param name="filename">The path of the file to read</param>
+		/// <param name="preferredSampleRate">The sample rate to render the VGM at (not supported for vgm2wav)</param>
 		/// <returns>An LWAV, which may or may not be looping</returns>
 		public PCM16Audio ReadFile(string filename) {
 			if (!File.Exists(ExePath)) {
-				throw new AudioImporterException("vgm2wav.exe not found at path: " + ExePath);
+				throw new AudioImporterException("vgm2wav / VGMPlay not found at path: " + ExePath);
 			}
 			if (filename.Contains('"')) {
 				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
 			}
 
-            string outfile = TempFiles.Create("wav");
+            if (Path.GetFileNameWithoutExtension(filename).Equals("vgm2wav", StringComparison.CurrentCultureIgnoreCase)) {
+				return ReadFile_vgm2wav(filename);
+			} else {
+				return ReadFile_VGMPlay(filename);
+			}
+		}
+
+		private PCM16Audio ReadFile_vgm2wav(string filename) {
+			string outfile = TempFiles.Create("wav");
 			ProcessStartInfo psi = new ProcessStartInfo {
 				FileName = ExePath,
 				UseShellExecute = false,
@@ -53,9 +65,67 @@ namespace LoopingAudioConverter {
 			Process p = Process.Start(psi);
 			p.WaitForExit();
 			try {
-                return PCM16Factory.FromFile(outfile, true);
+				return PCM16Factory.FromFile(outfile, true);
 			} catch (Exception e) {
-				throw new AudioImporterException("Could not read output of test.exe: " + e.Message);
+				throw new AudioImporterException("Could not read output of vgm2wav: " + e.Message);
+			}
+		}
+
+		private PCM16Audio ReadFile_VGMPlay(string filename) {
+			string tmpDir = Path.Combine(Path.GetTempPath(), "LoopingaudioConverter-" + Guid.NewGuid());
+			Directory.CreateDirectory(tmpDir);
+
+			string inFile = Path.Combine(tmpDir, "audio" + Path.GetExtension(filename));
+			File.Copy(filename, inFile);
+			using (var sw = new StreamWriter(new FileStream(Path.Combine(tmpDir, "VGMPlay.ini"), FileMode.Create, FileAccess.Write))) {
+				sw.WriteLine("[General]");
+				if (SampleRate != null) {
+					sw.WriteLine("SampleRate = " + SampleRate);
+				}
+				sw.WriteLine("FadeTime = 500");
+				sw.WriteLine("LogSound = 1");
+				sw.WriteLine("MaxLoops = 0x01");
+			}
+
+			ProcessStartInfo psi = new ProcessStartInfo {
+				FileName = Path.GetFullPath(ExePath),
+				WorkingDirectory = tmpDir,
+				UseShellExecute = false,
+				CreateNoWindow = true,
+				Arguments = inFile
+			};
+			Process p = Process.Start(psi);
+			p.WaitForExit();
+			try {
+				var data = PCM16Factory.FromFile(Path.Combine(tmpDir, "audio.wav"), true);
+				Directory.Delete(tmpDir, true);
+
+				// Read loop points from file
+				using (var fs = new FileStream(filename, FileMode.Open, FileAccess.Read))
+				using (var gz = new GZipStream(fs, CompressionMode.Decompress))
+				using (var br = new BinaryReader(gz)) {
+					int tag = br.ReadInt32();
+					if (tag == 0x56676D20) throw new Exception("Machine is big-endian");
+					if (tag != 0x206D6756) throw new Exception($"File not in Vgm format ({tag.ToString("X8")})");
+
+					for (int i = 0; i < 5; i++) br.ReadInt32();
+
+					int samples = br.ReadInt32();
+					br.ReadInt32();
+					int loopSamples = br.ReadInt32();
+
+					double sampleRateRatio = data.SampleRate / 44100.0;
+					samples = (int)(samples * sampleRateRatio);
+					loopSamples = (int)(loopSamples * sampleRateRatio);
+					
+					data.Looping = true;
+					data.LoopStart = samples - loopSamples;
+					data.LoopEnd = samples;
+				}
+
+				return data;
+			} catch (Exception e) {
+				throw new AudioImporterException("Could not read output of VGMPlay: " + e.Message);
 			}
 		}
 
