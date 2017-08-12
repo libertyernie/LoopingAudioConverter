@@ -28,7 +28,7 @@ namespace LoopingAudioConverter.Brawl {
 					data = FSTMConverter.ToRSTM(data);
 				}
 
-			    return PCM16Factory.FromAudioStream(RSTMConverter.CreateStreams(data)[0]);
+				return PCM16Factory.FromAudioStream(RSTMConverter.CreateStreams(data)[0]);
 			} catch (Exception e) {
 				throw new AudioImporterException("Could not convert from B" + (char)data[0] + "STM: " + e.Message);
 			}

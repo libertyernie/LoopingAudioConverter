@@ -67,9 +67,9 @@ namespace LoopingAudioConverter {
 
 		public void Update(float ratio) {
 			Ratio = ratio;
-            try {
-                pnlProgress.Invalidate();
-            } catch (Exception) { }
+			try {
+				pnlProgress.Invalidate();
+			} catch (Exception) { }
 		}
 	}
 }

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace LoopingAudioConverter {
 	public class AudioImporterException : Exception {
-		public AudioImporterException(string message) : base(message) {}
+		public AudioImporterException(string message) : base(message) { }
 		public AudioImporterException(string message, Exception innerException) : base(message, innerException) { }
 	}
 

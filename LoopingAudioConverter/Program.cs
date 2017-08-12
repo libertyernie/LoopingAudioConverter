@@ -28,7 +28,7 @@ namespace LoopingAudioConverter {
 				}
 			}
 
-            if (appsettingserror) {
+			if (appsettingserror) {
 				MessageBox.Show("One or more programs could not be found; the program may not run properly. See the console for details.");
 			}
 
@@ -41,10 +41,10 @@ namespace LoopingAudioConverter {
 			Task.WaitAll(f.RunningTasks.ToArray());
 		}
 
-        /// <summary>
-        /// Runs a batch conversion process.
-        /// </summary>
-        /// <param name="o">Options for the batch.</param>
+		/// <summary>
+		/// Runs a batch conversion process.
+		/// </summary>
+		/// <param name="o">Options for the batch.</param>
 		public static void Run(Options o) {
 			if (o.ExporterType == ExporterType.MP3 && (o.ExportPreLoop || o.ExportLoop)) {
 				MessageBox.Show("MP3 encoding adds gaps at the start and end of each file, so the before-loop portion and the loop portion will not line up well.",
@@ -61,8 +61,7 @@ namespace LoopingAudioConverter {
 					new VGMStreamImporter(ConfigurationManager.AppSettings["vgmstream_path"]),
 					sox
 				};
-			if (o.BrawlLibDecoder)
-			{
+			if (o.BrawlLibDecoder) {
 				importers.Insert(1, new RSTMImporter());
 			}
 
@@ -86,13 +85,13 @@ namespace LoopingAudioConverter {
 				case ExporterType.MP3:
 					exporter = new MP3Exporter(ConfigurationManager.AppSettings["lame_path"], o.MP3EncodingParameters);
 					break;
-                case ExporterType.AAC_M4A:
-                    exporter = new AACExporter(ConfigurationManager.AppSettings["qaac_path"], o.AACEncodingParameters, adts: false);
-                    break;
-                case ExporterType.AAC_ADTS:
-                    exporter = new AACExporter(ConfigurationManager.AppSettings["qaac_path"], o.AACEncodingParameters, adts: true);
-                    break;
-                case ExporterType.OggVorbis:
+				case ExporterType.AAC_M4A:
+					exporter = new AACExporter(ConfigurationManager.AppSettings["qaac_path"], o.AACEncodingParameters, adts: false);
+					break;
+				case ExporterType.AAC_ADTS:
+					exporter = new AACExporter(ConfigurationManager.AppSettings["qaac_path"], o.AACEncodingParameters, adts: true);
+					break;
+				case ExporterType.OggVorbis:
 					exporter = new OggVorbisExporter(sox, o.OggVorbisEncodingParameters);
 					break;
 				case ExporterType.WAV:
@@ -236,60 +235,60 @@ namespace LoopingAudioConverter {
 				sem.Release();
 
 				foreach (NamedAudio n in wavsToExport) {
-                    NamedAudio toExport = n;
-                    sem.WaitOne();
-                    switch (o.NonLoopingBehavior) {
-                        case NonLoopingBehavior.ForceLoop:
-                            if (!toExport.LWAV.Looping) {
-                                toExport.LWAV.Looping = true;
-                                toExport.LWAV.LoopStart = 0;
-                                toExport.LWAV.LoopEnd = toExport.LWAV.Samples.Length / toExport.LWAV.Channels;
-                            }
-                            break;
-                        case NonLoopingBehavior.AskAll:
-                            PCM16AudioStream audioStream = new PCM16AudioStream(toExport.LWAV);
-                            using (BrstmConverterDialog dialog = new BrstmConverterDialog(audioStream)) {
-                                dialog.AudioSource = n.Name;
-                                if (dialog.ShowDialog() != DialogResult.OK) {
-                                    toExport = null;
-                                }
-                            }
-                            break;
-                    }
-                    if (toExport == null) {
-                        i++;
-                        break;
-                    }
+					NamedAudio toExport = n;
+					sem.WaitOne();
+					switch (o.NonLoopingBehavior) {
+						case NonLoopingBehavior.ForceLoop:
+							if (!toExport.LWAV.Looping) {
+								toExport.LWAV.Looping = true;
+								toExport.LWAV.LoopStart = 0;
+								toExport.LWAV.LoopEnd = toExport.LWAV.Samples.Length / toExport.LWAV.Channels;
+							}
+							break;
+						case NonLoopingBehavior.AskAll:
+							PCM16AudioStream audioStream = new PCM16AudioStream(toExport.LWAV);
+							using (BrstmConverterDialog dialog = new BrstmConverterDialog(audioStream)) {
+								dialog.AudioSource = n.Name;
+								if (dialog.ShowDialog() != DialogResult.OK) {
+									toExport = null;
+								}
+							}
+							break;
+					}
+					if (toExport == null) {
+						i++;
+						break;
+					}
 
-                    if (!o.ShortCircuit) {
-                        if (toExport.LWAV.OriginalFilePath != null) {
-                            toExport.LWAV.OriginalFilePath = null;
-                        }
-                    }
-                    if (!o.WriteLoopingMetadata) {
-                        toExport.LWAV.Looping = false;
-                    }
+					if (!o.ShortCircuit) {
+						if (toExport.LWAV.OriginalFilePath != null) {
+							toExport.LWAV.OriginalFilePath = null;
+						}
+					}
+					if (!o.WriteLoopingMetadata) {
+						toExport.LWAV.Looping = false;
+					}
 
-                    MultipleProgressRow row = window.AddEncodingRow(toExport.Name);
-                    if (o.NumSimulTasks == 1) {
-                        exporter.WriteFile(toExport.LWAV, outputDir, toExport.Name, row);
-                        lock (exported) {
-                            exported.Add(toExport.Name);
-                        }
-                        window.Update(++i / maxProgress);
-                        sem.Release();
-                        row.Remove();
-                    } else {
-                        Task task = exporter.WriteFileAsync(toExport.LWAV, outputDir, toExport.Name, row);
-                        tasks.Add(task.ContinueWith(t => {
-                            lock (exported) {
-                                exported.Add(toExport.Name);
-                            }
-                            window.Update(++i / maxProgress);
-                            sem.Release();
-                            row.Remove();
-                        }));
-                    }
+					MultipleProgressRow row = window.AddEncodingRow(toExport.Name);
+					if (o.NumSimulTasks == 1) {
+						exporter.WriteFile(toExport.LWAV, outputDir, toExport.Name, row);
+						lock (exported) {
+							exported.Add(toExport.Name);
+						}
+						window.Update(++i / maxProgress);
+						sem.Release();
+						row.Remove();
+					} else {
+						Task task = exporter.WriteFileAsync(toExport.LWAV, outputDir, toExport.Name, row);
+						tasks.Add(task.ContinueWith(t => {
+							lock (exported) {
+								exported.Add(toExport.Name);
+							}
+							window.Update(++i / maxProgress);
+							sem.Release();
+							row.Remove();
+						}));
+					}
 				}
 
 				window.Update(++i / maxProgress);

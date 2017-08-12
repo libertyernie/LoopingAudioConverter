@@ -13,8 +13,8 @@ namespace LoopingAudioConverter {
 		WAV,
 		FLAC,
 		MP3,
-        AAC_M4A,
-        AAC_ADTS,
+		AAC_M4A,
+		AAC_ADTS,
 		OggVorbis
 	}
 
@@ -24,13 +24,13 @@ namespace LoopingAudioConverter {
 		Each
 	}
 
-    public enum NonLoopingBehavior {
-        NoChange,
-        ForceLoop,
-        AskAll
-    }
+	public enum NonLoopingBehavior {
+		NoChange,
+		ForceLoop,
+		AskAll
+	}
 
-    public class Options {
+	public class Options {
 		public IEnumerable<string> InputFiles { get; set; }
 		public string OutputDir { get; set; }
 		public int? MaxChannels { get; set; }
@@ -39,15 +39,15 @@ namespace LoopingAudioConverter {
 		public decimal? AmplifyRatio { get; set; }
 		public ChannelSplit ChannelSplit { get; set; }
 		public ExporterType ExporterType { get; set; }
-        public string MP3EncodingParameters { get; set; }
-        public string AACEncodingParameters { get; set; }
-        public string OggVorbisEncodingParameters { get; set; }
-        public NonLoopingBehavior NonLoopingBehavior { get; set; }
-        public bool ExportWholeSong { get; set; }
+		public string MP3EncodingParameters { get; set; }
+		public string AACEncodingParameters { get; set; }
+		public string OggVorbisEncodingParameters { get; set; }
+		public NonLoopingBehavior NonLoopingBehavior { get; set; }
+		public bool ExportWholeSong { get; set; }
 		public string WholeSongSuffix { get; set; }
 		public int NumberOfLoops { get; set; }
 		public decimal FadeOutSec { get; set; }
-        public bool WriteLoopingMetadata { get; set; }
+		public bool WriteLoopingMetadata { get; set; }
 		public bool ExportPreLoop { get; set; }
 		public string PreLoopSuffix { get; set; }
 		public bool ExportLoop { get; set; }
