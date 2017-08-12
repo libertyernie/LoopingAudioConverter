@@ -57,7 +57,7 @@ namespace LoopingAudioConverter {
 					new WAVImporter(),
 					new MP3Importer(ConfigurationManager.AppSettings["madplay_path"]),
 					new MP4Importer(ConfigurationManager.AppSettings["faad_path"]),
-					new VGMImporter(ConfigurationManager.AppSettings["vgm2wav_path"]),
+					new VGMImporter(ConfigurationManager.AppSettings["vgmplay_path"] ?? ConfigurationManager.AppSettings["vgm2wav_path"]),
 					new VGMStreamImporter(ConfigurationManager.AppSettings["vgmstream_path"]),
 					sox
 				};
