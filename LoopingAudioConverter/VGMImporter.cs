@@ -72,31 +72,31 @@ namespace LoopingAudioConverter {
 		}
 
 		private PCM16Audio ReadFile_VGMPlay(string filename) {
-			string tmpDir = Path.Combine(Path.GetTempPath(), "LoopingaudioConverter-" + Guid.NewGuid());
-			Directory.CreateDirectory(tmpDir);
-
-			string inFile = Path.Combine(tmpDir, "audio" + Path.GetExtension(filename));
-			File.Copy(filename, inFile);
-			using (var sw = new StreamWriter(new FileStream(Path.Combine(tmpDir, "VGMPlay.ini"), FileMode.Create, FileAccess.Write))) {
-				sw.WriteLine("[General]");
-				if (SampleRate != null) {
-					sw.WriteLine("SampleRate = " + SampleRate);
-				}
-				sw.WriteLine("FadeTime = 500");
-				sw.WriteLine("LogSound = 1");
-				sw.WriteLine("MaxLoops = 0x01");
-			}
-
-			ProcessStartInfo psi = new ProcessStartInfo {
-				FileName = Path.GetFullPath(ExePath),
-				WorkingDirectory = tmpDir,
-				UseShellExecute = false,
-				CreateNoWindow = true,
-				Arguments = inFile
-			};
-			Process p = Process.Start(psi);
-			p.WaitForExit();
 			try {
+				string tmpDir = Path.Combine(Path.GetTempPath(), "LoopingaudioConverter-" + Guid.NewGuid());
+				Directory.CreateDirectory(tmpDir);
+
+				string inFile = Path.Combine(tmpDir, "audio" + Path.GetExtension(filename));
+				File.Copy(filename, inFile);
+				using (var sw = new StreamWriter(new FileStream(Path.Combine(tmpDir, "VGMPlay.ini"), FileMode.Create, FileAccess.Write))) {
+					sw.WriteLine("[General]");
+					if (SampleRate != null) {
+						sw.WriteLine("SampleRate = " + SampleRate);
+					}
+					sw.WriteLine("FadeTime = 500");
+					sw.WriteLine("LogSound = 1");
+					sw.WriteLine("MaxLoops = 0x01");
+				}
+
+				ProcessStartInfo psi = new ProcessStartInfo {
+					FileName = Path.GetFullPath(ExePath),
+					WorkingDirectory = tmpDir,
+					UseShellExecute = false,
+					CreateNoWindow = true,
+					Arguments = inFile
+				};
+				Process p = Process.Start(psi);
+				p.WaitForExit();
 				var data = PCM16Factory.FromFile(Path.Combine(tmpDir, "audio.wav"), true);
 				Directory.Delete(tmpDir, true);
 
@@ -125,6 +125,9 @@ namespace LoopingAudioConverter {
 
 				return data;
 			} catch (Exception e) {
+				Console.Error.WriteLine(e.GetType());
+				Console.Error.WriteLine(e.Message);
+				Console.Error.WriteLine(e.StackTrace);
 				throw new AudioImporterException("Could not read output of VGMPlay: " + e.Message);
 			}
 		}
