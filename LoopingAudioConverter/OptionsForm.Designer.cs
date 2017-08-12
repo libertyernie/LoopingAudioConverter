@@ -518,12 +518,14 @@
             // 
             // ddlBxstmCodec
             // 
+            this.ddlBxstmCodec.DisplayMember = "Name";
             this.ddlBxstmCodec.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlBxstmCodec.FormattingEnabled = true;
             this.ddlBxstmCodec.Location = new System.Drawing.Point(215, 3);
             this.ddlBxstmCodec.Name = "ddlBxstmCodec";
             this.ddlBxstmCodec.Size = new System.Drawing.Size(80, 21);
             this.ddlBxstmCodec.TabIndex = 18;
+            this.ddlBxstmCodec.ValueMember = "Value";
             // 
             // chkWriteLoopingMetadata
             // 

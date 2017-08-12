@@ -42,7 +42,7 @@ namespace LoopingAudioConverter {
                 [ExporterType.AAC_M4A] = "",
             };
 
-			var exporters = new List<NVPair<ExporterType>>() {
+			var exporters = new[] {
 				new NVPair<ExporterType>(ExporterType.BRSTM, "BRSTM"),
 				new NVPair<ExporterType>(ExporterType.BCSTM, "BCSTM"),
 				new NVPair<ExporterType>(ExporterType.BFSTM, "BFSTM"),
@@ -91,13 +91,13 @@ namespace LoopingAudioConverter {
                 }
             };
 
-            ddlBxstmCodec.DataSource = new BxstmCodec[] {
-                BxstmCodec.Adpcm,
-                BxstmCodec.Pcm16Bit,
-                BxstmCodec.Pcm8Bit
+            ddlBxstmCodec.DataSource = new[] {
+                new NVPair<BxstmCodec>(BxstmCodec.Adpcm, "ADPCM"),
+                new NVPair<BxstmCodec>(BxstmCodec.Pcm16Bit, "PCM16"),
+                new NVPair<BxstmCodec>(BxstmCodec.Pcm8Bit, "PCM8")
             };
 
-            var nonLoopingBehaviors = new List<NVPair<NonLoopingBehavior>>() {
+            var nonLoopingBehaviors = new[] {
                 new NVPair<NonLoopingBehavior>(NonLoopingBehavior.NoChange, "Keep as non-looping"),
                 new NVPair<NonLoopingBehavior>(NonLoopingBehavior.ForceLoop, "Force start-to-end loop"),
                 new NVPair<NonLoopingBehavior>(NonLoopingBehavior.AskAll, "Ask for all files")
