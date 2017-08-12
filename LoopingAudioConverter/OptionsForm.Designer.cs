@@ -1,33 +1,28 @@
-﻿namespace LoopingAudioConverter
-{
-	partial class OptionsForm
-	{
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.IContainer components = null;
+﻿namespace LoopingAudioConverter {
+    partial class OptionsForm {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing && (components != null))
-			{
-				components.Dispose();
-			}
-			base.Dispose(disposing);
-		}
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing) {
+            if (disposing && (components != null)) {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
 
-		#region Windows Form Designer generated code
+        #region Windows Form Designer generated code
 
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent() {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.btnSuffixFilter = new System.Windows.Forms.Button();
             this.txtSuffixFilter = new System.Windows.Forms.TextBox();
@@ -176,7 +171,7 @@
             // 
             // txtOutputDir
             // 
-            this.txtOutputDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtOutputDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtOutputDir.Location = new System.Drawing.Point(99, 138);
             this.txtOutputDir.Name = "txtOutputDir";
@@ -198,8 +193,8 @@
             // listBox1
             // 
             this.listBox1.AllowDrop = true;
-            this.listBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.listBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listBox1.FormattingEnabled = true;
             this.listBox1.IntegralHeight = false;
@@ -869,61 +864,61 @@
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
-		}
+        }
 
-		#endregion
+        #endregion
 
-		private System.Windows.Forms.SplitContainer splitContainer1;
-		private System.Windows.Forms.ListBox listBox1;
-		private System.Windows.Forms.Button btnRemove;
-		private System.Windows.Forms.Button btnAdd;
-		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-		private System.Windows.Forms.ComboBox comboBox1;
-		private System.Windows.Forms.Label lblOutputFormat;
-		private System.Windows.Forms.TextBox txtStartEndFilenamePattern;
-		private System.Windows.Forms.CheckBox chkStartEnd;
-		private System.Windows.Forms.TextBox txt0StartFilenamePattern;
-		private System.Windows.Forms.CheckBox chk0Start;
-		private System.Windows.Forms.TextBox txt0EndFilenamePattern;
-		private System.Windows.Forms.CheckBox chk0End;
-		private System.Windows.Forms.NumericUpDown numFadeOutTime;
-		private System.Windows.Forms.NumericUpDown numNumberLoops;
-		private System.Windows.Forms.Label lblFadeOutTime;
-		private System.Windows.Forms.Label lblNumberLoops;
-		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Label lblSeconds;
-		private System.Windows.Forms.Label lblMoreThanOneChannel;
-		private System.Windows.Forms.RadioButton radChannelsSeparate;
-		private System.Windows.Forms.RadioButton radChannelsPairs;
-		private System.Windows.Forms.RadioButton radChannelsTogether;
-		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
-		private System.Windows.Forms.Panel pnlExportSegments;
-		private System.Windows.Forms.Panel pnlExportChannels;
-		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.Button btnOkay;
-		private System.Windows.Forms.Panel panel2;
-		private System.Windows.Forms.CheckBox chkMaxSampleRate;
-		private System.Windows.Forms.CheckBox chkMono;
-		private System.Windows.Forms.NumericUpDown numAmplifydB;
-		private System.Windows.Forms.CheckBox chkAmplifydB;
-		private System.Windows.Forms.NumericUpDown numMaxSampleRate;
-		private System.Windows.Forms.NumericUpDown numAmplifyRatio;
-		private System.Windows.Forms.CheckBox chkAmplifyRatio;
-		private System.Windows.Forms.TextBox txtOutputDir;
-		private System.Windows.Forms.Label lblOutputDir;
-		private System.Windows.Forms.Button btnBrowse;
-		private System.Windows.Forms.Panel panel3;
-		private System.Windows.Forms.NumericUpDown numSimulTasks;
-		private System.Windows.Forms.Label lblSimulTasks;
-		private System.Windows.Forms.Button btnHelp;
-		private System.Windows.Forms.TextBox txtSuffixFilter;
-		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.Button btnAddDir;
-		private System.Windows.Forms.Button btnSuffixFilter;
-		private System.Windows.Forms.Label lblEnumerationStatus;
-		private System.Windows.Forms.CheckBox chkShortCircuit;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Button btnRemove;
+        private System.Windows.Forms.Button btnAdd;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label lblOutputFormat;
+        private System.Windows.Forms.TextBox txtStartEndFilenamePattern;
+        private System.Windows.Forms.CheckBox chkStartEnd;
+        private System.Windows.Forms.TextBox txt0StartFilenamePattern;
+        private System.Windows.Forms.CheckBox chk0Start;
+        private System.Windows.Forms.TextBox txt0EndFilenamePattern;
+        private System.Windows.Forms.CheckBox chk0End;
+        private System.Windows.Forms.NumericUpDown numFadeOutTime;
+        private System.Windows.Forms.NumericUpDown numNumberLoops;
+        private System.Windows.Forms.Label lblFadeOutTime;
+        private System.Windows.Forms.Label lblNumberLoops;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblSeconds;
+        private System.Windows.Forms.Label lblMoreThanOneChannel;
+        private System.Windows.Forms.RadioButton radChannelsSeparate;
+        private System.Windows.Forms.RadioButton radChannelsPairs;
+        private System.Windows.Forms.RadioButton radChannelsTogether;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.Windows.Forms.Panel pnlExportSegments;
+        private System.Windows.Forms.Panel pnlExportChannels;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button btnOkay;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.CheckBox chkMaxSampleRate;
+        private System.Windows.Forms.CheckBox chkMono;
+        private System.Windows.Forms.NumericUpDown numAmplifydB;
+        private System.Windows.Forms.CheckBox chkAmplifydB;
+        private System.Windows.Forms.NumericUpDown numMaxSampleRate;
+        private System.Windows.Forms.NumericUpDown numAmplifyRatio;
+        private System.Windows.Forms.CheckBox chkAmplifyRatio;
+        private System.Windows.Forms.TextBox txtOutputDir;
+        private System.Windows.Forms.Label lblOutputDir;
+        private System.Windows.Forms.Button btnBrowse;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.NumericUpDown numSimulTasks;
+        private System.Windows.Forms.Label lblSimulTasks;
+        private System.Windows.Forms.Button btnHelp;
+        private System.Windows.Forms.TextBox txtSuffixFilter;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnAddDir;
+        private System.Windows.Forms.Button btnSuffixFilter;
+        private System.Windows.Forms.Label lblEnumerationStatus;
+        private System.Windows.Forms.CheckBox chkShortCircuit;
         private System.Windows.Forms.Button btnSaveOptions;
         private System.Windows.Forms.Button btnLoadOptions;
         private System.Windows.Forms.CheckBox chkVGAudioDecoder;

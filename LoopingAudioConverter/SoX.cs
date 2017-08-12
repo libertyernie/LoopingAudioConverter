@@ -8,25 +8,25 @@ namespace LoopingAudioConverter {
 	/// <summary>
 	/// A class to interface with SoX, using it to read and write non-looping audio data and to apply effects.
 	/// </summary>
-    public class SoX : IAudioImporter {
-        private string ExePath;
+	public class SoX : IAudioImporter {
+		private string ExePath;
 
 		/// <summary>
 		/// Initializes the SoX interfacing class and importer.
 		/// </summary>
 		/// <param name="exePath">Path to SoX executable (relative or absolute.)</param>
-        public SoX(string exePath) {
-            ExePath = exePath;
-        }
+		public SoX(string exePath) {
+			ExePath = exePath;
+		}
 
 		/// <summary>
 		/// Will always return true. SoX supports many file formats, and it should be tried once all importers that support looping audio fail to read a file.
 		/// </summary>
 		/// <param name="extension">Filename extension</param>
 		/// <returns>true</returns>
-        public bool SupportsExtension(string extension) {
-            return true;
-        }
+		public bool SupportsExtension(string extension) {
+			return true;
+		}
 
 		/// <summary>
 		/// Converts a file to WAV using SoX and reads it into an LWAV object.
@@ -34,32 +34,32 @@ namespace LoopingAudioConverter {
 		/// </summary>
 		/// <param name="filename">The path of the file to read</param>
 		/// <returns>A non-looping LWAV</returns>
-        public PCM16Audio ReadFile(string filename) {
-            if (!File.Exists(ExePath)) {
-                throw new AudioImporterException("test.exe not found at path: " + ExePath);
-            }
-            if (filename.Contains('"')) {
-                throw new AudioImporterException("File paths with double quote marks (\") are not supported");
-            }
+		public PCM16Audio ReadFile(string filename) {
+			if (!File.Exists(ExePath)) {
+				throw new AudioImporterException("test.exe not found at path: " + ExePath);
+			}
+			if (filename.Contains('"')) {
+				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
+			}
 
-            string outfile = TempFiles.Create("wav");
+			string outfile = TempFiles.Create("wav");
 
-            ProcessStartInfo psi = new ProcessStartInfo {
-                FileName = ExePath,
-                UseShellExecute = false,
+			ProcessStartInfo psi = new ProcessStartInfo {
+				FileName = ExePath,
+				UseShellExecute = false,
 				CreateNoWindow = true,
-                Arguments = "\"" + filename + "\" -b 16 -t wav " + outfile
-            };
-            Process p = Process.Start(psi);
-            p.WaitForExit();
+				Arguments = "\"" + filename + "\" -b 16 -t wav " + outfile
+			};
+			Process p = Process.Start(psi);
+			p.WaitForExit();
 
-            try {
-                PCM16Audio lwav = PCM16Factory.FromFile(outfile, true);
-                return lwav;
-            } catch (Exception e) {
-                throw new AudioImporterException("Could not read SoX output: " + e.Message);
-            }
-        }
+			try {
+				PCM16Audio lwav = PCM16Factory.FromFile(outfile, true);
+				return lwav;
+			} catch (Exception e) {
+				throw new AudioImporterException("Could not read SoX output: " + e.Message);
+			}
+		}
 
 		/// <summary>
 		/// Applies one or more SoX effects to the LWAV given and reads the result into a new LWAV.
@@ -96,8 +96,8 @@ namespace LoopingAudioConverter {
 				return lwav;
 			}
 
-            string infile = TempFiles.Create("wav");
-            string outfile = TempFiles.Create("wav");
+			string infile = TempFiles.Create("wav");
+			string outfile = TempFiles.Create("wav");
 
 			File.WriteAllBytes(infile, wav);
 
@@ -109,11 +109,11 @@ namespace LoopingAudioConverter {
 				Arguments = "-t wav " + infile + " -t wav " + outfile + " " + effects_string
 			};
 			Process p = Process.Start(psi);
-            p.WaitForExit();
-            File.Delete(infile);
+			p.WaitForExit();
+			File.Delete(infile);
 
 			try {
-                PCM16Audio l = PCM16Factory.FromFile(outfile, true);
+				PCM16Audio l = PCM16Factory.FromFile(outfile, true);
 				l.Looping = lwav.Looping;
 				l.LoopStart = lwav.LoopStart;
 				l.LoopEnd = lwav.LoopEnd;
@@ -140,27 +140,27 @@ namespace LoopingAudioConverter {
 				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
 			}
 
-            string infile = TempFiles.Create("wav");
-            File.WriteAllBytes(infile, lwav.Export());
+			string infile = TempFiles.Create("wav");
+			File.WriteAllBytes(infile, lwav.Export());
 
 			ProcessStartInfo psi = new ProcessStartInfo {
 				FileName = ExePath,
-                Arguments = infile + " " + (encodingParameters ?? "") + " \"" + output_filename + "\"",
-                UseShellExecute = false,
+				Arguments = infile + " " + (encodingParameters ?? "") + " \"" + output_filename + "\"",
+				UseShellExecute = false,
 				CreateNoWindow = true
 			};
 			Process p = Process.Start(psi);
 			p.WaitForExit();
 
-            File.Delete(infile);
+			File.Delete(infile);
 
 			if (p.ExitCode != 0) {
 				throw new AudioExporterException("SoX quit with exit code " + p.ExitCode);
 			}
 		}
 
-        public string GetImporterName() {
-            return "SoX";
-        }
-    }
+		public string GetImporterName() {
+			return "SoX";
+		}
+	}
 }

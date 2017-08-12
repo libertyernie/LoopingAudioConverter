@@ -26,19 +26,19 @@ namespace LoopingAudioConverter {
 			lblDecoding.Text = text;
 		}
 
-        public interface IEncodingRow {
-            void Remove();
-        }
+		public interface IEncodingRow {
+			void Remove();
+		}
 
-        private class EncodingRow : IEncodingRow {
-            public Label label;
+		private class EncodingRow : IEncodingRow {
+			public Label label;
 
-            public void Remove() {
-                this.label.BeginInvoke(new Action(() => {
-                    this.label.Parent.Controls.Remove(label);
-                }));
-            }
-        }
+			public void Remove() {
+				this.label.BeginInvoke(new Action(() => {
+					this.label.Parent.Controls.Remove(label);
+				}));
+			}
+		}
 
 		public IEncodingRow AddEncodingRow(string text) {
 			if (this.InvokeRequired) {
@@ -46,7 +46,7 @@ namespace LoopingAudioConverter {
 					return AddEncodingRow(text);
 				}));
 			}
-            Label row = new Label() { Text = text };
+			Label row = new Label() { Text = text };
 			row.Dock = DockStyle.Bottom;
 			pnlEncoding.Controls.Add(row);
 			return new EncodingRow { label = row };

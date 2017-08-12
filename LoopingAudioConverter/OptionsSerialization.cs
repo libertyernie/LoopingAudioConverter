@@ -6,16 +6,11 @@ using System.Text;
 using System.Windows.Forms;
 using VGAudio.Containers.Bxstm;
 
-namespace LoopingAudioConverter
-{
-    public static class OptionsSerialization
-    {
-        public static void PopulateFromFile(string filename, Options o)
-        {
-            using (FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read))
-            {
-                using (StreamReader sr = new StreamReader(fs))
-                {
+namespace LoopingAudioConverter {
+    public static class OptionsSerialization {
+        public static void PopulateFromFile(string filename, Options o) {
+            using (FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read)) {
+                using (StreamReader sr = new StreamReader(fs)) {
                     string line;
                     bool active = false;
                     while ((line = sr.ReadLine()) != null) {
@@ -26,11 +21,9 @@ namespace LoopingAudioConverter
                         }
 
                         string[] split = line.Split('=');
-                        if (split.Length == 2)
-                        {
+                        if (split.Length == 2) {
                             string v = split[1];
-                            switch (split[0])
-                            {
+                            switch (split[0]) {
                                 case "OutputDir":
                                     o.OutputDir = v;
                                     break;
@@ -107,12 +100,9 @@ namespace LoopingAudioConverter
             }
         }
 
-        public static void WriteToFile(string filename, Options o)
-        {
-            using (FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write))
-            {
-                using (StreamWriter sw = new StreamWriter(fs))
-                {
+        public static void WriteToFile(string filename, Options o) {
+            using (FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write)) {
+                using (StreamWriter sw = new StreamWriter(fs)) {
                     sw.WriteLine("[LoopingAudioConverter]");
                     if (o.OutputDir != null) sw.WriteLine("OutputDir=" + o.OutputDir);
                     if (o.MaxChannels != null) sw.WriteLine("MaxChannels=" + o.MaxChannels);

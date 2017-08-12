@@ -6,12 +6,12 @@ using VGAudio.Formats;
 
 namespace LoopingAudioConverter.VGAudio {
 	public class DSPExporter : VGAudioExporter {
-        protected override byte[] GetData(AudioData audio) {
-            return new DspWriter().GetFile(audio);
-        }
+		protected override byte[] GetData(AudioData audio) {
+			return new DspWriter().GetFile(audio);
+		}
 
-        protected override string GetExtension() {
-            return ".dsp";
-        }
-    }
+		protected override string GetExtension() {
+			return ".dsp";
+		}
+	}
 }

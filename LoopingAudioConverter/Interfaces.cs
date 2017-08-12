@@ -16,7 +16,7 @@ namespace LoopingAudioConverter {
 		bool SupportsExtension(string extension);
 		PCM16Audio ReadFile(string filename);
 		string GetImporterName();
-    }
+	}
 
 	public interface IRenderingAudioImporter : IAudioImporter {
 		int? SampleRate { set; }
