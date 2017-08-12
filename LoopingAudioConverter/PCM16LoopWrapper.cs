@@ -14,29 +14,10 @@ namespace LoopingAudioConverter {
 			this.lwav = lwav;
 		}
 
-		public int BitsPerSample {
-			get {
-				return 16;
-			}
-		}
-
-		public int Channels {
-			get {
-				return lwav.Channels;
-			}
-		}
-
-		public WaveFormatTag Format {
-			get {
-				return WaveFormatTag.WAVE_FORMAT_PCM;
-			}
-		}
-
-		public int Frequency {
-			get {
-				return lwav.SampleRate;
-			}
-		}
+		public int BitsPerSample => 16;
+		public int Channels => lwav.Channels;
+		public WaveFormatTag Format => WaveFormatTag.WAVE_FORMAT_PCM;
+		public int Frequency => lwav.SampleRate;
 
 		public bool IsLooping {
 			get {
@@ -77,11 +58,7 @@ namespace LoopingAudioConverter {
 
 		public int SamplePosition { get; set; }
 
-		public int Samples {
-			get {
-				return lwav.Samples.Length / lwav.Channels;
-			}
-		}
+		public int Samples => lwav.Samples.Length / lwav.Channels;
 
 		public void Wrap() {
 			SamplePosition = LoopStartSample;
