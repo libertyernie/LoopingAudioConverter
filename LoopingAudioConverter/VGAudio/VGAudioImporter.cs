@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using VGAudio.Containers.Bxstm;
 using VGAudio.Containers.Dsp;
+using VGAudio.Containers.Hps;
 using VGAudio.Containers.Idsp;
 using VGAudio.Formats;
 
@@ -12,7 +13,7 @@ namespace LoopingAudioConverter.VGAudio {
 			if (extension.StartsWith(".")) extension = extension.Substring(1);
 			foreach (string s in new string[] {
 				"brstm", "bcstm", "bfstm",
-				"dsp", "idsp", "hps", "genh"
+				"dsp", "idsp", "hps"
 			}) {
 				if (extension.Equals(s, StringComparison.InvariantCultureIgnoreCase)) return true;
 			}
@@ -33,6 +34,8 @@ namespace LoopingAudioConverter.VGAudio {
 					return new DspReader().Read(data);
 				case "idsp":
 					return new IdspReader().Read(data);
+				case "hps":
+					return new HpsReader().Read(data);
 				default:
 					throw new NotImplementedException();
 			}
