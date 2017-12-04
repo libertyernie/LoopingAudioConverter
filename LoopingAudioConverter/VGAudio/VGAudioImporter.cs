@@ -1,7 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using VGAudio.Containers.Adx;
 using VGAudio.Containers.Dsp;
+using VGAudio.Containers.Genh;
+using VGAudio.Containers.Hca;
 using VGAudio.Containers.Hps;
 using VGAudio.Containers.Idsp;
 using VGAudio.Containers.NintendoWare;
@@ -24,15 +27,30 @@ namespace LoopingAudioConverter.VGAudio {
 			string extension = Path.GetExtension(filename).ToLowerInvariant();
 			if (extension.StartsWith(".")) extension = extension.Substring(1);
 			switch (extension) {
+				case "adx":
+					return new AdxReader().Read(data);
 				case "brstm":
 					return new BrstmReader().Read(data);
 				case "bcstm":
+				case "bcstp":
+				case "bcwav":
+				case "cwav":
 				case "bfstm":
+				case "bfstp":
+				case "bfwav":
 					return new BCFstmReader().Read(data);
+				case "brwav":
+				case "rwav":
+					return new BrwavReader().Read(data);
 				case "dsp":
+				case "mdsp":
 					return new DspReader().Read(data);
 				case "idsp":
 					return new IdspReader().Read(data);
+				case "genh":
+					return new GenhReader().Read(data);
+				case "hca":
+					return new HcaReader().Read(data);
 				case "hps":
 					return new HpsReader().Read(data);
 				default:

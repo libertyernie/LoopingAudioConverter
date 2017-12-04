@@ -12,6 +12,7 @@ namespace LoopingAudioConverter {
 		BFSTM,
 		DSP,
 		IDSP,
+		HCA,
 		HPS,
 		WAV,
 		FLAC,

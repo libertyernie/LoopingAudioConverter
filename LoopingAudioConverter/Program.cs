@@ -81,6 +81,9 @@ namespace LoopingAudioConverter {
 				case ExporterType.IDSP:
 					exporter = new IDSPExporter();
 					break;
+				case ExporterType.HCA:
+					exporter = new HCAExporter();
+					break;
 				case ExporterType.HPS:
 					exporter = new HPSExporter();
 					break;
