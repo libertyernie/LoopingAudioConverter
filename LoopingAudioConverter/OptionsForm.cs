@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using VGAudio.Containers.Bxstm;
+using VGAudio.Containers.NintendoWare;
 
 namespace LoopingAudioConverter {
 	public partial class OptionsForm : Form {
@@ -92,9 +92,9 @@ namespace LoopingAudioConverter {
 			};
 
 			ddlBxstmCodec.DataSource = new[] {
-				new NVPair<BxstmCodec>(BxstmCodec.Adpcm, "ADPCM"),
-				new NVPair<BxstmCodec>(BxstmCodec.Pcm16Bit, "PCM16"),
-				new NVPair<BxstmCodec>(BxstmCodec.Pcm8Bit, "PCM8")
+				new NVPair<NwCodec>(NwCodec.GcAdpcm, "GC-ADPCM"),
+				new NVPair<NwCodec>(NwCodec.Pcm16Bit, "PCM16"),
+				new NVPair<NwCodec>(NwCodec.Pcm8Bit, "PCM8")
 			};
 
 			var nonLoopingBehaviors = new[] {
@@ -172,7 +172,7 @@ namespace LoopingAudioConverter {
 				MP3EncodingParameters = encodingParameters[ExporterType.MP3],
 				OggVorbisEncodingParameters = encodingParameters[ExporterType.OggVorbis],
 				AACEncodingParameters = encodingParameters[ExporterType.AAC_M4A],
-				BxstmCodec = (BxstmCodec)ddlBxstmCodec.SelectedValue,
+				BxstmCodec = (NwCodec)ddlBxstmCodec.SelectedValue,
 				NonLoopingBehavior = (NonLoopingBehavior)ddlNonLoopingBehavior.SelectedValue,
 				ExportWholeSong = chk0End.Checked,
 				WholeSongSuffix = txt0EndFilenamePattern.Text,

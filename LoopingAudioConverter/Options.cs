@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using VGAudio.Containers.Bxstm;
+using VGAudio.Containers.NintendoWare;
 
 namespace LoopingAudioConverter {
 	public enum ExporterType {
@@ -45,7 +45,7 @@ namespace LoopingAudioConverter {
 		public string MP3EncodingParameters { get; set; }
 		public string AACEncodingParameters { get; set; }
 		public string OggVorbisEncodingParameters { get; set; }
-		public BxstmCodec BxstmCodec { get; set; }
+		public NwCodec BxstmCodec { get; set; }
 		public NonLoopingBehavior NonLoopingBehavior { get; set; }
 		public bool ExportWholeSong { get; set; }
 		public string WholeSongSuffix { get; set; }

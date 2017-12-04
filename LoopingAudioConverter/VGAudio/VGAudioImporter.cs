@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using VGAudio.Containers.Bxstm;
 using VGAudio.Containers.Dsp;
 using VGAudio.Containers.Hps;
 using VGAudio.Containers.Idsp;
+using VGAudio.Containers.NintendoWare;
 using VGAudio.Formats;
 
 namespace LoopingAudioConverter.VGAudio {
@@ -27,9 +27,8 @@ namespace LoopingAudioConverter.VGAudio {
 				case "brstm":
 					return new BrstmReader().Read(data);
 				case "bcstm":
-					return new BcstmReader().Read(data);
 				case "bfstm":
-					return new BfstmReader().Read(data);
+					return new BCFstmReader().Read(data);
 				case "dsp":
 					return new DspReader().Read(data);
 				case "idsp":

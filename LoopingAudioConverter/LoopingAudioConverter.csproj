@@ -51,8 +51,8 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="VGAudio, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VGAudio.2.0.0-beta3\lib\net45\VGAudio.dll</HintPath>
+    <Reference Include="VGAudio, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VGAudio.2.1.0\lib\net45\VGAudio.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

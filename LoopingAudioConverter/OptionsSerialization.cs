@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using VGAudio.Containers.Bxstm;
+using VGAudio.Containers.NintendoWare;
 
 namespace LoopingAudioConverter {
     public static class OptionsSerialization {
@@ -55,7 +55,9 @@ namespace LoopingAudioConverter {
                                     o.AACEncodingParameters = v;
                                     break;
                                 case "BxstmCodec":
-                                    o.BxstmCodec = (BxstmCodec)Enum.Parse(typeof(BxstmCodec), v, true);
+                                    o.BxstmCodec = v == "Adpcm"
+										? NwCodec.GcAdpcm
+										: (NwCodec)Enum.Parse(typeof(NwCodec), v, true);
                                     break;
                                 case "ExportWholeSong":
                                     o.ExportWholeSong = bool.Parse(v);

@@ -1,22 +1,22 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
-using VGAudio.Containers.Bxstm;
+using VGAudio.Containers.NintendoWare;
 using VGAudio.Formats;
 
 namespace LoopingAudioConverter.VGAudio {
 	public class FSTMExporter : VGAudioExporter {
-		private BxstmCodec encoding;
+		private NwCodec encoding;
 
 		/// <summary>
 		/// Creates a new FSTMExporter instance that uses the given encoding when it has to re-encode a file.
 		/// </summary>
 		/// <param name="defaultEncoding">The encoding to use</param>
-		public FSTMExporter(BxstmCodec defaultEncoding) {
+		public FSTMExporter(NwCodec defaultEncoding) {
 			this.encoding = defaultEncoding;
 		}
 
 		protected override byte[] GetData(AudioData audio) {
-			return new BfstmWriter().GetFile(audio, new BfstmConfiguration { Codec = this.encoding });
+			return new BCFstmWriter(NwTarget.Cafe).GetFile(audio, new BxstmConfiguration { Codec = this.encoding });
 		}
 
 		protected override string GetExtension() {
