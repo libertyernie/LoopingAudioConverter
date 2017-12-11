@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BrawlLib.SSBBTypes;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace LoopingAudioConverter {
 		IDSP,
 		HCA,
 		HPS,
+		BRSTM_BrawlLib,
 		WAV,
 		FLAC,
 		MP3,
@@ -60,5 +62,10 @@ namespace LoopingAudioConverter {
 		public bool ShortCircuit { get; set; }
 		public bool BrawlLibDecoder { get; set; }
 		public int NumSimulTasks { get; set; }
+
+		public WaveEncoding WaveEncoding => BxstmCodec == NwCodec.Pcm8Bit ? WaveEncoding.PCM8
+			: BxstmCodec == NwCodec.Pcm16Bit ? WaveEncoding.PCM16
+			: BxstmCodec == NwCodec.GcAdpcm ? WaveEncoding.ADPCM
+			: throw new Exception($"Encoding {BxstmCodec} not supported by BrawlLib");
 	}
 }

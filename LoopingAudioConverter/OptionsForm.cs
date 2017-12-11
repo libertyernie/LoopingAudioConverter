@@ -50,6 +50,7 @@ namespace LoopingAudioConverter {
 				new NVPair<ExporterType>(ExporterType.IDSP, "IDSP"),
 				new NVPair<ExporterType>(ExporterType.HCA, "HCA"),
 				new NVPair<ExporterType>(ExporterType.HPS, "HPS"),
+				new NVPair<ExporterType>(ExporterType.BRSTM_BrawlLib, "BRSTM (BrawlLib)"),
 				new NVPair<ExporterType>(ExporterType.WAV, "WAV"),
 				new NVPair<ExporterType>(ExporterType.FLAC, "FLAC"),
 				new NVPair<ExporterType>(ExporterType.MP3, "MP3"),
