@@ -146,9 +146,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\brawltools\BrawlLib\LoopSelectionDialogLib.csproj">
-      <Project>{41c94979-ce5a-4582-888a-1bee98dd43d3}</Project>
-      <Name>LoopSelectionDialogLib</Name>
+    <ProjectReference Include="..\brawltools\BrawlLib\BrawlLib.csproj">
+      <Project>{462d0bbf-ce82-405b-8848-2f91e9e14c55}</Project>
+      <Name>BrawlLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\VorbisCommentSharp\VorbisCommentSharp.csproj">
       <Project>{5BD4854F-481B-4AA6-B838-32C21B2B069F}</Project>
