@@ -51,6 +51,8 @@ namespace LoopingAudioConverter {
 				new NVPair<ExporterType>(ExporterType.HCA, "HCA"),
 				new NVPair<ExporterType>(ExporterType.HPS, "HPS"),
 				new NVPair<ExporterType>(ExporterType.BRSTM_BrawlLib, "BRSTM (BrawlLib)"),
+				new NVPair<ExporterType>(ExporterType.BCSTM_BrawlLib, "BCSTM (BrawlLib)"),
+				new NVPair<ExporterType>(ExporterType.BFSTM_BrawlLib, "BFSTM (BrawlLib)"),
 				new NVPair<ExporterType>(ExporterType.WAV, "WAV"),
 				new NVPair<ExporterType>(ExporterType.FLAC, "FLAC"),
 				new NVPair<ExporterType>(ExporterType.MP3, "MP3"),
@@ -65,6 +67,7 @@ namespace LoopingAudioConverter {
 					case ExporterType.BRSTM:
 					case ExporterType.BCSTM:
 					case ExporterType.BFSTM:
+					case ExporterType.BRSTM_BrawlLib:
 						btnEncodingOptions.Visible = false;
 						ddlBxstmCodec.Visible = true;
 						break;

@@ -90,6 +90,12 @@ namespace LoopingAudioConverter {
 				case ExporterType.BRSTM_BrawlLib:
 					exporter = new Brawl.RSTMExporter(o.WaveEncoding);
 					break;
+				case ExporterType.BCSTM_BrawlLib:
+					exporter = new Brawl.CSTMExporter();
+					break;
+				case ExporterType.BFSTM_BrawlLib:
+					exporter = new Brawl.FSTMExporter();
+					break;
 				case ExporterType.FLAC:
 					exporter = new FLACExporter(sox);
 					break;

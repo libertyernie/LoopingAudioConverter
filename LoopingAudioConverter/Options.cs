@@ -16,6 +16,8 @@ namespace LoopingAudioConverter {
 		HCA,
 		HPS,
 		BRSTM_BrawlLib,
+		BCSTM_BrawlLib,
+		BFSTM_BrawlLib,
 		WAV,
 		FLAC,
 		MP3,

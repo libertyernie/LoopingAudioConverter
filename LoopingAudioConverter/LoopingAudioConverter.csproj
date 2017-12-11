@@ -56,6 +56,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Brawl\FSTMExporter.cs" />
+    <Compile Include="Brawl\CSTMExporter.cs" />
     <Compile Include="Brawl\PCM16AudioStream.cs" />
     <Compile Include="Brawl\RSTMExporter.cs" />
     <Compile Include="VGAudio\HCAExporter.cs" />
