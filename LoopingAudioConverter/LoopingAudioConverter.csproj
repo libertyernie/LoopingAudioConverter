@@ -51,8 +51,8 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="VGAudio, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VGAudio.2.1.0\lib\net45\VGAudio.dll</HintPath>
+    <Reference Include="VGAudio, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VGAudio.2.2.0\lib\net45\VGAudio.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -123,9 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AACQualityForm.resx">

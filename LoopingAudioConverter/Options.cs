@@ -62,7 +62,7 @@ namespace LoopingAudioConverter {
 		public bool ExportLoop { get; set; }
 		public string LoopSuffix { get; set; }
 		public bool ShortCircuit { get; set; }
-		public bool BrawlLibDecoder { get; set; }
+		public bool VGAudioDecoder { get; set; }
 		public int NumSimulTasks { get; set; }
 
 		public WaveEncoding WaveEncoding => BxstmCodec == NwCodec.Pcm8Bit ? WaveEncoding.PCM8
