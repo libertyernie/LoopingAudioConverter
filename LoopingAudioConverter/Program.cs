@@ -60,7 +60,7 @@ namespace LoopingAudioConverter {
 					new VGMStreamImporter(ConfigurationManager.AppSettings["vgmstream_path"]),
 					sox
 				};
-			if (o.BrawlLibDecoder) {
+			if (o.VGAudioDecoder) {
 				importers.Insert(1, new VGAudioImporter());
 			}
 

@@ -186,7 +186,7 @@ namespace LoopingAudioConverter {
 				LoopSuffix = txtStartEndFilenamePattern.Text,
 				NumSimulTasks = (int)numSimulTasks.Value,
 				ShortCircuit = chkShortCircuit.Checked,
-				BrawlLibDecoder = chkVGAudioDecoder.Checked
+				VGAudioDecoder = chkVGAudioDecoder.Checked
 			};
 		}
 

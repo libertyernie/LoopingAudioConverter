@@ -89,8 +89,8 @@ namespace LoopingAudioConverter {
                                 case "ShortCircuit":
                                     o.ShortCircuit = bool.Parse(v);
                                     break;
-                                case "BrawlLibDecoder":
-                                    o.BrawlLibDecoder = bool.Parse(v);
+                                case "VGAudioDecoder":
+                                    o.VGAudioDecoder = bool.Parse(v);
                                     break;
                                 case "NumSimulTasks":
                                     o.NumSimulTasks = int.Parse(v);
@@ -127,7 +127,7 @@ namespace LoopingAudioConverter {
                     if (o.ExportLoop != null) sw.WriteLine("ExportLoop=" + o.ExportLoop);
                     if (o.LoopSuffix != null) sw.WriteLine("LoopSuffix=" + o.LoopSuffix);
                     if (o.ShortCircuit != null) sw.WriteLine("ShortCircuit=" + o.ShortCircuit);
-                    if (o.BrawlLibDecoder != null) sw.WriteLine("BrawlLibDecoder=" + o.ShortCircuit);
+                    if (o.VGAudioDecoder != null) sw.WriteLine("VGAudioDecoder=" + o.ShortCircuit);
                     if (o.NumSimulTasks != null) sw.WriteLine("NumSimulTasks=" + o.NumSimulTasks);
                 }
             }
