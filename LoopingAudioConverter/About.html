@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -17,10 +17,23 @@
       <li>WAV (with or without "smpl" chunk to denote looping audio)</li>
       <li>MP3</li>
       <li>AAC/.m4a</li>
-      <li><a href="http://vgmrips.net/">VGM/VGZ</a><br>
-      </li>
+      <li><a href="http://vgmrips.net/">VGM/VGZ</a></li>
+      <li>VGAudio supported formats</li>
+      <ul>
+        <li>ADX</li>
+        <li>BRSTM</li>
+        <li>BCSTM, BCSTP, BCWAV, CWAV, BFSTM, BFSTP, BFWAV</li>
+        <li>BRWAV, RWAV</li>
+        <li>DSP, MDSP</li>
+        <li>IDSP</li>
+        <li>GENH</li>
+        <li>HCA</li>
+        <li>HPS<br>
+        </li>
+      </ul>
       <li>Any audio format supported by SoX</li>
-      <li>Any audio format supported by vgmstream</li>
+      <li>Any audio format supported by vgmstream<br>
+      </li>
     </ul>
     <p>Supported output formats:<br>
     </p>
@@ -28,10 +41,12 @@
       <li>VGAudio supported formats<br>
       </li>
       <ul>
-        <li>BRSTM - ADPCM / PCM16 / PCM8<br>
-        </li>
-        <li>BCSTM - ADPCM / PCM16 / PCM8</li>
-        <li>BFSTM - ADPCM / PCM16 / PCM8</li>
+        <li>BRSTM</li>
+        <li>BCSTM</li>
+        <li>BFSTM</li>
+        <ul>
+          <li>Codecs available: ADPCM, PCM16, PCM8</li>
+        </ul>
         <ul>
           <li>PCM16 provides a lossless conversion (better quality), but
             the resulting file size is usually 3-4 times larger (about
@@ -39,8 +54,18 @@
         </ul>
         <li>DSP</li>
         <li>IDSP</li>
-        <li>HPS<br>
+        <li>HCA<br>
         </li>
+        <li>HPS</li>
+      </ul>
+      <li>BrawlLib supported formats</li>
+      <ul>
+        <li>BRSTM / BCSTM / BFSTM (ADPCM only)</li>
+        <ul>
+          <li>The BCSTM format BrawlLib produces is different from what
+            VGAudio produces, and might work better in some situations.<br>
+          </li>
+        </ul>
       </ul>
       <li>WAV</li>
       <ul>
@@ -75,6 +100,7 @@
         is a library for encoding, decoding, and manipulating audio
         files from video games, available under the <a
           href="https://github.com/Thealexbarney/VGAudio/blob/2.0/LICENSE">MIT
+
           license</a>.<br>
       </li>
       <li>vgmstream (<a
@@ -82,10 +108,10 @@
         is a library for reading audio data from many different video
         games. test.exe is a frontend to this library and converts the
         audio to WAV format (with an smpl chunk for looping files).
-        vgmstream is under the MIT/X11 license; see the file COPYING.txt
-        in the tools/vgmstream folder for more details. vgmstream also
-        uses other libraries, some of which have their own license terms
-        - these are included in the tools/vgmstream folder as well.</li>
+        vgmstream is under the MIT/X11 license; see the file COPYING in
+        the tools/vgmstream folder for more details. vgmstream also uses
+        other libraries, some of which have their own license terms -
+        these are included in the tools/vgmstream folder as well.</li>
       <li>SoX (<a href="http://sox.sourceforge.net">http://sox.sourceforge.net</a>)
         is a powerful command-line application for dealing with many
         audio formats. It allows this program to read many different
@@ -99,6 +125,7 @@
         is a frontend to Apple's AAC encoder. Most of the code is public
         domain (see <a
           href="https://github.com/nu774/qaac/blob/master/COPYING">COPYING</a>).
+
 
         This version was obtained from:
         http://www.foobar2000.org/encoderpack</li>
@@ -115,20 +142,14 @@
         which outputs 16-bit PCM data in WAV format. The source is now
         included in the VGMPlay git repository.<br>
       </li>
-      <li>LoopingAudioConverter contains the loop selection dialog from
-        BrawlLib (<a href="https://github.com/libertyernie/brawltools">https://github.com/libertyernie/brawltools</a>).
-
-        BrawlLib comes with the following disclaimer: "This program is
-        provided as-is without any warranty, implied or otherwise. By
-        using this program, the end user agrees to take full
-        responsibility regarding its proper and lawful use. The
-        authors/hosts/distributors cannot be held responsible for any
-        damage resulting in the use of this program, nor can they be
-        held accountable for the manner in which it is used."</li>
+      <li>BrawlLibAudio (<a
+          href="https://github.com/libertyernie/brawltools/tree/audio-libraries">https://github.com/libertyernie/brawltools/tree/audio-libraries</a>)
+        provides alternate BRSTM/BCSTM/BFSTM encoders and the loop point
+        selection dialog.</li>
       <li>VorbisCommentSharp (<a
           href="https://github.com/libertyernie/VorbisCommentSharp">https://github.com/libertyernie/VorbisCommentSharp</a>)
-        is included in LoopingAudioConverter.exe, and is used to add
-        looping metadata to Ogg Vorbis files after SoX creates them.<br>
+        is used to add looping metadata to Ogg Vorbis files after SoX
+        creates them.<br>
       </li>
     </ul>
     <hr width="100%" size="2">
@@ -232,6 +253,7 @@ src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhgAAAIBCAIAAACEP1EUAAAgAElEQ
         start until the loop end. The text in "suffix" will be appended
         to the filename.</li>
       <li><b>Skip re-encoding for similar formats when possible: </b>This
+
         option takes effect when no audio effects are selected and the
         input/output formats line up.</li>
       <ul>

@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("LoopingAudioConverter")]
-[assembly: AssemblyCopyright("Copyright © 2017 libertyernie")]
+[assembly: AssemblyCopyright("Copyright © 2018 libertyernie")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
