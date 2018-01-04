@@ -148,7 +148,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\brawltools\BrawlLib\BrawlLibAudio.csproj">
+    <ProjectReference Include="..\brawltools\BrawlLib\BrawlLibAudio.csproj">
       <Project>{41c94979-ce5a-4582-888a-1bee98dd43d3}</Project>
       <Name>BrawlLibAudio</Name>
     </ProjectReference>
