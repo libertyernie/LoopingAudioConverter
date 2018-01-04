@@ -8,16 +8,6 @@ using System.Windows.Forms;
 
 namespace LoopingAudioConverter.Brawl {
 	public class RSTMExporter : IAudioExporter {
-		private WaveEncoding encoding;
-
-		/// <summary>
-		/// Creates a new RSTMExporter instance that uses the given encoding when it has to re-encode a file.
-		/// </summary>
-		/// <param name="defaultEncoding">The encoding to use (ADPCM or PCM16)</param>
-		public RSTMExporter(WaveEncoding defaultEncoding) {
-			this.encoding = defaultEncoding;
-		}
-
 		public byte[] Encode(PCM16Audio lwav, string original_filename_no_ext) {
 			if (lwav.OriginalPath != null) {
 				switch (Path.GetExtension(lwav.OriginalPath).ToLowerInvariant()) {
@@ -51,7 +41,7 @@ namespace LoopingAudioConverter.Brawl {
 		}
 
 		public string GetExporterName() {
-			return "BRSTM (BrawlLib): " + encoding;
+			return "BRSTM (BrawlLib)";
 		}
 	}
 }

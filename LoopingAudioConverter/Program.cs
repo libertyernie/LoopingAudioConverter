@@ -88,7 +88,7 @@ namespace LoopingAudioConverter {
 					exporter = new HPSExporter();
 					break;
 				case ExporterType.BRSTM_BrawlLib:
-					exporter = new Brawl.RSTMExporter(o.WaveEncoding);
+					exporter = new Brawl.RSTMExporter();
 					break;
 				case ExporterType.BCSTM_BrawlLib:
 					exporter = new Brawl.CSTMExporter();

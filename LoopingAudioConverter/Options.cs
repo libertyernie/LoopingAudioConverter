@@ -64,10 +64,5 @@ namespace LoopingAudioConverter {
 		public bool ShortCircuit { get; set; }
 		public bool VGAudioDecoder { get; set; }
 		public int NumSimulTasks { get; set; }
-
-		public WaveEncoding WaveEncoding => BxstmCodec == NwCodec.Pcm8Bit ? WaveEncoding.PCM8
-			: BxstmCodec == NwCodec.Pcm16Bit ? WaveEncoding.PCM16
-			: BxstmCodec == NwCodec.GcAdpcm ? WaveEncoding.ADPCM
-			: throw new Exception($"Encoding {BxstmCodec} not supported by BrawlLib");
 	}
 }

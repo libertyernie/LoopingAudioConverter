@@ -67,7 +67,6 @@ namespace LoopingAudioConverter {
 					case ExporterType.BRSTM:
 					case ExporterType.BCSTM:
 					case ExporterType.BFSTM:
-					case ExporterType.BRSTM_BrawlLib:
 						btnEncodingOptions.Visible = false;
 						ddlBxstmCodec.Visible = true;
 						break;
