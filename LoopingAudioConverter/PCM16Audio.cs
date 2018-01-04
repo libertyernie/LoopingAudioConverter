@@ -21,7 +21,7 @@ namespace LoopingAudioConverter {
 			}
 		}
 
-		public string OriginalOggPath { get; set; }
+		public string OriginalPath { get; set; }
 		public AudioData OriginalAudioData { get; set; }
 
 		/// <summary>

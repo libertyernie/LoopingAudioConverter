@@ -160,7 +160,6 @@ namespace LoopingAudioConverter {
 			DateTime start = DateTime.UtcNow;
 			foreach (string inputFile in o.InputFiles) {
 				sem.WaitOne();
-				if (tasks.Any(t => t.IsFaulted)) break;
 				if (window.Canceled) break;
 
 				string outputDir = o.OutputDir;
@@ -202,9 +201,7 @@ namespace LoopingAudioConverter {
 							((IRenderingAudioImporter)importer).SampleRate = o.MaxSampleRate;
 						}
 						w = importer.ReadFile(inputFile);
-						if (new string[] { ".ogg", ".logg" }.Contains(Path.GetExtension(inputFile), StringComparer.InvariantCultureIgnoreCase)) {
-							w.OriginalOggPath = inputFile;
-						}
+						w.OriginalPath = inputFile;
 						break;
 					} catch (AudioImporterException e) {
 						//Console.Error.WriteLine(importer.GetImporterName() + " could not read file " + inputFile + ": " + e.Message);
@@ -287,8 +284,8 @@ namespace LoopingAudioConverter {
 					}
 
 					if (!o.ShortCircuit) {
-						if (toExport.LWAV.OriginalOggPath != null) {
-							toExport.LWAV.OriginalOggPath = null;
+						if (toExport.LWAV.OriginalPath != null) {
+							toExport.LWAV.OriginalPath = null;
 						}
 						if (toExport.LWAV.OriginalAudioData != null) {
 							toExport.LWAV.OriginalAudioData = null;
@@ -310,7 +307,7 @@ namespace LoopingAudioConverter {
 					//    row.Remove();
 					//} else {
 					Task task = exporter.WriteFileAsync(toExport.LWAV, outputDir, toExport.Name);
-					tasks.Add(task.ContinueWith(t => {
+					task.ContinueWith(t => {
 						lock (exported) {
 							exported.Add(toExport.Name);
 						}
@@ -318,21 +315,24 @@ namespace LoopingAudioConverter {
 							sem.Release();
 						}
 						row.Remove();
-					}));
+					});
+					tasks.Add(task);
 					//}
 				}
 			}
-			Task.WaitAll(tasks.ToArray());
+			foreach (var t in tasks) {
+				try {
+					t.Wait();
+				} catch (Exception ex) {
+					MessageBox.Show((ex.InnerException ?? ex).Message);
+				}
+			}
 			DateTime end = DateTime.UtcNow;
 
 			if (window.Visible) window.BeginInvoke(new Action(() => {
 				window.AllowClose = true;
 				window.Close();
 			}));
-
-			if (tasks.Any(t => t.IsFaulted)) {
-				throw new AggregateException(tasks.Where(t => t.IsFaulted).Select(t => t.Exception));
-			}
 
 			MessageBox.Show("Exported " + exported.Count + " file(s), total time: " + (end - start));
 		}
