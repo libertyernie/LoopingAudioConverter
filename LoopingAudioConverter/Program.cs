@@ -307,7 +307,8 @@ namespace LoopingAudioConverter {
 					//    row.Remove();
 					//} else {
 					Task task = exporter.WriteFileAsync(toExport.LWAV, outputDir, toExport.Name);
-					task.ContinueWith(t => {
+					tasks.Add(task);
+					tasks.Add(task.ContinueWith(t => {
 						lock (exported) {
 							exported.Add(toExport.Name);
 						}
@@ -315,8 +316,7 @@ namespace LoopingAudioConverter {
 							sem.Release();
 						}
 						row.Remove();
-					});
-					tasks.Add(task);
+					}));
 					//}
 				}
 			}
@@ -324,6 +324,8 @@ namespace LoopingAudioConverter {
 				try {
 					t.Wait();
 				} catch (Exception ex) {
+					Console.Error.WriteLine($"{ex.GetType()}: {ex.Message}");
+					Console.Error.WriteLine(ex.StackTrace);
 					MessageBox.Show((ex.InnerException ?? ex).Message);
 				}
 			}
