@@ -6,7 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter {
-	public class MSU1 : IAudioImporter {
+	public class MSU1 : IAudioImporter, IAudioExporter {
+		public string GetExporterName() {
+			return "MSU-1";
+		}
+
 		public string GetImporterName() {
 			return "MSU-1";
 		}
@@ -41,6 +45,26 @@ namespace LoopingAudioConverter {
 		public bool SupportsExtension(string extension) {
 			if (extension.StartsWith(".")) extension = extension.Substring(1);
 			return extension.Equals("pcm", StringComparison.InvariantCultureIgnoreCase);
+		}
+
+		public void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
+			string output_filename = Path.Combine(output_dir, original_filename_no_ext + ".pcm");
+			using (var fs = new FileStream(output_filename, FileMode.Create, FileAccess.Write))
+			using (var bw = new BinaryWriter(fs)) {
+				foreach (char c in "MSU1") {
+					bw.Write((byte)c);
+				}
+
+				if (lwav.Looping) {
+					bw.Write((int)lwav.LoopStart);
+				} else {
+					bw.Write((int)0);
+				}
+				
+				foreach (short sample in lwav.Samples) {
+					bw.Write(sample);
+				}
+			}
 		}
 	}
 }

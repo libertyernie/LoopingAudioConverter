@@ -24,7 +24,6 @@ namespace LoopingAudioConverter {
 
 	public interface IAudioExporter {
 		void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext);
-		Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext);
 		string GetExporterName();
 	}
 }

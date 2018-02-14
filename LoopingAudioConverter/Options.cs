@@ -18,6 +18,7 @@ namespace LoopingAudioConverter {
 		BRSTM_BrawlLib,
 		BCSTM_BrawlLib,
 		BFSTM_BrawlLib,
+		MSU1,
 		WAV,
 		FLAC,
 		MP3,

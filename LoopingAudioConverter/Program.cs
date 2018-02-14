@@ -97,6 +97,9 @@ namespace LoopingAudioConverter {
 				case ExporterType.BFSTM_BrawlLib:
 					exporter = new Brawl.FSTMExporter();
 					break;
+				case ExporterType.MSU1:
+					exporter = new MSU1();
+					break;
 				case ExporterType.FLAC:
 					exporter = new FLACExporter(sox);
 					break;
@@ -313,7 +316,8 @@ namespace LoopingAudioConverter {
 					//    }
 					//    row.Remove();
 					//} else {
-					Task task = exporter.WriteFileAsync(toExport.LWAV, outputDir, toExport.Name);
+					Task task = new Task(() => exporter.WriteFile(toExport.LWAV, outputDir, toExport.Name));
+					task.Start();
 					tasks.Add(task);
 					tasks.Add(task.ContinueWith(t => {
 						lock (exported) {
