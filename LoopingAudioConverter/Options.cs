@@ -32,9 +32,10 @@ namespace LoopingAudioConverter {
 		Each
 	}
 
-	public enum NonLoopingBehavior {
+	public enum UnknownLoopBehavior {
 		NoChange,
 		ForceLoop,
+		Ask,
 		AskAll
 	}
 
@@ -51,7 +52,7 @@ namespace LoopingAudioConverter {
 		public string AACEncodingParameters { get; set; }
 		public string OggVorbisEncodingParameters { get; set; }
 		public NwCodec BxstmCodec { get; set; }
-		public NonLoopingBehavior NonLoopingBehavior { get; set; }
+		public UnknownLoopBehavior UnknownLoopBehavior { get; set; }
 		public bool ExportWholeSong { get; set; }
 		public string WholeSongSuffix { get; set; }
 		public int NumberOfLoops { get; set; }

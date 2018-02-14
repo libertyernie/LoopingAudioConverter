@@ -260,15 +260,21 @@ namespace LoopingAudioConverter {
 					for (int j = 0; j < claims; j++) {
 						sem.WaitOne();
 					}
-					switch (o.NonLoopingBehavior) {
-						case NonLoopingBehavior.ForceLoop:
-							if (!toExport.LWAV.Looping) {
+					switch (o.UnknownLoopBehavior) {
+						case UnknownLoopBehavior.ForceLoop:
+							if (!toExport.LWAV.Looping && !toExport.LWAV.NonLooping) {
 								toExport.LWAV.Looping = true;
 								toExport.LWAV.LoopStart = 0;
 								toExport.LWAV.LoopEnd = toExport.LWAV.Samples.Length / toExport.LWAV.Channels;
 							}
 							break;
-						case NonLoopingBehavior.AskAll:
+						case UnknownLoopBehavior.Ask:
+						case UnknownLoopBehavior.AskAll:
+							if (toExport.LWAV.Looping || toExport.LWAV.NonLooping) {
+								if (o.UnknownLoopBehavior != UnknownLoopBehavior.AskAll) {
+									break;
+								}
+							}
 							PCM16LoopWrapper audioStream = new PCM16LoopWrapper(toExport.LWAV);
 							using (BrstmConverterDialog dialog = new BrstmConverterDialog(audioStream)) {
 								dialog.AudioSource = n.Name;

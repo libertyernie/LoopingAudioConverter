@@ -118,9 +118,13 @@ namespace LoopingAudioConverter {
 					samples = (int)(samples * sampleRateRatio);
 					loopSamples = (int)(loopSamples * sampleRateRatio);
 
-					data.Looping = loopSamples != 0;
-					data.LoopStart = samples - loopSamples;
-					data.LoopEnd = samples;
+					if (loopSamples == 0) {
+						data.NonLooping = true;
+					} else {
+						data.Looping = true;
+						data.LoopStart = samples - loopSamples;
+						data.LoopEnd = samples;
+					}
 				}
 
 				return data;
