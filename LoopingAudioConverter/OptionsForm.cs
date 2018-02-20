@@ -115,6 +115,10 @@ namespace LoopingAudioConverter {
 			runningTasks = new HashSet<Task>();
 		}
 
+		public void AddInputFiles(IEnumerable<string> inputFiles) {
+			listBox1.Items.AddRange(inputFiles.ToArray());
+		}
+
 		public void LoadOptions(string filename) {
 			Options o = GetOptions();
 			try {

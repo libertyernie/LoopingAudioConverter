@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -102,9 +102,8 @@
       <li>VGAudio (<a href="https://github.com/Thealexbarney/VGAudio">https://github.com/Thealexbarney/VGAudio</a>)
         is a library for encoding, decoding, and manipulating audio
         files from video games, available under the <a
-          href="https://github.com/Thealexbarney/VGAudio/blob/2.0/LICENSE">MIT
-
-          license</a>.<br>
+          href="https://github.com/Thealexbarney/VGAudio/blob/2.0/LICENSE">
+          MIT license</a>.<br>
       </li>
       <li>vgmstream (<a
           href="https://gitlab.kode54.net/kode54/vgmstream">https://gitlab.kode54.net/kode54/vgmstream</a>)
@@ -128,6 +127,7 @@
         is a frontend to Apple's AAC encoder. Most of the code is public
         domain (see <a
           href="https://github.com/nu774/qaac/blob/master/COPYING">COPYING</a>).
+
 
 
         This version was obtained from:
@@ -260,8 +260,7 @@ src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhgAAAIBCAIAAACEP1EUAAAgAElEQ
       <li><b>Export loop segment</b>: exports the section from the loop
         start until the loop end. The text in "suffix" will be appended
         to the filename.</li>
-      <li><b>Skip re-encoding for similar formats when possible: </b>This
-
+      <li><b>Skip re-encoding for similar formats when possible:</b> This
         option takes effect when no audio effects are selected and the
         input/output formats line up.</li>
       <ul>
@@ -299,10 +298,28 @@ src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhgAAAIBCAIAAACEP1EUAAAgAElEQ
         to load options from this file automatically.</li>
     </ul>
     <hr width="100%" size="2">
-    <p>If your input files don't have loop points, but they should, you
-      can specify them in a file called <tt>loop.txt</tt> in the folder
-      you run the program from.<br>
-      Each line should have the format:<br>
+    <p>Command line arguments:<br>
+    </p>
+    <ul>
+      <li>Specify --auto to start the conversion automatically and close
+        the program when it is complete.</li>
+      <li>Specify a .ini file to set the conversion settings. You can
+        export an .ini file from Looping Audio Converter with "Save
+        Options".</li>
+      <li>All other command line arguments will be treated as input
+        files.</li>
+    </ul>
+    <p>These command line arguments might be removed or modified in
+      future versions.<br>
+    </p>
+    <p>If you just want to convert between WAV and VGAudio-supported
+      formats like BRSTM, try <a
+        href="https://github.com/Thealexbarney/VGAudio">VGAudioCli</a>.<br>
+    </p>
+    <hr width="100%" size="2">If your input files don't have loop
+    points, but they should, you can specify them in a file called <tt>loop.txt</tt>
+    in the folder you run the program from.<br>
+    <p> Each line should have the format:<br>
     </p>
     <pre>{loop-start} {loop-end} {filename}<br></pre>
     <p>For example:<br>
