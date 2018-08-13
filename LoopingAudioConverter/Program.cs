@@ -144,9 +144,6 @@ namespace LoopingAudioConverter {
 					throw new Exception("Could not create exporter type " + o.ExporterType);
 			}
 
-			List<Task> tasks = new List<Task>();
-			Semaphore sem = new Semaphore(o.NumSimulTasks, o.NumSimulTasks);
-
 			MultipleProgressWindow window = new MultipleProgressWindow();
 			new Thread(new ThreadStart(() => {
 				Application.EnableVisualStyles();
@@ -185,7 +182,6 @@ namespace LoopingAudioConverter {
 			List<string> exported = new List<string>();
 			DateTime start = DateTime.UtcNow;
 			foreach (string inputFile in o.InputFiles) {
-				sem.WaitOne();
 				if (window.Canceled) break;
 
 				string outputDir = o.OutputDir;
@@ -274,18 +270,8 @@ namespace LoopingAudioConverter {
 				if (o.ChannelSplit == ChannelSplit.Pairs) wavsToExport = wavsToExport.SelectMany(x => x.SplitMultiChannelToStereo()).ToList();
 				if (o.ChannelSplit == ChannelSplit.Each) wavsToExport = wavsToExport.SelectMany(x => x.SplitMultiChannelToMono()).ToList();
 
-				sem.Release();
-
 				foreach (NamedAudio n in wavsToExport) {
 					NamedAudio toExport = n;
-					int claims = 1;
-					if (exporter is VGAudioExporter) {
-						// VGAudio runs tasks in parallel for each channel, so let's consider that when deciding how many tasks to run.
-						claims = Math.Min(n.LWAV.Channels, o.NumSimulTasks);
-					}
-					for (int j = 0; j < claims; j++) {
-						sem.WaitOne();
-					}
 					switch (o.UnknownLoopBehavior) {
 						case UnknownLoopBehavior.ForceLoop:
 							if (!toExport.LWAV.Looping && !toExport.LWAV.NonLooping) {
@@ -327,39 +313,12 @@ namespace LoopingAudioConverter {
 						toExport.LWAV.Looping = false;
 					}
 
-					var row = window.AddEncodingRow(toExport.Name);
-					//if (o.NumSimulTasks == 1) {
-					//    exporter.WriteFile(toExport.LWAV, outputDir, toExport.Name);
-					//    lock (exported) {
-					//        exported.Add(toExport.Name);
-					//    }
-					//    for (int j = 0; j < claims; j++) {
-					//        sem.Release();
-					//    }
-					//    row.Remove();
-					//} else {
-					Task task = new Task(() => exporter.WriteFile(toExport.LWAV, outputDir, toExport.Name));
-					task.Start();
-					tasks.Add(task);
-					tasks.Add(task.ContinueWith(t => {
-						lock (exported) {
-							exported.Add(toExport.Name);
-						}
-						for (int j = 0; j < claims; j++) {
-							sem.Release();
-						}
-						row.Remove();
-					}));
-					//}
-				}
-			}
-			foreach (var t in tasks) {
-				try {
-					t.Wait();
-				} catch (Exception ex) {
-					Console.Error.WriteLine($"{ex.GetType()}: {ex.Message}");
-					Console.Error.WriteLine(ex.StackTrace);
-					MessageBox.Show((ex.InnerException ?? ex).Message);
+					window.SetDecodingText(toExport.Name);
+					exporter.WriteFile(toExport.LWAV, outputDir, toExport.Name);
+					lock (exported) {
+						exported.Add(toExport.Name);
+					}
+					window.SetDecodingText("");
 				}
 			}
 			DateTime end = DateTime.UtcNow;

@@ -65,6 +65,5 @@ namespace LoopingAudioConverter {
 		public string LoopSuffix { get; set; }
 		public bool ShortCircuit { get; set; }
 		public bool VGAudioDecoder { get; set; }
-		public int NumSimulTasks { get; set; }
 	}
 }

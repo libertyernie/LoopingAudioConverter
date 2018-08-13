@@ -30,28 +30,6 @@ namespace LoopingAudioConverter {
 			void Remove();
 		}
 
-		private class EncodingRow : IEncodingRow {
-			public Label label;
-
-			public void Remove() {
-				this.label.BeginInvoke(new Action(() => {
-					this.label.Parent.Controls.Remove(label);
-				}));
-			}
-		}
-
-		public IEncodingRow AddEncodingRow(string text) {
-			if (this.InvokeRequired) {
-				return (IEncodingRow)this.Invoke(new Func<IEncodingRow>(() => {
-					return AddEncodingRow(text);
-				}));
-			}
-			Label row = new Label() { Text = text };
-			row.Dock = DockStyle.Bottom;
-			pnlEncoding.Controls.Add(row);
-			return new EncodingRow { label = row };
-		}
-
 		private void btnCancel_Click(object sender, EventArgs e) {
 			Canceled = true;
 			btnCancel.Enabled = false;
