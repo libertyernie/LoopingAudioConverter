@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoopingAudioConverter", "LoopingAudioConverter\LoopingAudioConverter.csproj", "{DB459B2F-C6AC-46C6-8CEE-653090772F0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VorbisCommentSharp", "VorbisCommentSharp\VorbisCommentSharp.csproj", "{5BD4854F-481B-4AA6-B838-32C21B2B069F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrawlLibAudio", "brawltools\BrawlLib\BrawlLibAudio.csproj", "{41C94979-CE5A-4582-888A-1BEE98DD43D3}"
 EndProject
 Global
@@ -19,10 +17,6 @@ Global
 		{DB459B2F-C6AC-46C6-8CEE-653090772F0D}.Debug|x86.Build.0 = Debug|x86
 		{DB459B2F-C6AC-46C6-8CEE-653090772F0D}.Release|x86.ActiveCfg = Release|x86
 		{DB459B2F-C6AC-46C6-8CEE-653090772F0D}.Release|x86.Build.0 = Release|x86
-		{5BD4854F-481B-4AA6-B838-32C21B2B069F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{5BD4854F-481B-4AA6-B838-32C21B2B069F}.Debug|x86.Build.0 = Debug|Any CPU
-		{5BD4854F-481B-4AA6-B838-32C21B2B069F}.Release|x86.ActiveCfg = Release|Any CPU
-		{5BD4854F-481B-4AA6-B838-32C21B2B069F}.Release|x86.Build.0 = Release|Any CPU
 		{41C94979-CE5A-4582-888A-1BEE98DD43D3}.Debug|x86.ActiveCfg = Debug|x86
 		{41C94979-CE5A-4582-888A-1BEE98DD43D3}.Debug|x86.Build.0 = Debug|x86
 		{41C94979-CE5A-4582-888A-1BEE98DD43D3}.Release|x86.ActiveCfg = Release|x86

@@ -120,10 +120,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SoX.cs" />
     <Compile Include="Importers\VGMStreamImporter.cs" />
+    <Compile Include="Vorbis\UnsafeCRC.cs" />
+    <Compile Include="Vorbis\VorbisFile.cs" />
+    <Compile Include="Vorbis\VorbisHeader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Vorbis\COPYING" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AACQualityForm.resx">
@@ -151,10 +155,6 @@
     <ProjectReference Include="..\brawltools\BrawlLib\BrawlLibAudio.csproj">
       <Project>{41c94979-ce5a-4582-888a-1bee98dd43d3}</Project>
       <Name>BrawlLibAudio</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\VorbisCommentSharp\VorbisCommentSharp.csproj">
-      <Project>{5BD4854F-481B-4AA6-B838-32C21B2B069F}</Project>
-      <Name>VorbisCommentSharp</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
