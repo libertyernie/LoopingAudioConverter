@@ -298,7 +298,7 @@ namespace LoopingAudioConverter {
 			Process.Start("About.html");
 		}
 
-		private void btnOkay_Click(object sender, EventArgs e) {
+		private async void btnOkay_Click(object sender, EventArgs e) {
 			if (txtSuffixFilter.Text != "") {
 				MessageBox.Show(this, "\"Copy files ending with\" has text in it, but you didn't click Filter. You might want to do this before continuing. If not, clear the text field and try again.");
 				return;
@@ -330,14 +330,13 @@ namespace LoopingAudioConverter {
 			Task t = Program.RunAsync(o);
 			runningTasks.Add(t);
 			UpdateTitle();
-			t.ContinueWith(x => {
-				if (x.Exception != null) {
-					Console.Error.WriteLine(x.Exception + ": " + x.Exception.Message);
-					Console.Error.WriteLine(x.Exception.StackTrace);
-				}
-				runningTasks.Remove(x);
-				UpdateTitle();
-			});
+			try {
+				await t;
+			} catch (Exception ex) {
+				Console.Error.WriteLine(ex);
+			}
+			runningTasks.Remove(t);
+			UpdateTitle();
 		}
 
 		private void UpdateTitle() {

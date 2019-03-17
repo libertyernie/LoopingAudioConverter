@@ -1,8 +1,10 @@
-﻿using System;
+﻿using RunProcessAsTask;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace LoopingAudioConverter {
 	/// <summary>
@@ -135,7 +137,7 @@ namespace LoopingAudioConverter {
 		/// </summary>
 		/// <param name="lwav">Input audio</param>
 		/// <param name="output_filename">Path of output file</param>
-		public void WriteFile(PCM16Audio lwav, string output_filename, string encodingParameters = null) {
+		public async Task WriteFileAsync(PCM16Audio lwav, string output_filename, string encodingParameters = null) {
 			if (output_filename.Contains('"')) {
 				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
 			}
@@ -149,13 +151,11 @@ namespace LoopingAudioConverter {
 				UseShellExecute = false,
 				CreateNoWindow = true
 			};
-			Process p = Process.Start(psi);
-			p.WaitForExit();
-
+			var pr = await ProcessEx.RunAsync(psi);
 			File.Delete(infile);
 
-			if (p.ExitCode != 0) {
-				throw new AudioExporterException("SoX quit with exit code " + p.ExitCode);
+			if (pr.ExitCode != 0) {
+				throw new AudioExporterException("SoX quit with exit code " + pr.ExitCode);
 			}
 		}
 

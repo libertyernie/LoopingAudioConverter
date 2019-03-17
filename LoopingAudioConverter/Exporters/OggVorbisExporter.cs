@@ -14,14 +14,14 @@ namespace LoopingAudioConverter {
 			this.encodingParameters = encodingParameters;
 		}
 
-		public void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
+		public async Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
 			string output_filename = Path.Combine(output_dir, original_filename_no_ext + ".ogg");
 
 			// Don't re-encode if the original input file was also Ogg Vorbis
 			if (lwav.OriginalPath != null && new string[] { ".ogg", ".logg" }.Contains(Path.GetExtension(lwav.OriginalPath), StringComparer.InvariantCultureIgnoreCase)) {
 				File.Copy(lwav.OriginalPath, output_filename, true);
 			} else {
-				sox.WriteFile(lwav, output_filename, encodingParameters);
+				await sox.WriteFileAsync(lwav, output_filename, encodingParameters);
 			}
 
 			using (VorbisFile file = new VorbisFile(File.ReadAllBytes(output_filename))) {
@@ -50,12 +50,6 @@ namespace LoopingAudioConverter {
 					}
 				}
 			}
-		}
-
-		public Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
-			Task t = new Task(() => WriteFile(lwav, output_dir, original_filename_no_ext));
-			t.Start();
-			return t;
 		}
 
 		public string GetExporterName() {
