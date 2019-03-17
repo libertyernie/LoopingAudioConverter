@@ -151,3 +151,23 @@ Updates since 0.4.0u7 (04.05.2016)
 - fixed YM2151 to use 10 bits per channel instead of 9 (improves Toms in Sharp X1 Space Harrier), thanks MovieMovies1
 - improved GameBoy emulation by porting current MAME core (ported from libvgm)
 - improved C352 emulation by porting ctr's updates from libvgm
+
+Updates since 0.4.0u8 (16.04.2017)
+- [in_vgm] fixed a crash and incorrect track times (thanks to NewRisingSun for the bug report)
+- fixed mid-sample frequency changes in DAC Stream Control (thanks NewRisingSun)
+- fixed SAA1099 sample rate and noise volume (thanks NewRisingSun)
+- [in_vgm] fixed being unable to mute 2nd MultiPCM chip (thanks to Alianger for the bug report)
+- added Nuked OPN2 core (YM2612 emulation) (thanks Nuke.YKT)
+- improved C352 emulation (thanks ctr)
+- added command for AY8910 panning (thanks NewRisingSun)
+- fixed YMF278B FM<->Wavetable volume balance again (thanks to ctr for a test VGM and thanks to l_oliveira for the hardware recording)
+- added (very basic) YMF278B RAM block support
+- slightly improved YMF271 emulation, thanks to GTheGuardian and kirishima
+- added new and accurate QSound sound core (thanks ctr)
+- slightly improved YMF278B emulation
+- swapped YM2612 emulator type IDs 1 and 2, so that Nuked OPN2 is selectable in in_vgm
+- [VGMPlay] added "OutputDevice" configuration option (thanks ctr for the "-DeviceId" commandline option)
+- fixed SN76496 variant being incorrectly called NCR7496 instead of NCR8496
+- [in_vgm] made "Tag fallback" option work (finally, after 5 years!)
+- [in_vgm] made "disable file information cache" option selectable via configuration
+- [in_vgm] fix VGM information dialog using cached data even if file was changed
