@@ -327,10 +327,9 @@ namespace LoopingAudioConverter {
 				}
 			}
 			this.listBox1.Items.Clear();
-			Task t = new Task(() => Program.Run(o));
+			Task t = Program.RunAsync(o);
 			runningTasks.Add(t);
 			UpdateTitle();
-			t.Start();
 			t.ContinueWith(x => {
 				if (x.Exception != null) {
 					Console.Error.WriteLine(x.Exception + ": " + x.Exception.Message);
@@ -422,6 +421,10 @@ namespace LoopingAudioConverter {
 				default:
 					break;
 			}
+		}
+
+		private void OptionsForm_FormClosing(object sender, FormClosingEventArgs e) {
+			TempFiles.DeleteAll();
 		}
 	}
 }

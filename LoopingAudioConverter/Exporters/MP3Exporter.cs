@@ -1,18 +1,19 @@
-﻿using System.Diagnostics;
+﻿using RunProcessAsTask;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter {
 	public class MP3Exporter : IAudioExporter {
-		private string ExePath;
-		private string EncodingParameters;
+		private readonly string ExePath;
+		private readonly string EncodingParameters;
 
 		public MP3Exporter(string exePath, string encodingParameters = null) {
 			ExePath = exePath;
 			EncodingParameters = encodingParameters ?? "";
 		}
 
-		public void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
+		public async Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
 			string outPath = Path.Combine(output_dir, original_filename_no_ext + ".mp3");
 			if (outPath.Contains("\"")) {
 				throw new AudioExporterException("Invalid character (\") found in output filename");
@@ -27,19 +28,12 @@ namespace LoopingAudioConverter {
 				CreateNoWindow = true,
 				Arguments = "--silent " + EncodingParameters + " " + infile + " \"" + outPath + "\""
 			};
-			Process p = Process.Start(psi);
-			p.WaitForExit();
+			var pr = await ProcessEx.RunAsync(psi);
 			File.Delete(infile);
 
-			if (p.ExitCode != 0) {
-				throw new AudioExporterException("LAME quit with exit code " + p.ExitCode);
+			if (pr.ExitCode != 0) {
+				throw new AudioExporterException("LAME quit with exit code " + pr.ExitCode);
 			}
-		}
-
-		public Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
-			Task t = new Task(() => WriteFile(lwav, output_dir, original_filename_no_ext));
-			t.Start();
-			return t;
 		}
 
 		public string GetExporterName() {

@@ -1,5 +1,6 @@
 ﻿using LoopingAudioConverter.VGAudio;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
@@ -44,7 +45,7 @@ namespace LoopingAudioConverter {
 		/// Runs a batch conversion process.
 		/// </summary>
 		/// <param name="o">Options for the batch.</param>
-		public static void Run(Options o) {
+		public static async Task RunAsync(Options o) {
 			if (o.ExporterType == ExporterType.MP3 && (o.ExportPreLoop || o.ExportLoop)) {
 				MessageBox.Show("MP3 encoding adds gaps at the start and end of each file, so the before-loop portion and the loop portion will not line up well.",
 					"Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -119,7 +120,7 @@ namespace LoopingAudioConverter {
 			}
 
 			List<Task> tasks = new List<Task>();
-			Semaphore sem = new Semaphore(o.NumSimulTasks, o.NumSimulTasks);
+			SemaphoreSlim sem = new SemaphoreSlim(o.NumSimulTasks, o.NumSimulTasks);
 
 			MultipleProgressWindow window = new MultipleProgressWindow();
 			new Thread(new ThreadStart(() => {
@@ -156,10 +157,10 @@ namespace LoopingAudioConverter {
 			int i = 0;
 			float maxProgress = o.InputFiles.Count() * 2;
 
-			List<string> exported = new List<string>();
+			ConcurrentQueue<string> exported = new ConcurrentQueue<string>();
 			DateTime start = DateTime.UtcNow;
 			foreach (string inputFile in o.InputFiles) {
-				sem.WaitOne();
+				await sem.WaitAsync();
 				if (window.Canceled) break;
 
 				string outputDir = o.OutputDir;
@@ -196,7 +197,6 @@ namespace LoopingAudioConverter {
 
 				foreach (IAudioImporter importer in importers_supported) {
 					try {
-						Console.WriteLine("Decoding " + Path.GetFileName(inputFile) + " with " + importer.GetImporterName());
 						if (importer is IRenderingAudioImporter) {
 							((IRenderingAudioImporter)importer).SampleRate = o.MaxSampleRate;
 						}
@@ -258,7 +258,7 @@ namespace LoopingAudioConverter {
 						claims = Math.Min(n.Audio.Channels, o.NumSimulTasks);
 					}
 					for (int j = 0; j < claims; j++) {
-						sem.WaitOne();
+						await sem.WaitAsync();
 					}
 					switch (o.NonLoopingBehavior) {
 						case NonLoopingBehavior.ForceLoop:
@@ -295,21 +295,25 @@ namespace LoopingAudioConverter {
 						toExport.Audio.Looping = false;
 					}
 
-					var row = window.AddEncodingRow(toExport.Name);
-					tasks.Add(exporter.WriteFileAsync(toExport.Audio, outputDir, toExport.Name).ContinueWith(t => {
-						lock (exported) {
-							exported.Add(toExport.Name);
+					async Task Encode() {
+						var row = window.AddEncodingRow(toExport.Name);
+						try {
+							await exporter.WriteFileAsync(toExport.Audio, outputDir, toExport.Name);
+							exported.Enqueue(toExport.Name);
+						} finally {
+							for (int j = 0; j < claims; j++) {
+								sem.Release();
+							}
+							row.Remove();
 						}
-						for (int j = 0; j < claims; j++) {
-							sem.Release();
-						}
-						row.Remove();
-					}));
+					}
+
+					tasks.Add(Encode());
 				}
 			}
 			foreach (var t in tasks) {
 				try {
-					t.Wait();
+					await t;
 				} catch (Exception ex) {
 					Console.Error.WriteLine($"{ex.GetType()}: {ex.Message}");
 					Console.Error.WriteLine(ex.StackTrace);

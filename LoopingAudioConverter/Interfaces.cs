@@ -9,7 +9,6 @@ namespace LoopingAudioConverter {
 
 	public class AudioExporterException : Exception {
 		public AudioExporterException(string message) : base(message) { }
-		public AudioExporterException(string message, Exception innerException) : base(message, innerException) { }
 	}
 
 	public interface IAudioImporter {
@@ -23,7 +22,6 @@ namespace LoopingAudioConverter {
 	}
 
 	public interface IAudioExporter {
-		void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext);
 		Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext);
 		string GetExporterName();
 	}

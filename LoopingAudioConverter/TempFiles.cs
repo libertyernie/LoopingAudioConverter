@@ -5,32 +5,10 @@ using System.Linq;
 using System.Text;
 
 namespace LoopingAudioConverter {
-	public class TempFiles {
-		//private static TempFiles staticInstance = new TempFiles();
-		private static Random r = new Random();
+	public static class TempFiles {
 		private const string TEMPDIR = "tmp";
 
-		//private List<string> filesCreated;
-
-		//private TempFiles() {
-		//    if (!Directory.Exists(TEMPDIR)) {
-		//        Directory.CreateDirectory(TEMPDIR);
-		//    }
-		//    /ilesCreated = new List<string>();
-		//}
-
-		//~TempFiles() {
-		//    foreach (string file in filesCreated) {
-		//        try {
-		//            File.Delete(file);
-		//            Console.WriteLine("Deleted " + file);
-		//        } catch { }
-		//    }
-		//    try {
-		//        Directory.Delete(TEMPDIR);
-		//        Console.WriteLine("Deleted " + TEMPDIR);
-		//    } catch { }
-		//}
+		private static readonly List<string> _files = new List<string>();
 
 		public static string Create(string extension) {
 			if (!Directory.Exists(TEMPDIR)) {
@@ -42,12 +20,20 @@ namespace LoopingAudioConverter {
 
 			string tempFileName;
 			do {
-				tempFileName = Path.Combine(TEMPDIR, r.Next(0x10000).ToString("X4") + extension);
+				tempFileName = Path.Combine(TEMPDIR, Guid.NewGuid().ToString() + extension);
 			} while (File.Exists(tempFileName));
 
-			//staticInstance.filesCreated.Add(tempFileName);
-
+			_files.Add(tempFileName);
 			return tempFileName;
+		}
+
+		public static void DeleteAll() {
+			/*foreach (string s in _files) {
+				if (File.Exists(s)) {
+					File.Delete(s);
+				}
+			}
+			_files.Clear();*/
 		}
 	}
 }
