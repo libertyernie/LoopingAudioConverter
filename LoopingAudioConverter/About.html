@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -6,83 +6,101 @@
     <title></title>
   </head>
   <body>
-    <h1>Looping Audio Converter 2.1.0</h1>
+    <h1>Looping Audio Converter 2.2.1</h1>
     <p>This application acts as a frontend to other programs and
-      libraries, and allows conversion between the Wii .brstm format and
-      a variety of other formats.<br>
+      libraries, and allows conversion between a variety of looping
+      audio formats.<br>
     </p>
     <p>Supported input formats:<br>
     </p>
     <ul>
-      <li>WAV (with or without "smpl" chunk to denote looping audio)</li>
-      <li>MP3</li>
-      <li>AAC/.m4a</li>
-      <li><a href="http://vgmrips.net/">VGM/VGZ</a></li>
-      <li>VGAudio supported formats</li>
+      <li>Native<br>
+      </li>
       <ul>
-        <li>ADX</li>
-        <li>BRSTM</li>
-        <li>BCSTM, BCSTP, BCWAV, CWAV, BFSTM, BFSTP, BFWAV</li>
-        <li>BRWAV, RWAV</li>
-        <li>DSP, MDSP</li>
-        <li>IDSP</li>
-        <li>GENH</li>
-        <li>HCA</li>
-        <li>HPS<br>
+        <li>WAV (with or without "smpl" chunk to denote looping audio)</li>
+        <li>VGAudio supported formats</li>
+        <ul>
+          <li>ADX</li>
+          <li>BRSTM</li>
+          <li>BCSTM</li>
+          <li>BCSTP</li>
+          <li>BCWAV</li>
+          <li>CWAV</li>
+          <li>BFSTM</li>
+          <li>BFSTP</li>
+          <li>BFWAV</li>
+          <li>BRWAV</li>
+          <li>RWAV</li>
+          <li>DSP</li>
+          <li>MDSP</li>
+          <li>IDSP</li>
+          <li>GENH</li>
+          <li>HCA</li>
+          <li>HPS</li>
+        </ul>
+      </ul>
+      <li>Supported by external tools (bundled)<br>
+      </li>
+      <ul>
+        <li>MP3 (madplay)</li>
+        <li>AAC/.m4a (faad)</li>
+        <li><a href="http://vgmrips.net/">VGM/VGZ</a> (VGMPlay)</li>
+      </ul>
+      <ul>
+        <li>Any audio format supported by SoX</li>
+        <li>Any audio format supported by vgmstream<br>
         </li>
       </ul>
-      <li>Any audio format supported by SoX</li>
-      <li>Any audio format supported by vgmstream<br>
-      </li>
     </ul>
     <p>Supported output formats:<br>
     </p>
     <ul>
-      <li>VGAudio supported formats<br>
+      <li>Native<br>
       </li>
       <ul>
-        <li>BRSTM</li>
-        <li>BCSTM</li>
-        <li>BFSTM</li>
-        <ul>
-          <li>Codecs available: ADPCM, PCM16, PCM8</li>
-        </ul>
-        <ul>
-          <li>PCM16 provides a lossless conversion (better quality), but
-            the resulting file size is usually 3-4 times larger (about
-            the same as a standard WAV file of the same length.)</li>
-        </ul>
-        <li>DSP</li>
-        <li>IDSP</li>
-        <li>HCA<br>
+        <li>VGAudio supported formats<br>
         </li>
-        <li>HPS</li>
-      </ul>
-      <li>BrawlLib supported formats</li>
-      <ul>
-        <li>BRSTM / BCSTM / BFSTM (ADPCM only)</li>
         <ul>
-          <li>The BCSTM format BrawlLib produces is different from what
-            VGAudio produces, and might work better in some situations.<br>
+          <li>BRSTM (ADPCM, PCM16, PCM8)</li>
+          <li>BCSTM (ADPCM, PCM16, PCM8)</li>
+          <li>BFSTM (ADPCM, PCM16, PCM8)</li>
+          <ul>
+            <li>Codecs available: ADPCM, PCM16, PCM8</li>
+          </ul>
+          <li>DSP</li>
+          <li>IDSP</li>
+          <li>HCA<br>
           </li>
+          <li>HPS</li>
         </ul>
+        <ul>
+          <li>BrawlLib supported formats<br>
+          </li>
+          <li>BRSTM (ADPCM)</li>
+          <li>BCSTM (ADPCM)</li>
+          <li>BFSTM (ADPCM)</li>
+        </ul>
+        <li>WAV (with or without "smpl" chunk to denote looping audio)</li>
       </ul>
-      <li>WAV</li>
-      <ul>
-        <li>If the input is a looping audio file, or you have specified
-          a loop point, the WAV file will be exported with a "smpl"
-          chunk that specifies the loop start and end.<br>
-        </li>
-      </ul>
-      <li>MP3</li>
-      <li>AAC/.m4a (requires iTunes to be installed)</li>
-      <li>FLAC</li>
-      <li>Ogg Vorbis<br>
+      <li>Supported by external tools (bundled)<br>
       </li>
       <ul>
-        <li>If the input is a looping audio file, or you have specified
-          a loop point, the Ogg Vorbis file will be exported with
-          comments that specify the loop start and length.</li>
+        <li>MP3 (lame)</li>
+        <li>FLAC (SoX)<br>
+        </li>
+        <li>Ogg Vorbis (SoX) </li>
+      </ul>
+      <ul>
+        <ul>
+          <li>If the input is a looping audio file, or you have
+            specified a loop point, the Ogg Vorbis file will be exported
+            with comments that specify the loop start and length.</li>
+        </ul>
+      </ul>
+      <li>Supported by external tools (not bundled)
+      </li>
+      <ul>
+        <li>AAC/.m4a (qaac - requires iTunes to be installed)</li>
       </ul>
     </ul>
     <hr width="100%" size="2">
@@ -91,66 +109,71 @@
     </p>
     <p>Looping Audio Converter does not do any encoding or decoding
       itself of any format besides WAV. Other formats are handled by
-      other applications, which do the bulk of the work. You will need
-      write access to the folder that the application is running in for
-      it to store temporary WAV files.<br>
+      other applications or other .NET libraries, which do the bulk of
+      the work.<br>
+    </p>
+    <p>You will need write access to the folder that the application is
+      running in for it to store temporary WAV files.<br>
     </p>
     <ul>
-      <li>VGAudio (<a href="https://github.com/Thealexbarney/VGAudio">https://github.com/Thealexbarney/VGAudio</a>)
-        is a library for encoding, decoding, and manipulating audio
-        files from video games, available under the <a
-          href="https://github.com/Thealexbarney/VGAudio/blob/2.0/LICENSE">MIT
-
-          license</a>.<br>
-      </li>
-      <li>vgmstream (<a
-          href="https://gitlab.kode54.net/kode54/vgmstream">https://gitlab.kode54.net/kode54/vgmstream</a>)
-        is a library for reading audio data from many different video
-        games. test.exe is a frontend to this library and converts the
-        audio to WAV format (with an smpl chunk for looping files).
-        vgmstream is under the MIT/X11 license; see the file COPYING in
-        the tools/vgmstream folder for more details. vgmstream also uses
-        other libraries, some of which have their own license terms -
-        these are included in the tools/vgmstream folder as well.</li>
-      <li>SoX (<a href="http://sox.sourceforge.net">http://sox.sourceforge.net</a>)
-        is a powerful command-line application for dealing with many
-        audio formats. It allows this program to read many different
-        audio formats, write FLAC and Ogg Vorbis files, and perform the
-        "convert to mono," "new sample rate," and "amplify" functions.</li>
-      <li>LAME (<a href="http://lame.sourceforge.net">http://lame.sourceforge.net</a>)
-        is an MP3 encoder released under the GNU LGPL, version 2 or
-        later. This version was obtained from:
-        http://www.foobar2000.org/encoderpack</li>
-      <li>qaac (<a href="https://github.com/nu774/qaac">https://github.com/nu774/qaac</a>)
-        is a frontend to Apple's AAC encoder. Most of the code is public
-        domain (see <a
-          href="https://github.com/nu774/qaac/blob/master/COPYING">COPYING</a>).
-
-
-        This version was obtained from:
-        http://www.foobar2000.org/encoderpack</li>
-      <li>MAD (<a href="http://www.underbit.com/products/mad">http://www.underbit.com/products/mad</a>)
-        is an MP3 decoder library released under the GNU GPL, version 2
-        or later. This version was obtained from:
-        http://www.rarewares.org/mp3-others.php</li>
-      <li>FAAD (<a href="http://www.audiocoding.com/faad2.html">http://www.audiocoding.com/faad2.html</a>)
-        is an AAC decoder library released under the GNU GPL, version 2
-        or later. This version was obtained from:
-        http://www.rarewares.org/aac-decoders.php</li>
-      <li>vgm2wav is a frontend I wrote to the VGMPlay code (<a
-          href="https://github.com/vgmrips/vgmplay">https://github.com/vgmrips/vgmplay</a>)
-        which outputs 16-bit PCM data in WAV format. The source is now
-        included in the VGMPlay git repository.<br>
-      </li>
-      <li>BrawlLibAudio (<a
-          href="https://github.com/libertyernie/brawltools/tree/audio-libraries">https://github.com/libertyernie/brawltools/tree/audio-libraries</a>)
-        provides alternate BRSTM/BCSTM/BFSTM encoders and the loop point
-        selection dialog.</li>
-      <li>VorbisCommentSharp (<a
-          href="https://github.com/libertyernie/VorbisCommentSharp">https://github.com/libertyernie/VorbisCommentSharp</a>)
-        is used to add looping metadata to Ogg Vorbis files after SoX
-        creates them.<br>
-      </li>
+      <li>Encoders / Decoders</li>
+      <ul>
+        <li>VGAudio (<a href="https://github.com/Thealexbarney/VGAudio">https://github.com/Thealexbarney/VGAudio</a>)
+          is a library for encoding, decoding, and manipulating audio
+          files from video games, available under the <a
+            href="https://github.com/Thealexbarney/VGAudio/blob/2.0/LICENSE">MIT
+            license</a>.<br>
+        </li>
+        <li>SoX (<a href="http://sox.sourceforge.net">http://sox.sourceforge.net</a>)
+          is a powerful command-line application for dealing with many
+          audio formats. It allows this program to read many different
+          audio formats, write FLAC and Ogg Vorbis files, and perform
+          the "convert to mono," "new sample rate," and "amplify"
+          functions.</li>
+      </ul>
+      <li>Encoders</li>
+      <ul>
+        <li>LAME (<a href="http://lame.sourceforge.net">http://lame.sourceforge.net</a>)
+          is an MP3 encoder released under the GNU LGPL, version 2 or
+          later. This version was obtained from: <a
+            href="http://www.foobar2000.org/encoderpack">http://www.foobar2000.org/encoderpack</a></li>
+        <li>qaac (<a href="https://github.com/nu774/qaac">https://github.com/nu774/qaac</a>)
+          is a frontend to Apple's AAC encoder. Most of the code is
+          public domain (see <a
+            href="https://github.com/nu774/qaac/blob/master/COPYING">COPYING</a>).
+          This version was obtained from: <a
+            href="http://www.foobar2000.org/encoderpack">http://www.foobar2000.org/encoderpack</a></li>
+        <li>BrawlLibAudio (<a
+            href="https://github.com/libertyernie/brawltools/tree/audio-libraries">https://github.com/libertyernie/brawltools/tree/audio-libraries</a>)
+          provides alternate BRSTM/BCSTM/BFSTM encoders and the loop
+          point selection dialog.</li>
+      </ul>
+      <li>Decoders</li>
+      <ul>
+        <li>vgmstream (<a
+            href="https://gitlab.kode54.net/kode54/vgmstream">https://gitlab.kode54.net/kode54/vgmstream</a>)
+          is a library for reading audio data from many different video
+          games. test.exe is a frontend to this library and converts the
+          audio to WAV format (with an smpl chunk for looping files).
+          vgmstream is under the MIT/X11 license; see the file COPYING
+          in the tools/vgmstream folder for more details. vgmstream also
+          uses other libraries, some of which have their own license
+          terms - these are included in the tools/vgmstream folder as
+          well.</li>
+        <li>MAD (<a href="http://www.underbit.com/products/mad">http://www.underbit.com/products/mad</a>)
+          is an MP3 decoder library released under the GNU GPL, version
+          2 or later. This version was obtained from: <a
+            href="http://www.rarewares.org/mp3-others.php">http://www.rarewares.org/mp3-others.php</a></li>
+        <li>FAAD (<a href="http://www.audiocoding.com/faad2.html">http://www.audiocoding.com/faad2.html</a>)
+          is an AAC decoder library released under the GNU GPL, version
+          2 or later. This version was obtained from: <a
+            href="http://www.rarewares.org/aac-decoders.php">http://www.rarewares.org/aac-decoders.php</a></li>
+        <li>VGMPlay (<a href="https://github.com/vgmrips/vgmplay">https://github.com/vgmrips/vgmplay</a>)
+          is the player for VGM files. Looping Audio Converter also
+          reads loop point data from VGM files and uses that data as
+          appropriate in creating the output file.<br>
+        </li>
+      </ul>
     </ul>
     <hr width="100%" size="2">
     <p><img
@@ -253,6 +276,7 @@ src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhgAAAIBCAIAAACEP1EUAAAgAElEQ
         start until the loop end. The text in "suffix" will be appended
         to the filename.</li>
       <li><b>Skip re-encoding for similar formats when possible: </b>This
+
 
         option takes effect when no audio effects are selected and the
         input/output formats line up.</li>
