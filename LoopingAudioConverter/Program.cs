@@ -32,20 +32,42 @@ namespace LoopingAudioConverter {
 				MessageBox.Show("One or more programs could not be found; the program may not run properly. See the console for details.");
 			}
 
-			OptionsForm f = new OptionsForm();
-			if (File.Exists("LoopingAudioConverter.ini")) {
-				f.LoadOptions("LoopingAudioConverter.ini");
+			string ini = null;
+			List<string> initialInputFiles = new List<string>();
+			bool auto = false;
+			foreach (string arg in args) {
+				if (arg == "--auto") {
+					auto = true;
+				} else if (Path.GetExtension(arg).ToLowerInvariant() == ".ini") {
+					if (ini != null) {
+						throw new Exception("You cannot specify more than one .ini file.");
+					}
+					ini = arg;
+				} else {
+					initialInputFiles.Add(arg);
+				}
 			}
-			Application.Run(f);
 
-			Task.WaitAll(f.RunningTasks.ToArray());
+			OptionsForm f = new OptionsForm();
+			if (File.Exists(ini ?? "LoopingAudioConverter.ini")) {
+				f.LoadOptions(ini ?? "LoopingAudioConverter.ini");
+			}
+
+			f.AddInputFiles(initialInputFiles);
+			
+			if (auto) {
+				RunAsync(f.GetOptions(), showEndDialog: false).GetAwaiter().GetResult();
+			} else {
+				Application.Run(f);
+				Task.WaitAll(f.RunningTasks.ToArray());
+			}
 		}
 
 		/// <summary>
 		/// Runs a batch conversion process.
 		/// </summary>
 		/// <param name="o">Options for the batch.</param>
-		public static async Task RunAsync(Options o) {
+		public static async Task RunAsync(Options o, bool showEndDialog = true) {
 			if (o.ExporterType == ExporterType.MP3 && (o.ExportPreLoop || o.ExportLoop)) {
 				MessageBox.Show("MP3 encoding adds gaps at the start and end of each file, so the before-loop portion and the loop portion will not line up well.",
 					"Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -58,6 +80,7 @@ namespace LoopingAudioConverter {
 					new MP3Importer(ConfigurationManager.AppSettings["madplay_path"]),
 					new MP4Importer(ConfigurationManager.AppSettings["faad_path"]),
 					new VGMImporter(ConfigurationManager.AppSettings["vgmplay_path"]),
+					new MSU1(),
 					new VGMStreamImporter(ConfigurationManager.AppSettings["vgmstream_path"]),
 					sox
 				};
@@ -96,6 +119,9 @@ namespace LoopingAudioConverter {
 					break;
 				case ExporterType.BFSTM_BrawlLib:
 					exporter = new Brawl.FSTMExporter();
+					break;
+				case ExporterType.MSU1:
+					exporter = new MSU1();
 					break;
 				case ExporterType.FLAC:
 					exporter = new FLACExporter(sox);
@@ -260,15 +286,21 @@ namespace LoopingAudioConverter {
 					for (int j = 0; j < claims; j++) {
 						await sem.WaitAsync();
 					}
-					switch (o.NonLoopingBehavior) {
-						case NonLoopingBehavior.ForceLoop:
-							if (!toExport.Audio.Looping) {
+					switch (o.UnknownLoopBehavior) {
+						case UnknownLoopBehavior.ForceLoop:
+							if (!toExport.Audio.Looping && !toExport.Audio.NonLooping) {
 								toExport.Audio.Looping = true;
 								toExport.Audio.LoopStart = 0;
 								toExport.Audio.LoopEnd = toExport.Audio.Samples.Length / toExport.Audio.Channels;
 							}
 							break;
-						case NonLoopingBehavior.AskAll:
+						case UnknownLoopBehavior.Ask:
+						case UnknownLoopBehavior.AskAll:
+							if (toExport.Audio.Looping || toExport.Audio.NonLooping) {
+								if (o.UnknownLoopBehavior != UnknownLoopBehavior.AskAll) {
+									break;
+								}
+							}
 							PCM16LoopWrapper audioStream = new PCM16LoopWrapper(toExport.Audio);
 							using (BrstmConverterDialog dialog = new BrstmConverterDialog(audioStream)) {
 								dialog.AudioSource = n.Name;
@@ -327,7 +359,9 @@ namespace LoopingAudioConverter {
 				window.Close();
 			}));
 
-			MessageBox.Show("Exported " + exported.Count + " file(s), total time: " + (end - start));
+			if (showEndDialog) {
+				MessageBox.Show("Exported " + exported.Count + " file(s), total time: " + (end - start));
+			}
 		}
 	}
 }

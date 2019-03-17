@@ -53,6 +53,7 @@ namespace LoopingAudioConverter {
 				new NVPair<ExporterType>(ExporterType.BRSTM_BrawlLib, "BRSTM (BrawlLib)"),
 				new NVPair<ExporterType>(ExporterType.BCSTM_BrawlLib, "BCSTM (BrawlLib)"),
 				new NVPair<ExporterType>(ExporterType.BFSTM_BrawlLib, "BFSTM (BrawlLib)"),
+				new NVPair<ExporterType>(ExporterType.MSU1, "MSU-1"),
 				new NVPair<ExporterType>(ExporterType.WAV, "WAV"),
 				new NVPair<ExporterType>(ExporterType.FLAC, "FLAC"),
 				new NVPair<ExporterType>(ExporterType.MP3, "MP3"),
@@ -101,16 +102,21 @@ namespace LoopingAudioConverter {
 				new NVPair<NwCodec>(NwCodec.Pcm8Bit, "PCM8")
 			};
 
-			var nonLoopingBehaviors = new[] {
-				new NVPair<NonLoopingBehavior>(NonLoopingBehavior.NoChange, "Keep as non-looping"),
-				new NVPair<NonLoopingBehavior>(NonLoopingBehavior.ForceLoop, "Force start-to-end loop"),
-				new NVPair<NonLoopingBehavior>(NonLoopingBehavior.AskAll, "Ask for all files")
+			var unknownLoopBehaviors = new[] {
+				new NVPair<UnknownLoopBehavior>(UnknownLoopBehavior.ForceLoop, "Force start-to-end loop"),
+				new NVPair<UnknownLoopBehavior>(UnknownLoopBehavior.NoChange, "Keep as non-looping"),
+				new NVPair<UnknownLoopBehavior>(UnknownLoopBehavior.Ask, "Ask"),
+				new NVPair<UnknownLoopBehavior>(UnknownLoopBehavior.AskAll, "Ask for all files")
 			};
-			ddlNonLoopingBehavior.DataSource = nonLoopingBehaviors;
-			if (ddlNonLoopingBehavior.SelectedIndex < 0) ddlNonLoopingBehavior.SelectedIndex = 0;
+			ddlUnknownLoopBehavior.DataSource = unknownLoopBehaviors;
+			if (ddlUnknownLoopBehavior.SelectedIndex < 0) ddlUnknownLoopBehavior.SelectedIndex = 0;
 			numSimulTasks.Value = Math.Min(Environment.ProcessorCount, numSimulTasks.Maximum);
 
 			runningTasks = new HashSet<Task>();
+		}
+
+		public void AddInputFiles(IEnumerable<string> inputFiles) {
+			listBox1.Items.AddRange(inputFiles.ToArray());
 		}
 
 		public void LoadOptions(string filename) {
@@ -141,7 +147,7 @@ namespace LoopingAudioConverter {
 				encodingParameters[ExporterType.OggVorbis] = o.OggVorbisEncodingParameters;
 				encodingParameters[ExporterType.AAC_M4A] = o.AACEncodingParameters;
 				ddlBxstmCodec.SelectedValue = o.BxstmCodec;
-				ddlNonLoopingBehavior.SelectedValue = o.NonLoopingBehavior;
+				ddlUnknownLoopBehavior.SelectedValue = o.UnknownLoopBehavior;
 				chk0End.Checked = o.ExportWholeSong;
 				txt0EndFilenamePattern.Text = o.WholeSongSuffix;
 				numNumberLoops.Value = o.NumberOfLoops;
@@ -177,7 +183,7 @@ namespace LoopingAudioConverter {
 				OggVorbisEncodingParameters = encodingParameters[ExporterType.OggVorbis],
 				AACEncodingParameters = encodingParameters[ExporterType.AAC_M4A],
 				BxstmCodec = (NwCodec)ddlBxstmCodec.SelectedValue,
-				NonLoopingBehavior = (NonLoopingBehavior)ddlNonLoopingBehavior.SelectedValue,
+				UnknownLoopBehavior = (UnknownLoopBehavior)ddlUnknownLoopBehavior.SelectedValue,
 				ExportWholeSong = chk0End.Checked,
 				WholeSongSuffix = txt0EndFilenamePattern.Text,
 				NumberOfLoops = (int)numNumberLoops.Value,

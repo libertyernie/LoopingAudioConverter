@@ -46,8 +46,8 @@
             this.chkMaxSampleRate = new System.Windows.Forms.CheckBox();
             this.chkMono = new System.Windows.Forms.CheckBox();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.ddlNonLoopingBehavior = new System.Windows.Forms.ComboBox();
-            this.lblNonLoopingBehavior = new System.Windows.Forms.Label();
+            this.ddlUnknownLoopBehavior = new System.Windows.Forms.ComboBox();
+            this.lblUnknownLoopBehavior = new System.Windows.Forms.Label();
             this.pnlExportChannels = new System.Windows.Forms.Panel();
             this.lblMoreThanOneChannel = new System.Windows.Forms.Label();
             this.radChannelsTogether = new System.Windows.Forms.RadioButton();
@@ -399,33 +399,33 @@
             // 
             this.panel4.AutoSize = true;
             this.panel4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.panel4.Controls.Add(this.ddlNonLoopingBehavior);
-            this.panel4.Controls.Add(this.lblNonLoopingBehavior);
+            this.panel4.Controls.Add(this.ddlUnknownLoopBehavior);
+            this.panel4.Controls.Add(this.lblUnknownLoopBehavior);
             this.panel4.Location = new System.Drawing.Point(0, 113);
             this.panel4.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(227, 48);
             this.panel4.TabIndex = 1;
             // 
-            // ddlNonLoopingBehavior
+            // ddlUnknownLoopBehavior
             // 
-            this.ddlNonLoopingBehavior.DisplayMember = "Name";
-            this.ddlNonLoopingBehavior.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ddlNonLoopingBehavior.FormattingEnabled = true;
-            this.ddlNonLoopingBehavior.Location = new System.Drawing.Point(6, 24);
-            this.ddlNonLoopingBehavior.Name = "ddlNonLoopingBehavior";
-            this.ddlNonLoopingBehavior.Size = new System.Drawing.Size(218, 21);
-            this.ddlNonLoopingBehavior.TabIndex = 1;
-            this.ddlNonLoopingBehavior.ValueMember = "Value";
+            this.ddlUnknownLoopBehavior.DisplayMember = "Name";
+            this.ddlUnknownLoopBehavior.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ddlUnknownLoopBehavior.FormattingEnabled = true;
+            this.ddlUnknownLoopBehavior.Location = new System.Drawing.Point(6, 24);
+            this.ddlUnknownLoopBehavior.Name = "ddlUnknownLoopBehavior";
+            this.ddlUnknownLoopBehavior.Size = new System.Drawing.Size(218, 21);
+            this.ddlUnknownLoopBehavior.TabIndex = 1;
+            this.ddlUnknownLoopBehavior.ValueMember = "Value";
             // 
-            // lblNonLoopingBehavior
+            // lblUnknownLoopBehavior
             // 
-            this.lblNonLoopingBehavior.Location = new System.Drawing.Point(3, 0);
-            this.lblNonLoopingBehavior.Name = "lblNonLoopingBehavior";
-            this.lblNonLoopingBehavior.Size = new System.Drawing.Size(221, 21);
-            this.lblNonLoopingBehavior.TabIndex = 0;
-            this.lblNonLoopingBehavior.Text = "For non-looping files:";
-            this.lblNonLoopingBehavior.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblUnknownLoopBehavior.Location = new System.Drawing.Point(3, 0);
+            this.lblUnknownLoopBehavior.Name = "lblUnknownLoopBehavior";
+            this.lblUnknownLoopBehavior.Size = new System.Drawing.Size(221, 21);
+            this.lblUnknownLoopBehavior.TabIndex = 0;
+            this.lblUnknownLoopBehavior.Text = "For files with no loop information:";
+            this.lblUnknownLoopBehavior.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pnlExportChannels
             // 
@@ -924,8 +924,8 @@
         private System.Windows.Forms.Button btnLoadOptions;
         private System.Windows.Forms.CheckBox chkVGAudioDecoder;
         private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.ComboBox ddlNonLoopingBehavior;
-        private System.Windows.Forms.Label lblNonLoopingBehavior;
+        private System.Windows.Forms.ComboBox ddlUnknownLoopBehavior;
+        private System.Windows.Forms.Label lblUnknownLoopBehavior;
         private System.Windows.Forms.Button btnEncodingOptions;
         private System.Windows.Forms.CheckBox chkWriteLoopingMetadata;
         private System.Windows.Forms.ComboBox ddlBxstmCodec;

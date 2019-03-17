@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using VGAudio.Containers.Wave;
 using VGAudio.Formats;
@@ -237,6 +238,9 @@ namespace LoopingAudioConverter {
 		public static PCM16Audio FromAudioData(AudioData a) {
 			byte[] data = new WaveWriter().GetFile(a);
 			var w = FromByteArray(data);
+			if (!a.GetAllFormats().Any(f => f.Looping)) {
+				w.NonLooping = true;
+			}
 			w.OriginalAudioData = a;
 			return w;
 		}

@@ -11,8 +11,22 @@ namespace LoopingAudioConverter {
 		public int SampleRate { get; private set; }
 		public short[] Samples { get; private set; }
 
+		/// <summary>
+		/// Whether the file is known to loop.
+		/// </summary>
 		public bool Looping { get; set; }
+		/// <summary>
+		/// Whether the file is known to not loop (e.g. a non-looping .brstm or .vgm).
+		/// If both Looping and NonLooping are false (e.g. a wav file with no smpl), it is not known whether the file loops.
+		/// </summary>
+		public bool NonLooping { get; set; }
+		/// <summary>
+		/// The start of the loop, in samples.
+		/// </summary>
 		public int LoopStart { get; set; }
+		/// <summary>
+		/// The end of the loop, in samples.
+		/// </summary>
 		public int LoopEnd { get; set; }
 
 		public int LoopLength {
@@ -32,7 +46,7 @@ namespace LoopingAudioConverter {
 		/// <param name="sample_data">Audio data (array will not be modified)</param>
 		/// <param name="loop_start">Start of loop, in samples (or null for no loop)</param>
 		/// <param name="loop_end">End of loop, in samples (or null for end of file); ignored if loop_start is null</param>
-		public PCM16Audio(int channels, int sampleRate, short[] sample_data, int? loop_start = null, int? loop_end = null) {
+		public PCM16Audio(int channels, int sampleRate, short[] sample_data, int? loop_start = null, int? loop_end = null, bool non_looping = false) {
 			if (channels > short.MaxValue) throw new ArgumentException("Streams of more than " + short.MaxValue + " channels not supported");
 			if (channels <= 0) throw new ArgumentException("Number of channels must be a positive integer");
 			if (sampleRate <= 0) throw new ArgumentException("Sample rate must be a positive integer");
@@ -47,9 +61,13 @@ namespace LoopingAudioConverter {
 			Samples = new short[sample_data.Length];
 			Array.Copy(sample_data, Samples, Samples.Length);
 
-			Looping = (loop_start != null);
-			LoopStart = loop_start ?? 0;
-			LoopEnd = loop_end ?? (Samples.Length / channels);
+			if (non_looping) {
+				NonLooping = true;
+			} else {
+				Looping = (loop_start != null);
+				LoopStart = loop_start ?? 0;
+				LoopEnd = loop_end ?? (Samples.Length / channels);
+			}
 		}
 
 		/// <summary>

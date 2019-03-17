@@ -1,6 +1,7 @@
 ﻿using RunProcessAsTask;
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -83,10 +84,10 @@ namespace LoopingAudioConverter {
 				effects_string.Append(" channels " + max_channels);
 			}
 			if (db != 0) {
-				effects_string.Append(" vol " + db + " dB");
+				effects_string.Append(" vol " + db.ToString(CultureInfo.InvariantCulture) + " dB");
 			}
 			if (amplitude != 1) {
-				effects_string.Append(" vol " + amplitude + " amplitude");
+				effects_string.Append(" vol " + amplitude.ToString(CultureInfo.InvariantCulture) + " amplitude");
 			}
 			if (sampleRate != lwav.SampleRate) {
 				effects_string.Append(" rate " + max_rate);
