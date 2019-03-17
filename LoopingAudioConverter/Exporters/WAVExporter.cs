@@ -15,7 +15,7 @@ namespace LoopingAudioConverter {
 		}
 
 		public string GetExporterName() {
-			return "LWAVExporter";
+			return "WAVExporter";
 		}
 	}
 }

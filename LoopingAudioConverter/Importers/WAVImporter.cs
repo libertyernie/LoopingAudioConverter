@@ -4,8 +4,8 @@ using System.Linq;
 
 namespace LoopingAudioConverter {
 	/// <summary>
-	/// A wrapper around LWAVFactory that implements the IAudioImporter interface.
-	/// For .wav files, it makes sense to read them directly when possible instead of invoking SoX to convert them. If the file cannot be read, vgmstream (or SoX, if vgmstream fails) should be used to convert the file to a format LWAVFactory will recognize.
+	/// A wrapper around PCM16Factory that implements the IAudioImporter interface.
+	/// For .wav files, it makes sense to read them directly when possible instead of invoking SoX to convert them. If the file cannot be read, vgmstream (or SoX, if vgmstream fails) should be used to convert the file to a format PCM16Factory will recognize.
 	/// </summary>
 	public class WAVImporter : IAudioImporter {
 		private static string[] EXTENSIONS = new string[] { "wav", "lwav" };
@@ -29,7 +29,7 @@ namespace LoopingAudioConverter {
 		}
 
 		public string GetImporterName() {
-			return "LWAVImporter";
+			return "WAVImporter";
 		}
 	}
 }

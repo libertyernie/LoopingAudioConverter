@@ -69,9 +69,9 @@
     <Compile Include="VGAudio\VGAudioExporter.cs" />
     <Compile Include="VGAudio\VGAudioImporter.cs" />
     <Compile Include="VGAudio\RSTMExporter.cs" />
-    <Compile Include="FLACExporter.cs" />
+    <Compile Include="Exporters\FLACExporter.cs" />
     <Compile Include="Interfaces.cs" />
-    <Compile Include="AACExporter.cs" />
+    <Compile Include="Exporters\AACExporter.cs" />
     <Compile Include="AACQualityForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -90,17 +90,17 @@
     <Compile Include="MP3QualityForm.Designer.cs">
       <DependentUpon>MP3QualityForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MP4Importer.cs" />
+    <Compile Include="Importers\MP4Importer.cs" />
     <Compile Include="OptionsSerialization.cs" />
     <Compile Include="PCM16Audio.cs" />
     <Compile Include="PCM16Factory.cs" />
     <Compile Include="PCM16LoopWrapper.cs" />
     <Compile Include="TempFiles.cs" />
-    <Compile Include="VGMImporter.cs" />
-    <Compile Include="WAVExporter.cs" />
-    <Compile Include="WAVImporter.cs" />
-    <Compile Include="MP3Exporter.cs" />
-    <Compile Include="MP3Importer.cs" />
+    <Compile Include="Importers\VGMImporter.cs" />
+    <Compile Include="Exporters\WAVExporter.cs" />
+    <Compile Include="Importers\WAVImporter.cs" />
+    <Compile Include="Exporters\MP3Exporter.cs" />
+    <Compile Include="Importers\MP3Importer.cs" />
     <Compile Include="MultipleProgressWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -108,7 +108,7 @@
       <DependentUpon>MultipleProgressWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="NamedAudio.cs" />
-    <Compile Include="OggVorbisExporter.cs" />
+    <Compile Include="Exporters\OggVorbisExporter.cs" />
     <Compile Include="OptionsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -119,7 +119,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SoX.cs" />
-    <Compile Include="VGMStreamImporter.cs" />
+    <Compile Include="Importers\VGMStreamImporter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

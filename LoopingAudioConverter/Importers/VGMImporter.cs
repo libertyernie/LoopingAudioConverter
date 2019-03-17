@@ -38,7 +38,7 @@ namespace LoopingAudioConverter {
 		/// </summary>
 		/// <param name="filename">The path of the file to read</param>
 		/// <param name="preferredSampleRate">The sample rate to render the VGM at (not supported for vgm2wav)</param>
-		/// <returns>An LWAV, which may or may not be looping</returns>
+		/// <returns>A PCM16Audio, which may or may not be looping</returns>
 		public PCM16Audio ReadFile(string filename) {
 			if (!File.Exists(ExePath)) {
 				throw new AudioImporterException("vgm2wav / VGMPlay not found at path: " + ExePath);

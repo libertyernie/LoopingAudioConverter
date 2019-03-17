@@ -10,7 +10,7 @@ namespace LoopingAudioConverter {
 	}
 
 	/// <summary>
-	/// Convert between RIFF WAVE format (the .wav files used by Microsoft) and this application's internal LWAV class.
+	/// Convert between RIFF WAVE format (the .wav files used by Microsoft) and this application's internal PCM16Audio class.
 	/// Input data must have 16 bits per sample and be in one of the following formats:
 	/// * WAVE_FORMAT_PCM (0x0001)
 	/// * WAVE_FORMAT_EXTENSIBLE (0xFFFE) with a subformat of KSDATAFORMAT_SUBTYPE_PCM (00000001-0000-0010-8000-00aa00389b71)

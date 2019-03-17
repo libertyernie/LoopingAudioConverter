@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace LoopingAudioConverter {
 	/// <summary>
-	/// A class to use vgmstream's test.exe to convert formats it supports to LWAV format.
+	/// A class to use vgmstream's test.exe to convert formats it supports to PCM16Audio format.
 	/// </summary>
 	public class VGMStreamImporter : IAudioImporter {
 		private string TestExePath;
@@ -28,11 +28,11 @@ namespace LoopingAudioConverter {
 		}
 
 		/// <summary>
-		/// Converts a file to WAV using test.exe and reads it into an LWAV object.
+		/// Converts a file to WAV using test.exe and reads it into a PCM16Audio object.
 		/// If the format is not supported, test.exe will write a message to the console and this function will throw an AudioImporterException.
 		/// </summary>
 		/// <param name="filename">The path of the file to read</param>
-		/// <returns>An LWAV, which may or may not be looping</returns>
+		/// <returns>A PCM16Audio, which may or may not be looping</returns>
 		public PCM16Audio ReadFile(string filename) {
 			if (!File.Exists(TestExePath)) {
 				throw new AudioImporterException("test.exe not found at path: " + TestExePath);

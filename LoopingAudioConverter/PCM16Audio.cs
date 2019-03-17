@@ -53,9 +53,9 @@ namespace LoopingAudioConverter {
 		}
 
 		/// <summary>
-		/// Creates a new non-looping LWAV object containing only the pre-loop portion of this track.
+		/// Creates a new non-looping PCM16Audio object containing only the pre-loop portion of this track.
 		/// </summary>
-		/// <returns>A new LWAV object</returns>
+		/// <returns>A new PCM16Audio object</returns>
 		public PCM16Audio GetPreLoopSegment() {
 			short[] data = new short[Channels * LoopStart];
 			Array.Copy(Samples, 0, data, 0, data.Length);
@@ -63,9 +63,9 @@ namespace LoopingAudioConverter {
 		}
 
 		/// <summary>
-		/// Creates a new looping LWAV object containing only the looping portion of this track.
+		/// Creates a new looping PCM16Audio object containing only the looping portion of this track.
 		/// </summary>
-		/// <returns>A new LWAV object</returns>
+		/// <returns>A new PCM16Audio object</returns>
 		public PCM16Audio GetLoopSegment() {
 			short[] data = new short[Channels * (LoopEnd - LoopStart)];
 			Array.Copy(Samples, Channels * LoopStart, data, 0, data.Length);
@@ -73,12 +73,12 @@ namespace LoopingAudioConverter {
 		}
 
 		/// <summary>
-		/// Returns an LWAV object that represents this audio when the looping portion is played a given amount of times, with an optional amount of fade-out.
+		/// Returns an PCM16Audio object that represents this audio when the looping portion is played a given amount of times, with an optional amount of fade-out.
 		/// If this is not a looping track, or if the loop count is 1 and the fade is 0 seconds, this object will be returned; otherwise, a new one will be created.
 		/// </summary>
 		/// <param name="loopCount">Times to play the loop (must be more than 0)</param>
 		/// <param name="fadeSec">Amount of time, in seconds, to fade out at the end after the last loop (must be 0 or greater)</param>
-		/// <returns>An LWAV object (this or a new one)</returns>
+		/// <returns>A PCM16Audio object (this or a new one)</returns>
 		public PCM16Audio PlayLoopAndFade(int loopCount, decimal fadeSec) {
 			if (!Looping) return this;
 			if (loopCount == 1 && fadeSec == 0) return this;

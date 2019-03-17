@@ -255,21 +255,21 @@ namespace LoopingAudioConverter {
 					int claims = 1;
 					if (exporter is VGAudioExporter) {
 						// VGAudio runs tasks in parallel for each channel, so let's consider that when deciding how many tasks to run.
-						claims = Math.Min(n.LWAV.Channels, o.NumSimulTasks);
+						claims = Math.Min(n.Audio.Channels, o.NumSimulTasks);
 					}
 					for (int j = 0; j < claims; j++) {
 						sem.WaitOne();
 					}
 					switch (o.NonLoopingBehavior) {
 						case NonLoopingBehavior.ForceLoop:
-							if (!toExport.LWAV.Looping) {
-								toExport.LWAV.Looping = true;
-								toExport.LWAV.LoopStart = 0;
-								toExport.LWAV.LoopEnd = toExport.LWAV.Samples.Length / toExport.LWAV.Channels;
+							if (!toExport.Audio.Looping) {
+								toExport.Audio.Looping = true;
+								toExport.Audio.LoopStart = 0;
+								toExport.Audio.LoopEnd = toExport.Audio.Samples.Length / toExport.Audio.Channels;
 							}
 							break;
 						case NonLoopingBehavior.AskAll:
-							PCM16LoopWrapper audioStream = new PCM16LoopWrapper(toExport.LWAV);
+							PCM16LoopWrapper audioStream = new PCM16LoopWrapper(toExport.Audio);
 							using (BrstmConverterDialog dialog = new BrstmConverterDialog(audioStream)) {
 								dialog.AudioSource = n.Name;
 								if (dialog.ShowDialog() != DialogResult.OK) {
@@ -284,31 +284,19 @@ namespace LoopingAudioConverter {
 					}
 
 					if (!o.ShortCircuit) {
-						if (toExport.LWAV.OriginalPath != null) {
-							toExport.LWAV.OriginalPath = null;
+						if (toExport.Audio.OriginalPath != null) {
+							toExport.Audio.OriginalPath = null;
 						}
-						if (toExport.LWAV.OriginalAudioData != null) {
-							toExport.LWAV.OriginalAudioData = null;
+						if (toExport.Audio.OriginalAudioData != null) {
+							toExport.Audio.OriginalAudioData = null;
 						}
 					}
 					if (!o.WriteLoopingMetadata) {
-						toExport.LWAV.Looping = false;
+						toExport.Audio.Looping = false;
 					}
 
 					var row = window.AddEncodingRow(toExport.Name);
-					//if (o.NumSimulTasks == 1) {
-					//    exporter.WriteFile(toExport.LWAV, outputDir, toExport.Name);
-					//    lock (exported) {
-					//        exported.Add(toExport.Name);
-					//    }
-					//    for (int j = 0; j < claims; j++) {
-					//        sem.Release();
-					//    }
-					//    row.Remove();
-					//} else {
-					Task task = exporter.WriteFileAsync(toExport.LWAV, outputDir, toExport.Name);
-					tasks.Add(task);
-					tasks.Add(task.ContinueWith(t => {
+					tasks.Add(exporter.WriteFileAsync(toExport.Audio, outputDir, toExport.Name).ContinueWith(t => {
 						lock (exported) {
 							exported.Add(toExport.Name);
 						}
@@ -317,7 +305,6 @@ namespace LoopingAudioConverter {
 						}
 						row.Remove();
 					}));
-					//}
 				}
 			}
 			foreach (var t in tasks) {

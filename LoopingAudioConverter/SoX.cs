@@ -29,11 +29,11 @@ namespace LoopingAudioConverter {
 		}
 
 		/// <summary>
-		/// Converts a file to WAV using SoX and reads it into an LWAV object.
+		/// Converts a file to WAV using SoX and reads it into a PCM16Audio object.
 		/// If the format is not supported, SoX will write a message to the console and this function will throw an AudioImporterException.
 		/// </summary>
 		/// <param name="filename">The path of the file to read</param>
-		/// <returns>A non-looping LWAV</returns>
+		/// <returns>A non-looping PCM16Audio</returns>
 		public PCM16Audio ReadFile(string filename) {
 			if (!File.Exists(ExePath)) {
 				throw new AudioImporterException("test.exe not found at path: " + ExePath);
@@ -62,15 +62,15 @@ namespace LoopingAudioConverter {
 		}
 
 		/// <summary>
-		/// Applies one or more SoX effects to the LWAV given and reads the result into a new LWAV.
+		/// Applies one or more SoX effects to the PCM16Audio given and reads the result into a new PCM16Audio.
 		/// Intended to either adjust the volume of the audio or reduce the file size.
 		/// </summary>
-		/// <param name="lwav">The LWAV to use as an input</param>
-		/// <param name="max_channels">The new number of channels (if the LWAV already has this number of channels or fewer, this effect will not be applied)</param>
+		/// <param name="lwav">The PCM16Audio to use as an input</param>
+		/// <param name="max_channels">The new number of channels (if the PCM16Audio already has this number of channels or fewer, this effect will not be applied)</param>
 		/// <param name="db">Volume adjustment, in decibels (if 0, this effect will not be applied)</param>
 		/// <param name="amplitude">Volume adjustment, in linear ratio (if 1, this effect will not be applied)</param>
-		/// <param name="max_rate">The new sample rate (if the LWAV's sample rate is less than or equal to this value, this effect will not be applied)</param>
-		/// <returns>A new LWAV object if one or more effects are applied; the same LWAV object if no effects are applied.</returns>
+		/// <param name="max_rate">The new sample rate (if the PCM16Audio's sample rate is less than or equal to this value, this effect will not be applied)</param>
+		/// <returns>A new PCM16Audio object if one or more effects are applied; the same PCM16Audio object if no effects are applied.</returns>
 		public PCM16Audio ApplyEffects(PCM16Audio lwav, int max_channels = int.MaxValue, decimal db = 0, decimal amplitude = 1, int max_rate = int.MaxValue) {
 			byte[] wav = lwav.Export();
 
@@ -92,7 +92,7 @@ namespace LoopingAudioConverter {
 			}
 
 			if (effects_string.Length == 0) {
-				// No effects will be performed - just return the same LWAV that was passed in without calling SoX unnecessarily
+				// No effects will be performed - just return the same PCM16Audio that was passed in without calling SoX unnecessarily
 				return lwav;
 			}
 
@@ -131,7 +131,7 @@ namespace LoopingAudioConverter {
 		}
 
 		/// <summary>
-		/// Writes the LWAV to the given file, using SoX to make sure the format is correct. SoX can encode and write FLAC and Ogg Vorbis files, among others.
+		/// Writes the PCM16Audio to the given file, using SoX to make sure the format is correct. SoX can encode and write FLAC and Ogg Vorbis files, among others.
 		/// </summary>
 		/// <param name="lwav">Input audio</param>
 		/// <param name="output_filename">Path of output file</param>

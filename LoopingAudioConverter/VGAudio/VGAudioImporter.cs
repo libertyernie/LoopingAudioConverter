@@ -13,19 +13,36 @@ using VGAudio.Formats;
 namespace LoopingAudioConverter.VGAudio {
 	public class VGAudioImporter : IAudioImporter {
 		public bool SupportsExtension(string extension) {
-			if (extension.StartsWith(".")) extension = extension.Substring(1);
-			foreach (string s in new string[] {
-				"brstm", "bcstm", "bfstm",
-				"dsp", "idsp", "hps"
-			}) {
-				if (extension.Equals(s, StringComparison.InvariantCultureIgnoreCase)) return true;
+			if (extension.StartsWith("."))
+				extension = extension.Substring(1);
+			switch (extension) {
+				case "adx":
+				case "brstm":
+				case "bcstm":
+				case "bcstp":
+				case "bcwav":
+				case "cwav":
+				case "bfstm":
+				case "bfstp":
+				case "bfwav":
+				case "brwav":
+				case "rwav":
+				case "dsp":
+				case "mdsp":
+				case "idsp":
+				case "genh":
+				case "hca":
+				case "hps":
+					return true;
+				default:
+					return false;
 			}
-			return false;
 		}
 
 		private static AudioData Read(byte[] data, string filename) {
 			string extension = Path.GetExtension(filename).ToLowerInvariant();
-			if (extension.StartsWith(".")) extension = extension.Substring(1);
+			if (extension.StartsWith("."))
+				extension = extension.Substring(1);
 			switch (extension) {
 				case "adx":
 					return new AdxReader().Read(data);
