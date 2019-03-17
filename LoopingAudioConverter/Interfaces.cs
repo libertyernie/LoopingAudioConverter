@@ -13,7 +13,7 @@ namespace LoopingAudioConverter {
 
 	public interface IAudioImporter {
 		bool SupportsExtension(string extension);
-		PCM16Audio ReadFile(string filename);
+		Task<PCM16Audio> ReadFileAsync(string filename);
 		string GetImporterName();
 	}
 

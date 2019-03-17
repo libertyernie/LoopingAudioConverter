@@ -10,7 +10,7 @@ namespace LoopingAudioConverter {
 		public Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
 			string output_filename = Path.Combine(output_dir, original_filename_no_ext + ".wav");
 			File.WriteAllBytes(output_filename, lwav.Export());
-			return Task.Delay(0);
+			return Task.FromResult(0);
 		}
 
 		public string GetExporterName() {

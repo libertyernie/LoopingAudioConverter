@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using VGAudio.Containers.Adx;
 using VGAudio.Containers.Dsp;
 using VGAudio.Containers.Genh;
@@ -75,7 +76,7 @@ namespace LoopingAudioConverter.VGAudio {
 			}
 		}
 
-		public PCM16Audio ReadFile(string filename) {
+		public async Task<PCM16Audio> ReadFileAsync(string filename) {
 			if (filename.Contains('"')) {
 				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
 			}
@@ -86,6 +87,7 @@ namespace LoopingAudioConverter.VGAudio {
 			}
 
 			try {
+				await Task.Yield();
 				return PCM16Factory.FromAudioData(Read(data, filename));
 			} catch (Exception e) {
 				throw new AudioImporterException("Could not convert from B" + (char)data[0] + "STM: " + e.Message);

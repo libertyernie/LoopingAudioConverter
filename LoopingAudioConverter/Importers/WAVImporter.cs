@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LoopingAudioConverter {
 	/// <summary>
@@ -20,9 +21,9 @@ namespace LoopingAudioConverter {
 			return EXTENSIONS.Any(s => s.Equals(extension, StringComparison.InvariantCultureIgnoreCase));
 		}
 
-		public PCM16Audio ReadFile(string filename) {
+		public Task<PCM16Audio> ReadFileAsync(string filename) {
 			try {
-				return PCM16Factory.FromByteArray(File.ReadAllBytes(filename));
+				return Task.FromResult(PCM16Factory.FromByteArray(File.ReadAllBytes(filename)));
 			} catch (PCM16FactoryException e) {
 				throw new AudioImporterException(e.Message, e);
 			}

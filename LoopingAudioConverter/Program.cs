@@ -57,7 +57,7 @@ namespace LoopingAudioConverter {
 					new WAVImporter(),
 					new MP3Importer(ConfigurationManager.AppSettings["madplay_path"]),
 					new MP4Importer(ConfigurationManager.AppSettings["faad_path"]),
-					new VGMImporter(ConfigurationManager.AppSettings["vgmplay_path"] ?? ConfigurationManager.AppSettings["vgm2wav_path"]),
+					new VGMImporter(ConfigurationManager.AppSettings["vgmplay_path"]),
 					new VGMStreamImporter(ConfigurationManager.AppSettings["vgmstream_path"]),
 					sox
 				};
@@ -200,7 +200,7 @@ namespace LoopingAudioConverter {
 						if (importer is IRenderingAudioImporter) {
 							((IRenderingAudioImporter)importer).SampleRate = o.MaxSampleRate;
 						}
-						w = importer.ReadFile(inputFile);
+						w = await importer.ReadFileAsync(inputFile);
 						w.OriginalPath = inputFile;
 						break;
 					} catch (AudioImporterException e) {

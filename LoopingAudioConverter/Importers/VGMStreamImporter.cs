@@ -1,7 +1,9 @@
-﻿using System;
+﻿using RunProcessAsTask;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LoopingAudioConverter {
 	/// <summary>
@@ -33,7 +35,7 @@ namespace LoopingAudioConverter {
 		/// </summary>
 		/// <param name="filename">The path of the file to read</param>
 		/// <returns>A PCM16Audio, which may or may not be looping</returns>
-		public PCM16Audio ReadFile(string filename) {
+		public async Task<PCM16Audio> ReadFileAsync(string filename) {
 			if (!File.Exists(TestExePath)) {
 				throw new AudioImporterException("test.exe not found at path: " + TestExePath);
 			}
@@ -52,8 +54,7 @@ namespace LoopingAudioConverter {
 				CreateNoWindow = true,
 				Arguments = "-L -l 1 -f 0 \"" + filename + "\""
 			};
-			Process p = Process.Start(psi);
-			p.WaitForExit();
+			var pr = await ProcessEx.RunAsync(psi);
 
 			try {
 				PCM16Audio lwav = PCM16Factory.FromFile("tmp/dump.wav", true);

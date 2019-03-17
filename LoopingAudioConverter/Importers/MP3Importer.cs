@@ -1,7 +1,9 @@
-﻿using System;
+﻿using RunProcessAsTask;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LoopingAudioConverter {
 	public class MP3Importer : IAudioImporter {
@@ -16,7 +18,7 @@ namespace LoopingAudioConverter {
 			return extension.Equals("mp3", StringComparison.InvariantCultureIgnoreCase);
 		}
 
-		public PCM16Audio ReadFile(string filename) {
+		public async Task<PCM16Audio> ReadFileAsync(string filename) {
 			if (!File.Exists(ExePath)) {
 				throw new AudioImporterException("madplay not found at path: " + ExePath);
 			}
@@ -32,8 +34,7 @@ namespace LoopingAudioConverter {
 				CreateNoWindow = true,
 				Arguments = "-v -o wav:" + outfile + " \"" + filename + "\""
 			};
-			Process p = Process.Start(psi);
-			p.WaitForExit();
+			var pr = await ProcessEx.RunAsync(psi);
 
 			try {
 				return PCM16Factory.FromFile(outfile, true);
