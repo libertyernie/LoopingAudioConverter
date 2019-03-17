@@ -1,13 +1,13 @@
-﻿using System;
+﻿using LoopingAudioConverter.Vorbis;
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using VorbisCommentSharp;
 
 namespace LoopingAudioConverter {
 	public class OggVorbisExporter : IAudioExporter {
-		private SoX sox;
-		private string encodingParameters;
+		private readonly SoX sox;
+		private readonly string encodingParameters;
 
 		public OggVorbisExporter(SoX sox, string encodingParameters = null) {
 			this.sox = sox;
@@ -30,10 +30,8 @@ namespace LoopingAudioConverter {
 				if (lwav.Looping) {
 					if (commentHeader == null) throw new Exception("No comment header found in Ogg Vorbis file - cannot edit it to make it loop.");
 
-					string loopStart = null;
-					string loopLength = null;
-					comments.Comments.TryGetValue("LOOPSTART", out loopStart);
-					comments.Comments.TryGetValue("LOOPLENGTH", out loopLength);
+					comments.Comments.TryGetValue("LOOPSTART", out string loopStart);
+					comments.Comments.TryGetValue("LOOPLENGTH", out string loopLength);
 
 					if (loopStart != lwav.LoopStart.ToString() || loopLength != lwav.LoopLength.ToString()) {
 						comments.Comments["LOOPSTART"] = lwav.LoopStart.ToString();
