@@ -1,5 +1,4 @@
-﻿using BrawlLib.SSBBTypes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,9 +14,6 @@ namespace LoopingAudioConverter {
 		IDSP,
 		HCA,
 		HPS,
-		BRSTM_BrawlLib,
-		BCSTM_BrawlLib,
-		BFSTM_BrawlLib,
 		MSU1,
 		WAV,
 		FLAC,
