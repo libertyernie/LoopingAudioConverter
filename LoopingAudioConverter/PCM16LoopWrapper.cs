@@ -1,5 +1,5 @@
-﻿using System;
-using System.Audio;
+﻿using BrawlLib.LoopSelection;
+using System;
 using System.Runtime.InteropServices;
 
 namespace LoopingAudioConverter {
@@ -46,7 +46,7 @@ namespace LoopingAudioConverter {
 			}
 		}
 
-		public int ReadSamples(VoidPtr destAddr, int numSamples) {
+		public int ReadSamples(IntPtr destAddr, int numSamples) {
 			if (SamplePosition + numSamples > Samples) {
 				numSamples = Samples - SamplePosition;
 			}

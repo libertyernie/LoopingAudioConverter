@@ -59,10 +59,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Brawl\FSTMExporter.cs" />
-    <Compile Include="Brawl\CSTMExporter.cs" />
-    <Compile Include="Brawl\PCM16AudioStream.cs" />
-    <Compile Include="Brawl\RSTMExporter.cs" />
     <Compile Include="MSU1.cs" />
     <Compile Include="VGAudio\HCAExporter.cs" />
     <Compile Include="VGAudio\HPSExporter.cs" />
@@ -124,14 +120,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SoX.cs" />
     <Compile Include="Importers\VGMStreamImporter.cs" />
-    <Compile Include="Vorbis\UnsafeCRC.cs" />
-    <Compile Include="Vorbis\VorbisFile.cs" />
-    <Compile Include="Vorbis\VorbisHeader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="Vorbis\COPYING" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AACQualityForm.resx">
@@ -156,9 +148,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\brawltools\BrawlLib\BrawlLibAudio.csproj">
+    <ProjectReference Include="..\BrawlLib.LoopSelection\BrawlLib.LoopSelection.csproj">
       <Project>{41c94979-ce5a-4582-888a-1bee98dd43d3}</Project>
-      <Name>BrawlLibAudio</Name>
+      <Name>BrawlLib.LoopSelection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VorbisCommentSharp\VorbisCommentSharp.csproj">
+      <Project>{5bd4854f-481b-4aa6-b838-32c21b2b069f}</Project>
+      <Name>VorbisCommentSharp</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

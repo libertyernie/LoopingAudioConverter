@@ -1,8 +1,8 @@
-﻿using LoopingAudioConverter.Vorbis;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using VorbisCommentSharp;
 
 namespace LoopingAudioConverter {
 	public class OggVorbisExporter : IAudioExporter {

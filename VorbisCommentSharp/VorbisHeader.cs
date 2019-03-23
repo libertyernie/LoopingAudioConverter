@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace LoopingAudioConverter.Vorbis {
+namespace VorbisCommentSharp {
     public class VorbisComments {
         public string Vendor { get; set; }
         public Dictionary<string, string> Comments { get; private set; }

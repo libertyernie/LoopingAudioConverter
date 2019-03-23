@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 
-namespace LoopingAudioConverter.Vorbis {
+namespace VorbisCommentSharp {
     [StructLayout(LayoutKind.Explicit, Size = 27)]
     public struct OggPageHeader {
         [FieldOffset(0)]

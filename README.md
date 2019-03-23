@@ -19,3 +19,5 @@ Supported output formats:
     RSTM (.brstm) and CSTM (.bcstm), using RSTMLib, a subset of BrawlLib
 
 See LoopingAudioConverter/About.html for more information.
+
+**Note:** Each project in this repository has different license terms. See the individual folders for details.

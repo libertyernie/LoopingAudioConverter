@@ -1,4 +1,5 @@
-﻿using LoopingAudioConverter.VGAudio;
+﻿using BrawlLib.LoopSelection;
+using LoopingAudioConverter.VGAudio;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -110,15 +111,6 @@ namespace LoopingAudioConverter {
 					break;
 				case ExporterType.HPS:
 					exporter = new HPSExporter();
-					break;
-				case ExporterType.BRSTM_BrawlLib:
-					exporter = new Brawl.RSTMExporter();
-					break;
-				case ExporterType.BCSTM_BrawlLib:
-					exporter = new Brawl.CSTMExporter();
-					break;
-				case ExporterType.BFSTM_BrawlLib:
-					exporter = new Brawl.FSTMExporter();
 					break;
 				case ExporterType.MSU1:
 					exporter = new MSU1();
