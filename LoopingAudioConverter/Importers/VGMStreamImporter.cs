@@ -52,7 +52,7 @@ namespace LoopingAudioConverter {
 				FileName = TestExePath,
 				UseShellExecute = false,
 				CreateNoWindow = true,
-				Arguments = "-L -l 1 -f 0 \"" + filename + "\""
+				Arguments = "-L -l 1 -f 0 -o dump.wav \"" + filename + "\""
 			};
 			var pr = await ProcessEx.RunAsync(psi);
 
