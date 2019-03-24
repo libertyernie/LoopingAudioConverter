@@ -39,7 +39,7 @@ namespace MSFContainerLib
                     case 1:
                         return new MSF_PCM16LE(header, body);
                     case 7:
-                        return MSF_MP3.Decode(header, body);
+                        return new MSF_MP3(header, body);
                     default:
                         return new MSF_Unknown(header, body);
                 }

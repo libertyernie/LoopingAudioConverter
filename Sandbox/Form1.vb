@@ -19,7 +19,7 @@ Public Class Form1
                 ListBox1.Items.Add($"sample_rate: {header.sample_rate}")
                 ListBox1.Items.Add($"flags: {header.flags.Flags}")
                 ListBox1.Items.Add($"loop_start: {header.loop_start}")
-                ListBox1.Items.Add($"loop_end: {header.loop_length}")
+                ListBox1.Items.Add($"loop_length: {header.loop_length}")
                 ListBox1.Items.Add("")
                 ListBox1.Items.Add($"Total filesize: {data.Length}")
             End If
