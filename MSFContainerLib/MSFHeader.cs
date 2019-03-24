@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MSFEncoderLib
+namespace MSFContainerLib
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct BigEndianInt16
@@ -61,6 +61,33 @@ namespace MSFEncoderLib
         public override string ToString() => $"{(char)m}{(char)s}{(char)f} version 0x{((int)version).ToString("X2")}";
     }
 
+    [Flags]
+    public enum MSFFlag : int
+    {
+        LoopMarker0 = 0x01,
+        LoopMarker1 = 0x02,
+        LoopMarker2 = 0x04,
+        LoopMarker3 = 0x08,
+        Resample = 0x10,
+        MP3VBR = 0x20,
+        MP3JointStereo = 0x40
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe struct MSFFlags
+    {
+        public BigEndianInt32 val;
+
+        public MSFFlag Flags {
+            get {
+                return (MSFFlag)(int)val;
+            }
+            set {
+                val = (int)value;
+            }
+        }
+    }
+
     [StructLayout(LayoutKind.Sequential)]
     public unsafe struct MSFHeader
     {
@@ -69,9 +96,9 @@ namespace MSFEncoderLib
         public BigEndianInt32 channel_count;
         public BigEndianInt32 data_size;
         public BigEndianInt32 sample_rate;
-        public BigEndianInt32 flags;
+        public MSFFlags flags;
         public BigEndianInt32 loop_start;
-        public BigEndianInt32 loop_end;
+        public BigEndianInt32 loop_length;
 
         public fixed byte padding[32];
     }
