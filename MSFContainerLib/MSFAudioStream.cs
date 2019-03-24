@@ -30,25 +30,8 @@ namespace MSFContainerLib
         public int Frequency => MSF.Header.sample_rate;
 
         public bool IsLooping {
-            get {
-                return MSF.Header.flags.Flags.HasFlag(MSFFlag.LoopMarker0)
-                    || MSF.Header.flags.Flags.HasFlag(MSFFlag.LoopMarker1)
-                    || MSF.Header.flags.Flags.HasFlag(MSFFlag.LoopMarker2)
-                    || MSF.Header.flags.Flags.HasFlag(MSFFlag.LoopMarker3);
-            }
-            set {
-                if (value)
-                {
-                    MSF.Header.flags.Flags |= MSFFlag.LoopMarker0;
-                }
-                else
-                {
-                    MSF.Header.flags.Flags &= ~MSFFlag.LoopMarker0;
-                    MSF.Header.flags.Flags &= ~MSFFlag.LoopMarker1;
-                    MSF.Header.flags.Flags &= ~MSFFlag.LoopMarker2;
-                    MSF.Header.flags.Flags &= ~MSFFlag.LoopMarker3;
-                }
-            }
+            get => MSF.IsLooping;
+            set => MSF.IsLooping = value;
         }
         public int LoopStartSample {
             get => MSF.LoopStartSample;
@@ -58,6 +41,7 @@ namespace MSFContainerLib
             get => MSF.LoopStartSample + MSF.LoopSampleCount;
             set => MSF.LoopSampleCount = value - MSF.LoopStartSample;
         }
+
         public int SamplePosition { get; set; }
 
         public void Dispose() { }

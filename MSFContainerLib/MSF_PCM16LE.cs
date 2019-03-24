@@ -9,6 +9,11 @@ namespace MSFContainerLib
 {
     public class MSF_PCM16LE : MSF_PCM16
     {
+        /// <summary>
+        /// Creates a new MSF file from an MSF header and PCM data.
+        /// </summary>
+        /// <param name="header">The header. Be sure to set appropriate values properly.</param>
+        /// <param name="body">The raw 16-bit PCM data.</param>
         public unsafe MSF_PCM16LE(MSFHeader header, byte[] body) : base(header, body) {
             if (Header.codec != 1)
             {
@@ -16,6 +21,10 @@ namespace MSFContainerLib
             }
         }
 
+        /// <summary>
+        /// Gets the audio data as raw 16-bit PCM, decoding it using the MP3Sharp library.
+        /// </summary>
+        /// <returns></returns>
         public unsafe override short[] GetPCM16Samples()
         {
             // TODO: this will not work on big endian processors
@@ -28,7 +37,7 @@ namespace MSFContainerLib
             }
         }
 
-        public unsafe override void SetPCM16Samples(short[] samples)
+        /*public unsafe override void SetPCM16Samples(short[] samples)
         {
             // TODO: this will not work on big endian processors
             byte[] data = new byte[samples.Length * sizeof(short)];
@@ -37,6 +46,6 @@ namespace MSFContainerLib
                 short* le_samples = (short*)ptr;
                 Marshal.Copy(samples, 0, (IntPtr)le_samples, samples.Length);
             }
-        }
+        }*/
     }
 }

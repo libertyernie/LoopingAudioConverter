@@ -14,9 +14,12 @@ namespace MSFContainerLib
         private readonly Lazy<short[]> SampleData;
         private readonly Lazy<long> Bitrate;
 
+        /// <summary>
+        /// The sample at which the loop starts.
+        /// </summary>
         public override int LoopStartSample {
             get {
-                long x = Header.loop_start;
+                long x = _header.loop_start;
                 x *= Header.sample_rate;
                 x *= sizeof(byte);
                 x /= Bitrate.Value;
@@ -27,30 +30,39 @@ namespace MSFContainerLib
                 x *= Bitrate.Value;
                 x /= sizeof(byte);
                 x /= Header.sample_rate;
-                Header.loop_start = checked((int)x);
-            }
-        }
-        public override int LoopSampleCount {
-            get {
-                long x = Header.loop_length;
-                x *= Header.sample_rate;
-                x *= sizeof(byte);
-                x /= Bitrate.Value;
-                return checked((int)x);
-            }
-            set {
-                long x = value;
-                x *= Bitrate.Value;
-                x /= sizeof(byte);
-                x /= Header.sample_rate;
-                Header.loop_length = checked((int)x);
+                _header.loop_start = checked((int)x);
             }
         }
 
+        /// <summary>
+        /// The sample at which the loop ends.
+        /// </summary>
+        public override int LoopSampleCount {
+            get {
+                long x = _header.loop_length;
+                x *= Header.sample_rate;
+                x *= sizeof(byte);
+                x /= Bitrate.Value;
+                return checked((int)x);
+            }
+            set {
+                long x = value;
+                x *= Bitrate.Value;
+                x /= sizeof(byte);
+                x /= Header.sample_rate;
+                _header.loop_length = checked((int)x);
+            }
+        }
+
+        /// <summary>
+        /// Creates a new MSF file from an MSF header and MP3 data.
+        /// </summary>
+        /// <param name="header">The header. Be sure to set appropriate values properly.</param>
+        /// <param name="body">The MP3 data.</param>
         public MSF_MP3(MSFHeader header, byte[] body) : base(header, body) {
             if (Header.codec != 7)
             {
-                throw new FormatException("The codec of this MSF file is not MP3");
+                throw new FormatException("The codec in the MSF header is not MP3");
             }
             SampleData = new Lazy<short[]>(() => Decode());
             Bitrate = new Lazy<long>(() =>
@@ -83,6 +95,10 @@ namespace MSFContainerLib
             }
         }
 
+        /// <summary>
+        /// Gets the audio data as raw 16-bit PCM, decoding it using the MP3Sharp library.
+        /// </summary>
+        /// <returns></returns>
         public unsafe override short[] GetPCM16Samples()
         {
             using (var output = new MemoryStream())

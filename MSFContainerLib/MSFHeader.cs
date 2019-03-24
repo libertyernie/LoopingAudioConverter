@@ -22,7 +22,7 @@ namespace MSFContainerLib
         };
 
         public int Value => this;
-        public override string ToString() => $"{Value} ({b1} {b2})";
+        public override string ToString() => $"{Value}";
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -47,7 +47,7 @@ namespace MSFContainerLib
         };
 
         public int Value => this;
-        public override string ToString() => $"{Value} ({b1} {b2} {b3} {b4})";
+        public override string ToString() => $"{Value}";
     }
 
     [StructLayout(LayoutKind.Sequential)]
