@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MSFAudioStream.cs" />
+    <Compile Include="IPcmAudioSource.cs" />
     <Compile Include="MSF.cs" />
     <Compile Include="MSFHeader.cs" />
     <Compile Include="MSF_MP3.cs" />
@@ -52,12 +52,6 @@
     <Compile Include="MSF_PCM16LE.cs" />
     <Compile Include="MSF_PCM16BE.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BrawlLib.LoopSelection\BrawlLib.LoopSelection.csproj">
-      <Project>{41C94979-CE5A-4582-888A-1BEE98DD43D3}</Project>
-      <Name>BrawlLib.LoopSelection</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MP3Sharp">

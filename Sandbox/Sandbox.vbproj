@@ -120,10 +120,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BrawlLib.LoopSelection\BrawlLib.LoopSelection.csproj">
-      <Project>{41c94979-ce5a-4582-888a-1bee98dd43d3}</Project>
-      <Name>BrawlLib.LoopSelection</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MSFContainerLib\MSFContainerLib.csproj">
       <Project>{505615d6-60e1-4fac-b2dd-cc3ed109c7d2}</Project>
       <Name>MSFContainerLib</Name>

@@ -1,5 +1,4 @@
-﻿using BrawlLib.LoopSelection;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -12,7 +11,7 @@ namespace MSFContainerLib
     /// The header and data of an MSF file.
     /// MSF is an audio format used in PlayStation 3 software.
     /// </summary>
-    public abstract class MSF
+    public abstract class MSF : IPcmAudioSource<short>
     {
         protected MSFHeader _header;
         protected byte[] _body;
@@ -71,6 +70,10 @@ namespace MSFContainerLib
         /// </summary>
         public abstract int LoopSampleCount { get; set; }
 
+        IEnumerable<short> IPcmAudioSource<short>.SampleData => GetPCM16Samples();
+        int IPcmAudioSource<short>.Channels => Header.channel_count;
+        int IPcmAudioSource<short>.SampleRate => Header.sample_rate;
+
         /// <summary>
         /// Creates a new MSF file.
         /// </summary>
@@ -109,31 +112,22 @@ namespace MSFContainerLib
         }
 
         /// <summary>
-        /// Creates a new MSF (with a 16-bit PCM codec) using an IAudioStream (BrawlLib) object as the source.
+        /// Creates a new MSF (with a 16-bit PCM codec) using an IPCM16AudioSource object as the source.
         /// </summary>
-        /// <param name="stream">The IAudioStream object</param>
+        /// <param name="source">The IPCM16AudioSource object</param>
         /// <param name="big_endian">Whether to use big-endian (default is true)</param>
         /// <returns></returns>
-        public unsafe static MSF FromAudioStream(IAudioStream stream, bool big_endian = true)
+        public unsafe static MSF FromAudioSource(IPcmAudioSource<short> source, bool big_endian = true)
         {
+            short[] samples = source.SampleData.ToArray();
+
             MSFHeader header = MSFHeader.Create();
             header.codec = big_endian ? 0 : 1;
-            header.channel_count = stream.Channels;
-            header.data_size = stream.Samples * stream.Channels * sizeof(short);
-            header.sample_rate = stream.Frequency;
-            if (stream.IsLooping)
+            header.channel_count = source.Channels;
+            header.data_size = samples.Length * sizeof(short);
+            header.sample_rate = source.SampleRate;
+            if (source.IsLooping)
                 header.flags.Flags |= MSFFlag.LoopMarker0;
-
-            short[] samples = new short[stream.Samples * stream.Channels];
-            fixed (short* ptr = samples)
-            {
-                int pos = 0;
-                do
-                {
-                    int read = stream.ReadSamples((IntPtr)(ptr + pos), (samples.Length - pos) / stream.Channels);
-                    pos += read * stream.Channels;
-                } while (pos < samples.Length);
-            }
 
             MSF_PCM16 msf;
             if (big_endian)
@@ -160,15 +154,13 @@ namespace MSFContainerLib
                 msf = new MSF_PCM16LE(header, data);
             }
 
-            if (stream.IsLooping)
+            if (source.IsLooping)
             {
-                int start = stream.LoopStartSample;
-                int end = stream.LoopEndSample - stream.LoopStartSample;
-                msf.LoopStartSample = start;
-                if (msf.LoopStartSample != start)
+                msf.LoopStartSample = source.LoopStartSample;
+                if (msf.LoopStartSample != source.LoopStartSample)
                     throw new Exception();
-                msf.LoopSampleCount = end;
-                if (msf.LoopSampleCount != end)
+                msf.LoopSampleCount = source.LoopSampleCount;
+                if (msf.LoopSampleCount != source.LoopSampleCount)
                     throw new Exception();
             }
             return msf;

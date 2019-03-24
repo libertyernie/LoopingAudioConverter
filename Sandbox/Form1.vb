@@ -31,16 +31,11 @@ Public Class Form1
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         If MSF IsNot Nothing Then
-            Dim a As New MSFAudioStream(MSF)
-            Using dialog As New BrstmConverterDialog(a)
-                If dialog.ShowDialog(Me) = DialogResult.OK Then
-                    Dim newMsf = MSF.FromAudioStream(a)
-                    Using dialog2 As New SaveFileDialog
-                        dialog2.Filter = "MSF files|*.msf"
-                        If dialog2.ShowDialog(Me) = DialogResult.OK Then
-                            IO.File.WriteAllBytes(dialog2.FileName, newMsf.Export())
-                        End If
-                    End Using
+            Dim newMsf = MSF.FromAudioSource(MSF)
+            Using dialog2 As New SaveFileDialog
+                dialog2.Filter = "MSF files|*.msf"
+                If dialog2.ShowDialog(Me) = DialogResult.OK Then
+                    IO.File.WriteAllBytes(dialog2.FileName, newMsf.Export())
                 End If
             End Using
         End If
