@@ -26,6 +26,24 @@ namespace MSFContainerLib
     }
 
     [StructLayout(LayoutKind.Sequential)]
+    public struct LittleEndianInt16
+    {
+        private byte b2;
+        private byte b1;
+
+        public static implicit operator short(LittleEndianInt16 val) =>
+            (short)(val.b1 << 8 | val.b2);
+        public static implicit operator LittleEndianInt16(short val) => new LittleEndianInt16
+        {
+            b1 = (byte)(val >> 8),
+            b2 = (byte)val
+        };
+
+        public int Value => this;
+        public override string ToString() => $"{Value}";
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
     public struct BigEndianInt32
     {
         private byte b1;

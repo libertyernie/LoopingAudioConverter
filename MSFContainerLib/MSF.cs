@@ -146,8 +146,13 @@ namespace MSFContainerLib
             }
             else
             {
+                LittleEndianInt16[] samples_le = new LittleEndianInt16[samples.Length];
+                for (int i = 0; i < samples.Length; i++)
+                {
+                    samples_le[i] = samples[i];
+                }
                 byte[] data = new byte[samples.Length * sizeof(short)];
-                fixed (short* ptr = samples)
+                fixed (LittleEndianInt16* ptr = samples_le)
                 {
                     Marshal.Copy((IntPtr)ptr, data, 0, data.Length);
                 }

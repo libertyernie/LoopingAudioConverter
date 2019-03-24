@@ -38,19 +38,5 @@ namespace MSFContainerLib
                 return samples;
             }
         }
-
-        /*public unsafe override void SetPCM16Samples(short[] samples)
-        {
-            byte[] data = new byte[samples.Length * sizeof(short)];
-            fixed (byte* ptr = data)
-            {
-                BigEndianInt16* be_samples = (BigEndianInt16*)ptr;
-                for (int i = 0; i < samples.Length; i++)
-                {
-                    be_samples[i] = samples[i];
-                }
-            }
-            Body = data;
-        }*/
     }
 }

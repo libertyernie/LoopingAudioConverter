@@ -27,25 +27,16 @@ namespace MSFContainerLib
         /// <returns></returns>
         public unsafe override short[] GetPCM16Samples()
         {
-            // TODO: this will not work on big endian processors
             fixed (byte* ptr = Body)
             {
-                short* le_samples = (short*)ptr;
+                LittleEndianInt16* be_samples = (LittleEndianInt16*)ptr;
                 short[] samples = new short[Body.Length / sizeof(short)];
-                Marshal.Copy((IntPtr)le_samples, samples, 0, samples.Length);
+                for (int i = 0; i < samples.Length; i++)
+                {
+                    samples[i] = be_samples[i];
+                }
                 return samples;
             }
         }
-
-        /*public unsafe override void SetPCM16Samples(short[] samples)
-        {
-            // TODO: this will not work on big endian processors
-            byte[] data = new byte[samples.Length * sizeof(short)];
-            fixed (byte* ptr = data)
-            {
-                short* le_samples = (short*)ptr;
-                Marshal.Copy(samples, 0, (IntPtr)le_samples, samples.Length);
-            }
-        }*/
     }
 }
