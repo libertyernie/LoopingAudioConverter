@@ -30,10 +30,9 @@ namespace MSFContainerLib
                 Header.loop_start = checked((int)x);
             }
         }
-        public override int LoopEndSample {
+        public override int LoopSampleCount {
             get {
                 long x = Header.loop_length;
-                x += Header.loop_start;
                 x *= Header.sample_rate;
                 x *= sizeof(byte);
                 x /= Bitrate.Value;
@@ -44,7 +43,6 @@ namespace MSFContainerLib
                 x *= Bitrate.Value;
                 x /= sizeof(byte);
                 x /= Header.sample_rate;
-                x -= Header.loop_start;
                 Header.loop_length = checked((int)x);
             }
         }
@@ -104,11 +102,6 @@ namespace MSFContainerLib
                     return array16;
                 }
             }
-        }
-
-        public unsafe override void SetPCM16Samples(short[] samples)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -58,6 +58,14 @@ namespace MSFContainerLib
         public byte f;
         public byte version;
 
+        public static MSFTag Create(byte version = 0x43) => new MSFTag
+        {
+            m = 0x4D,
+            s = 0x53,
+            f = 0x46,
+            version = version
+        };
+
         public override string ToString() => $"{(char)m}{(char)s}{(char)f} version 0x{((int)version).ToString("X2")}";
     }
 
@@ -101,5 +109,17 @@ namespace MSFContainerLib
         public BigEndianInt32 loop_length;
 
         public fixed byte padding[32];
+
+        public static unsafe MSFHeader Create()
+        {
+            MSFHeader h = new MSFHeader
+            {
+                tag = MSFTag.Create(),
+                flags = new MSFFlags { Flags = MSFFlag.Resample }
+            };
+            for (int i = 0; i < 32; i++)
+                h.padding[i] = 0xFF;
+            return h;
+        }
     }
 }

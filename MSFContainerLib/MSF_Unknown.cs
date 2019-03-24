@@ -12,16 +12,11 @@ namespace MSFContainerLib
         public unsafe MSF_Unknown(MSFHeader header, byte[] body) : base(header, body) { }
 
         public override int LoopStartSample { get => 0; set => throw new NotImplementedException(); }
-        public override int LoopEndSample { get => 0; set => throw new NotImplementedException(); }
+        public override int LoopSampleCount { get => 0; set => throw new NotImplementedException(); }
 
         public unsafe override short[] GetPCM16Samples()
         {
             return new short[0];
-        }
-
-        public override void SetPCM16Samples(short[] samples)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -41,6 +41,7 @@ namespace MSFContainerLib
                     be_samples[i] = samples[i];
                 }
             }
+            Body = data;
         }
     }
 }

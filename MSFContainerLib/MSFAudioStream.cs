@@ -55,8 +55,8 @@ namespace MSFContainerLib
             set => MSF.LoopStartSample = value;
         }
         public int LoopEndSample {
-            get => MSF.LoopEndSample;
-            set => MSF.LoopEndSample = value;
+            get => MSF.LoopStartSample + MSF.LoopSampleCount;
+            set => MSF.LoopSampleCount = value - MSF.LoopStartSample;
         }
         public int SamplePosition { get; set; }
 
