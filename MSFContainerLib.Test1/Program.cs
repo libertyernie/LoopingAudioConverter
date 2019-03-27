@@ -34,8 +34,21 @@ namespace MSFContainerLib.Test1
 
     class Program
     {
-        static void Main(string[] args)
+        static unsafe void Main(string[] args)
         {
+            short[] test = new[] { (short)0x1234 };
+            fixed (short* ptr = test)
+            {
+                if (*(BigEndianInt16*)ptr == 0x1234)
+                {
+                    Console.WriteLine("Your endian: big");
+                }
+                else if (*(LittleEndianInt16*)ptr == 0x1234)
+                {
+                    Console.WriteLine("Your endian: little");
+                }
+            }
+
             using (var md5 = MD5.Create())
             {
                 {

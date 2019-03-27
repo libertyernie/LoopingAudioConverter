@@ -57,7 +57,7 @@ namespace MSFContainerLib
         /// <summary>
         /// Creates a new MSF file from an MSF header and MP3 data.
         /// </summary>
-        /// <param name="header">The header. Be sure to set appropriate values properly.</param>
+        /// <param name="header">The header. Be sure to set the appropriate flags.</param>
         /// <param name="body">The MP3 data.</param>
         public MSF_MP3(MSFHeader header, byte[] body) : base(header, body) {
             if (Header.codec != 7)
@@ -101,23 +101,7 @@ namespace MSFContainerLib
         /// <returns></returns>
         public unsafe override short[] GetPCM16Samples()
         {
-            using (var output = new MemoryStream())
-            {
-                using (var input = new MemoryStream(Body, false))
-                using (var mp3 = new MP3Stream(input))
-                {
-                    mp3.CopyTo(output);
-                }
-
-                byte[] array = output.ToArray();
-                fixed (byte* ptr = array)
-                {
-                    short* ptr16 = (short*)ptr;
-                    short[] array16 = new short[array.Length / sizeof(short)];
-                    Marshal.Copy((IntPtr)ptr16, array16, 0, array16.Length);
-                    return array16;
-                }
-            }
+            return SampleData.Value;
         }
     }
 }

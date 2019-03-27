@@ -43,14 +43,14 @@ namespace MSFContainerLib
                     || Header.flags.Flags.HasFlag(MSFFlag.LoopMarker3);
             }
             set {
-                if (value)
+                if (value && !IsLooping)
                 {
                     _header.flags.Flags |= MSFFlag.LoopMarker0;
                     _header.flags.Flags &= ~MSFFlag.LoopMarker1;
                     _header.flags.Flags &= ~MSFFlag.LoopMarker2;
                     _header.flags.Flags &= ~MSFFlag.LoopMarker3;
                 }
-                else
+                else if (!value && IsLooping)
                 {
                     _header.flags.Flags &= ~MSFFlag.LoopMarker0;
                     _header.flags.Flags &= ~MSFFlag.LoopMarker1;

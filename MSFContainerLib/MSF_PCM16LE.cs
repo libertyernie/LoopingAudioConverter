@@ -22,7 +22,7 @@ namespace MSFContainerLib
         }
 
         /// <summary>
-        /// Gets the audio data as raw 16-bit PCM, decoding it using the MP3Sharp library.
+        /// Gets the audio data as raw 16-bit PCM.
         /// </summary>
         /// <returns></returns>
         public unsafe override short[] GetPCM16Samples()
