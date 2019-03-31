@@ -14,6 +14,8 @@ namespace LoopingAudioConverter {
 		IDSP,
 		HCA,
 		HPS,
+		MSF_PCM16LE,
+		MSF_PCM16BE,
 		MSU1,
 		WAV,
 		FLAC,

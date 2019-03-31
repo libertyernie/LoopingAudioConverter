@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -39,16 +39,22 @@
           <li>HCA</li>
           <li>HPS</li>
         </ul>
+        <li>MSF (PlayStation 3)</li>
+        <ul>
+          <li>16-bit PCM (big endian)<br>
+          </li>
+          <li>16-bit PCM (little endian)<br>
+          </li>
+          <li>16-bit PCM (MP3)</li>
+        </ul>
         <li><a href="http://helmet.kafuka.org/msu1.htm">MSU-1</a><br>
-      </li>
+        </li>
       </ul>
       <li>Supported by external tools (bundled)<br>
       </li>
       <ul>
         <li>AAC/.m4a (faad)</li>
         <li><a href="http://vgmrips.net/">VGM/VGZ</a> (VGMPlay)</li>
-      </ul>
-      <ul>
         <li>Any audio format supported by SoX</li>
         <li>Any audio format supported by vgmstream<br>
         </li>
@@ -66,9 +72,6 @@
           <li>BRSTM (ADPCM, PCM16, PCM8)</li>
           <li>BCSTM (ADPCM, PCM16, PCM8)</li>
           <li>BFSTM (ADPCM, PCM16, PCM8)</li>
-          <ul>
-            <li>Codecs available: ADPCM, PCM16, PCM8</li>
-          </ul>
           <li>DSP</li>
           <li>IDSP</li>
           <li>HCA<br>
@@ -81,6 +84,12 @@
           <li>BRSTM (ADPCM)</li>
           <li>BCSTM (ADPCM)</li>
           <li>BFSTM (ADPCM)</li>
+        </ul>
+        <li>MSF (PlayStation 3)</li>
+        <ul>
+          <li>16-bit PCM (big endian)<br>
+          </li>
+          <li>16-bit PCM (little endian)</li>
         </ul>
         <li>WAV (with or without "smpl" chunk to denote looping audio)</li>
         <li>MSU-1</li>
@@ -125,6 +134,7 @@
           files from video games, available under the <a
             href="https://github.com/Thealexbarney/VGAudio/blob/2.0/LICENSE">MIT
 
+
             license</a>.<br>
         </li>
         <li>SoX (<a href="http://sox.sourceforge.net">http://sox.sourceforge.net</a>)
@@ -161,7 +171,8 @@
           terms - these are included in the tools/vgmstream folder as
           well.</li>
         <li>MP3Sharp (<a href="https://github.com/Nihlus/MP3Sharp">https://github.com/Nihlus/MP3Sharp</a>)
-          is an MP3 decoder library released under the GNU LGPL, version 3.</li>
+          is an MP3 decoder library released under the GNU LGPL, version
+          3.</li>
         <li>FAAD (<a href="http://www.audiocoding.com/faad2.html">http://www.audiocoding.com/faad2.html</a>)
           is an AAC decoder library released under the GNU GPL, version
           2 or later. This version was obtained from: <a
@@ -278,9 +289,9 @@ src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhgAAAIBCAIAAACEP1EUAAAgAElEQ
       <li><b>Export loop segment</b>: exports the section from the loop
         start until the loop end. The text in "suffix" will be appended
         to the filename.</li>
-      <li><b>Skip re-encoding for similar formats when possible:</b> This
-        option takes effect when no audio effects are selected and the
-        input/output formats line up.</li>
+      <li><b>Skip re-encoding for similar formats when possible:</b>
+        This option takes effect when no audio effects are selected and
+        the input/output formats line up.</li>
       <ul>
         <li>Input/output are both VGAudio supported formats:</li>
         <ul>

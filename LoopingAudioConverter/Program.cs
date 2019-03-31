@@ -113,6 +113,12 @@ namespace LoopingAudioConverter {
 				case ExporterType.HPS:
 					exporter = new HPSExporter();
 					break;
+				case ExporterType.MSF_PCM16BE:
+					exporter = new MSFPCM16Exporter(big_endian: true);
+					break;
+				case ExporterType.MSF_PCM16LE:
+					exporter = new MSFPCM16Exporter(big_endian: false);
+					break;
 				case ExporterType.MSU1:
 					exporter = new MSU1();
 					break;
@@ -309,12 +315,9 @@ namespace LoopingAudioConverter {
 					}
 
 					if (!o.ShortCircuit) {
-						if (toExport.Audio.OriginalPath != null) {
-							toExport.Audio.OriginalPath = null;
-						}
-						if (toExport.Audio.OriginalAudioData != null) {
-							toExport.Audio.OriginalAudioData = null;
-						}
+						toExport.Audio.OriginalPath = null;
+						toExport.Audio.OriginalAudioData = null;
+						toExport.Audio.OriginalMP3 = null;
 					}
 					if (!o.WriteLoopingMetadata) {
 						toExport.Audio.Looping = false;

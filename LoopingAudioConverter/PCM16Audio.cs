@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using MSFContainerLib;
 using VGAudio.Formats;
 
 namespace LoopingAudioConverter {
@@ -6,7 +8,7 @@ namespace LoopingAudioConverter {
 	/// Represents 16-bit uncompressed PCM data with an arbitary number of channels and an optional loop sequence.
 	/// The total sample length of this data is immutable, but the data itself and other properties can be modified.
 	/// </summary>
-	public class PCM16Audio {
+	public class PCM16Audio : IPcmAudioSource<short> {
 		public short Channels { get; private set; }
 		public int SampleRate { get; private set; }
 		public short[] Samples { get; private set; }
@@ -37,6 +39,14 @@ namespace LoopingAudioConverter {
 
 		public string OriginalPath { get; set; }
 		public AudioData OriginalAudioData { get; set; }
+		public byte[] OriginalMP3 { get; set; }
+
+		IEnumerable<short> IPcmAudioSource<short>.SampleData => Samples;
+		int IPcmAudioSource<short>.Channels => Channels;
+		int IPcmAudioSource<short>.SampleRate => SampleRate;
+		bool IPcmAudioSource<short>.IsLooping => Looping;
+		int IPcmAudioSource<short>.LoopStartSample => LoopStart;
+		int IPcmAudioSource<short>.LoopSampleCount => LoopEnd - LoopStart;
 
 		/// <summary>
 		/// Creates a WAV with the given metadata and length.

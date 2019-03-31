@@ -50,6 +50,8 @@ namespace LoopingAudioConverter {
 				new NVPair<ExporterType>(ExporterType.IDSP, "IDSP"),
 				new NVPair<ExporterType>(ExporterType.HCA, "HCA"),
 				new NVPair<ExporterType>(ExporterType.HPS, "HPS"),
+				new NVPair<ExporterType>(ExporterType.MSF_PCM16BE, "MSF (PCM16, big-endian)"),
+				new NVPair<ExporterType>(ExporterType.MSF_PCM16LE, "MSF (PCM16, little-endian)"),
 				new NVPair<ExporterType>(ExporterType.MSU1, "MSU-1"),
 				new NVPair<ExporterType>(ExporterType.WAV, "WAV"),
 				new NVPair<ExporterType>(ExporterType.FLAC, "FLAC"),

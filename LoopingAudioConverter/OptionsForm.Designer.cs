@@ -131,6 +131,7 @@
             // 
             // btnSuffixFilter
             // 
+            this.btnSuffixFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnSuffixFilter.Location = new System.Drawing.Point(271, 113);
             this.btnSuffixFilter.Name = "btnSuffixFilter";
             this.btnSuffixFilter.Size = new System.Drawing.Size(75, 19);
@@ -160,7 +161,7 @@
             // 
             // btnBrowse
             // 
-            this.btnBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnBrowse.Location = new System.Drawing.Point(419, 138);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(32, 20);
