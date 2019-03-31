@@ -120,12 +120,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MSFContainerLib\MSFContainerLib.csproj">
-      <Project>{505615d6-60e1-4fac-b2dd-cc3ed109c7d2}</Project>
-      <Name>MSFContainerLib</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="MP3Sharp">
       <Version>1.0.4</Version>
     </PackageReference>

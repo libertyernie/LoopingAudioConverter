@@ -9,11 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VorbisCommentSharp", "Vorbi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrawlLib.LoopSelection", "BrawlLib.LoopSelection\BrawlLib.LoopSelection.csproj", "{41C94979-CE5A-4582-888A-1BEE98DD43D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSFContainerLib", "MSFContainerLib\MSFContainerLib.csproj", "{505615D6-60E1-4FAC-B2DD-CC3ED109C7D2}"
-EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Sandbox", "Sandbox\Sandbox.vbproj", "{94C867C3-E912-4175-8342-99736AAD1D25}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSFContainerLib.Test1", "MSFContainerLib.Test1\MSFContainerLib.Test1.csproj", "{DBFDC73A-991A-4EE0-93CC-128B216F1E56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSFContainerLib", "MSFContainerLib\MSFContainerLib.csproj", "{31BD3716-2D0B-49E4-A0E8-2C4E0ADD93F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,14 +45,6 @@ Global
 		{41C94979-CE5A-4582-888A-1BEE98DD43D3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{41C94979-CE5A-4582-888A-1BEE98DD43D3}.Release|x86.ActiveCfg = Release|x86
 		{41C94979-CE5A-4582-888A-1BEE98DD43D3}.Release|x86.Build.0 = Release|x86
-		{505615D6-60E1-4FAC-B2DD-CC3ED109C7D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{505615D6-60E1-4FAC-B2DD-CC3ED109C7D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{505615D6-60E1-4FAC-B2DD-CC3ED109C7D2}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{505615D6-60E1-4FAC-B2DD-CC3ED109C7D2}.Debug|x86.Build.0 = Debug|Any CPU
-		{505615D6-60E1-4FAC-B2DD-CC3ED109C7D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{505615D6-60E1-4FAC-B2DD-CC3ED109C7D2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{505615D6-60E1-4FAC-B2DD-CC3ED109C7D2}.Release|x86.ActiveCfg = Release|Any CPU
-		{505615D6-60E1-4FAC-B2DD-CC3ED109C7D2}.Release|x86.Build.0 = Release|Any CPU
 		{94C867C3-E912-4175-8342-99736AAD1D25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{94C867C3-E912-4175-8342-99736AAD1D25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94C867C3-E912-4175-8342-99736AAD1D25}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -69,6 +61,14 @@ Global
 		{DBFDC73A-991A-4EE0-93CC-128B216F1E56}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DBFDC73A-991A-4EE0-93CC-128B216F1E56}.Release|x86.ActiveCfg = Release|Any CPU
 		{DBFDC73A-991A-4EE0-93CC-128B216F1E56}.Release|x86.Build.0 = Release|Any CPU
+		{31BD3716-2D0B-49E4-A0E8-2C4E0ADD93F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31BD3716-2D0B-49E4-A0E8-2C4E0ADD93F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31BD3716-2D0B-49E4-A0E8-2C4E0ADD93F5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{31BD3716-2D0B-49E4-A0E8-2C4E0ADD93F5}.Debug|x86.Build.0 = Debug|Any CPU
+		{31BD3716-2D0B-49E4-A0E8-2C4E0ADD93F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31BD3716-2D0B-49E4-A0E8-2C4E0ADD93F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31BD3716-2D0B-49E4-A0E8-2C4E0ADD93F5}.Release|x86.ActiveCfg = Release|Any CPU
+		{31BD3716-2D0B-49E4-A0E8-2C4E0ADD93F5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
