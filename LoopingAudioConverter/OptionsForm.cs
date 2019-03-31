@@ -349,6 +349,7 @@ namespace LoopingAudioConverter {
 			}
 			string text = this.Text + ":";
 			text = text.Substring(0, text.IndexOf(':'));
+			this.Enabled = runningTasks.Count == 0;
 			switch (runningTasks.Count) {
 				case 0:
 					break;
