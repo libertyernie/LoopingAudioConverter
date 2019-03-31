@@ -78,6 +78,14 @@ namespace MSFContainerLib
         {
             using (var output = new MemoryStream())
             {
+                ushort[] endian_test = new ushort[] { 0x1234 };
+                fixed (ushort* ptr1 = endian_test)
+                {
+                    byte* ptr2 = (byte*)ptr1;
+                    if (*ptr2 != 0x34)
+                        throw new NotSupportedException("MP3 decoding is only supported on little-endian processors");
+                }
+
                 using (var input = new MemoryStream(Body, false))
                 using (var mp3 = new MP3Stream(input))
                 {
