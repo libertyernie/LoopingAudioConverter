@@ -18,7 +18,7 @@ namespace LoopingAudioConverter {
 			Application.EnableVisualStyles();
 
 			bool appsettingserror = false;
-			foreach (string s in new string[] { "sox_path", "madplay_path", "vgmstream_path", "lame_path", "faad_path" }) {
+			foreach (string s in new string[] { "sox_path", "vgmstream_path", "lame_path", "faad_path" }) {
 				string v = ConfigurationManager.AppSettings[s];
 				if (string.IsNullOrEmpty(v)) {
 					appsettingserror = true;
@@ -78,7 +78,7 @@ namespace LoopingAudioConverter {
 
 			List<IAudioImporter> importers = new List<IAudioImporter> {
 					new WAVImporter(),
-					new MP3Importer(ConfigurationManager.AppSettings["madplay_path"]),
+					new MP3Importer(),
 					new MP4Importer(ConfigurationManager.AppSettings["faad_path"]),
 					new VGMImporter(ConfigurationManager.AppSettings["vgmplay_path"]),
 					new MSU1(),

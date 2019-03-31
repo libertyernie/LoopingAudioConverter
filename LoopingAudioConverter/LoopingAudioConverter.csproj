@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LoopingAudioConverter</RootNamespace>
     <AssemblyName>LoopingAudioConverter</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -41,6 +41,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MP3Sharp, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MP3Sharp.1.0.4\lib\netstandard2.0\MP3Sharp.dll</HintPath>
+    </Reference>
     <Reference Include="RunProcessAsTask, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RunProcessAsTask.1.2.3\lib\net45\RunProcessAsTask.dll</HintPath>
     </Reference>
