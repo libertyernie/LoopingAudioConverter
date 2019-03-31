@@ -75,45 +75,6 @@ namespace MSFContainerLib.Test1
                     Console.WriteLine("    error");
             }
             Console.WriteLine();
-
-            Console.WriteLine("MP3 test");
-            // Get an MP3 MSF for testing
-            byte[] mp3data = File.ReadAllBytes("stage_Sonic.msf");
-            var h = MSFHeader.Create();
-            h.channel_count = 2;
-            h.codec = 7;
-            h.data_size = mp3data.Length;
-            h.flags = new MSFFlags
-            {
-                Flags = MSFFlag.MP3JointStereo | MSFFlag.Resample
-            };
-            h.sample_rate = 44100;
-            var msf = new MSF_MP3(h, mp3data);
-            // Check MD5
-            {
-                byte[] hash = md5.ComputeHash(msf.Export());
-                Console.WriteLine($"Checksum for sample MP3 MSF: new byte[] {{ {string.Join(",", hash.Select(x => "0x" + ((int)x).ToString("X2")))} }}");
-                if (hash.SequenceEqual(new byte[] { 0x35, 0xB0, 0x90, 0x9D, 0x1A, 0x9A, 0xD3, 0x6C, 0x60, 0xCF, 0x03, 0x86, 0x7D, 0xB4, 0xB9, 0x03 }))
-                    Console.WriteLine("    OK");
-                else
-                    Console.WriteLine("    error");
-            }
-            // Decode by converting to a PCM16 MSF
-            try
-            {
-                var pcm_version = MSF.FromAudioSource(msf);
-                // Check MD5
-                byte[] hash = md5.ComputeHash(pcm_version.Export());
-                Console.WriteLine($"Checksum of decoded PCM data: new byte[] {{ {string.Join(",", hash.Select(x => "0x" + ((int)x).ToString("X2")))} }}");
-                if (hash.SequenceEqual(new byte[] { 0xD9, 0xD5, 0x11, 0x98, 0x69, 0xB3, 0xFA, 0x46, 0xD9, 0x71, 0x7B, 0xBF, 0x94, 0x64, 0x93, 0xE5 }))
-                    Console.WriteLine("    OK");
-                else
-                    Console.WriteLine("    error");
-            }
-            catch (NotSupportedException)
-            {
-                Console.WriteLine($"Checksum of decoded PCM data: N/A (not supported)");
-            }
         }
     }
 }

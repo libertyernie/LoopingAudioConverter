@@ -106,7 +106,7 @@ namespace MSFContainerLib
                     case 7:
                         return new MSF_MP3(header, body);
                     default:
-                        throw new FormatException($"The codec {header.codec} is not supported.");
+                        throw new NotSupportedException($"The codec {header.codec} is not supported.");
                 }
             }
         }

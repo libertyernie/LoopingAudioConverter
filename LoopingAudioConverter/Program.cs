@@ -82,6 +82,7 @@ namespace LoopingAudioConverter {
 					new MP4Importer(ConfigurationManager.AppSettings["faad_path"]),
 					new VGMImporter(ConfigurationManager.AppSettings["vgmplay_path"]),
 					new MSU1(),
+					new MSFImporter(),
 					new VGMStreamImporter(ConfigurationManager.AppSettings["vgmstream_path"]),
 					sox
 				};

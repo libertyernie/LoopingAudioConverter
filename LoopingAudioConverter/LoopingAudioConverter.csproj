@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exporters\MSFExporter.cs" />
+    <Compile Include="Importers\MSFImporter.cs" />
     <Compile Include="MSU1.cs" />
     <Compile Include="VGAudio\HCAExporter.cs" />
     <Compile Include="VGAudio\HPSExporter.cs" />
@@ -155,6 +156,10 @@
     <ProjectReference Include="..\BrawlLib.LoopSelection\BrawlLib.LoopSelection.csproj">
       <Project>{41c94979-ce5a-4582-888a-1bee98dd43d3}</Project>
       <Name>BrawlLib.LoopSelection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MSFContainerLib\MSFContainerLib.csproj">
+      <Project>{31bd3716-2d0b-49e4-a0e8-2c4e0add93f5}</Project>
+      <Name>MSFContainerLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\VorbisCommentSharp\VorbisCommentSharp.csproj">
       <Project>{5bd4854f-481b-4aa6-b838-32c21b2b069f}</Project>
