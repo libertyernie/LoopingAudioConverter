@@ -37,9 +37,5 @@ namespace LoopingAudioConverter {
 				};
 			}
 		}
-
-		public string GetImporterName() {
-			return "MP3Sharp";
-		}
 	}
 }

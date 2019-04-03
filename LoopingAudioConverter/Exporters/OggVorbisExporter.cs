@@ -51,9 +51,5 @@ namespace LoopingAudioConverter {
 				}
 			}
 		}
-
-		public string GetExporterName() {
-			return "Ogg Vorbis (SoX)";
-		}
 	}
 }

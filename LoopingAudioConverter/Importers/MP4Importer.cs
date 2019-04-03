@@ -45,9 +45,5 @@ namespace LoopingAudioConverter {
 				throw new AudioImporterException("Could not read faad output: " + e.Message);
 			}
 		}
-
-		public string GetImporterName() {
-			return "FAAD";
-		}
 	}
 }

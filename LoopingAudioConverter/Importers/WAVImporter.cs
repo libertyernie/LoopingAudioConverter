@@ -28,9 +28,5 @@ namespace LoopingAudioConverter {
 				throw new AudioImporterException(e.Message, e);
 			}
 		}
-
-		public string GetImporterName() {
-			return "WAVImporter";
-		}
 	}
 }

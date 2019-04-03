@@ -14,7 +14,6 @@ namespace LoopingAudioConverter {
 	public interface IAudioImporter {
 		bool SupportsExtension(string extension);
 		Task<PCM16Audio> ReadFileAsync(string filename);
-		string GetImporterName();
 	}
 
 	public interface IRenderingAudioImporter : IAudioImporter {
@@ -23,6 +22,5 @@ namespace LoopingAudioConverter {
 
 	public interface IAudioExporter {
 		Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext);
-		string GetExporterName();
 	}
 }

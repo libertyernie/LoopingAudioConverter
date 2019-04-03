@@ -63,9 +63,5 @@ namespace LoopingAudioConverter {
 				throw new AudioImporterException("Could not read output of test.exe: " + e.Message);
 			}
 		}
-
-		public string GetImporterName() {
-			return "VGMStreamImporter";
-		}
 	}
 }

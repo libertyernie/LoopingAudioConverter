@@ -14,10 +14,6 @@ namespace LoopingAudioConverter {
 			this.big_endian = big_endian;
 		}
 
-		public string GetExporterName() {
-			return $"MSF (PCM16 {(big_endian ? "little endian" : "big endian")}";
-		}
-
 		public Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
 			var msf = MSF.FromAudioSource(lwav, big_endian: big_endian);
 			string outPath = Path.Combine(output_dir, original_filename_no_ext + ".msf");

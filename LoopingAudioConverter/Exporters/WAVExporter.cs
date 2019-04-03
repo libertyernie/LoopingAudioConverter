@@ -12,9 +12,5 @@ namespace LoopingAudioConverter {
 			File.WriteAllBytes(output_filename, lwav.Export());
 			return Task.FromResult(0);
 		}
-
-		public string GetExporterName() {
-			return "WAVExporter";
-		}
 	}
 }

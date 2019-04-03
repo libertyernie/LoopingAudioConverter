@@ -93,9 +93,5 @@ namespace LoopingAudioConverter.VGAudio {
 				throw new AudioImporterException("Could not convert from B" + (char)data[0] + "STM: " + e.Message);
 			}
 		}
-
-		public string GetImporterName() {
-			return "VGAudio";
-		}
 	}
 }

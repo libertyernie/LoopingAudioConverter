@@ -24,9 +24,5 @@ namespace LoopingAudioConverter.VGAudio {
 			task.Start();
 			return task;
 		}
-
-		public string GetExporterName() {
-			return $"{GetExtension()} (VGAudio)";
-		}
 	}
 }

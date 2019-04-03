@@ -111,9 +111,5 @@ namespace LoopingAudioConverter {
 				throw new AudioImporterException("Could not read output of VGMPlay: " + e.Message);
 			}
 		}
-
-		public string GetImporterName() {
-			return "VGMImporter";
-		}
 	}
 }

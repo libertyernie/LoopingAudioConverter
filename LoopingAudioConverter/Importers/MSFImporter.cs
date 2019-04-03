@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 namespace LoopingAudioConverter {
 	public class MSFImporter : IAudioImporter {
-		public string GetImporterName() => "MSF";
-
 		public Task<PCM16Audio> ReadFileAsync(string filename) {
 			byte[] data = File.ReadAllBytes(filename);
 			try {

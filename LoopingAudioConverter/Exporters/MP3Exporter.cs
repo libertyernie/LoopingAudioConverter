@@ -35,9 +35,5 @@ namespace LoopingAudioConverter {
 				throw new AudioExporterException("LAME quit with exit code " + pr.ExitCode);
 			}
 		}
-
-		public string GetExporterName() {
-			return "MP3 (LAME)";
-		}
 	}
 }
