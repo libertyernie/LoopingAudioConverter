@@ -10,6 +10,7 @@ namespace LoopingAudioConverter {
 		BRSTM,
 		BCSTM,
 		BFSTM,
+		BFSTM_LE,
 		DSP,
 		IDSP,
 		HCA,

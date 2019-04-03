@@ -43,9 +43,10 @@ namespace LoopingAudioConverter {
 			};
 
 			var exporters = new[] {
-				new NVPair<ExporterType>(ExporterType.BRSTM, "BRSTM"),
-				new NVPair<ExporterType>(ExporterType.BCSTM, "BCSTM"),
-				new NVPair<ExporterType>(ExporterType.BFSTM, "BFSTM"),
+				new NVPair<ExporterType>(ExporterType.BRSTM, "BRSTM (Wii)"),
+				new NVPair<ExporterType>(ExporterType.BCSTM, "BCSTM (3DS)"),
+				new NVPair<ExporterType>(ExporterType.BFSTM, "BFSTM (Wii U)"),
+				new NVPair<ExporterType>(ExporterType.BFSTM_LE, "BFSTM (Switch)"),
 				new NVPair<ExporterType>(ExporterType.DSP, "DSP (Nintendo)"),
 				new NVPair<ExporterType>(ExporterType.IDSP, "IDSP"),
 				new NVPair<ExporterType>(ExporterType.HCA, "HCA"),
@@ -67,6 +68,7 @@ namespace LoopingAudioConverter {
 					case ExporterType.BRSTM:
 					case ExporterType.BCSTM:
 					case ExporterType.BFSTM:
+					case ExporterType.BFSTM_LE:
 						btnEncodingOptions.Visible = false;
 						ddlBxstmCodec.Visible = true;
 						break;

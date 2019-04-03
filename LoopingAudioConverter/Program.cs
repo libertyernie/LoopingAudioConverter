@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VGAudio.Utilities;
 
 namespace LoopingAudioConverter {
 	class Program {
@@ -99,7 +100,10 @@ namespace LoopingAudioConverter {
 					exporter = new CSTMExporter(o.BxstmCodec);
 					break;
 				case ExporterType.BFSTM:
-					exporter = new FSTMExporter(o.BxstmCodec);
+					exporter = new FSTMExporter(o.BxstmCodec, Endianness.BigEndian);
+					break;
+				case ExporterType.BFSTM_LE:
+					exporter = new FSTMExporter(o.BxstmCodec, Endianness.LittleEndian);
 					break;
 				case ExporterType.DSP:
 					exporter = new DSPExporter();
