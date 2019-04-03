@@ -11,44 +11,236 @@
       libraries, and allows conversion between a variety of looping
       audio formats.<br>
     </p>
+    <p>This table lists the supported input formats. Some formats can be
+      decoded by more than one library or program; Looping Audio
+      Converter will try them in the order shown below.<br>
+    </p>
+    <table cellspacing="2" cellpadding="2" border="1">
+      <tbody>
+        <tr>
+          <td valign="top">File extension<br>
+          </td>
+          <td valign="top">Container(s)<br>
+          </td>
+          <td valign="top">Codec(s)<br>
+          </td>
+          <td valign="top">Decoder<br>
+          </td>
+          <td valign="top">Supports looping<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">.wav<br>
+          </td>
+          <td valign="top">WAVE<br>
+          </td>
+          <td valign="top">16-bit PCM (little endian)<br>
+          </td>
+          <td rowspan="1" colspan="1" valign="top">Native support<br>
+          </td>
+          <td valign="top">✓<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">.bfstm<br>
+            .bcstm<br>
+            .brstm<br>
+          </td>
+          <td valign="top">BFSTM<br>
+            BCSTM<br>
+            BRSTM<br>
+          </td>
+          <td valign="top">ADPCM (Nintendo)<br>
+            16-bit PCM (big endian)<br>
+            16-bit PCM (little endian)<br>
+            8-bit PCM<br>
+          </td>
+          <td rowspan="7" colspan="1" valign="top">VGAudio<br>
+          </td>
+          <td valign="top">✓</td>
+        </tr>
+        <tr>
+          <td valign="top">.dsp<br>
+          </td>
+          <td valign="top">DSP (Nintendo)<br>
+          </td>
+          <td valign="top">ADPCM (Nintendo)</td>
+          <td valign="top">✓</td>
+        </tr>
+        <tr>
+          <td valign="top">.adx<br>
+          </td>
+          <td rowspan="1" colspan="2" valign="top">CRI ADX<br>
+          </td>
+          <td valign="top">✓</td>
+        </tr>
+        <tr>
+          <td valign="top">.hca<br>
+          </td>
+          <td rowspan="1" colspan="2" valign="top">CRI HCA<br>
+          </td>
+          <td valign="top">✓</td>
+        </tr>
+        <tr>
+          <td valign="top">.hps<br>
+          </td>
+          <td valign="top">HPS (HAL)<br>
+          </td>
+          <td valign="top">ADPCM (Nintendo)</td>
+          <td valign="top">✓</td>
+        </tr>
+        <tr>
+          <td valign="top">.idsp<br>
+          </td>
+          <td valign="top">DSP (Nintendo) (interleaved)<br>
+          </td>
+          <td valign="top">ADPCM (Nintendo)</td>
+          <td valign="top">✓</td>
+        </tr>
+        <tr>
+          <td valign="top">.bcstp<br>
+            .bcwav<br>
+            .cwav<br>
+            .bfstp<br>
+            .bfwav<br>
+            .brwav<br>
+            .rwav<br>
+            .mdsp<br>
+            .idsp<br>
+            .hca<br>
+            .hps<br>
+          </td>
+          <td rowspan="1" colspan="2" valign="top">Miscellaneous<br>
+          </td>
+          <td valign="top">✓ </td>
+        </tr>
+        <tr>
+          <td valign="top">.mp3<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">.aac</td>
+          <td valign="top">AAC</td>
+          <td rowspan="2" colspan="1" valign="top">AAC</td>
+          <td rowspan="2" colspan="1" valign="top">faad<br>
+          </td>
+          <td rowspan="2" colspan="1" valign="top"><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">.m4a<br>
+          </td>
+          <td valign="top">MP4<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">.vgm<br>
+            .vgz<br>
+          </td>
+          <td rowspan="1" colspan="2" valign="top"><a
+              href="http://vgmrips.net/">VGM<br>
+            </a> <br>
+          </td>
+          <td valign="top">VGMPlay<br>
+          </td>
+          <td valign="top">✓ </td>
+        </tr>
+        <tr>
+          <td valign="top">.pcm</td>
+          <td valign="top"><a href="http://helmet.kafuka.org/msu1.htm">MSU-1</a></td>
+          <td valign="top">16-bit PCM (little endian)</td>
+          <td valign="top">Native support</td>
+          <td valign="top">✓</td>
+        </tr>
+        <tr>
+          <td rowspan="2" colspan="1" valign="top">.msf</td>
+          <td rowspan="2" colspan="1" valign="top">MSF (PlayStation 3)</td>
+          <td valign="top">16-bit PCM (big endian)<br>
+            16-bit PCM (little endian)<br>
+          </td>
+          <td rowspan="1" colspan="1" valign="top">MSFContainerLib<br>
+          </td>
+          <td valign="top">✓ </td>
+        </tr>
+        <tr>
+          <td valign="top">MP3<br>
+          </td>
+          <td valign="top">MSFContainerLib / MP3Sharp</td>
+          <td valign="top">✓</td>
+        </tr>
+        <tr>
+          <td valign="top">.*<br>
+          </td>
+          <td rowspan="1" colspan="2" valign="top">Miscellaneous</td>
+          <td valign="top">vgmstream<br>
+          </td>
+          <td valign="top">✓</td>
+        </tr>
+        <tr>
+          <td valign="top">.*<br>
+          </td>
+          <td rowspan="1" colspan="2" valign="top">Miscellaneous</td>
+          <td valign="top">SoX<br>
+          </td>
+          <td valign="top">✓</td>
+        </tr>
+      </tbody>
+    </table>
     <p>Supported input formats:<br>
     </p>
     <ul>
-      <li>Native<br>
+      <ul>
+      </ul>
+      <li>WAV (with or without "smpl" chunk to denote looping audio)</li>
+      <ul>
+      </ul>
+      <li>MP3 (with MP3Sharp)</li>
+      <ul>
+      </ul>
+      <li><a href="https://github.com/Thealexbarney/VGAudio">VGAudio</a>
+        formats<br>
       </li>
       <ul>
-        <li>WAV (with or without "smpl" chunk to denote looping audio)</li>
-        <li>MP3 (with MP3Sharp)</li>
-        <li>VGAudio supported formats</li>
-        <ul>
-          <li>ADX</li>
-          <li>BRSTM</li>
-          <li>BCSTM</li>
-          <li>BCSTP</li>
-          <li>BCWAV</li>
-          <li>CWAV</li>
-          <li>BFSTM</li>
-          <li>BFSTP</li>
-          <li>BFWAV</li>
-          <li>BRWAV</li>
-          <li>RWAV</li>
-          <li>DSP</li>
-          <li>MDSP</li>
-          <li>IDSP</li>
-          <li>GENH</li>
-          <li>HCA</li>
-          <li>HPS</li>
-        </ul>
-        <li>MSF (PlayStation 3)</li>
-        <ul>
-          <li>16-bit PCM (big endian)<br>
-          </li>
-          <li>16-bit PCM (little endian)<br>
-          </li>
-          <li>16-bit PCM (MP3)</li>
-        </ul>
-        <li><a href="http://helmet.kafuka.org/msu1.htm">MSU-1</a><br>
+        <li>ADX</li>
+        <li>BRSTM</li>
+        <li>BCSTM</li>
+        <li>BCSTP</li>
+        <li>BCWAV</li>
+        <li>CWAV</li>
+        <li>BFSTM</li>
+        <li>BFSTP</li>
+        <li>BFWAV</li>
+        <li>BRWAV</li>
+        <li>RWAV</li>
+        <li>DSP</li>
+        <li>MDSP</li>
+        <li>IDSP</li>
+        <li>GENH</li>
+        <li>HCA</li>
+        <li>HPS<br>
         </li>
+      </ul>
+      <li>MSF (PlayStation 3)<br>
+      </li>
+      <ul>
+        <li>16-bit PCM (big endian)<br>
+        </li>
+        <li>16-bit PCM (little endian)<br>
+        </li>
+        <li>16-bit PCM (MP3)<br>
+        </li>
+      </ul>
+      <li><a href="http://helmet.kafuka.org/msu1.htm">MSU-1</a><br>
+      </li>
+      <ul>
       </ul>
       <li>Supported by external tools (bundled)<br>
       </li>
@@ -66,7 +258,7 @@
       <li>Native<br>
       </li>
       <ul>
-        <li>VGAudio supported formats<br>
+        <li>VGAudio formats<br>
         </li>
         <ul>
           <li>BRSTM (ADPCM, PCM16, PCM8)</li>
@@ -77,13 +269,6 @@
           <li>HCA<br>
           </li>
           <li>HPS</li>
-        </ul>
-        <ul>
-          <li>BrawlLib supported formats<br>
-          </li>
-          <li>BRSTM (ADPCM)</li>
-          <li>BCSTM (ADPCM)</li>
-          <li>BFSTM (ADPCM)</li>
         </ul>
         <li>MSF (PlayStation 3)</li>
         <ul>
@@ -133,6 +318,11 @@
           is a library for encoding, decoding, and manipulating audio
           files from video games, available under the <a
             href="https://github.com/Thealexbarney/VGAudio/blob/2.0/LICENSE">MIT
+
+
+
+
+
 
 
             license</a>.<br>
