@@ -40,9 +40,9 @@ namespace LoopingAudioConverter {
 			foreach (string arg in args) {
 				if (arg == "--auto") {
 					auto = true;
-				} else if (Path.GetExtension(arg).ToLowerInvariant() == ".ini") {
+				} else if (Path.GetExtension(arg).ToLowerInvariant() == ".xml") {
 					if (ini != null) {
-						throw new Exception("You cannot specify more than one .ini file.");
+						throw new Exception("You cannot specify more than one .xml file.");
 					}
 					ini = arg;
 				} else {
@@ -51,8 +51,8 @@ namespace LoopingAudioConverter {
 			}
 
 			OptionsForm f = new OptionsForm();
-			if (File.Exists(ini ?? "LoopingAudioConverter.ini")) {
-				f.LoadOptions(ini ?? "LoopingAudioConverter.ini");
+			if (File.Exists(ini ?? "LoopingAudioConverter.xml")) {
+				f.LoadOptions(ini ?? "LoopingAudioConverter.xml");
 			}
 
 			f.AddInputFiles(initialInputFiles);

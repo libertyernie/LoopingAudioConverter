@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 using VGAudio.Containers.NintendoWare;
 
 namespace LoopingAudioConverter {
@@ -41,7 +42,9 @@ namespace LoopingAudioConverter {
 	}
 
 	public class Options {
+		[XmlIgnore]
 		public IEnumerable<string> InputFiles { get; set; }
+
 		public string OutputDir { get; set; }
 		public int? MaxChannels { get; set; }
 		public int? MaxSampleRate { get; set; }

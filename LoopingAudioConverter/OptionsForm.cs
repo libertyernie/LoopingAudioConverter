@@ -128,7 +128,7 @@ namespace LoopingAudioConverter {
 		public void LoadOptions(string filename) {
 			Options o = GetOptions();
 			try {
-				OptionsSerialization.PopulateFromFile(filename, o);
+				OptionsSerialization.PopulateFromFile(filename, ref o);
 
 				if (o.OutputDir != null)
 					txtOutputDir.Text = o.OutputDir;
@@ -386,7 +386,7 @@ namespace LoopingAudioConverter {
 
 		private void btnLoadOptions_Click(object sender, EventArgs ea) {
 			using (OpenFileDialog d = new OpenFileDialog()) {
-				d.FileName = "LoopingAudioConverter.ini";
+				d.FileName = "LoopingAudioConverter.xml";
 				if (d.ShowDialog() == DialogResult.OK) {
 					LoadOptions(d.FileName);
 				}
@@ -396,7 +396,7 @@ namespace LoopingAudioConverter {
 		private void btnSaveOptions_Click(object sender, EventArgs ea) {
 			using (SaveFileDialog d = new SaveFileDialog()) {
 				d.InitialDirectory = Environment.CurrentDirectory;
-				d.FileName = "LoopingAudioConverter.ini";
+				d.FileName = "LoopingAudioConverter.xml";
 				if (d.ShowDialog() == DialogResult.OK) {
 					OptionsSerialization.WriteToFile(d.FileName, GetOptions());
 				}
