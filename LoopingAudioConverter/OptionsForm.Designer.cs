@@ -83,6 +83,10 @@
             this.btnHelp = new System.Windows.Forms.Button();
             this.btnOkay = new System.Windows.Forms.Button();
             this.btnSaveOptions = new System.Windows.Forms.Button();
+            this.numPitch = new System.Windows.Forms.NumericUpDown();
+            this.chkPitch = new System.Windows.Forms.CheckBox();
+            this.numTempo = new System.Windows.Forms.NumericUpDown();
+            this.chkTempo = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -101,6 +105,8 @@
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSimulTasks)).BeginInit();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numPitch)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numTempo)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -125,7 +131,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.flowLayoutPanel2);
-            this.splitContainer1.Size = new System.Drawing.Size(534, 451);
+            this.splitContainer1.Size = new System.Drawing.Size(534, 481);
             this.splitContainer1.SplitterDistance = 161;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -278,12 +284,16 @@
             this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(534, 286);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(534, 316);
             this.flowLayoutPanel2.TabIndex = 0;
             // 
             // panel2
             // 
             this.panel2.AutoSize = true;
+            this.panel2.Controls.Add(this.numTempo);
+            this.panel2.Controls.Add(this.chkTempo);
+            this.panel2.Controls.Add(this.numPitch);
+            this.panel2.Controls.Add(this.chkPitch);
             this.panel2.Controls.Add(this.numAmplifyRatio);
             this.panel2.Controls.Add(this.chkAmplifyRatio);
             this.panel2.Controls.Add(this.numAmplifydB);
@@ -294,7 +304,7 @@
             this.panel2.Location = new System.Drawing.Point(0, 3);
             this.panel2.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(227, 104);
+            this.panel2.Size = new System.Drawing.Size(227, 156);
             this.panel2.TabIndex = 0;
             // 
             // numAmplifyRatio
@@ -402,7 +412,7 @@
             this.panel4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panel4.Controls.Add(this.ddlUnknownLoopBehavior);
             this.panel4.Controls.Add(this.lblUnknownLoopBehavior);
-            this.panel4.Location = new System.Drawing.Point(0, 113);
+            this.panel4.Location = new System.Drawing.Point(0, 165);
             this.panel4.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(227, 48);
@@ -436,7 +446,7 @@
             this.pnlExportChannels.Controls.Add(this.radChannelsTogether);
             this.pnlExportChannels.Controls.Add(this.radChannelsPairs);
             this.pnlExportChannels.Controls.Add(this.radChannelsSeparate);
-            this.pnlExportChannels.Location = new System.Drawing.Point(0, 167);
+            this.pnlExportChannels.Location = new System.Drawing.Point(0, 219);
             this.pnlExportChannels.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.pnlExportChannels.Name = "pnlExportChannels";
             this.pnlExportChannels.Size = new System.Drawing.Size(230, 90);
@@ -780,7 +790,7 @@
             this.panel1.Controls.Add(this.btnOkay);
             this.panel1.Controls.Add(this.btnSaveOptions);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 451);
+            this.panel1.Location = new System.Drawing.Point(0, 481);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(534, 30);
             this.panel1.TabIndex = 1;
@@ -830,12 +840,65 @@
             this.btnSaveOptions.UseVisualStyleBackColor = true;
             this.btnSaveOptions.Click += new System.EventHandler(this.btnSaveOptions_Click);
             // 
+            // numPitch
+            // 
+            this.numPitch.DecimalPlaces = 2;
+            this.numPitch.Enabled = false;
+            this.numPitch.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.numPitch.Location = new System.Drawing.Point(158, 107);
+            this.numPitch.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.numPitch.Name = "numPitch";
+            this.numPitch.Size = new System.Drawing.Size(66, 20);
+            this.numPitch.TabIndex = 8;
+            // 
+            // chkPitch
+            // 
+            this.chkPitch.Location = new System.Drawing.Point(3, 107);
+            this.chkPitch.Name = "chkPitch";
+            this.chkPitch.Size = new System.Drawing.Size(149, 20);
+            this.chkPitch.TabIndex = 7;
+            this.chkPitch.Text = "Adjust pitch (semitones):";
+            this.chkPitch.UseVisualStyleBackColor = true;
+            this.chkPitch.CheckedChanged += new System.EventHandler(this.chkPitch_CheckedChanged);
+            // 
+            // numTempo
+            // 
+            this.numTempo.DecimalPlaces = 3;
+            this.numTempo.Enabled = false;
+            this.numTempo.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numTempo.Location = new System.Drawing.Point(158, 133);
+            this.numTempo.Name = "numTempo";
+            this.numTempo.Size = new System.Drawing.Size(66, 20);
+            this.numTempo.TabIndex = 10;
+            // 
+            // chkTempo
+            // 
+            this.chkTempo.Location = new System.Drawing.Point(3, 133);
+            this.chkTempo.Name = "chkTempo";
+            this.chkTempo.Size = new System.Drawing.Size(149, 20);
+            this.chkTempo.TabIndex = 9;
+            this.chkTempo.Text = "Adjust tempo:";
+            this.chkTempo.UseVisualStyleBackColor = true;
+            this.chkTempo.CheckedChanged += new System.EventHandler(this.chkTempo_CheckedChanged);
+            // 
             // OptionsForm
             // 
             this.AcceptButton = this.btnOkay;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(534, 481);
+            this.ClientSize = new System.Drawing.Size(534, 511);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.panel1);
             this.Name = "OptionsForm";
@@ -864,6 +927,8 @@
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numSimulTasks)).EndInit();
             this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numPitch)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numTempo)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -930,5 +995,9 @@
         private System.Windows.Forms.Button btnEncodingOptions;
         private System.Windows.Forms.CheckBox chkWriteLoopingMetadata;
         private System.Windows.Forms.ComboBox ddlBxstmCodec;
+		private System.Windows.Forms.NumericUpDown numPitch;
+		private System.Windows.Forms.CheckBox chkPitch;
+		private System.Windows.Forms.NumericUpDown numTempo;
+		private System.Windows.Forms.CheckBox chkTempo;
 	}
 }

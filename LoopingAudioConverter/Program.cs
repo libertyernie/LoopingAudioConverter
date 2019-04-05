@@ -268,7 +268,9 @@ namespace LoopingAudioConverter {
 					max_channels: o.MaxChannels ?? int.MaxValue,
 					max_rate: o.MaxSampleRate ?? int.MaxValue,
 					db: o.AmplifydB ?? 0M,
-					amplitude: o.AmplifyRatio ?? 1M);
+					amplitude: o.AmplifyRatio ?? 1M,
+					pitch_semitones: o.PitchSemitones ?? 0M,
+					tempo_ratio: o.TempoRatio ?? 1M);
 				window.SetDecodingText("");
 
 				List<NamedAudio> wavsToExport = new List<NamedAudio>();

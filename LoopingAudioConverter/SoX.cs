@@ -72,8 +72,10 @@ namespace LoopingAudioConverter {
 		/// <param name="db">Volume adjustment, in decibels (if 0, this effect will not be applied)</param>
 		/// <param name="amplitude">Volume adjustment, in linear ratio (if 1, this effect will not be applied)</param>
 		/// <param name="max_rate">The new sample rate (if the PCM16Audio's sample rate is less than or equal to this value, this effect will not be applied)</param>
+		/// <param name="pitch_semitones">Pitch adjustment, in semitones (if 0, this effect will not be applied)</param>
+		/// <param name="tempo_ratio">Tempo ratio (if 1, this effect will not be applied)</param>
 		/// <returns>A new PCM16Audio object if one or more effects are applied; the same PCM16Audio object if no effects are applied.</returns>
-		public PCM16Audio ApplyEffects(PCM16Audio lwav, int max_channels = int.MaxValue, decimal db = 0, decimal amplitude = 1, int max_rate = int.MaxValue) {
+		public PCM16Audio ApplyEffects(PCM16Audio lwav, int max_channels = int.MaxValue, decimal db = 0, decimal amplitude = 1, int max_rate = int.MaxValue, decimal pitch_semitones = 0, decimal tempo_ratio = 1) {
 			byte[] wav = lwav.Export();
 
 			int channels = Math.Min(max_channels, lwav.Channels);
@@ -88,6 +90,12 @@ namespace LoopingAudioConverter {
 			}
 			if (amplitude != 1) {
 				effects_string.Append(" vol " + amplitude.ToString(CultureInfo.InvariantCulture) + " amplitude");
+			}
+			if (pitch_semitones != 0) {
+				effects_string.Append($" pitch {(int)(pitch_semitones * 100)}");
+			}
+			if (tempo_ratio != 1) {
+				effects_string.Append($" tempo {tempo_ratio}");
 			}
 			if (sampleRate != lwav.SampleRate) {
 				effects_string.Append(" rate " + max_rate);

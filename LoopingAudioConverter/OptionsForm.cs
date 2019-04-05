@@ -142,6 +142,12 @@ namespace LoopingAudioConverter {
 				chkAmplifyRatio.Checked = o.AmplifyRatio != null;
 				if (o.AmplifyRatio != null)
 					numAmplifyRatio.Value = o.AmplifyRatio.Value;
+				chkPitch.Checked = o.PitchSemitones != null;
+				if (o.PitchSemitones != null)
+					numPitch.Value = o.PitchSemitones.Value;
+				chkTempo.Checked = o.TempoRatio != null;
+				if (o.TempoRatio != null)
+					numTempo.Value = o.TempoRatio.Value;
 				if (o.ChannelSplit == ChannelSplit.Pairs)
 					radChannelsPairs.Checked = true;
 				else if (o.ChannelSplit == ChannelSplit.Each)
@@ -181,6 +187,8 @@ namespace LoopingAudioConverter {
 				MaxSampleRate = chkMaxSampleRate.Checked ? (int)numMaxSampleRate.Value : (int?)null,
 				AmplifydB = chkAmplifydB.Checked ? numAmplifydB.Value : (decimal?)null,
 				AmplifyRatio = chkAmplifyRatio.Checked ? numAmplifyRatio.Value : (decimal?)null,
+				PitchSemitones = chkPitch.Checked ? numPitch.Value : (decimal?)null,
+				TempoRatio = chkTempo.Checked ? numTempo.Value : (decimal?)null,
 				ChannelSplit = radChannelsPairs.Checked ? ChannelSplit.Pairs
 					: radChannelsSeparate.Checked ? ChannelSplit.Each
 					: ChannelSplit.OneFile,
@@ -295,6 +303,14 @@ namespace LoopingAudioConverter {
 
 		private void chkAmplifyRatio_CheckedChanged(object sender, EventArgs e) {
 			numAmplifyRatio.Enabled = chkAmplifyRatio.Checked;
+		}
+
+		private void chkPitch_CheckedChanged(object sender, EventArgs e) {
+			numPitch.Enabled = chkPitch.Checked;
+		}
+
+		private void chkTempo_CheckedChanged(object sender, EventArgs e) {
+			numTempo.Enabled = chkTempo.Checked;
 		}
 
 		private void btnBrowse_Click(object sender, EventArgs e) {

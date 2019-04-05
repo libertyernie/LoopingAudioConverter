@@ -50,6 +50,8 @@ namespace LoopingAudioConverter {
 		public int? MaxSampleRate { get; set; }
 		public decimal? AmplifydB { get; set; }
 		public decimal? AmplifyRatio { get; set; }
+		public decimal? PitchSemitones { get; set; }
+		public decimal? TempoRatio { get; set; }
 		public ChannelSplit ChannelSplit { get; set; }
 		public ExporterType ExporterType { get; set; }
 		public string MP3EncodingParameters { get; set; }
