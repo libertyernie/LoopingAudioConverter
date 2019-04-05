@@ -85,6 +85,7 @@
     <Compile Include="Exporters\MSFPCM16Exporter.cs" />
     <Compile Include="Importers\MSFImporter.cs" />
     <Compile Include="MSU1.cs" />
+    <Compile Include="VGAudio\ADXExporter.cs" />
     <Compile Include="VGAudio\HCAExporter.cs" />
     <Compile Include="VGAudio\HPSExporter.cs" />
     <Compile Include="VGAudio\IDSPExporter.cs" />

@@ -930,5 +930,5 @@
         private System.Windows.Forms.Button btnEncodingOptions;
         private System.Windows.Forms.CheckBox chkWriteLoopingMetadata;
         private System.Windows.Forms.ComboBox ddlBxstmCodec;
-    }
+	}
 }

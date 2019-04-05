@@ -111,11 +111,14 @@ namespace LoopingAudioConverter {
 				case ExporterType.IDSP:
 					exporter = new IDSPExporter();
 					break;
+				case ExporterType.HPS:
+					exporter = new HPSExporter();
+					break;
 				case ExporterType.HCA:
 					exporter = new HCAExporter();
 					break;
-				case ExporterType.HPS:
-					exporter = new HPSExporter();
+				case ExporterType.ADX:
+					exporter = new ADXExporter();
 					break;
 				case ExporterType.MSF_PCM16BE:
 					exporter = new MSFPCM16Exporter(big_endian: true);

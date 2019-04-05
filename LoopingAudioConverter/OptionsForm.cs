@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VGAudio.Containers.Hca;
 using VGAudio.Containers.NintendoWare;
 
 namespace LoopingAudioConverter {
@@ -26,6 +27,7 @@ namespace LoopingAudioConverter {
 		private HashSet<Task> runningTasks;
 
 		private Dictionary<ExporterType, string> encodingParameters;
+		private HcaConfiguration hcaConfiguration;
 
 		public IEnumerable<Task> RunningTasks {
 			get {
@@ -49,8 +51,9 @@ namespace LoopingAudioConverter {
 				new NVPair<ExporterType>(ExporterType.BFSTM_LE, "BFSTM (Switch)"),
 				new NVPair<ExporterType>(ExporterType.DSP, "DSP (Nintendo)"),
 				new NVPair<ExporterType>(ExporterType.IDSP, "IDSP"),
-				new NVPair<ExporterType>(ExporterType.HCA, "HCA"),
 				new NVPair<ExporterType>(ExporterType.HPS, "HPS"),
+				new NVPair<ExporterType>(ExporterType.ADX, "CRI ADX"),
+				new NVPair<ExporterType>(ExporterType.HCA, "CRI HCA"),
 				new NVPair<ExporterType>(ExporterType.MSF_PCM16BE, "MSF (PCM16, big-endian)"),
 				new NVPair<ExporterType>(ExporterType.MSF_PCM16LE, "MSF (PCM16, little-endian)"),
 				new NVPair<ExporterType>(ExporterType.MSU1, "MSU-1"),
@@ -76,6 +79,8 @@ namespace LoopingAudioConverter {
 					case ExporterType.OggVorbis:
 					case ExporterType.AAC_M4A:
 					case ExporterType.AAC_ADTS:
+					case ExporterType.HCA:
+					case ExporterType.ADX:
 						btnEncodingOptions.Visible = true;
 						ddlBxstmCodec.Visible = false;
 						break;
@@ -424,6 +429,10 @@ namespace LoopingAudioConverter {
 						}
 						encodingParameters[ExporterType.AAC_M4A] = form.EncodingParameters;
 					}
+					break;
+				case ExporterType.HCA:
+				case ExporterType.ADX:
+					MessageBox.Show(this, "Looping Audio Converter does not currently support custom encoding parameters for this container.");
 					break;
 				default:
 					break;
