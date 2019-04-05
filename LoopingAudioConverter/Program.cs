@@ -318,6 +318,9 @@ namespace LoopingAudioConverter {
 					}
 					if (toExport == null) {
 						i++;
+						for (int j = 0; j < claims; j++) {
+							sem.Release();
+						}
 						break;
 					}
 
