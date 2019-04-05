@@ -355,7 +355,7 @@ namespace LoopingAudioConverter {
 				}
 			}
 			this.listBox1.Items.Clear();
-			Task t = Program.RunAsync(o);
+			Task t = Program.RunAsync(o, owner: this);
 			runningTasks.Add(t);
 			UpdateTitle();
 			try {

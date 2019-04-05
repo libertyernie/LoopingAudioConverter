@@ -69,9 +69,9 @@ namespace LoopingAudioConverter {
 		/// Runs a batch conversion process.
 		/// </summary>
 		/// <param name="o">Options for the batch.</param>
-		public static async Task RunAsync(Options o, bool showEndDialog = true) {
+		public static async Task RunAsync(Options o, bool showEndDialog = true, IWin32Window owner = null) {
 			if (o.ExporterType == ExporterType.MP3 && (o.ExportPreLoop || o.ExportLoop)) {
-				MessageBox.Show("MP3 encoding adds gaps at the start and end of each file, so the before-loop portion and the loop portion will not line up well.",
+				MessageBox.Show(owner, "MP3 encoding adds gaps at the start and end of each file, so the before-loop portion and the loop portion will not line up well.",
 					"Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
 
@@ -155,10 +155,7 @@ namespace LoopingAudioConverter {
 			SemaphoreSlim sem = new SemaphoreSlim(o.NumSimulTasks, o.NumSimulTasks);
 
 			MultipleProgressWindow window = new MultipleProgressWindow();
-			new Thread(new ThreadStart(() => {
-				Application.EnableVisualStyles();
-				window.ShowDialog();
-			})).Start();
+			window.Show(owner);
 
 			Dictionary<string, Tuple<int, int>> loopOverrides = new Dictionary<string, Tuple<int, int>>();
 			if (File.Exists("loop.txt")) {
@@ -183,7 +180,7 @@ namespace LoopingAudioConverter {
 			}
 
 			if (!o.InputFiles.Any()) {
-				MessageBox.Show("No input files were selected.");
+				MessageBox.Show(owner, "No input files were selected.");
 			}
 
 			int i = 0;
@@ -210,7 +207,7 @@ namespace LoopingAudioConverter {
 					try {
 						Directory.CreateDirectory(outputDir);
 					} catch (Exception e) {
-						MessageBox.Show("Could not create output directory " + o.OutputDir + ": " + e.Message);
+						MessageBox.Show(owner, "Could not create output directory " + o.OutputDir + ": " + e.Message);
 					}
 				}
 
@@ -255,7 +252,7 @@ namespace LoopingAudioConverter {
 
 				if (w == null) {
 					window.SetDecodingText("");
-					DialogResult dr = MessageBox.Show("Could not read " + inputFile + ".", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+					DialogResult dr = MessageBox.Show(owner, "Could not read " + inputFile + ".", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
 					if (dr == DialogResult.Cancel) {
 						break;
 					} else {
@@ -312,7 +309,7 @@ namespace LoopingAudioConverter {
 							PCM16LoopWrapper audioStream = new PCM16LoopWrapper(toExport.Audio);
 							using (BrstmConverterDialog dialog = new BrstmConverterDialog(audioStream)) {
 								dialog.AudioSource = n.Name;
-								if (dialog.ShowDialog() != DialogResult.OK) {
+								if (dialog.ShowDialog(owner) != DialogResult.OK) {
 									toExport = null;
 								}
 							}
@@ -357,7 +354,7 @@ namespace LoopingAudioConverter {
 				} catch (Exception ex) {
 					Console.Error.WriteLine($"{ex.GetType()}: {ex.Message}");
 					Console.Error.WriteLine(ex.StackTrace);
-					MessageBox.Show((ex.InnerException ?? ex).Message);
+					MessageBox.Show(owner, (ex.InnerException ?? ex).Message);
 				}
 			}
 			DateTime end = DateTime.UtcNow;
@@ -368,7 +365,7 @@ namespace LoopingAudioConverter {
 			}));
 
 			if (showEndDialog) {
-				MessageBox.Show("Exported " + exported.Count + " file(s), total time: " + (end - start));
+				MessageBox.Show(owner, "Exported " + exported.Count + " file(s), total time: " + (end - start));
 			}
 		}
 	}
