@@ -82,6 +82,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="VGAudioOptions\VGAudioOptionsBase.cs" />
+    <Compile Include="VGAudioOptions\HcaOptions.cs" />
+    <Compile Include="VGAudioOptions\AdxOptions.cs" />
+    <Compile Include="VGAudioOptions\VGAudioOptionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VGAudioOptions\VGAudioOptionsForm.Designer.cs">
+      <DependentUpon>VGAudioOptionsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Exporters\MSFPCM16Exporter.cs" />
     <Compile Include="Importers\MSFImporter.cs" />
     <Compile Include="MSU1.cs" />
@@ -154,6 +163,9 @@
   <ItemGroup>
     <EmbeddedResource Include="AACQualityForm.resx">
       <DependentUpon>AACQualityForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VGAudioOptions\VGAudioOptionsForm.resx">
+      <DependentUpon>VGAudioOptionsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OggVorbisQualityForm.resx">
       <DependentUpon>OggVorbisQualityForm.cs</DependentUpon>

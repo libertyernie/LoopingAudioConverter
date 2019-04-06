@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LoopingAudioConverter.VGAudioOptions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -57,6 +58,8 @@ namespace LoopingAudioConverter {
 		public string MP3EncodingParameters { get; set; }
 		public string AACEncodingParameters { get; set; }
 		public string OggVorbisEncodingParameters { get; set; }
+		public AdxOptions AdxOptions { get; set; }
+		public HcaOptions HcaOptions { get; set; }
 		public NwCodec BxstmCodec { get; set; }
 		public UnknownLoopBehavior UnknownLoopBehavior { get; set; }
 		public bool ExportWholeSong { get; set; }

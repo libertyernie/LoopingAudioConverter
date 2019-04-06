@@ -114,10 +114,10 @@ namespace LoopingAudioConverter {
 					exporter = new HPSExporter();
 					break;
 				case ExporterType.HCA:
-					exporter = new HCAExporter();
+					exporter = new HCAExporter(o.HcaOptions.Configuration);
 					break;
 				case ExporterType.ADX:
-					exporter = new ADXExporter();
+					exporter = new ADXExporter(o.AdxOptions.Configuration);
 					break;
 				case ExporterType.MSF_PCM16BE:
 					exporter = new MSFPCM16Exporter(big_endian: true);

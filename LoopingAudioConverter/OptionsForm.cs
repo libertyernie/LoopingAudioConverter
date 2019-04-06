@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LoopingAudioConverter.VGAudioOptions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
@@ -10,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VGAudio.Containers.Adx;
 using VGAudio.Containers.Hca;
 using VGAudio.Containers.NintendoWare;
 
@@ -27,7 +29,8 @@ namespace LoopingAudioConverter {
 		private HashSet<Task> runningTasks;
 
 		private Dictionary<ExporterType, string> encodingParameters;
-		private HcaConfiguration hcaConfiguration;
+		private HcaOptions hcaOptions;
+		private AdxOptions adxOptions;
 
 		public IEnumerable<Task> RunningTasks {
 			get {
@@ -43,6 +46,9 @@ namespace LoopingAudioConverter {
 				[ExporterType.OggVorbis] = "",
 				[ExporterType.AAC_M4A] = "",
 			};
+
+			hcaOptions = new HcaOptions();
+			adxOptions = new AdxOptions();
 
 			var exporters = new[] {
 				new NVPair<ExporterType>(ExporterType.BRSTM, "BRSTM (Wii)"),
@@ -158,6 +164,8 @@ namespace LoopingAudioConverter {
 				encodingParameters[ExporterType.MP3] = o.MP3EncodingParameters;
 				encodingParameters[ExporterType.OggVorbis] = o.OggVorbisEncodingParameters;
 				encodingParameters[ExporterType.AAC_M4A] = o.AACEncodingParameters;
+				hcaOptions = o.HcaOptions;
+				adxOptions = o.AdxOptions;
 				ddlBxstmCodec.SelectedValue = o.BxstmCodec;
 				ddlUnknownLoopBehavior.SelectedValue = o.UnknownLoopBehavior;
 				chk0End.Checked = o.ExportWholeSong;
@@ -196,6 +204,8 @@ namespace LoopingAudioConverter {
 				MP3EncodingParameters = encodingParameters[ExporterType.MP3],
 				OggVorbisEncodingParameters = encodingParameters[ExporterType.OggVorbis],
 				AACEncodingParameters = encodingParameters[ExporterType.AAC_M4A],
+				HcaOptions = hcaOptions,
+				AdxOptions = adxOptions,
 				BxstmCodec = (NwCodec)ddlBxstmCodec.SelectedValue,
 				UnknownLoopBehavior = (UnknownLoopBehavior)ddlUnknownLoopBehavior.SelectedValue,
 				ExportWholeSong = chk0End.Checked,
@@ -447,8 +457,18 @@ namespace LoopingAudioConverter {
 					}
 					break;
 				case ExporterType.HCA:
+					using (var f = new VGAudioOptionsForm<HcaOptions, HcaConfiguration>(hcaOptions)) {
+						if (f.ShowDialog(this) == DialogResult.OK) {
+							hcaOptions = f.SelectedObject;
+						}
+					};
+					break;
 				case ExporterType.ADX:
-					MessageBox.Show(this, "Looping Audio Converter does not currently support custom encoding parameters for this container.");
+					using (var f = new VGAudioOptionsForm<AdxOptions, AdxConfiguration>(adxOptions)) {
+						if (f.ShowDialog(this) == DialogResult.OK) {
+							adxOptions = f.SelectedObject;
+						}
+					};
 					break;
 				default:
 					break;
