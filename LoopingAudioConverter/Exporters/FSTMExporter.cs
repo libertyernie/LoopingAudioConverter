@@ -4,7 +4,7 @@ using VGAudio.Containers.NintendoWare;
 using VGAudio.Formats;
 using VGAudio.Utilities;
 
-namespace LoopingAudioConverter.VGAudio {
+namespace LoopingAudioConverter {
 	public class FSTMExporter : VGAudioExporter {
 		private readonly NwCodec encoding;
 		private readonly Endianness? endianness;

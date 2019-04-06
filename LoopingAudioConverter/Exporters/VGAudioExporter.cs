@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using VGAudio.Containers.Wave;
 using VGAudio.Formats;
 
-namespace LoopingAudioConverter.VGAudio {
+namespace LoopingAudioConverter {
 	public abstract class VGAudioExporter : IAudioExporter {
 		protected abstract byte[] GetData(AudioData audio);
 		protected abstract string GetExtension();

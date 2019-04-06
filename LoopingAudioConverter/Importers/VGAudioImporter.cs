@@ -11,7 +11,7 @@ using VGAudio.Containers.Idsp;
 using VGAudio.Containers.NintendoWare;
 using VGAudio.Formats;
 
-namespace LoopingAudioConverter.VGAudio {
+namespace LoopingAudioConverter {
 	public class VGAudioImporter : IAudioImporter {
 		public bool SupportsExtension(string extension) {
 			if (extension.StartsWith("."))

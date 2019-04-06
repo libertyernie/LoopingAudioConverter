@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using VGAudio.Containers.NintendoWare;
 using VGAudio.Formats;
 
-namespace LoopingAudioConverter.VGAudio {
+namespace LoopingAudioConverter {
 	public class RSTMExporter : VGAudioExporter {
-		private NwCodec encoding;
+		private readonly NwCodec encoding;
 
 		/// <summary>
 		/// Creates a new RSTMExporter instance that uses the given encoding when it has to re-encode a file.

@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using VGAudio.Containers.NintendoWare;
 using VGAudio.Formats;
 
-namespace LoopingAudioConverter.VGAudio {
+namespace LoopingAudioConverter {
 	public class CSTMExporter : VGAudioExporter {
-		private NwCodec encoding;
+		private readonly NwCodec encoding;
 
 		/// <summary>
 		/// Creates a new CSTMExporter instance that uses the given encoding when it has to re-encode a file.

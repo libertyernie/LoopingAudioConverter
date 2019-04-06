@@ -2,7 +2,7 @@
 using VGAudio.Containers.Hps;
 using VGAudio.Formats;
 
-namespace LoopingAudioConverter.VGAudio {
+namespace LoopingAudioConverter {
 	public class HCAExporter : VGAudioExporter {
 		protected override byte[] GetData(AudioData audio) {
 			return new HcaWriter().GetFile(audio);

@@ -1,5 +1,4 @@
 ﻿using BrawlLib.LoopSelection;
-using LoopingAudioConverter.VGAudio;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
