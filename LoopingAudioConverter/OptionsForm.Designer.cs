@@ -38,6 +38,10 @@
             this.lblEnumerationStatus = new System.Windows.Forms.Label();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.numTempo = new System.Windows.Forms.NumericUpDown();
+            this.chkTempo = new System.Windows.Forms.CheckBox();
+            this.numPitch = new System.Windows.Forms.NumericUpDown();
+            this.chkPitch = new System.Windows.Forms.CheckBox();
             this.numAmplifyRatio = new System.Windows.Forms.NumericUpDown();
             this.chkAmplifyRatio = new System.Windows.Forms.CheckBox();
             this.numAmplifydB = new System.Windows.Forms.NumericUpDown();
@@ -54,7 +58,6 @@
             this.radChannelsPairs = new System.Windows.Forms.RadioButton();
             this.radChannelsSeparate = new System.Windows.Forms.RadioButton();
             this.pnlExportSegments = new System.Windows.Forms.Panel();
-            this.ddlBxstmCodec = new System.Windows.Forms.ComboBox();
             this.chkWriteLoopingMetadata = new System.Windows.Forms.CheckBox();
             this.btnEncodingOptions = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -83,10 +86,6 @@
             this.btnHelp = new System.Windows.Forms.Button();
             this.btnOkay = new System.Windows.Forms.Button();
             this.btnSaveOptions = new System.Windows.Forms.Button();
-            this.numPitch = new System.Windows.Forms.NumericUpDown();
-            this.chkPitch = new System.Windows.Forms.CheckBox();
-            this.numTempo = new System.Windows.Forms.NumericUpDown();
-            this.chkTempo = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -94,6 +93,8 @@
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numTempo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numPitch)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAmplifyRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAmplifydB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxSampleRate)).BeginInit();
@@ -105,8 +106,6 @@
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSimulTasks)).BeginInit();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numPitch)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numTempo)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -307,6 +306,59 @@
             this.panel2.Size = new System.Drawing.Size(227, 156);
             this.panel2.TabIndex = 0;
             // 
+            // numTempo
+            // 
+            this.numTempo.DecimalPlaces = 3;
+            this.numTempo.Enabled = false;
+            this.numTempo.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numTempo.Location = new System.Drawing.Point(158, 133);
+            this.numTempo.Name = "numTempo";
+            this.numTempo.Size = new System.Drawing.Size(66, 20);
+            this.numTempo.TabIndex = 10;
+            // 
+            // chkTempo
+            // 
+            this.chkTempo.Location = new System.Drawing.Point(3, 133);
+            this.chkTempo.Name = "chkTempo";
+            this.chkTempo.Size = new System.Drawing.Size(149, 20);
+            this.chkTempo.TabIndex = 9;
+            this.chkTempo.Text = "Adjust tempo:";
+            this.chkTempo.UseVisualStyleBackColor = true;
+            this.chkTempo.CheckedChanged += new System.EventHandler(this.chkTempo_CheckedChanged);
+            // 
+            // numPitch
+            // 
+            this.numPitch.DecimalPlaces = 2;
+            this.numPitch.Enabled = false;
+            this.numPitch.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.numPitch.Location = new System.Drawing.Point(158, 107);
+            this.numPitch.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.numPitch.Name = "numPitch";
+            this.numPitch.Size = new System.Drawing.Size(66, 20);
+            this.numPitch.TabIndex = 8;
+            // 
+            // chkPitch
+            // 
+            this.chkPitch.Location = new System.Drawing.Point(3, 107);
+            this.chkPitch.Name = "chkPitch";
+            this.chkPitch.Size = new System.Drawing.Size(149, 20);
+            this.chkPitch.TabIndex = 7;
+            this.chkPitch.Text = "Adjust pitch (semitones):";
+            this.chkPitch.UseVisualStyleBackColor = true;
+            this.chkPitch.CheckedChanged += new System.EventHandler(this.chkPitch_CheckedChanged);
+            // 
             // numAmplifyRatio
             // 
             this.numAmplifyRatio.DecimalPlaces = 3;
@@ -497,7 +549,6 @@
             // 
             this.pnlExportSegments.AutoSize = true;
             this.pnlExportSegments.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.pnlExportSegments.Controls.Add(this.ddlBxstmCodec);
             this.pnlExportSegments.Controls.Add(this.chkWriteLoopingMetadata);
             this.pnlExportSegments.Controls.Add(this.btnEncodingOptions);
             this.pnlExportSegments.Controls.Add(this.comboBox1);
@@ -522,17 +573,6 @@
             this.pnlExportSegments.Size = new System.Drawing.Size(298, 183);
             this.pnlExportSegments.TabIndex = 3;
             // 
-            // ddlBxstmCodec
-            // 
-            this.ddlBxstmCodec.DisplayMember = "Name";
-            this.ddlBxstmCodec.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ddlBxstmCodec.FormattingEnabled = true;
-            this.ddlBxstmCodec.Location = new System.Drawing.Point(215, 3);
-            this.ddlBxstmCodec.Name = "ddlBxstmCodec";
-            this.ddlBxstmCodec.Size = new System.Drawing.Size(80, 21);
-            this.ddlBxstmCodec.TabIndex = 18;
-            this.ddlBxstmCodec.ValueMember = "Value";
-            // 
             // chkWriteLoopingMetadata
             // 
             this.chkWriteLoopingMetadata.Checked = true;
@@ -552,7 +592,6 @@
             this.btnEncodingOptions.TabIndex = 2;
             this.btnEncodingOptions.Text = "Options";
             this.btnEncodingOptions.UseVisualStyleBackColor = true;
-            this.btnEncodingOptions.Visible = false;
             this.btnEncodingOptions.Click += new System.EventHandler(this.btnEncodingOptions_Click);
             // 
             // comboBox1
@@ -840,59 +879,6 @@
             this.btnSaveOptions.UseVisualStyleBackColor = true;
             this.btnSaveOptions.Click += new System.EventHandler(this.btnSaveOptions_Click);
             // 
-            // numPitch
-            // 
-            this.numPitch.DecimalPlaces = 2;
-            this.numPitch.Enabled = false;
-            this.numPitch.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.numPitch.Location = new System.Drawing.Point(158, 107);
-            this.numPitch.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
-            this.numPitch.Name = "numPitch";
-            this.numPitch.Size = new System.Drawing.Size(66, 20);
-            this.numPitch.TabIndex = 8;
-            // 
-            // chkPitch
-            // 
-            this.chkPitch.Location = new System.Drawing.Point(3, 107);
-            this.chkPitch.Name = "chkPitch";
-            this.chkPitch.Size = new System.Drawing.Size(149, 20);
-            this.chkPitch.TabIndex = 7;
-            this.chkPitch.Text = "Adjust pitch (semitones):";
-            this.chkPitch.UseVisualStyleBackColor = true;
-            this.chkPitch.CheckedChanged += new System.EventHandler(this.chkPitch_CheckedChanged);
-            // 
-            // numTempo
-            // 
-            this.numTempo.DecimalPlaces = 3;
-            this.numTempo.Enabled = false;
-            this.numTempo.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.numTempo.Location = new System.Drawing.Point(158, 133);
-            this.numTempo.Name = "numTempo";
-            this.numTempo.Size = new System.Drawing.Size(66, 20);
-            this.numTempo.TabIndex = 10;
-            // 
-            // chkTempo
-            // 
-            this.chkTempo.Location = new System.Drawing.Point(3, 133);
-            this.chkTempo.Name = "chkTempo";
-            this.chkTempo.Size = new System.Drawing.Size(149, 20);
-            this.chkTempo.TabIndex = 9;
-            this.chkTempo.Text = "Adjust tempo:";
-            this.chkTempo.UseVisualStyleBackColor = true;
-            this.chkTempo.CheckedChanged += new System.EventHandler(this.chkTempo_CheckedChanged);
-            // 
             // OptionsForm
             // 
             this.AcceptButton = this.btnOkay;
@@ -914,6 +900,8 @@
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
             this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numTempo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numPitch)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAmplifyRatio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAmplifydB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxSampleRate)).EndInit();
@@ -927,8 +915,6 @@
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numSimulTasks)).EndInit();
             this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numPitch)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numTempo)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -994,7 +980,6 @@
         private System.Windows.Forms.Label lblUnknownLoopBehavior;
         private System.Windows.Forms.Button btnEncodingOptions;
         private System.Windows.Forms.CheckBox chkWriteLoopingMetadata;
-        private System.Windows.Forms.ComboBox ddlBxstmCodec;
 		private System.Windows.Forms.NumericUpDown numPitch;
 		private System.Windows.Forms.CheckBox chkPitch;
 		private System.Windows.Forms.NumericUpDown numTempo;

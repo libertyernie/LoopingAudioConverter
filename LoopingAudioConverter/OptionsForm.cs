@@ -29,8 +29,9 @@ namespace LoopingAudioConverter {
 		private HashSet<Task> runningTasks;
 
 		private Dictionary<ExporterType, string> encodingParameters;
-		private HcaOptions hcaOptions;
-		private AdxOptions adxOptions;
+		private HcaOptions hcaOptions = new HcaOptions();
+		private AdxOptions adxOptions = new AdxOptions();
+		private BxstmOptions bxstmOptions = new BxstmOptions();
 
 		public IEnumerable<Task> RunningTasks {
 			get {
@@ -51,10 +52,9 @@ namespace LoopingAudioConverter {
 			adxOptions = new AdxOptions();
 
 			var exporters = new[] {
-				new NVPair<ExporterType>(ExporterType.BRSTM, "BRSTM (Wii)"),
-				new NVPair<ExporterType>(ExporterType.BCSTM, "BCSTM (3DS)"),
-				new NVPair<ExporterType>(ExporterType.BFSTM, "BFSTM (Wii U)"),
-				new NVPair<ExporterType>(ExporterType.BFSTM_LE, "BFSTM (Switch)"),
+				new NVPair<ExporterType>(ExporterType.BRSTM, "BRSTM"),
+				new NVPair<ExporterType>(ExporterType.BCSTM, "BCSTM"),
+				new NVPair<ExporterType>(ExporterType.BFSTM, "BFSTM"),
 				new NVPair<ExporterType>(ExporterType.DSP, "DSP (Nintendo)"),
 				new NVPair<ExporterType>(ExporterType.IDSP, "IDSP (Nintendo)"),
 				new NVPair<ExporterType>(ExporterType.HPS, "HPS (HAL)"),
@@ -77,10 +77,6 @@ namespace LoopingAudioConverter {
 					case ExporterType.BRSTM:
 					case ExporterType.BCSTM:
 					case ExporterType.BFSTM:
-					case ExporterType.BFSTM_LE:
-						btnEncodingOptions.Visible = false;
-						ddlBxstmCodec.Visible = true;
-						break;
 					case ExporterType.MP3:
 					case ExporterType.OggVorbis:
 					case ExporterType.AAC_M4A:
@@ -88,11 +84,9 @@ namespace LoopingAudioConverter {
 					case ExporterType.HCA:
 					case ExporterType.ADX:
 						btnEncodingOptions.Visible = true;
-						ddlBxstmCodec.Visible = false;
 						break;
 					default:
 						btnEncodingOptions.Visible = false;
-						ddlBxstmCodec.Visible = false;
 						break;
 				}
 				switch ((ExporterType)comboBox1.SelectedValue) {
@@ -106,12 +100,6 @@ namespace LoopingAudioConverter {
 						chkWriteLoopingMetadata.Enabled = true;
 						break;
 				}
-			};
-
-			ddlBxstmCodec.DataSource = new[] {
-				new NVPair<NwCodec>(NwCodec.GcAdpcm, "GC-ADPCM"),
-				new NVPair<NwCodec>(NwCodec.Pcm16Bit, "PCM16"),
-				new NVPair<NwCodec>(NwCodec.Pcm8Bit, "PCM8")
 			};
 
 			var unknownLoopBehaviors = new[] {
@@ -164,9 +152,9 @@ namespace LoopingAudioConverter {
 				encodingParameters[ExporterType.MP3] = o.MP3EncodingParameters;
 				encodingParameters[ExporterType.OggVorbis] = o.OggVorbisEncodingParameters;
 				encodingParameters[ExporterType.AAC_M4A] = o.AACEncodingParameters;
-				hcaOptions = o.HcaOptions;
-				adxOptions = o.AdxOptions;
-				ddlBxstmCodec.SelectedValue = o.BxstmCodec;
+				hcaOptions = o.HcaOptions ?? new HcaOptions();
+				adxOptions = o.AdxOptions ?? new AdxOptions();
+				bxstmOptions = o.BxstmOptions ?? new BxstmOptions();
 				ddlUnknownLoopBehavior.SelectedValue = o.UnknownLoopBehavior;
 				chk0End.Checked = o.ExportWholeSong;
 				txt0EndFilenamePattern.Text = o.WholeSongSuffix;
@@ -206,7 +194,7 @@ namespace LoopingAudioConverter {
 				AACEncodingParameters = encodingParameters[ExporterType.AAC_M4A],
 				HcaOptions = hcaOptions,
 				AdxOptions = adxOptions,
-				BxstmCodec = (NwCodec)ddlBxstmCodec.SelectedValue,
+				BxstmOptions = bxstmOptions,
 				UnknownLoopBehavior = (UnknownLoopBehavior)ddlUnknownLoopBehavior.SelectedValue,
 				ExportWholeSong = chk0End.Checked,
 				WholeSongSuffix = txt0EndFilenamePattern.Text,
@@ -455,6 +443,15 @@ namespace LoopingAudioConverter {
 						}
 						encodingParameters[ExporterType.AAC_M4A] = form.EncodingParameters;
 					}
+					break;
+				case ExporterType.BRSTM:
+				case ExporterType.BCSTM:
+				case ExporterType.BFSTM:
+					using (var f = new VGAudioOptionsForm<BxstmOptions, BxstmConfiguration>(bxstmOptions)) {
+						if (f.ShowDialog(this) == DialogResult.OK) {
+							bxstmOptions = f.SelectedObject;
+						}
+					};
 					break;
 				case ExporterType.HCA:
 					using (var f = new VGAudioOptionsForm<HcaOptions, HcaConfiguration>(hcaOptions)) {

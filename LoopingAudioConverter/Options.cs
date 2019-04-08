@@ -12,7 +12,6 @@ namespace LoopingAudioConverter {
 		BRSTM,
 		BCSTM,
 		BFSTM,
-		BFSTM_LE,
 		DSP,
 		IDSP,
 		HPS,
@@ -60,7 +59,7 @@ namespace LoopingAudioConverter {
 		public string OggVorbisEncodingParameters { get; set; }
 		public AdxOptions AdxOptions { get; set; }
 		public HcaOptions HcaOptions { get; set; }
-		public NwCodec BxstmCodec { get; set; }
+		public BxstmOptions BxstmOptions { get; set; }
 		public UnknownLoopBehavior UnknownLoopBehavior { get; set; }
 		public bool ExportWholeSong { get; set; }
 		public string WholeSongSuffix { get; set; }

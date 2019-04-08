@@ -93,16 +93,13 @@ namespace LoopingAudioConverter {
 			IAudioExporter exporter;
 			switch (o.ExporterType) {
 				case ExporterType.BRSTM:
-					exporter = new RSTMExporter(o.BxstmCodec);
+					exporter = new RSTMExporter(o.BxstmOptions?.Configuration);
 					break;
 				case ExporterType.BCSTM:
-					exporter = new CSTMExporter(o.BxstmCodec);
+					exporter = new CSTMExporter(o.BxstmOptions?.Configuration);
 					break;
 				case ExporterType.BFSTM:
-					exporter = new FSTMExporter(o.BxstmCodec, Endianness.BigEndian);
-					break;
-				case ExporterType.BFSTM_LE:
-					exporter = new FSTMExporter(o.BxstmCodec, Endianness.LittleEndian);
+					exporter = new FSTMExporter(o.BxstmOptions?.Configuration);
 					break;
 				case ExporterType.DSP:
 					exporter = new DSPExporter();
@@ -114,10 +111,10 @@ namespace LoopingAudioConverter {
 					exporter = new HPSExporter();
 					break;
 				case ExporterType.HCA:
-					exporter = new HCAExporter(o.HcaOptions.Configuration);
+					exporter = new HCAExporter(o.HcaOptions?.Configuration);
 					break;
 				case ExporterType.ADX:
-					exporter = new ADXExporter(o.AdxOptions.Configuration);
+					exporter = new ADXExporter(o.AdxOptions?.Configuration);
 					break;
 				case ExporterType.MSF_PCM16BE:
 					exporter = new MSFPCM16Exporter(big_endian: true);

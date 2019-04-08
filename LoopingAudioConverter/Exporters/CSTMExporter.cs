@@ -6,18 +6,18 @@ using VGAudio.Formats;
 
 namespace LoopingAudioConverter {
 	public class CSTMExporter : VGAudioExporter {
-		private readonly NwCodec encoding;
+		private readonly BxstmConfiguration _configuration;
 
 		/// <summary>
 		/// Creates a new CSTMExporter instance that uses the given encoding when it has to re-encode a file.
 		/// </summary>
 		/// <param name="defaultEncoding">The encoding to use</param>
-		public CSTMExporter(NwCodec defaultEncoding) {
-			this.encoding = defaultEncoding;
+		public CSTMExporter(BxstmConfiguration configuration = null) {
+			_configuration = configuration;
 		}
 
 		protected override byte[] GetData(AudioData audio) {
-			return new BCFstmWriter(NwTarget.Ctr).GetFile(audio, new BxstmConfiguration { Codec = this.encoding });
+			return new BCFstmWriter(NwTarget.Ctr).GetFile(audio, _configuration);
 		}
 
 		protected override string GetExtension() {

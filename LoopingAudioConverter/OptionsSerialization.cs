@@ -59,7 +59,7 @@ namespace LoopingAudioConverter {
 										o.AACEncodingParameters = v;
 										break;
 									case "BxstmCodec":
-										o.BxstmCodec = v == "Adpcm"
+										o.BxstmOptions.Codec = v == "Adpcm"
 											? NwCodec.GcAdpcm
 											: (NwCodec)Enum.Parse(typeof(NwCodec), v, true);
 										break;
@@ -125,7 +125,7 @@ namespace LoopingAudioConverter {
 						if (o.MP3EncodingParameters != null) sw.WriteLine("MP3EncodingParameters=" + o.MP3EncodingParameters);
 						if (o.OggVorbisEncodingParameters != null) sw.WriteLine("OggVorbisEncodingParameters=" + o.OggVorbisEncodingParameters);
 						if (o.AACEncodingParameters != null) sw.WriteLine(nameof(o.AACEncodingParameters) + "=" + o.AACEncodingParameters);
-						if (o.BxstmCodec != null) sw.WriteLine("BxstmCodec=" + o.BxstmCodec);
+						if (o.BxstmOptions.Codec != null) sw.WriteLine("BxstmCodec=" + o.BxstmOptions.Codec);
 						if (o.ExportWholeSong != null) sw.WriteLine("ExportWholeSong=" + o.ExportWholeSong);
 						if (o.WholeSongSuffix != null) sw.WriteLine("WholeSongSuffix=" + o.WholeSongSuffix);
 						if (o.NumberOfLoops != null) sw.WriteLine("NumberOfLoops=" + o.NumberOfLoops);
