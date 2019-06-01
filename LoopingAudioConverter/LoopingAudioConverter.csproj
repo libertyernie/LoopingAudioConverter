@@ -82,6 +82,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exporters\RSTMCPPExporter.cs" />
     <Compile Include="VGAudioOptions\BxstmOptions.cs" />
     <Compile Include="VGAudioOptions\VGAudioOptionsBase.cs" />
     <Compile Include="VGAudioOptions\HcaOptions.cs" />
@@ -194,6 +195,10 @@
     <ProjectReference Include="..\MSFContainerLib\MSFContainerLib.csproj">
       <Project>{31bd3716-2d0b-49e4-a0e8-2c4e0add93f5}</Project>
       <Name>MSFContainerLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\rstmcpp-clr\rstmcpp-clr.vcxproj">
+      <Project>{be82c74d-fa3b-4284-b6f4-cef4f65f3efa}</Project>
+      <Name>rstmcpp-clr</Name>
     </ProjectReference>
     <ProjectReference Include="..\VorbisCommentSharp\VorbisCommentSharp.csproj">
       <Project>{5bd4854f-481b-4aa6-b838-32c21b2b069f}</Project>

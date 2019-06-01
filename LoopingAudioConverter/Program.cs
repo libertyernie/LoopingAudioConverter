@@ -116,6 +116,15 @@ namespace LoopingAudioConverter {
 				case ExporterType.ADX:
 					exporter = new ADXExporter(o.AdxOptions?.Configuration);
 					break;
+				case ExporterType.BRSTM_CPP:
+					exporter = new RSTMCPPExporter(RSTMCPP.FileType.RSTM);
+					break;
+				case ExporterType.BCSTM_CPP:
+					exporter = new RSTMCPPExporter(RSTMCPP.FileType.CSTM);
+					break;
+				case ExporterType.BCWAV_CPP:
+					exporter = new RSTMCPPExporter(RSTMCPP.FileType.CWAV);
+					break;
 				case ExporterType.MSF_PCM16BE:
 					exporter = new MSFPCM16Exporter(big_endian: true);
 					break;
