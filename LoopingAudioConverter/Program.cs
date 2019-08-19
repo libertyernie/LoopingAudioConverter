@@ -17,20 +17,18 @@ namespace LoopingAudioConverter {
 		static void Main(string[] args) {
 			Application.EnableVisualStyles();
 
-			bool appsettingserror = false;
+			List<string> errors = new List<string>(0);
 			foreach (string s in new string[] { "sox_path", "vgmstream_path", "lame_path", "faad_path" }) {
 				string v = ConfigurationManager.AppSettings[s];
 				if (string.IsNullOrEmpty(v)) {
-					appsettingserror = true;
-					Console.Error.WriteLine("The configuration setting " + s + " is missing.");
+					errors.Add("The configuration setting " + s + " is missing");
 				} else if (!File.Exists(ConfigurationManager.AppSettings[s])) {
-					appsettingserror = true;
-					Console.Error.WriteLine("Could not find " + s + ": " + v);
+					errors.Add($"Could not find {s} ({v})");
 				}
 			}
 
-			if (appsettingserror) {
-				MessageBox.Show("One or more programs could not be found; the program may not run properly. See the console for details.");
+			if (errors.Any()) {
+				MessageBox.Show("One or more programs could not be found; the program may not run properly:" + Environment.NewLine + string.Join(Environment.NewLine, errors));
 			}
 
 			string ini = null;
