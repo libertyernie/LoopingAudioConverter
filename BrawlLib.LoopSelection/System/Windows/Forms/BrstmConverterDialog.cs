@@ -40,7 +40,9 @@ namespace BrawlLib.LoopSelection
 
             public int ReadSamples(IntPtr destAddr, int numSamples) => BaseStream.ReadSamples(destAddr, numSamples);
 
-            public void Wrap() => BaseStream.Wrap();
+            public void Wrap() {
+                SamplePosition = LoopStartSample;
+            }
 
             public void Dispose() { }
         }
