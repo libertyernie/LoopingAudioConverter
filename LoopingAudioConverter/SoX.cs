@@ -134,6 +134,12 @@ namespace LoopingAudioConverter {
 					l.LoopStart = (int)(l.LoopStart * ratio);
 					l.LoopEnd = (int)(l.LoopEnd * ratio);
 				}
+
+				if (l.Looping && tempo_ratio != 1) {
+					// When the tempo is changed, we need to change the loop points to match.
+					l.LoopStart = (int)(l.LoopStart / tempo_ratio);
+					l.LoopEnd = (int)(l.LoopEnd / tempo_ratio);
+				}
 				return l;
 			} catch (Exception e) {
 				throw new AudioImporterException("Could not read SoX output: " + e.Message);
