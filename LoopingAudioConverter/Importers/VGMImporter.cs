@@ -76,9 +76,18 @@ namespace LoopingAudioConverter {
 				var data = PCM16Factory.FromFile(Path.Combine(tmpDir, "audio.wav"), true);
 				Directory.Delete(tmpDir, true);
 
+				// Check format
+				bool compressed;
+				using (var fs = new FileStream(filename, FileMode.Open, FileAccess.Read))
+				using (var br = new BinaryReader(fs)) {
+					int tag = br.ReadUInt16();
+					if (tag == 0x1F8B) throw new Exception("Machine is big-endian");
+					compressed = tag == 0x8B1F;
+				}
+
 				// Read loop points from file
 				using (var fs = new FileStream(filename, FileMode.Open, FileAccess.Read))
-				using (var gz = new GZipStream(fs, CompressionMode.Decompress))
+				using (var gz = compressed ? new GZipStream(fs, CompressionMode.Decompress) : fs as Stream)
 				using (var br = new BinaryReader(gz)) {
 					int tag = br.ReadInt32();
 					if (tag == 0x56676D20) throw new Exception("Machine is big-endian");
