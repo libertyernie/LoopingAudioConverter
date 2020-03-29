@@ -34,8 +34,8 @@ namespace LoopingAudioConverter {
 									case "MaxChannels":
 										o.MaxChannels = int.Parse(v);
 										break;
-									case "MaxSampleRate":
-										o.MaxSampleRate = int.Parse(v);
+									case "SampleRate":
+										o.SampleRate = int.Parse(v);
 										break;
 									case "AmplifydB":
 										o.AmplifydB = decimal.Parse(v);
@@ -117,7 +117,7 @@ namespace LoopingAudioConverter {
 						sw.WriteLine("[LoopingAudioConverter]");
 						if (o.OutputDir != null) sw.WriteLine("OutputDir=" + o.OutputDir);
 						if (o.MaxChannels != null) sw.WriteLine("MaxChannels=" + o.MaxChannels);
-						if (o.MaxSampleRate != null) sw.WriteLine("MaxSampleRate=" + o.MaxSampleRate);
+						if (o.SampleRate != null) sw.WriteLine("SampleRate=" + o.SampleRate);
 						if (o.AmplifydB != null) sw.WriteLine("AmplifydB=" + o.AmplifydB);
 						if (o.AmplifyRatio != null) sw.WriteLine("AmplifyRatio=" + o.AmplifyRatio);
 						if (o.ChannelSplit != null) sw.WriteLine("ChannelSplit=" + o.ChannelSplit);

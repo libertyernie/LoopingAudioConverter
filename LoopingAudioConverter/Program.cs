@@ -221,7 +221,7 @@ namespace LoopingAudioConverter {
 				foreach (IAudioImporter importer in importers_supported) {
 					try {
 						if (importer is IRenderingAudioImporter) {
-							((IRenderingAudioImporter)importer).SampleRate = o.MaxSampleRate;
+							((IRenderingAudioImporter)importer).SampleRate = o.SampleRate;
 						}
 						w = await importer.ReadFileAsync(inputFile);
 						w.OriginalPath = inputFile;
@@ -257,7 +257,7 @@ namespace LoopingAudioConverter {
 				window.SetDecodingText(filename_no_ext + " (applying effects)");
 				w = sox.ApplyEffects(w,
 					max_channels: o.MaxChannels ?? int.MaxValue,
-					max_rate: o.MaxSampleRate ?? int.MaxValue,
+					rate: o.SampleRate ?? w.SampleRate,
 					db: o.AmplifydB ?? 0M,
 					amplitude: o.AmplifyRatio ?? 1M,
 					pitch_semitones: o.PitchSemitones ?? 0M,

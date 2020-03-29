@@ -47,7 +47,7 @@
             this.numAmplifydB = new System.Windows.Forms.NumericUpDown();
             this.chkAmplifydB = new System.Windows.Forms.CheckBox();
             this.numMaxSampleRate = new System.Windows.Forms.NumericUpDown();
-            this.chkMaxSampleRate = new System.Windows.Forms.CheckBox();
+            this.chkSampleRate = new System.Windows.Forms.CheckBox();
             this.chkMono = new System.Windows.Forms.CheckBox();
             this.panel4 = new System.Windows.Forms.Panel();
             this.ddlUnknownLoopBehavior = new System.Windows.Forms.ComboBox();
@@ -298,7 +298,7 @@
             this.panel2.Controls.Add(this.numAmplifydB);
             this.panel2.Controls.Add(this.chkAmplifydB);
             this.panel2.Controls.Add(this.numMaxSampleRate);
-            this.panel2.Controls.Add(this.chkMaxSampleRate);
+            this.panel2.Controls.Add(this.chkSampleRate);
             this.panel2.Controls.Add(this.chkMono);
             this.panel2.Location = new System.Drawing.Point(0, 3);
             this.panel2.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
@@ -441,13 +441,13 @@
             // 
             // chkMaxSampleRate
             // 
-            this.chkMaxSampleRate.Location = new System.Drawing.Point(3, 29);
-            this.chkMaxSampleRate.Name = "chkMaxSampleRate";
-            this.chkMaxSampleRate.Size = new System.Drawing.Size(149, 20);
-            this.chkMaxSampleRate.TabIndex = 1;
-            this.chkMaxSampleRate.Text = "New sample rate (Hz):";
-            this.chkMaxSampleRate.UseVisualStyleBackColor = true;
-            this.chkMaxSampleRate.CheckedChanged += new System.EventHandler(this.chkMaxSampleRate_CheckedChanged);
+            this.chkSampleRate.Location = new System.Drawing.Point(3, 29);
+            this.chkSampleRate.Name = "chkMaxSampleRate";
+            this.chkSampleRate.Size = new System.Drawing.Size(149, 20);
+            this.chkSampleRate.TabIndex = 1;
+            this.chkSampleRate.Text = "New sample rate (Hz):";
+            this.chkSampleRate.UseVisualStyleBackColor = true;
+            this.chkSampleRate.CheckedChanged += new System.EventHandler(this.chkMaxSampleRate_CheckedChanged);
             // 
             // chkMono
             // 
@@ -952,7 +952,7 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnOkay;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.CheckBox chkMaxSampleRate;
+        private System.Windows.Forms.CheckBox chkSampleRate;
         private System.Windows.Forms.CheckBox chkMono;
         private System.Windows.Forms.NumericUpDown numAmplifydB;
         private System.Windows.Forms.CheckBox chkAmplifydB;

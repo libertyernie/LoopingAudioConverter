@@ -127,9 +127,9 @@ namespace LoopingAudioConverter {
 				if (o.OutputDir != null)
 					txtOutputDir.Text = o.OutputDir;
 				chkMono.Checked = o.MaxChannels == 1;
-				chkMaxSampleRate.Checked = o.MaxSampleRate != null;
-				if (o.MaxSampleRate != null)
-					numMaxSampleRate.Value = o.MaxSampleRate.Value;
+				chkSampleRate.Checked = o.SampleRate != null;
+				if (o.SampleRate != null)
+					numMaxSampleRate.Value = o.SampleRate.Value;
 				chkAmplifydB.Checked = o.AmplifydB != null;
 				if (o.AmplifydB != null)
 					numAmplifydB.Value = o.AmplifydB.Value;
@@ -180,7 +180,7 @@ namespace LoopingAudioConverter {
 				InputFiles = filenames,
 				OutputDir = txtOutputDir.Text,
 				MaxChannels = chkMono.Checked ? 1 : (int?)null,
-				MaxSampleRate = chkMaxSampleRate.Checked ? (int)numMaxSampleRate.Value : (int?)null,
+				SampleRate = chkSampleRate.Checked ? (int)numMaxSampleRate.Value : (int?)null,
 				AmplifydB = chkAmplifydB.Checked ? numAmplifydB.Value : (decimal?)null,
 				AmplifyRatio = chkAmplifyRatio.Checked ? numAmplifyRatio.Value : (decimal?)null,
 				PitchSemitones = chkPitch.Checked ? numPitch.Value : (decimal?)null,
@@ -292,7 +292,7 @@ namespace LoopingAudioConverter {
 		}
 
 		private void chkMaxSampleRate_CheckedChanged(object sender, EventArgs e) {
-			numMaxSampleRate.Enabled = chkMaxSampleRate.Checked;
+			numMaxSampleRate.Enabled = chkSampleRate.Checked;
 		}
 
 		private void chkAmplifydB_CheckedChanged(object sender, EventArgs e) {

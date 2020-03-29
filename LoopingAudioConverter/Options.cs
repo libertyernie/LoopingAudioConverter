@@ -47,7 +47,7 @@ namespace LoopingAudioConverter {
 
 		public string OutputDir { get; set; }
 		public int? MaxChannels { get; set; }
-		public int? MaxSampleRate { get; set; }
+		public int? SampleRate { get; set; }
 		public decimal? AmplifydB { get; set; }
 		public decimal? AmplifyRatio { get; set; }
 		public decimal? PitchSemitones { get; set; }
