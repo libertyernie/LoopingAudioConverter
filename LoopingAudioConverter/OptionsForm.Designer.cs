@@ -439,10 +439,10 @@
             0,
             0});
             // 
-            // chkMaxSampleRate
+            // chkSampleRate
             // 
             this.chkSampleRate.Location = new System.Drawing.Point(3, 29);
-            this.chkSampleRate.Name = "chkMaxSampleRate";
+            this.chkSampleRate.Name = "chkSampleRate";
             this.chkSampleRate.Size = new System.Drawing.Size(149, 20);
             this.chkSampleRate.TabIndex = 1;
             this.chkSampleRate.Text = "New sample rate (Hz):";

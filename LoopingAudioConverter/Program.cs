@@ -256,7 +256,7 @@ namespace LoopingAudioConverter {
 
 				window.SetDecodingText(filename_no_ext + " (applying effects)");
 				w = sox.ApplyEffects(w,
-					max_channels: o.MaxChannels ?? int.MaxValue,
+					channels: o.Channels ?? w.Channels,
 					rate: o.SampleRate ?? w.SampleRate,
 					db: o.AmplifydB ?? 0M,
 					amplitude: o.AmplifyRatio ?? 1M,

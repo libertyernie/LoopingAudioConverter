@@ -126,7 +126,7 @@ namespace LoopingAudioConverter {
 
 				if (o.OutputDir != null)
 					txtOutputDir.Text = o.OutputDir;
-				chkMono.Checked = o.MaxChannels == 1;
+				chkMono.Checked = o.Channels == 1;
 				chkSampleRate.Checked = o.SampleRate != null;
 				if (o.SampleRate != null)
 					numMaxSampleRate.Value = o.SampleRate.Value;
@@ -179,7 +179,7 @@ namespace LoopingAudioConverter {
 			return new Options {
 				InputFiles = filenames,
 				OutputDir = txtOutputDir.Text,
-				MaxChannels = chkMono.Checked ? 1 : (int?)null,
+				Channels = chkMono.Checked ? 1 : (int?)null,
 				SampleRate = chkSampleRate.Checked ? (int)numMaxSampleRate.Value : (int?)null,
 				AmplifydB = chkAmplifydB.Checked ? numAmplifydB.Value : (decimal?)null,
 				AmplifyRatio = chkAmplifyRatio.Checked ? numAmplifyRatio.Value : (decimal?)null,

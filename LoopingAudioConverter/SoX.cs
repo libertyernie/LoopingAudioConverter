@@ -68,21 +68,19 @@ namespace LoopingAudioConverter {
 		/// Intended to either adjust the volume of the audio or reduce the file size.
 		/// </summary>
 		/// <param name="lwav">The PCM16Audio to use as an input</param>
-		/// <param name="max_channels">The new number of channels (if the PCM16Audio already has this number of channels or fewer, this effect will not be applied)</param>
+		/// <param name="channels">The new number of channels (if the PCM16Audio already has this number of channels, this effect will not be applied)</param>
 		/// <param name="db">Volume adjustment, in decibels (if 0, this effect will not be applied)</param>
 		/// <param name="amplitude">Volume adjustment, in linear ratio (if 1, this effect will not be applied)</param>
 		/// <param name="rate">The new sample rate (if the PCM16Audio's sample rate is equal to this value, this effect will not be applied)</param>
 		/// <param name="pitch_semitones">Pitch adjustment, in semitones (if 0, this effect will not be applied)</param>
 		/// <param name="tempo_ratio">Tempo ratio (if 1, this effect will not be applied)</param>
 		/// <returns>A new PCM16Audio object if one or more effects are applied; the same PCM16Audio object if no effects are applied.</returns>
-		public PCM16Audio ApplyEffects(PCM16Audio lwav, int max_channels = int.MaxValue, decimal db = 0, decimal amplitude = 1, int rate = int.MaxValue, decimal pitch_semitones = 0, decimal tempo_ratio = 1) {
+		public PCM16Audio ApplyEffects(PCM16Audio lwav, int channels = int.MaxValue, decimal db = 0, decimal amplitude = 1, int rate = int.MaxValue, decimal pitch_semitones = 0, decimal tempo_ratio = 1) {
 			byte[] wav = lwav.Export();
-
-			int channels = Math.Min(max_channels, lwav.Channels);
 
 			StringBuilder effects_string = new StringBuilder();
 			if (channels != lwav.Channels) {
-				effects_string.Append(" channels " + max_channels);
+				effects_string.Append(" channels " + channels);
 			}
 			if (db != 0) {
 				effects_string.Append(" vol " + db.ToString(CultureInfo.InvariantCulture) + " dB");
