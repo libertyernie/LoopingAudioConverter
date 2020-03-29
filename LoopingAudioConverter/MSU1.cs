@@ -48,6 +48,10 @@ namespace LoopingAudioConverter {
 		}
 
 		public Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
+			if (lwav.Channels != 2 || lwav.SampleRate != 44100) {
+				throw new AudioExporterException("MSU-1 output must be 2-channel audio at a sample rate of 44100Hz.");
+			}
+
 			string output_filename = Path.Combine(output_dir, original_filename_no_ext + ".pcm");
 			using (var fs = new FileStream(output_filename, FileMode.Create, FileAccess.Write))
 			using (var bw = new BinaryWriter(fs)) {
