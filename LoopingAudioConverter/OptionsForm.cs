@@ -352,6 +352,17 @@ namespace LoopingAudioConverter {
 					}
 				}
 			}
+			if (o.ExporterType == ExporterType.MSU1) {
+				if (o.Channels != 2 || o.SampleRate != 44100) {
+					var r = MessageBox.Show(this, "MSU-1 output must be 2 channels at a sample rate of 44100Hz. Is it OK to make this conversion?", Text, MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+					if (r == DialogResult.OK) {
+						o.Channels = 2;
+						o.SampleRate = 44100;
+					} else {
+						return;
+					}
+				}
+			}
 			this.listBox1.Items.Clear();
 			Task t = Program.RunAsync(o, owner: this);
 			runningTasks.Add(t);
