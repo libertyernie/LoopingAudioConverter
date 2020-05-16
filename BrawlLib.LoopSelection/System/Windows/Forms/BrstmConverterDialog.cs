@@ -6,7 +6,7 @@ namespace BrawlLib.LoopSelection
 {
     public class BrstmConverterDialog : Form
     {
-        internal class InitialStreamWrapper : IAudioStream
+        internal unsafe class InitialStreamWrapper : IAudioStream
         {
             public readonly IAudioStream BaseStream;
 
@@ -22,7 +22,7 @@ namespace BrawlLib.LoopSelection
             public WaveFormatTag Format => BaseStream.Format;
             public int BitsPerSample => BaseStream.BitsPerSample;
             public int Samples => BaseStream.Samples;
-            public int Channels => BaseStream.Channels;
+            public int Channels => Math.Min(BaseStream.Channels, 2);
             public int Frequency => BaseStream.Frequency;
 
             public bool IsLooping { get; set; }
@@ -38,7 +38,25 @@ namespace BrawlLib.LoopSelection
                 }
             }
 
-            public int ReadSamples(IntPtr destAddr, int numSamples) => BaseStream.ReadSamples(destAddr, numSamples);
+            public int ReadSamples(IntPtr destAddr, int numSamples) {
+                if (BaseStream.Channels <= 2) {
+                    return BaseStream.ReadSamples(destAddr, numSamples);
+                } else {
+                    int r = 0;
+                    short* out_ptr = (short*)destAddr;
+                    short[] buffer = new short[BaseStream.Channels];
+                    fixed (short* buffer_ptr = buffer) {
+                        while (r < numSamples) {
+                            int q = BaseStream.ReadSamples((IntPtr)buffer_ptr, 1);
+                            r += q;
+                            *out_ptr++ = buffer[0];
+                            *out_ptr++ = buffer[1];
+                            if (q == 0) break;
+                        }
+                    }
+                    return r;
+                }
+            }
 
             public void Wrap() {
                 SamplePosition = LoopStartSample;
