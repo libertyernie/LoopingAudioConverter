@@ -86,6 +86,8 @@
             this.btnHelp = new System.Windows.Forms.Button();
             this.btnOkay = new System.Windows.Forms.Button();
             this.btnSaveOptions = new System.Windows.Forms.Button();
+            this.txtInputDir = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -118,6 +120,8 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.txtInputDir);
+            this.splitContainer1.Panel1.Controls.Add(this.label5);
             this.splitContainer1.Panel1.Controls.Add(this.btnSuffixFilter);
             this.splitContainer1.Panel1.Controls.Add(this.txtSuffixFilter);
             this.splitContainer1.Panel1.Controls.Add(this.label4);
@@ -137,9 +141,9 @@
             // btnSuffixFilter
             // 
             this.btnSuffixFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSuffixFilter.Location = new System.Drawing.Point(271, 113);
+            this.btnSuffixFilter.Location = new System.Drawing.Point(245, 112);
             this.btnSuffixFilter.Name = "btnSuffixFilter";
-            this.btnSuffixFilter.Size = new System.Drawing.Size(75, 19);
+            this.btnSuffixFilter.Size = new System.Drawing.Size(45, 19);
             this.btnSuffixFilter.TabIndex = 3;
             this.btnSuffixFilter.Text = "Filter";
             this.btnSuffixFilter.UseVisualStyleBackColor = true;
@@ -148,7 +152,7 @@
             // txtSuffixFilter
             // 
             this.txtSuffixFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txtSuffixFilter.Location = new System.Drawing.Point(137, 113);
+            this.txtSuffixFilter.Location = new System.Drawing.Point(111, 112);
             this.txtSuffixFilter.Name = "txtSuffixFilter";
             this.txtSuffixFilter.Size = new System.Drawing.Size(128, 20);
             this.txtSuffixFilter.TabIndex = 2;
@@ -156,8 +160,8 @@
             // label4
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label4.Location = new System.Drawing.Point(3, 112);
-            this.label4.Margin = new System.Windows.Forms.Padding(3);
+            this.label4.Location = new System.Drawing.Point(3, 111);
+            this.label4.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(128, 20);
             this.label4.TabIndex = 1;
@@ -167,7 +171,7 @@
             // btnBrowse
             // 
             this.btnBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBrowse.Location = new System.Drawing.Point(419, 138);
+            this.btnBrowse.Location = new System.Drawing.Point(419, 137);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(32, 20);
             this.btnBrowse.TabIndex = 6;
@@ -179,7 +183,7 @@
             // 
             this.txtOutputDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtOutputDir.Location = new System.Drawing.Point(99, 138);
+            this.txtOutputDir.Location = new System.Drawing.Point(99, 137);
             this.txtOutputDir.Name = "txtOutputDir";
             this.txtOutputDir.Size = new System.Drawing.Size(314, 20);
             this.txtOutputDir.TabIndex = 5;
@@ -188,8 +192,8 @@
             // lblOutputDir
             // 
             this.lblOutputDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblOutputDir.Location = new System.Drawing.Point(3, 138);
-            this.lblOutputDir.Margin = new System.Windows.Forms.Padding(3);
+            this.lblOutputDir.Location = new System.Drawing.Point(3, 137);
+            this.lblOutputDir.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.lblOutputDir.Name = "lblOutputDir";
             this.lblOutputDir.Size = new System.Drawing.Size(90, 20);
             this.lblOutputDir.TabIndex = 4;
@@ -207,7 +211,7 @@
             this.listBox1.Location = new System.Drawing.Point(3, 3);
             this.listBox1.Name = "listBox1";
             this.listBox1.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.listBox1.Size = new System.Drawing.Size(448, 103);
+            this.listBox1.Size = new System.Drawing.Size(448, 102);
             this.listBox1.TabIndex = 0;
             this.listBox1.DragDrop += new System.Windows.Forms.DragEventHandler(this.listBox1_DragDrop);
             this.listBox1.DragEnter += new System.Windows.Forms.DragEventHandler(this.listBox1_DragEnter);
@@ -608,7 +612,7 @@
             // lblOutputFormat
             // 
             this.lblOutputFormat.Location = new System.Drawing.Point(3, 3);
-            this.lblOutputFormat.Margin = new System.Windows.Forms.Padding(3);
+            this.lblOutputFormat.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.lblOutputFormat.Name = "lblOutputFormat";
             this.lblOutputFormat.Size = new System.Drawing.Size(80, 21);
             this.lblOutputFormat.TabIndex = 0;
@@ -675,7 +679,7 @@
             // lblSeconds
             // 
             this.lblSeconds.Location = new System.Drawing.Point(231, 81);
-            this.lblSeconds.Margin = new System.Windows.Forms.Padding(3);
+            this.lblSeconds.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.lblSeconds.Name = "lblSeconds";
             this.lblSeconds.Size = new System.Drawing.Size(40, 21);
             this.lblSeconds.TabIndex = 10;
@@ -685,7 +689,7 @@
             // lblNumberLoops
             // 
             this.lblNumberLoops.Location = new System.Drawing.Point(40, 56);
-            this.lblNumberLoops.Margin = new System.Windows.Forms.Padding(3);
+            this.lblNumberLoops.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.lblNumberLoops.Name = "lblNumberLoops";
             this.lblNumberLoops.Size = new System.Drawing.Size(96, 20);
             this.lblNumberLoops.TabIndex = 6;
@@ -695,7 +699,7 @@
             // label3
             // 
             this.label3.Location = new System.Drawing.Point(169, 160);
-            this.label3.Margin = new System.Windows.Forms.Padding(3);
+            this.label3.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(40, 20);
             this.label3.TabIndex = 16;
@@ -705,7 +709,7 @@
             // lblFadeOutTime
             // 
             this.lblFadeOutTime.Location = new System.Drawing.Point(40, 82);
-            this.lblFadeOutTime.Margin = new System.Windows.Forms.Padding(3);
+            this.lblFadeOutTime.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.lblFadeOutTime.Name = "lblFadeOutTime";
             this.lblFadeOutTime.Size = new System.Drawing.Size(96, 20);
             this.lblFadeOutTime.TabIndex = 8;
@@ -715,7 +719,7 @@
             // label2
             // 
             this.label2.Location = new System.Drawing.Point(169, 134);
-            this.label2.Margin = new System.Windows.Forms.Padding(3);
+            this.label2.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(40, 20);
             this.label2.TabIndex = 13;
@@ -742,7 +746,7 @@
             // label1
             // 
             this.label1.Location = new System.Drawing.Point(169, 30);
-            this.label1.Margin = new System.Windows.Forms.Padding(3);
+            this.label1.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(40, 20);
             this.label1.TabIndex = 4;
@@ -879,6 +883,26 @@
             this.btnSaveOptions.UseVisualStyleBackColor = true;
             this.btnSaveOptions.Click += new System.EventHandler(this.btnSaveOptions_Click);
             // 
+            // txtInputDir
+            // 
+            this.txtInputDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtInputDir.Location = new System.Drawing.Point(372, 112);
+            this.txtInputDir.Name = "txtInputDir";
+            this.txtInputDir.Size = new System.Drawing.Size(159, 20);
+            this.txtInputDir.TabIndex = 7;
+            // 
+            // label5
+            // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label5.Location = new System.Drawing.Point(295, 111);
+            this.label5.Margin = new System.Windows.Forms.Padding(3);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(81, 20);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "Input Directory:";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // OptionsForm
             // 
             this.AcceptButton = this.btnOkay;
@@ -984,5 +1008,7 @@
 		private System.Windows.Forms.CheckBox chkPitch;
 		private System.Windows.Forms.NumericUpDown numTempo;
 		private System.Windows.Forms.CheckBox chkTempo;
+		private System.Windows.Forms.TextBox txtInputDir;
+		private System.Windows.Forms.Label label5;
 	}
 }

@@ -189,9 +189,14 @@ namespace LoopingAudioConverter {
 				string outputDir = o.OutputDir;
 				string inputDir = Path.GetDirectoryName(inputFile);
 				for (int x = 0; x < 100; x++) {
+					if (inputDir == o.InputDir) {
+						outputDir = outputDir.Replace("*", "");
+						break;
+					}
+					
 					int index = outputDir.LastIndexOf('*');
 					if (index < 0) break;
-
+					
 					string replacement = Path.GetFileName(inputDir);
 					outputDir = outputDir.Substring(0, index) + replacement + outputDir.Substring(index + 1);
 					inputDir = Path.GetDirectoryName(inputDir);

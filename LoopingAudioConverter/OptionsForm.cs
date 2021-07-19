@@ -179,6 +179,7 @@ namespace LoopingAudioConverter {
 			return new Options {
 				InputFiles = filenames,
 				OutputDir = txtOutputDir.Text,
+				InputDir = txtInputDir.Text,
 				Channels = chkMono.Checked ? 1 : (int?)null,
 				SampleRate = chkSampleRate.Checked ? (int)numMaxSampleRate.Value : (int?)null,
 				AmplifydB = chkAmplifydB.Checked ? numAmplifydB.Value : (decimal?)null,
@@ -226,7 +227,10 @@ namespace LoopingAudioConverter {
 		private void btnAddDir_Click(object sender, EventArgs e) {
 			using (FolderBrowserDialog d = new FolderBrowserDialog()) {
 				if (d.ShowDialog() == DialogResult.OK) {
+					txtInputDir.Text = d.SelectedPath;
+
 					btnAddDir.Enabled = false;
+					
 					lblEnumerationStatus.Text = "Finding files...";
 					Task<string[]> enumerateFiles = new Task<string[]>(() => {
 						return Directory.EnumerateFiles(d.SelectedPath, "*.*", SearchOption.AllDirectories).ToArray();
