@@ -116,10 +116,8 @@ namespace LoopingAudioConverter {
 			}
 
 			int loopLength = LoopEnd - LoopStart;
-			int fadeSamples = (int)(SampleRate * fadeSec);
+			int fadeSamples = Math.Min((int)(SampleRate * fadeSec), LoopLength);
 			short[] data = new short[Channels * (LoopStart + loopLength * loopCount + fadeSamples)];
-
-			Console.WriteLine("Looping " + loopCount + " times with fadeout of " + fadeSec + "s (" + fadeSamples + " samples)");
 
 			Array.Copy(this.Samples, 0, data, 0, LoopStart * Channels);
 			for (int i = 0; i < loopCount; i++) {
