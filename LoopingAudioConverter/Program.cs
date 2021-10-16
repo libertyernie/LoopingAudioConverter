@@ -55,8 +55,11 @@ namespace LoopingAudioConverter {
 			f.AddInputFiles(initialInputFiles);
 			
 			if (auto) {
-				RunAsync(f.GetOptions(), showEndDialog: false).GetAwaiter().GetResult();
-			} else {
+				f.Auto = true;
+				f.Shown += (o, e) => f.AcceptButton.PerformClick();
+			} 
+
+			{
 				Application.Run(f);
 				Task.WaitAll(f.RunningTasks.ToArray());
 			}
