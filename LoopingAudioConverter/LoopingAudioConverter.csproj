@@ -82,6 +82,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FFmpeg.cs" />
     <Compile Include="VGAudioOptions\BxstmOptions.cs" />
     <Compile Include="VGAudioOptions\VGAudioOptionsBase.cs" />
     <Compile Include="VGAudioOptions\HcaOptions.cs" />

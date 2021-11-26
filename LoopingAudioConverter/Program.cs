@@ -72,6 +72,7 @@ namespace LoopingAudioConverter {
 					"Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
 
+			FFmpeg ffmpeg = new FFmpeg(ConfigurationManager.AppSettings["ffmpeg_path"]);
 			SoX sox = new SoX(ConfigurationManager.AppSettings["sox_path"]);
 
 			List<IAudioImporter> importers = new List<IAudioImporter> {
@@ -82,7 +83,7 @@ namespace LoopingAudioConverter {
 					new MSU1(),
 					new MSFImporter(),
 					new VGMStreamImporter(ConfigurationManager.AppSettings["vgmstream_path"]),
-					sox
+					ffmpeg
 				};
 			if (o.VGAudioDecoder) {
 				importers.Insert(1, new VGAudioImporter());
