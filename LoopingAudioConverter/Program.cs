@@ -256,13 +256,13 @@ namespace LoopingAudioConverter {
 				}
 
 				window.SetDecodingText(filename_no_ext + " (applying effects)");
-				w = sox.ApplyEffects(w,
+				w = ffmpeg.ApplyEffects(w,
 					channels: o.Channels ?? w.Channels,
 					rate: o.SampleRate ?? w.SampleRate,
 					db: o.AmplifydB ?? 0M,
 					amplitude: o.AmplifyRatio ?? 1M,
-					pitch_semitones: o.PitchSemitones ?? 0M,
-					tempo_ratio: o.TempoRatio ?? 1M);
+					pitch_semitones: (double)(o.PitchSemitones ?? 0M),
+					tempo_ratio: (double)(o.TempoRatio ?? 1M));
 				window.SetDecodingText("");
 
 				List<NamedAudio> wavsToExport = new List<NamedAudio>();

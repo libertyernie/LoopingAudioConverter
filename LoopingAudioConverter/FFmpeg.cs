@@ -78,32 +78,41 @@ namespace LoopingAudioConverter {
 		public PCM16Audio ApplyEffects(PCM16Audio lwav, int channels = int.MaxValue, decimal db = 0, decimal amplitude = 1, int rate = int.MaxValue, double pitch_semitones = 0, double tempo_ratio = 1) {
 			byte[] wav = lwav.Export();
 
+			// This is where I wish I had F# list comprehensions
+
 			IEnumerable<string> getParameters() {
 				if (channels != lwav.Channels)
 					yield return $"-ac {channels}";
-				if (db != 0)
-					yield return $"-af \"volume={db.ToString(CultureInfo.InvariantCulture)}dB\"";
-				if (amplitude != 1)
-					yield return $"-af \"volume={amplitude.ToString(CultureInfo.InvariantCulture)}\"";
 
-				double n = pitch_semitones;
-				double r = lwav.SampleRate;
-				double t = Math.Pow(2, n / 12.0);
-				double tempo = t * tempo_ratio;
-				double newrate = t * r;
-				if (newrate != lwav.SampleRate) {
-					yield return $"-af \"asetrate={newrate}\"";
+				IEnumerable<string> getFilters() {
+					if (db != 0)
+						yield return $"volume={db.ToString(CultureInfo.InvariantCulture)}dB";
+					if (amplitude != 1)
+						yield return $"volume={amplitude.ToString(CultureInfo.InvariantCulture)}";
+
+					double n = pitch_semitones;
+					double r = lwav.SampleRate;
+					double t = Math.Pow(2, n / 12.0);
+					double tempo = tempo_ratio / t;
+					double newrate = t * r;
+					if (newrate != lwav.SampleRate) {
+						yield return $"asetrate={newrate}";
+					}
+					while (tempo > 2) {
+						yield return $"atempo={tempo}";
+						tempo /= 2;
+					}
+					if (tempo != 1) {
+						yield return $"atempo={tempo}";
+					}
+					if (newrate > rate) {
+						yield return $"aresample={rate}";
+					}
 				}
-				while (tempo > 2) {
-					yield return $"-af \"atempo={tempo}\"";
-					tempo /= 2;
-				}
-				if (tempo != 1) {
-					yield return $"-af \"atempo={tempo}\"";
-				}
-				if (newrate > rate) {
-					yield return $"-af \"aresample={rate}\"";
-				}
+
+				var filters = getFilters().ToList();
+				if (filters.Count > 0)
+					yield return $"-af \"{string.Join(", ", filters)}\"";
 			}
 
 			var parameters = getParameters().ToList();
