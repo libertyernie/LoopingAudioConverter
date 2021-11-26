@@ -6,11 +6,11 @@ using VorbisCommentSharp;
 
 namespace LoopingAudioConverter {
 	public class OggVorbisExporter : IAudioExporter {
-		private readonly SoX sox;
+		private readonly IEffectEngine effectEngine;
 		private readonly string encodingParameters;
 
-		public OggVorbisExporter(SoX sox, string encodingParameters = null) {
-			this.sox = sox;
+		public OggVorbisExporter(IEffectEngine effectEngine, string encodingParameters = null) {
+			this.effectEngine = effectEngine;
 			this.encodingParameters = encodingParameters;
 		}
 
@@ -20,8 +20,12 @@ namespace LoopingAudioConverter {
 			// Don't re-encode if the original input file was also Ogg Vorbis
 			if (lwav.OriginalPath != null && new string[] { ".ogg", ".logg" }.Contains(Path.GetExtension(lwav.OriginalPath), StringComparer.InvariantCultureIgnoreCase)) {
 				File.Copy(lwav.OriginalPath, output_filename, true);
-			} else {
+			} else if (effectEngine is SoX sox) {
 				await sox.WriteFileAsync(lwav, output_filename, encodingParameters);
+			} else if (string.IsNullOrWhiteSpace(encodingParameters)) {
+				await effectEngine.WriteFileAsync(lwav, output_filename);
+			} else {
+				throw new AudioExporterException("Custom Vorbis encoding parameters are currently only supported when using SoX. FFmpeg support may be added in a future version.");
 			}
 
 			using (VorbisFile file = new VorbisFile(File.ReadAllBytes(output_filename))) {

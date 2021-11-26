@@ -16,20 +16,6 @@ namespace LoopingAudioConverter {
 		static void Main(string[] args) {
 			Application.EnableVisualStyles();
 
-			List<string> errors = new List<string>(0);
-			foreach (string s in new string[] { "sox_path", "vgmstream_path", "lame_path", "faad_path" }) {
-				string v = ConfigurationManager.AppSettings[s];
-				if (string.IsNullOrEmpty(v)) {
-					errors.Add("The configuration setting " + s + " is missing");
-				} else if (!File.Exists(ConfigurationManager.AppSettings[s])) {
-					errors.Add($"Could not find {s} ({v})");
-				}
-			}
-
-			if (errors.Any()) {
-				MessageBox.Show("One or more programs could not be found; the program may not run properly:" + Environment.NewLine + string.Join(Environment.NewLine, errors));
-			}
-
 			string ini = null;
 			List<string> initialInputFiles = new List<string>();
 			bool auto = false;
@@ -71,25 +57,28 @@ namespace LoopingAudioConverter {
 					"Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
 
-			FFmpeg ffmpeg = new FFmpeg(ConfigurationManager.AppSettings["ffmpeg_path"]);
-			SoX sox = new SoX(ConfigurationManager.AppSettings["sox_path"]);
-
-			IEffectEngine[] effectEngines = new IEffectEngine[] { ffmpeg, sox };
-
-			List<IAudioImporter> importers = new List<IAudioImporter> {
-					new WAVImporter(),
-					new MP3Importer(),
-					new MP4Importer(ConfigurationManager.AppSettings["faad_path"]),
-					new VGMImporter(ConfigurationManager.AppSettings["vgmplay_path"]),
-					new MSU1(),
-					new MSFImporter(),
-					new VGMStreamImporter(ConfigurationManager.AppSettings["vgmstream_path"]),
-					ffmpeg,
-					sox
-				};
-			if (o.VGAudioDecoder) {
-				importers.Insert(1, new VGAudioImporter());
+			IEnumerable<IAudioImporter> buildImporters() {
+				yield return new WAVImporter();
+				if (o.VGAudioDecoder)
+					yield return new VGAudioImporter();
+				yield return new MP3Importer();
+				if (ConfigurationManager.AppSettings["faad_path"] is string faad_path)
+					yield return new MP4Importer(faad_path);
+				if (ConfigurationManager.AppSettings["vgmplay_path"] is string vgmplay_path)
+					yield return new VGMImporter(vgmplay_path);
+				yield return new MSU1();
+				yield return new MSFImporter();
+				if (ConfigurationManager.AppSettings["vgmstream_path"] is string vgmstream_path)
+					yield return new VGMStreamImporter(vgmstream_path);
+				if (ConfigurationManager.AppSettings["sox_path"] is string sox_path)
+					yield return new SoX(sox_path);
+				if (ConfigurationManager.AppSettings["ffmpeg_path"] is string ffmpeg_path)
+					yield return new FFmpeg(ffmpeg_path);
 			}
+
+			List<IAudioImporter> importers = buildImporters().ToList();
+
+			IEffectEngine effectEngine = importers.OfType<IEffectEngine>().FirstOrDefault() ?? throw new AudioImporterException("Could not find either ffmpeg or SoX - please specify ffmpeg_path or sox_path in .config file");
 
 			IAudioExporter exporter;
 			switch (o.ExporterType) {
@@ -127,7 +116,7 @@ namespace LoopingAudioConverter {
 					exporter = new MSU1();
 					break;
 				case ExporterType.FLAC:
-					exporter = new FLACExporter(effectEngines.First());
+					exporter = new FLACExporter(effectEngine);
 					break;
 				case ExporterType.MP3:
 					exporter = new MP3Exporter(ConfigurationManager.AppSettings["lame_path"], o.MP3EncodingParameters);
@@ -139,7 +128,7 @@ namespace LoopingAudioConverter {
 					exporter = new AACExporter(ConfigurationManager.AppSettings["qaac_path"], o.AACEncodingParameters, adts: true);
 					break;
 				case ExporterType.OggVorbis:
-					exporter = new OggVorbisExporter(sox, o.OggVorbisEncodingParameters);
+					exporter = new OggVorbisExporter(effectEngine, o.OggVorbisEncodingParameters);
 					break;
 				case ExporterType.WAV:
 					exporter = new WAVExporter();
@@ -258,13 +247,13 @@ namespace LoopingAudioConverter {
 				}
 
 				window.SetDecodingText(filename_no_ext + " (applying effects)");
-				w = ffmpeg.ApplyEffects(w,
+				w = effectEngine.ApplyEffects(w,
 					channels: o.Channels ?? w.Channels,
 					rate: o.SampleRate ?? w.SampleRate,
 					db: o.AmplifydB ?? 0M,
 					amplitude: o.AmplifyRatio ?? 1M,
-					pitch_semitones: (double)(o.PitchSemitones ?? 0M),
-					tempo_ratio: (double)(o.TempoRatio ?? 1M));
+					pitch_semitones: o.PitchSemitones ?? 0M,
+					tempo_ratio: o.TempoRatio ?? 1M);
 				window.SetDecodingText("");
 
 				List<NamedAudio> wavsToExport = new List<NamedAudio>();
