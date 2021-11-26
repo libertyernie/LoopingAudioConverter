@@ -12,7 +12,7 @@ namespace LoopingAudioConverter {
 	/// <summary>
 	/// A class to interface with FFmpeg, using it to read and write non-looping audio data and to apply effects.
 	/// </summary>
-	public class FFmpeg : IAudioImporter {
+	public class FFmpeg : IAudioImporter, IEffectEngine {
 		private readonly string ExePath;
 
 		/// <summary>
@@ -187,6 +187,10 @@ namespace LoopingAudioConverter {
 
 		public string GetImporterName() {
 			return "FFmpeg";
+		}
+
+		PCM16Audio IEffectEngine.ApplyEffects(PCM16Audio lwav, int channels, decimal db, decimal amplitude, int rate, decimal pitch_semitones, decimal tempo_ratio) {
+			return ApplyEffects(lwav, channels, db, amplitude, rate, (double)pitch_semitones, (double)tempo_ratio);
 		}
 	}
 }

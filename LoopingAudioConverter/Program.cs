@@ -9,7 +9,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using VGAudio.Utilities;
 
 namespace LoopingAudioConverter {
 	class Program {
@@ -75,6 +74,8 @@ namespace LoopingAudioConverter {
 			FFmpeg ffmpeg = new FFmpeg(ConfigurationManager.AppSettings["ffmpeg_path"]);
 			SoX sox = new SoX(ConfigurationManager.AppSettings["sox_path"]);
 
+			IEffectEngine[] effectEngines = new IEffectEngine[] { ffmpeg, sox };
+
 			List<IAudioImporter> importers = new List<IAudioImporter> {
 					new WAVImporter(),
 					new MP3Importer(),
@@ -83,7 +84,8 @@ namespace LoopingAudioConverter {
 					new MSU1(),
 					new MSFImporter(),
 					new VGMStreamImporter(ConfigurationManager.AppSettings["vgmstream_path"]),
-					ffmpeg
+					ffmpeg,
+					sox
 				};
 			if (o.VGAudioDecoder) {
 				importers.Insert(1, new VGAudioImporter());
@@ -125,7 +127,7 @@ namespace LoopingAudioConverter {
 					exporter = new MSU1();
 					break;
 				case ExporterType.FLAC:
-					exporter = new FLACExporter(sox);
+					exporter = new FLACExporter(effectEngines.First());
 					break;
 				case ExporterType.MP3:
 					exporter = new MP3Exporter(ConfigurationManager.AppSettings["lame_path"], o.MP3EncodingParameters);
