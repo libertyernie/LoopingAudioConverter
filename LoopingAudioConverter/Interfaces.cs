@@ -11,6 +11,10 @@ namespace LoopingAudioConverter {
 		public AudioExporterException(string message) : base(message) { }
 	}
 
+	public class CustomEncodingParametersUnsupportedException : Exception {
+		public CustomEncodingParametersUnsupportedException(string name_of_required_thing) : base($"Custom encoding parameters for this format are currently only supported when using {name_of_required_thing}. FFmpeg support may be added in a future version.") { }
+	}
+
 	public interface IAudioImporter {
 		bool SupportsExtension(string extension);
 		Task<PCM16Audio> ReadFileAsync(string filename);

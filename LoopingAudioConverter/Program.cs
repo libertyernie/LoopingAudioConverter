@@ -80,62 +80,65 @@ namespace LoopingAudioConverter {
 
 			IEffectEngine effectEngine = importers.OfType<IEffectEngine>().FirstOrDefault() ?? throw new AudioImporterException("Could not find either ffmpeg or SoX - please specify ffmpeg_path or sox_path in .config file");
 
-			IAudioExporter exporter;
-			switch (o.ExporterType) {
-				case ExporterType.BRSTM:
-					exporter = new RSTMExporter(o.BxstmOptions?.Configuration);
-					break;
-				case ExporterType.BCSTM:
-					exporter = new CSTMExporter(o.BxstmOptions?.Configuration);
-					break;
-				case ExporterType.BFSTM:
-					exporter = new FSTMExporter(o.BxstmOptions?.Configuration);
-					break;
-				case ExporterType.DSP:
-					exporter = new DSPExporter();
-					break;
-				case ExporterType.IDSP:
-					exporter = new IDSPExporter();
-					break;
-				case ExporterType.HPS:
-					exporter = new HPSExporter();
-					break;
-				case ExporterType.HCA:
-					exporter = new HCAExporter(o.HcaOptions?.Configuration);
-					break;
-				case ExporterType.ADX:
-					exporter = new ADXExporter(o.AdxOptions?.Configuration);
-					break;
-				case ExporterType.MSF_PCM16BE:
-					exporter = new MSFPCM16Exporter(big_endian: true);
-					break;
-				case ExporterType.MSF_PCM16LE:
-					exporter = new MSFPCM16Exporter(big_endian: false);
-					break;
-				case ExporterType.MSU1:
-					exporter = new MSU1();
-					break;
-				case ExporterType.FLAC:
-					exporter = new FLACExporter(effectEngine);
-					break;
-				case ExporterType.MP3:
-					exporter = new MP3Exporter(ConfigurationManager.AppSettings["lame_path"], o.MP3EncodingParameters);
-					break;
-				case ExporterType.AAC_M4A:
-					exporter = new AACExporter(ConfigurationManager.AppSettings["qaac_path"], o.AACEncodingParameters, adts: false);
-					break;
-				case ExporterType.AAC_ADTS:
-					exporter = new AACExporter(ConfigurationManager.AppSettings["qaac_path"], o.AACEncodingParameters, adts: true);
-					break;
-				case ExporterType.OggVorbis:
-					exporter = new OggVorbisExporter(effectEngine, o.OggVorbisEncodingParameters);
-					break;
-				case ExporterType.WAV:
-					exporter = new WAVExporter();
-					break;
-				default:
-					throw new Exception("Could not create exporter type " + o.ExporterType);
+			IAudioExporter getExporter() {
+				switch (o.ExporterType) {
+					case ExporterType.BRSTM:
+						return new RSTMExporter(o.BxstmOptions?.Configuration);
+					case ExporterType.BCSTM:
+						return new CSTMExporter(o.BxstmOptions?.Configuration);
+					case ExporterType.BFSTM:
+						return new FSTMExporter(o.BxstmOptions?.Configuration);
+					case ExporterType.DSP:
+						return new DSPExporter();
+					case ExporterType.IDSP:
+						return new IDSPExporter();
+					case ExporterType.HPS:
+						return new HPSExporter();
+					case ExporterType.HCA:
+						return new HCAExporter(o.HcaOptions?.Configuration);
+					case ExporterType.ADX:
+						return new ADXExporter(o.AdxOptions?.Configuration);
+					case ExporterType.MSF_PCM16BE:
+						return new MSFPCM16Exporter(big_endian: true);
+					case ExporterType.MSF_PCM16LE:
+						return new MSFPCM16Exporter(big_endian: false);
+					case ExporterType.MSU1:
+						return new MSU1();
+					case ExporterType.FLAC:
+						return new EffectEngineExporter(effectEngine, ".flac");
+					case ExporterType.MP3:
+						if (ConfigurationManager.AppSettings["lame_path"] is string lame_path)
+							return new MP3Exporter(ConfigurationManager.AppSettings["lame_path"], o.MP3EncodingParameters);
+						if (!string.IsNullOrEmpty(o.MP3EncodingParameters))
+							MessageBox.Show($"Custom MP3 encoding parameters are not supported in this version.");
+						return new EffectEngineExporter(effectEngine, ".mp3");
+					case ExporterType.AAC_M4A:
+						if (ConfigurationManager.AppSettings["qaac_path"] is string qaac_path1)
+							return new AACExporter(qaac_path1, o.AACEncodingParameters, adts: false);
+						if (!string.IsNullOrEmpty(o.MP3EncodingParameters))
+							MessageBox.Show($"Custom AAC encoding parameters are not supported in this version.");
+						return new EffectEngineExporter(effectEngine, ".m4a");
+					case ExporterType.AAC_ADTS:
+						if (ConfigurationManager.AppSettings["qaac_path"] is string qaac_path2)
+							return new AACExporter(qaac_path2, o.AACEncodingParameters, adts: true);
+						if (!string.IsNullOrEmpty(o.MP3EncodingParameters))
+							MessageBox.Show($"Custom AAC encoding parameters are not supported in this version.");
+						return new EffectEngineExporter(effectEngine, ".m4a");
+					case ExporterType.OggVorbis:
+						var sox = importers.OfType<SoX>().FirstOrDefault();
+						if (sox != null)
+							return new OggVorbisExporter(sox, o.OggVorbisEncodingParameters);
+						if (!string.IsNullOrEmpty(o.MP3EncodingParameters))
+							MessageBox.Show($"Custom Vorbis encoding parameters are not supported in this version.");
+						return new EffectEngineExporter(effectEngine, ".ogg");
+					case ExporterType.WAV:
+						return new WAVExporter();
+					default:
+						throw new Exception("Could not create exporter type " + o.ExporterType);
+				}
 			}
+
+			IAudioExporter exporter = getExporter();
 
 			List<Task> tasks = new List<Task>();
 			SemaphoreSlim sem = new SemaphoreSlim(o.NumSimulTasks, o.NumSimulTasks);
@@ -215,6 +218,7 @@ namespace LoopingAudioConverter {
 						if (importer is IRenderingAudioImporter) {
 							((IRenderingAudioImporter)importer).SampleRate = o.SampleRate;
 						}
+						window.SetDecodingText($"{filename_no_ext} ({importer.GetType().Name})");
 						w = await importer.ReadFileAsync(inputFile);
 						w.OriginalPath = inputFile;
 						break;
@@ -319,7 +323,7 @@ namespace LoopingAudioConverter {
 					}
 
 					async Task Encode() {
-						var row = window.AddEncodingRow(toExport.Name);
+						var row = window.AddEncodingRow($"{toExport.Name} ({exporter.GetType().Name})");
 						try {
 							await exporter.WriteFileAsync(toExport.Audio, outputDir, toExport.Name);
 							exported.Enqueue(toExport.Name);

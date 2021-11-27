@@ -82,6 +82,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exporters\EffectEngineExporter.cs" />
     <Compile Include="FFmpeg.cs" />
     <Compile Include="VGAudioOptions\BxstmOptions.cs" />
     <Compile Include="VGAudioOptions\VGAudioOptionsBase.cs" />
@@ -106,7 +107,6 @@
     <Compile Include="Exporters\VGAudioExporter.cs" />
     <Compile Include="Importers\VGAudioImporter.cs" />
     <Compile Include="Exporters\RSTMExporter.cs" />
-    <Compile Include="Exporters\FLACExporter.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="Exporters\AACExporter.cs" />
     <Compile Include="AACQualityForm.cs">

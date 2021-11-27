@@ -332,13 +332,7 @@ namespace LoopingAudioConverter {
 			Options o = this.GetOptions();
 			if (o.ExporterType == ExporterType.AAC_M4A || o.ExporterType == ExporterType.AAC_ADTS) {
 				string qaac_path = ConfigurationManager.AppSettings["qaac_path"];
-				if (qaac_path == null) {
-					MessageBox.Show("AAC encoding is not supported: no qaac_path is defined in the .config file.");
-					return;
-				} else if (!File.Exists(qaac_path)) {
-					MessageBox.Show($"AAC encoding is not supported: path {qaac_path} not found.");
-					return;
-				} else {
+				if (qaac_path != null) {
 					Process p = Process.Start(new ProcessStartInfo {
 						FileName = qaac_path,
 						UseShellExecute = false,
