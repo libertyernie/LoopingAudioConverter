@@ -7,10 +7,12 @@ using VorbisCommentSharp;
 namespace LoopingAudioConverter {
 	public class EffectEngineExporter : IAudioExporter {
 		private readonly IEffectEngine effectEngine;
+		private readonly string encoding_parameters;
 		private readonly string output_extension;
 
-		public EffectEngineExporter(IEffectEngine effectEngine, string output_extension = ".flac") {
+		public EffectEngineExporter(IEffectEngine effectEngine, string encoding_parameters, string output_extension) {
 			this.effectEngine = effectEngine;
+			this.encoding_parameters = encoding_parameters;
 			this.output_extension = output_extension;
 		}
 
@@ -20,7 +22,7 @@ namespace LoopingAudioConverter {
 			if (lwav.OriginalPath != null && output_extension.Equals(Path.GetExtension(lwav.OriginalPath), StringComparison.InvariantCultureIgnoreCase)) {
 				File.Copy(lwav.OriginalPath, output_filename, true);
 			} else {
-				await effectEngine.WriteFileAsync(lwav, output_filename);
+				await effectEngine.WriteFileAsync(lwav, output_filename, encoding_parameters);
 			}
 
 			if (new string[] { ".ogg", ".logg" }.Contains(output_extension)) {

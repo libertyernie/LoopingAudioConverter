@@ -173,9 +173,5 @@ namespace LoopingAudioConverter {
 		public string GetImporterName() {
 			return "SoX";
 		}
-
-		Task IEffectEngine.WriteFileAsync(PCM16Audio lwav, string output_filename) {
-			return WriteFileAsync(lwav, output_filename);
-		}
 	}
 }

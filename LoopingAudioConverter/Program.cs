@@ -57,7 +57,7 @@ namespace LoopingAudioConverter {
 					"Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
 
-			IEnumerable<IAudioImporter> buildImporters() {
+			IEnumerable <IAudioImporter> buildImporters() {
 				yield return new WAVImporter();
 				if (o.VGAudioDecoder)
 					yield return new VGAudioImporter();
@@ -70,10 +70,10 @@ namespace LoopingAudioConverter {
 				yield return new MSFImporter();
 				if (ConfigurationManager.AppSettings["vgmstream_path"] is string vgmstream_path)
 					yield return new VGMStreamImporter(vgmstream_path);
-				if (ConfigurationManager.AppSettings["sox_path"] is string sox_path)
-					yield return new SoX(sox_path);
 				if (ConfigurationManager.AppSettings["ffmpeg_path"] is string ffmpeg_path)
 					yield return new FFmpeg(ffmpeg_path);
+				if (ConfigurationManager.AppSettings["sox_path"] is string sox_path)
+					yield return new SoX(sox_path);
 			}
 
 			List<IAudioImporter> importers = buildImporters().ToList();
@@ -105,32 +105,21 @@ namespace LoopingAudioConverter {
 					case ExporterType.MSU1:
 						return new MSU1();
 					case ExporterType.FLAC:
-						return new EffectEngineExporter(effectEngine, ".flac");
+						return new EffectEngineExporter(effectEngine, "", ".flac");
 					case ExporterType.MP3:
-						if (ConfigurationManager.AppSettings["lame_path"] is string lame_path)
-							return new MP3Exporter(ConfigurationManager.AppSettings["lame_path"], o.MP3EncodingParameters);
-						if (!string.IsNullOrEmpty(o.MP3EncodingParameters))
-							MessageBox.Show($"Custom MP3 encoding parameters are not supported in this version.");
-						return new EffectEngineExporter(effectEngine, ".mp3");
+						return new MP3Exporter(ConfigurationManager.AppSettings["lame_path"], o.MP3EncodingParameters);
+					case ExporterType.FFmpeg_MP3:
+						return new EffectEngineExporter(effectEngine, o.MP3FFmpegParameters, ".mp3");
 					case ExporterType.AAC_M4A:
-						if (ConfigurationManager.AppSettings["qaac_path"] is string qaac_path1)
-							return new AACExporter(qaac_path1, o.AACEncodingParameters, adts: false);
-						if (!string.IsNullOrEmpty(o.MP3EncodingParameters))
-							MessageBox.Show($"Custom AAC encoding parameters are not supported in this version.");
-						return new EffectEngineExporter(effectEngine, ".m4a");
+						return new AACExporter(ConfigurationManager.AppSettings["qaac_path"], o.AACEncodingParameters, adts: false);
+					case ExporterType.FFmpeg_AAC_M4A:
+						return new EffectEngineExporter(effectEngine, o.AACFFmpegParameters, ".m4a");
 					case ExporterType.AAC_ADTS:
-						if (ConfigurationManager.AppSettings["qaac_path"] is string qaac_path2)
-							return new AACExporter(qaac_path2, o.AACEncodingParameters, adts: true);
-						if (!string.IsNullOrEmpty(o.MP3EncodingParameters))
-							MessageBox.Show($"Custom AAC encoding parameters are not supported in this version.");
-						return new EffectEngineExporter(effectEngine, ".m4a");
+						return new AACExporter(ConfigurationManager.AppSettings["qaac_path"], o.AACEncodingParameters, adts: true);
+					case ExporterType.FFmpeg_AAC_ADTS:
+						return new EffectEngineExporter(effectEngine, o.AACFFmpegParameters, ".aac");
 					case ExporterType.OggVorbis:
-						var sox = importers.OfType<SoX>().FirstOrDefault();
-						if (sox != null)
-							return new OggVorbisExporter(sox, o.OggVorbisEncodingParameters);
-						if (!string.IsNullOrEmpty(o.MP3EncodingParameters))
-							MessageBox.Show($"Custom Vorbis encoding parameters are not supported in this version.");
-						return new EffectEngineExporter(effectEngine, ".ogg");
+						return new EffectEngineExporter(importers.OfType<SoX>().Single(), o.OggVorbisEncodingParameters, ".ogg");
 					case ExporterType.WAV:
 						return new WAVExporter();
 					default:
@@ -218,7 +207,6 @@ namespace LoopingAudioConverter {
 						if (importer is IRenderingAudioImporter) {
 							((IRenderingAudioImporter)importer).SampleRate = o.SampleRate;
 						}
-						window.SetDecodingText($"{filename_no_ext} ({importer.GetType().Name})");
 						w = await importer.ReadFileAsync(inputFile);
 						w.OriginalPath = inputFile;
 						break;
@@ -323,7 +311,7 @@ namespace LoopingAudioConverter {
 					}
 
 					async Task Encode() {
-						var row = window.AddEncodingRow($"{toExport.Name} ({exporter.GetType().Name})");
+						var row = window.AddEncodingRow(toExport.Name);
 						try {
 							await exporter.WriteFileAsync(toExport.Audio, outputDir, toExport.Name);
 							exported.Enqueue(toExport.Name);
