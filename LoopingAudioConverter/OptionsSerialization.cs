@@ -1,145 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using VGAudio.Containers.NintendoWare;
+﻿using System.IO;
 
 namespace LoopingAudioConverter {
     public static class OptionsSerialization {
         public static void PopulateFromFile(string filename, ref Options o) {
             using (FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read)) {
-				if (filename.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase)) {
-					var writer = new System.Xml.Serialization.XmlSerializer(typeof(Options));
-					o = (Options)writer.Deserialize(fs);
-				} else {
-					using (StreamReader sr = new StreamReader(fs)) {
-						string line;
-						bool active = false;
-						while ((line = sr.ReadLine()) != null) {
-							if (line.StartsWith(";")) continue;
-							if (line.StartsWith("[")) {
-								active = line.Equals("[LoopingAudioConverter]", StringComparison.InvariantCultureIgnoreCase);
-								continue;
-							}
-
-							string[] split = line.Split('=');
-							if (split.Length == 2) {
-								string v = split[1];
-								switch (split[0]) {
-									case "OutputDir":
-										o.OutputDir = v;
-										break;
-									case "Channels":
-										o.Channels = int.Parse(v);
-										break;
-									case "SampleRate":
-										o.SampleRate = int.Parse(v);
-										break;
-									case "AmplifydB":
-										o.AmplifydB = decimal.Parse(v);
-										break;
-									case "AmplifyRatio":
-										o.AmplifyRatio = decimal.Parse(v);
-										break;
-									case "ChannelSplit":
-										o.ChannelSplit = (ChannelSplit)Enum.Parse(typeof(ChannelSplit), v, true);
-										break;
-									case "ExporterType":
-										o.ExporterType = (ExporterType)Enum.Parse(typeof(ExporterType), v, true);
-										break;
-									case "MP3EncodingParameters":
-										o.MP3EncodingParameters = v;
-										break;
-									case "OggVorbisEncodingParameters":
-										o.OggVorbisEncodingParameters = v;
-										break;
-									case nameof(o.AACEncodingParameters):
-										o.AACEncodingParameters = v;
-										break;
-									case "BxstmCodec":
-										o.BxstmOptions.Codec = v == "Adpcm"
-											? NwCodec.GcAdpcm
-											: (NwCodec)Enum.Parse(typeof(NwCodec), v, true);
-										break;
-									case "ExportWholeSong":
-										o.ExportWholeSong = bool.Parse(v);
-										break;
-									case "WholeSongSuffix":
-										o.WholeSongSuffix = v;
-										break;
-									case "NumberOfLoops":
-										o.NumberOfLoops = int.Parse(v);
-										break;
-									case "FadeOutSec":
-										o.FadeOutSec = decimal.Parse(v);
-										break;
-									case "WriteLoopingMetadata":
-										o.WriteLoopingMetadata = bool.Parse(v);
-										break;
-									case "ExportPreLoop":
-										o.ExportPreLoop = bool.Parse(v);
-										break;
-									case "PreLoopSuffix":
-										o.PreLoopSuffix = v;
-										break;
-									case "ExportLoop":
-										o.ExportLoop = bool.Parse(v);
-										break;
-									case "LoopSuffix":
-										o.LoopSuffix = v;
-										break;
-									case "ShortCircuit":
-										o.ShortCircuit = bool.Parse(v);
-										break;
-									case "VGAudioDecoder":
-										o.VGAudioDecoder = bool.Parse(v);
-										break;
-									case "NumSimulTasks":
-										o.NumSimulTasks = int.Parse(v);
-										break;
-								}
-							}
-						}
-					}
-				}
+				var writer = new System.Xml.Serialization.XmlSerializer(typeof(Options));
+				o = (Options)writer.Deserialize(fs);
             }
         }
 
         public static void WriteToFile(string filename, Options o) {
             using (FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write)) {
-				if (filename.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase)) {
-					var writer = new System.Xml.Serialization.XmlSerializer(typeof(Options));
-					writer.Serialize(fs, o);
-				} else {
-					using (StreamWriter sw = new StreamWriter(fs)) {
-						sw.WriteLine("[LoopingAudioConverter]");
-						if (o.OutputDir != null) sw.WriteLine("OutputDir=" + o.OutputDir);
-						if (o.Channels != null) sw.WriteLine("Channels=" + o.Channels);
-						if (o.SampleRate != null) sw.WriteLine("SampleRate=" + o.SampleRate);
-						if (o.AmplifydB != null) sw.WriteLine("AmplifydB=" + o.AmplifydB);
-						if (o.AmplifyRatio != null) sw.WriteLine("AmplifyRatio=" + o.AmplifyRatio);
-						if (o.ChannelSplit != null) sw.WriteLine("ChannelSplit=" + o.ChannelSplit);
-						if (o.ExporterType != null) sw.WriteLine("ExporterType=" + o.ExporterType);
-						if (o.MP3EncodingParameters != null) sw.WriteLine("MP3EncodingParameters=" + o.MP3EncodingParameters);
-						if (o.OggVorbisEncodingParameters != null) sw.WriteLine("OggVorbisEncodingParameters=" + o.OggVorbisEncodingParameters);
-						if (o.AACEncodingParameters != null) sw.WriteLine(nameof(o.AACEncodingParameters) + "=" + o.AACEncodingParameters);
-						if (o.BxstmOptions.Codec != null) sw.WriteLine("BxstmCodec=" + o.BxstmOptions.Codec);
-						if (o.ExportWholeSong != null) sw.WriteLine("ExportWholeSong=" + o.ExportWholeSong);
-						if (o.WholeSongSuffix != null) sw.WriteLine("WholeSongSuffix=" + o.WholeSongSuffix);
-						if (o.NumberOfLoops != null) sw.WriteLine("NumberOfLoops=" + o.NumberOfLoops);
-						if (o.FadeOutSec != null) sw.WriteLine("FadeOutSec=" + o.FadeOutSec);
-						if (o.WriteLoopingMetadata != null) sw.WriteLine("WriteLoopingMetadata=" + o.WriteLoopingMetadata);
-						if (o.ExportPreLoop != null) sw.WriteLine("ExportPreLoop=" + o.ExportPreLoop);
-						if (o.PreLoopSuffix != null) sw.WriteLine("PreLoopSuffix=" + o.PreLoopSuffix);
-						if (o.ExportLoop != null) sw.WriteLine("ExportLoop=" + o.ExportLoop);
-						if (o.LoopSuffix != null) sw.WriteLine("LoopSuffix=" + o.LoopSuffix);
-						if (o.ShortCircuit != null) sw.WriteLine("ShortCircuit=" + o.ShortCircuit);
-						if (o.VGAudioDecoder != null) sw.WriteLine("VGAudioDecoder=" + o.ShortCircuit);
-						if (o.NumSimulTasks != null) sw.WriteLine("NumSimulTasks=" + o.NumSimulTasks);
-					}
-				}
+				var writer = new System.Xml.Serialization.XmlSerializer(typeof(Options));
+				writer.Serialize(fs, o);
             }
         }
     }
