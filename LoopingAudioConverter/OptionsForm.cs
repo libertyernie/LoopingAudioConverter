@@ -49,6 +49,8 @@ namespace LoopingAudioConverter {
 			}
 		}
 
+		public bool Auto { get; set; } = false;
+
 		public OptionsForm() {
 			InitializeComponent();
 
@@ -375,7 +377,7 @@ namespace LoopingAudioConverter {
 				}
 			}
 			this.listBox1.Items.Clear();
-			Task t = Program.RunAsync(o, owner: this);
+			Task t = Program.RunAsync(o, showEndDialog: !this.Auto, owner: this);
 			runningTasks.Add(t);
 			UpdateTitle();
 			try {
@@ -385,6 +387,9 @@ namespace LoopingAudioConverter {
 			}
 			runningTasks.Remove(t);
 			UpdateTitle();
+			if (this.Auto) {
+				this.Close();
+			}
 		}
 
 		private void UpdateTitle() {
