@@ -1,4 +1,4 @@
-﻿using BrawlLib.LoopSelection;
+﻿using BrawlLib.Internal.Windows.Forms;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
