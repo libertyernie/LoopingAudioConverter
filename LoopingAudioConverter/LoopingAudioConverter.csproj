@@ -68,6 +68,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exporters\BrawlLibRSTMExporter.cs" />
     <Compile Include="Exporters\EffectEngineExporter.cs" />
     <Compile Include="FFmpeg.cs" />
     <Compile Include="VGAudioOptions\BxstmOptions.cs" />

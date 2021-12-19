@@ -101,6 +101,12 @@ namespace LoopingAudioConverter {
 						return new HCAExporter(o.HcaOptions?.Configuration);
 					case ExporterType.ADX:
 						return new ADXExporter(o.AdxOptions?.Configuration);
+					case ExporterType.BrawlLib_BRSTM_ADPCM:
+						return new BrawlLibRSTMExporter(BrawlLib.SSBB.Types.Audio.WaveEncoding.ADPCM);
+					case ExporterType.BrawlLib_BRSTM_PCM16:
+						return new BrawlLibRSTMExporter(BrawlLib.SSBB.Types.Audio.WaveEncoding.PCM16);
+					case ExporterType.BrawlLib_BRSTM_PCM8:
+						return new BrawlLibRSTMExporter(BrawlLib.SSBB.Types.Audio.WaveEncoding.PCM8);
 					case ExporterType.MSF_PCM16BE:
 						return new MSFPCM16Exporter(big_endian: true);
 					case ExporterType.MSF_PCM16LE:
