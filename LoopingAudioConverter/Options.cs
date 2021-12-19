@@ -49,6 +49,7 @@ namespace LoopingAudioConverter {
 		public IEnumerable<string> InputFiles { get; set; }
 
 		public string OutputDir { get; set; }
+		public string InputDir { get; set; }
 		public int? Channels { get; set; }
 		public int? SampleRate { get; set; }
 		public decimal? AmplifydB { get; set; }
