@@ -11,8 +11,8 @@ namespace LoopingAudioConverter {
 	/// <summary>
 	/// A class to interface with SoX, using it to read and write non-looping audio data and to apply effects.
 	/// </summary>
-	public class SoX : IAudioImporter {
-		private string ExePath;
+	public class SoX : IAudioImporter, IEffectEngine {
+		private readonly string ExePath;
 
 		/// <summary>
 		/// Initializes the SoX interfacing class and importer.
@@ -53,7 +53,7 @@ namespace LoopingAudioConverter {
 				CreateNoWindow = true,
 				Arguments = "\"" + filename + "\" -b 16 -t wav " + outfile
 			};
-			var pr = await ProcessEx.RunAsync(psi);
+			await ProcessEx.RunAsync(psi);
 
 			try {
 				PCM16Audio lwav = PCM16Factory.FromFile(outfile, true);

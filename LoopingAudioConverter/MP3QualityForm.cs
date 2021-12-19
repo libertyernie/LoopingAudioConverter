@@ -10,10 +10,19 @@ using System.Windows.Forms;
 
 namespace LoopingAudioConverter {
 	public partial class MP3QualityForm : Form {
-		public string EncodingParameters {
+		public string LAMEParameters {
 			get {
 				return radVBR.Checked ? ("-V " + ddlVBRSetting.SelectedIndex)
 					: radCBR.Checked ? ("--cbr -b " + numBitrate.Value)
+					: radCustom.Checked ? txtParameters.Text
+					: "";
+			}
+		}
+
+		public string FFmpegParameters {
+			get {
+				return radVBR.Checked ? ("-q:a " + ddlVBRSetting.SelectedIndex)
+					: radCBR.Checked ? ("-b:a " + (numBitrate.Value * 1024m))
 					: radCustom.Checked ? txtParameters.Text
 					: "";
 			}
@@ -40,18 +49,7 @@ namespace LoopingAudioConverter {
 			ddlVBRSetting.SelectedIndex = 2;
 
 			if (encodingParameters != null) {
-				var vbr = Regex.Match(encodingParameters, "^-V ?([0-9]*)$");
-				var cbr = Regex.Match(encodingParameters, "^--cbr -b ?([0-9]*)$");
-				if (vbr.Success) {
-					radVBR.Checked = true;
-					ddlVBRSetting.SelectedIndex = int.Parse(vbr.Groups[1].Value);
-				} else if (cbr.Success) {
-					radCBR.Checked = true;
-					numBitrate.Value = int.Parse(cbr.Groups[1].Value);
-				} else {
-					radCustom.Checked = true;
-					txtParameters.Text = encodingParameters;
-				}
+				txtParameters.Text = encodingParameters;
 			}
 		}
 	}

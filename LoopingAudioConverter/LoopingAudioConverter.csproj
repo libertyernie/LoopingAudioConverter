@@ -82,6 +82,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exporters\EffectEngineExporter.cs" />
+    <Compile Include="FFmpeg.cs" />
     <Compile Include="VGAudioOptions\BxstmOptions.cs" />
     <Compile Include="VGAudioOptions\VGAudioOptionsBase.cs" />
     <Compile Include="VGAudioOptions\HcaOptions.cs" />
@@ -105,7 +107,6 @@
     <Compile Include="Exporters\VGAudioExporter.cs" />
     <Compile Include="Importers\VGAudioImporter.cs" />
     <Compile Include="Exporters\RSTMExporter.cs" />
-    <Compile Include="Exporters\FLACExporter.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="Exporters\AACExporter.cs" />
     <Compile Include="AACQualityForm.cs">
@@ -114,11 +115,11 @@
     <Compile Include="AACQualityForm.Designer.cs">
       <DependentUpon>AACQualityForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="OggVorbisQualityForm.cs">
+    <Compile Include="QualityForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="OggVorbisQualityForm.Designer.cs">
-      <DependentUpon>OggVorbisQualityForm.cs</DependentUpon>
+    <Compile Include="QualityForm.Designer.cs">
+      <DependentUpon>QualityForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MP3QualityForm.cs">
       <SubType>Form</SubType>
@@ -144,7 +145,6 @@
       <DependentUpon>MultipleProgressWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="NamedAudio.cs" />
-    <Compile Include="Exporters\OggVorbisExporter.cs" />
     <Compile Include="OptionsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -168,8 +168,8 @@
     <EmbeddedResource Include="VGAudioOptions\VGAudioOptionsForm.resx">
       <DependentUpon>VGAudioOptionsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="OggVorbisQualityForm.resx">
-      <DependentUpon>OggVorbisQualityForm.cs</DependentUpon>
+    <EmbeddedResource Include="QualityForm.resx">
+      <DependentUpon>QualityForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MP3QualityForm.resx">
       <DependentUpon>MP3QualityForm.cs</DependentUpon>

@@ -25,7 +25,10 @@ namespace LoopingAudioConverter {
 		MP3,
 		AAC_M4A,
 		AAC_ADTS,
-		OggVorbis
+		OggVorbis,
+		FFmpeg_MP3,
+		FFmpeg_AAC_M4A,
+		FFmpeg_AAC_ADTS
 	}
 
 	public enum ChannelSplit {
@@ -57,6 +60,8 @@ namespace LoopingAudioConverter {
 		public string MP3EncodingParameters { get; set; }
 		public string AACEncodingParameters { get; set; }
 		public string OggVorbisEncodingParameters { get; set; }
+		public string MP3FFmpegParameters { get; set; }
+		public string AACFFmpegParameters { get; set; }
 		public AdxOptions AdxOptions { get; set; }
 		public HcaOptions HcaOptions { get; set; }
 		public BxstmOptions BxstmOptions { get; set; }

@@ -34,18 +34,7 @@ namespace LoopingAudioConverter {
 			ddlTVBRSetting.SelectedItem = "91";
 
 			if (encodingParameters != null) {
-				var vbr = Regex.Match(encodingParameters, "^-V ?([0-9]*)$");
-				var cbr = Regex.Match(encodingParameters, "^--cbr -b ?([0-9]*)$");
-				if (vbr.Success) {
-					radTVBR.Checked = true;
-					ddlTVBRSetting.SelectedIndex = int.Parse(vbr.Groups[1].Value);
-				} else if (cbr.Success) {
-					radCBR.Checked = true;
-					numCBRBitrate.Value = int.Parse(cbr.Groups[1].Value);
-				} else {
-					radCustom.Checked = true;
-					txtParameters.Text = encodingParameters;
-				}
+				txtParameters.Text = encodingParameters;
 			}
 		}
 	}
