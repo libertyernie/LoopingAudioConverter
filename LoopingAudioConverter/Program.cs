@@ -311,7 +311,6 @@ namespace LoopingAudioConverter {
 
 					if (!o.ShortCircuit) {
 						toExport.Audio.OriginalPath = null;
-						toExport.Audio.OriginalAudioData = null;
 						toExport.Audio.OriginalMP3 = null;
 					}
 					if (!o.WriteLoopingMetadata) {

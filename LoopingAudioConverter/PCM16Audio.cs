@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using MSFContainerLib;
-using VGAudio.Formats;
 
 namespace LoopingAudioConverter {
 	/// <summary>
@@ -38,7 +37,6 @@ namespace LoopingAudioConverter {
 		}
 
 		public string OriginalPath { get; set; }
-		public AudioData OriginalAudioData { get; set; }
 		public byte[] OriginalMP3 { get; set; }
 
 		IEnumerable<short> IPcmAudioSource<short>.SampleData => Samples;

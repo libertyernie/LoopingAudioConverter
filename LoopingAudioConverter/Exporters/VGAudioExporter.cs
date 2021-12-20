@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using VGAudio.Containers.Wave;
 using VGAudio.Formats;
@@ -12,8 +9,18 @@ namespace LoopingAudioConverter {
 		protected abstract byte[] GetData(AudioData audio);
 		protected abstract string GetExtension();
 
+		private static AudioData Read(PCM16Audio lwav) {
+			try {
+				if (lwav.OriginalPath != null) {
+					return VGAudioImporter.Read(File.ReadAllBytes(lwav.OriginalPath), lwav.OriginalPath);
+				}
+			} catch (NotImplementedException) { }
+
+			return new WaveReader().Read(lwav.Export());
+		}
+
 		public void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
-			AudioData audio = lwav.OriginalAudioData ?? new WaveReader().Read(lwav.Export());
+			AudioData audio = Read(lwav);
 			audio.SetLoop(lwav.Looping, lwav.LoopStart, lwav.LoopEnd);
 			byte[] data = GetData(audio);
 			File.WriteAllBytes(Path.Combine(output_dir, original_filename_no_ext + GetExtension()), data);
