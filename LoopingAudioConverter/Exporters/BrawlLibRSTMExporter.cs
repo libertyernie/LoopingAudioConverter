@@ -7,8 +7,23 @@ using System.IO;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter {
-	public class BrawlLibRSTMExporter : IAudioExporter, IProgressTracker {
+	public class BrawlLibRSTMExporter : IAudioExporter {
 		public enum Container { RSTM, CSTM, FSTM }
+
+		public class SilentProgressTracker : IProgressTracker {
+			public float MinValue { get; set; }
+			public float MaxValue { get; set; }
+			public float CurrentValue { get; set; }
+			public bool Cancelled { get; set; }
+
+			public void Begin(float min, float max, float current) { }
+
+			public void Cancel() => throw new NotImplementedException();
+
+			public void Finish() { }
+
+			public void Update(float value) { }
+		}
 
 		private readonly WaveEncoding _waveEncoding;
 		private readonly Container _container;
@@ -18,24 +33,11 @@ namespace LoopingAudioConverter {
 			_container = container;
 		}
 
-		public float MinValue { get; set; }
-		public float MaxValue { get; set; }
-		public float CurrentValue { get; set; }
-		public bool Cancelled { get; set; }
-
-		public void Begin(float min, float max, float current) { }
-
-		public void Cancel() { }
-
-		public void Finish() { }
-
-		public void Update(float value) { }
-
 		private unsafe byte[] Encode(PCM16Audio lwav) {
 			using (var ms = new MemoryStream()) {
 				var wrapper = new PCM16LoopWrapper(lwav);
 
-				using (var fileMap = RSTMConverter.Encode(wrapper, this, _waveEncoding))
+				using (var fileMap = RSTMConverter.Encode(wrapper, new SilentProgressTracker(), _waveEncoding))
 				using (var inputStream = new UnmanagedMemoryStream((byte*)fileMap.Address.address, fileMap.Length)) {
 					inputStream.CopyTo(ms);
 				}
