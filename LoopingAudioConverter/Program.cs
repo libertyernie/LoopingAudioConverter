@@ -1,4 +1,5 @@
 ﻿using BrawlLib.Internal.Windows.Forms;
+using BrawlLib.SSBB.Types.Audio;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -102,11 +103,15 @@ namespace LoopingAudioConverter {
 					case ExporterType.ADX:
 						return new ADXExporter(o.AdxOptions?.Configuration);
 					case ExporterType.BrawlLib_BRSTM_ADPCM:
-						return new BrawlLibRSTMExporter(BrawlLib.SSBB.Types.Audio.WaveEncoding.ADPCM);
+						return new BrawlLibRSTMExporter(WaveEncoding.ADPCM, BrawlLibRSTMExporter.Container.RSTM);
 					case ExporterType.BrawlLib_BRSTM_PCM16:
-						return new BrawlLibRSTMExporter(BrawlLib.SSBB.Types.Audio.WaveEncoding.PCM16);
-					case ExporterType.BrawlLib_BRSTM_PCM8:
-						return new BrawlLibRSTMExporter(BrawlLib.SSBB.Types.Audio.WaveEncoding.PCM8);
+						return new BrawlLibRSTMExporter(WaveEncoding.PCM16, BrawlLibRSTMExporter.Container.RSTM);
+					case ExporterType.BrawlLib_BCSTM:	
+						return new BrawlLibRSTMExporter(WaveEncoding.ADPCM, BrawlLibRSTMExporter.Container.CSTM);
+					case ExporterType.BrawlLib_BFSTM:
+						return new BrawlLibRSTMExporter(WaveEncoding.ADPCM, BrawlLibRSTMExporter.Container.FSTM);
+					case ExporterType.BrawlLib_BRWAV:
+						return new BrawlLibRWAVExporter();
 					case ExporterType.MSF_PCM16BE:
 						return new MSFPCM16Exporter(big_endian: true);
 					case ExporterType.MSF_PCM16LE:

@@ -41,7 +41,8 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BrawlLib">
+    <Reference Include="BrawlLib, Version=0.37.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\BrawlLib.dll</HintPath>
     </Reference>
     <Reference Include="MP3Sharp, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
@@ -68,6 +69,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exporters\BrawlLibRWAVExporter.cs" />
     <Compile Include="Exporters\BrawlLibRSTMExporter.cs" />
     <Compile Include="Exporters\EffectEngineExporter.cs" />
     <Compile Include="FFmpeg.cs" />

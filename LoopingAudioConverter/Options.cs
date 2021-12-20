@@ -1,11 +1,7 @@
-﻿using LoopingAudioConverter.VGAudioOptions;
-using System;
+﻿using BrawlLib.SSBB.Types.Audio;
+using LoopingAudioConverter.VGAudioOptions;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Xml.Serialization;
-using VGAudio.Containers.NintendoWare;
 
 namespace LoopingAudioConverter {
 	public enum ExporterType {
@@ -19,7 +15,9 @@ namespace LoopingAudioConverter {
 		ADX,
 		BrawlLib_BRSTM_ADPCM,
 		BrawlLib_BRSTM_PCM16,
-		BrawlLib_BRSTM_PCM8,
+		BrawlLib_BCSTM,
+		BrawlLib_BFSTM,
+		BrawlLib_BRWAV,
 		MSF_PCM16LE,
 		MSF_PCM16BE,
 		MSU1,
@@ -69,6 +67,7 @@ namespace LoopingAudioConverter {
 		public AdxOptions AdxOptions { get; set; }
 		public HcaOptions HcaOptions { get; set; }
 		public BxstmOptions BxstmOptions { get; set; }
+		public WaveEncoding? WaveEncoding { get; set; }
 		public UnknownLoopBehavior UnknownLoopBehavior { get; set; }
 		public bool ExportWholeSong { get; set; }
 		public string WholeSongSuffix { get; set; }

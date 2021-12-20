@@ -1,4 +1,5 @@
-﻿using LoopingAudioConverter.VGAudioOptions;
+﻿using BrawlLib.SSBB.Types.Audio;
+using LoopingAudioConverter.VGAudioOptions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -43,6 +44,8 @@ namespace LoopingAudioConverter {
 		private AdxOptions adxOptions = new AdxOptions();
 		private BxstmOptions bxstmOptions = new BxstmOptions();
 
+		private WaveEncoding waveEncoding = 0;
+
 		public IEnumerable<Task> RunningTasks {
 			get {
 				return runningTasks;
@@ -68,7 +71,9 @@ namespace LoopingAudioConverter {
 				new NVPair<ExporterType>(ExporterType.HCA, "CRI HCA"),
 				new NVPair<ExporterType>(ExporterType.BrawlLib_BRSTM_ADPCM, "BRSTM (ADPCM) [BrawlLib]"),
 				new NVPair<ExporterType>(ExporterType.BrawlLib_BRSTM_PCM16, "BRSTM (PCM16) [BrawlLib]"),
-				new NVPair<ExporterType>(ExporterType.BrawlLib_BRSTM_PCM8, "BRSTM (PCM8) [BrawlLib]"),
+				new NVPair<ExporterType>(ExporterType.BrawlLib_BCSTM, "BCSTM (ADPCM) [BrawlLib]"),
+				new NVPair<ExporterType>(ExporterType.BrawlLib_BFSTM, "BFSTM (ADPCM) [BrawlLib]"),
+				new NVPair<ExporterType>(ExporterType.BrawlLib_BRWAV, "BRWAV (ADPCM) [BrawlLib]"),
 				new NVPair<ExporterType>(ExporterType.MSF_PCM16BE, "MSF (PCM16, big-endian)"),
 				new NVPair<ExporterType>(ExporterType.MSF_PCM16LE, "MSF (PCM16, little-endian)"),
 				new NVPair<ExporterType>(ExporterType.MSU1, "MSU-1"),
@@ -175,6 +180,7 @@ namespace LoopingAudioConverter {
 				hcaOptions = o.HcaOptions ?? new HcaOptions();
 				adxOptions = o.AdxOptions ?? new AdxOptions();
 				bxstmOptions = o.BxstmOptions ?? new BxstmOptions();
+				waveEncoding = o.WaveEncoding ?? WaveEncoding.ADPCM;
 				ddlUnknownLoopBehavior.SelectedValue = o.UnknownLoopBehavior;
 				chk0End.Checked = o.ExportWholeSong;
 				txt0EndFilenamePattern.Text = o.WholeSongSuffix;
@@ -218,6 +224,7 @@ namespace LoopingAudioConverter {
 				HcaOptions = hcaOptions,
 				AdxOptions = adxOptions,
 				BxstmOptions = bxstmOptions,
+				WaveEncoding = waveEncoding,
 				UnknownLoopBehavior = (UnknownLoopBehavior)ddlUnknownLoopBehavior.SelectedValue,
 				ExportWholeSong = chk0End.Checked,
 				WholeSongSuffix = txt0EndFilenamePattern.Text,
