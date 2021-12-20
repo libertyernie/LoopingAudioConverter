@@ -37,7 +37,6 @@ namespace LoopingAudioConverter {
 		}
 
 		public string OriginalPath { get; set; }
-		public byte[] OriginalMP3 { get; set; }
 
 		IEnumerable<short> IPcmAudioSource<short>.SampleData => Samples;
 		int IPcmAudioSource<short>.Channels => Channels;

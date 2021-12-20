@@ -19,11 +19,6 @@ namespace LoopingAudioConverter {
 				throw new AudioExporterException("Invalid character (\") found in output filename");
 			}
 
-			if (lwav.OriginalMP3 != null) {
-				File.WriteAllBytes(outPath, lwav.OriginalMP3);
-				return;
-			}
-
 			string infile = TempFiles.Create("wav");
 			File.WriteAllBytes(infile, lwav.Export());
 

@@ -32,9 +32,7 @@ namespace LoopingAudioConverter {
 
 				byte[] array = output.ToArray();
 				short[] samples = ToUInt16Array(array);
-				return new PCM16Audio(mp3.ChannelCount, mp3.Frequency, samples) {
-					OriginalMP3 = mp3data
-				};
+				return new PCM16Audio(mp3.ChannelCount, mp3.Frequency, samples);
 			}
 		}
 	}
