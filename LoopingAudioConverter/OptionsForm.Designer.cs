@@ -764,8 +764,6 @@
             // chkShortCircuit
             // 
             this.chkShortCircuit.AutoSize = true;
-            this.chkShortCircuit.Checked = true;
-            this.chkShortCircuit.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkShortCircuit.Location = new System.Drawing.Point(233, 192);
             this.chkShortCircuit.Name = "chkShortCircuit";
             this.chkShortCircuit.Size = new System.Drawing.Size(259, 17);
