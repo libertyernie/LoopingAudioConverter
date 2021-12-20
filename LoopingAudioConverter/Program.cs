@@ -62,8 +62,7 @@ namespace LoopingAudioConverter {
 
 			IEnumerable <IAudioImporter> buildImporters() {
 				yield return new WAVImporter();
-				if (o.VGAudioDecoder)
-					yield return new VGAudioImporter();
+				yield return new VGAudioImporter();
 				yield return new MP3Importer();
 				if (ConfigurationManager.AppSettings["faad_path"] is string faad_path)
 					yield return new MP4Importer(faad_path);
@@ -311,8 +310,6 @@ namespace LoopingAudioConverter {
 
 					if (!o.ShortCircuit) {
 						toExport.Audio.OriginalPath = null;
-						toExport.Audio.OriginalAudioData = null;
-						toExport.Audio.OriginalMP3 = null;
 					}
 					if (!o.WriteLoopingMetadata) {
 						toExport.Audio.Looping = false;

@@ -235,16 +235,6 @@ namespace LoopingAudioConverter {
 			}
 		}
 
-		public static PCM16Audio FromAudioData(AudioData a) {
-			byte[] data = new WaveWriter().GetFile(a);
-			var w = FromByteArray(data);
-			if (!a.GetAllFormats().Any(f => f.Looping)) {
-				w.NonLooping = true;
-			}
-			w.OriginalAudioData = a;
-			return w;
-		}
-
 		/// <summary>
 		/// Reads RIFF WAVE data from a file.
 		/// This method opens a read-only FileStream and sends the stream to the FromStream method.

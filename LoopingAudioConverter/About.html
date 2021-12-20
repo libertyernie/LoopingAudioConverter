@@ -432,30 +432,20 @@ src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhgAAAIBCAIAAACEP1EUAAAgAElEQ
         start until the loop end. The text in "suffix" will be appended
         to the filename.</li>
       <li><b>Skip re-encoding for similar formats when possible:</b>
-        This option takes effect when no audio effects are selected and
-        the input/output formats line up.</li>
+        Choosing this option
+        allows Looping Audio Converter to skip re-encoding audio in
+        certain circumstances:</li>
       <ul>
-        <li>Input/output are both VGAudio supported formats:</li>
-        <ul>
-          <li>If the VGAudio decoder is being used, and the encoding
-            (e.g. ADPCM) is the same, VGAudio can copy the original
-            encoded data between these formats without re-encoding. This
-            provides a lossless conversion and is much faster.<br>
-          </li>
-        </ul>
-        <li>Input/output are both Ogg Vorbis:</li>
-        <ul>
-          <li>The file will be copied, but loop information will still
-            be added (or removed) as appropriate. (Note: if the input
-            file does not have a comment header, you may run into an
-            error.)</li>
-        </ul>
+        <li>
+          A VGAudio output format is used and VGAudio also supports the input format
+        </li>
+        <li>
+          An output format is used that uses ffmpeg / SoX as the converter (such as Ogg Vorbis or MP3) and the input and output file extensions match
+        </li>
+        <li>
+          The "MP3" output format is used and the input file is an MSF file with MP3 data
+        </li>
       </ul>
-      <li><b>Use VGAudio decoder</b>: This option uses VGAudio to decode
-        when possible, allowing the "skip re-encoding" option for
-        formats that it supports. If you turn this off, vgmstream will
-        be used instead.<br>
-      </li>
       <li><b>Number of simultaneous encoding/decoding tasks</b>: Audio
         encoding can take a long time, so this program lets you run
         several encoding processes in parallel. This number represents
