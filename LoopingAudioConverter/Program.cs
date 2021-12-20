@@ -62,8 +62,6 @@ namespace LoopingAudioConverter {
 
 			IEnumerable <IAudioImporter> buildImporters() {
 				yield return new WAVImporter();
-				if (o.VGAudioDecoder)
-					yield return new VGAudioImporter();
 				yield return new MP3Importer();
 				if (ConfigurationManager.AppSettings["faad_path"] is string faad_path)
 					yield return new MP4Importer(faad_path);
@@ -77,6 +75,7 @@ namespace LoopingAudioConverter {
 					yield return new FFmpeg(ffmpeg_path);
 				if (ConfigurationManager.AppSettings["sox_path"] is string sox_path)
 					yield return new SoX(sox_path);
+				yield return new VGAudioImporter();
 			}
 
 			List<IAudioImporter> importers = buildImporters().ToList();
