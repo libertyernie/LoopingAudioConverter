@@ -1,4 +1,6 @@
-﻿using RunProcessAsTask;
+﻿using MSFContainerLib;
+using RunProcessAsTask;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
@@ -17,6 +19,15 @@ namespace LoopingAudioConverter {
 			string outPath = Path.Combine(output_dir, original_filename_no_ext + ".mp3");
 			if (outPath.Contains("\"")) {
 				throw new AudioExporterException("Invalid character (\") found in output filename");
+			}
+
+			if (Path.GetExtension(lwav.OriginalPath ?? "").Equals(".msf", StringComparison.InvariantCultureIgnoreCase)) {
+				byte[] data = File.ReadAllBytes(lwav.OriginalPath);
+				IPcmAudioSource<short> msf = MSF.Parse(data);
+				if (msf is MSF_MP3 mp3) {
+					File.WriteAllBytes(outPath, mp3.Body);
+					return;
+				}
 			}
 
 			string infile = TempFiles.Create("wav");

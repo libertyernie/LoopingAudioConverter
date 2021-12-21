@@ -60,32 +60,38 @@ namespace LoopingAudioConverter {
 			hcaOptions = new HcaOptions();
 			adxOptions = new AdxOptions();
 
+			string effectEngineName = Program.BuildImporters()
+				.OfType<IEffectEngine>()
+				.Select(x => x.GetImporterName())
+				.DefaultIfEmpty("???")
+				.First();
+
 			var exporters = new[] {
-				new NVPair<ExporterType>(ExporterType.BRSTM, "BRSTM"),
-				new NVPair<ExporterType>(ExporterType.BCSTM, "BCSTM"),
-				new NVPair<ExporterType>(ExporterType.BFSTM, "BFSTM"),
-				new NVPair<ExporterType>(ExporterType.DSP, "DSP (Nintendo)"),
-				new NVPair<ExporterType>(ExporterType.IDSP, "IDSP (Nintendo)"),
-				new NVPair<ExporterType>(ExporterType.HPS, "HPS (HAL)"),
-				new NVPair<ExporterType>(ExporterType.ADX, "CRI ADX"),
-				new NVPair<ExporterType>(ExporterType.HCA, "CRI HCA"),
-				new NVPair<ExporterType>(ExporterType.BrawlLib_BRSTM_ADPCM, "BRSTM (ADPCM) [BrawlLib]"),
-				new NVPair<ExporterType>(ExporterType.BrawlLib_BRSTM_PCM16, "BRSTM (PCM16) [BrawlLib]"),
-				new NVPair<ExporterType>(ExporterType.BrawlLib_BCSTM, "BCSTM (ADPCM) [BrawlLib]"),
-				new NVPair<ExporterType>(ExporterType.BrawlLib_BFSTM, "BFSTM (ADPCM) [BrawlLib]"),
-				new NVPair<ExporterType>(ExporterType.BrawlLib_BRWAV, "BRWAV (ADPCM) [BrawlLib]"),
+				new NVPair<ExporterType>(ExporterType.BRSTM, "[VGAudio] BRSTM"),
+				new NVPair<ExporterType>(ExporterType.BCSTM, "[VGAudio] BCSTM"),
+				new NVPair<ExporterType>(ExporterType.BFSTM, "[VGAudio] BFSTM"),
+				new NVPair<ExporterType>(ExporterType.DSP, "[VGAudio] DSP (Nintendo)"),
+				new NVPair<ExporterType>(ExporterType.IDSP, "[VGAudio] IDSP (Nintendo)"),
+				new NVPair<ExporterType>(ExporterType.HPS, "[VGAudio] HPS (HAL)"),
+				new NVPair<ExporterType>(ExporterType.ADX, "[VGAudio] CRI ADX"),
+				new NVPair<ExporterType>(ExporterType.HCA, "[VGAudio] CRI HCA"),
+				new NVPair<ExporterType>(ExporterType.BrawlLib_BRSTM_ADPCM, "[BrawlLib] BRSTM (ADPCM)"),
+				new NVPair<ExporterType>(ExporterType.BrawlLib_BRSTM_PCM16, "[BrawlLib] BRSTM (PCM16)"),
+				new NVPair<ExporterType>(ExporterType.BrawlLib_BCSTM, "[BrawlLib] BCSTM (ADPCM)"),
+				new NVPair<ExporterType>(ExporterType.BrawlLib_BFSTM, "[BrawlLib] BFSTM (ADPCM)"),
+				new NVPair<ExporterType>(ExporterType.BrawlLib_BRWAV, "[BrawlLib] BRWAV (ADPCM)"),
 				new NVPair<ExporterType>(ExporterType.MSF_PCM16BE, "MSF (PCM16, big-endian)"),
 				new NVPair<ExporterType>(ExporterType.MSF_PCM16LE, "MSF (PCM16, little-endian)"),
 				new NVPair<ExporterType>(ExporterType.MSU1, "MSU-1"),
 				new NVPair<ExporterType>(ExporterType.WAV, "WAV"),
-				new NVPair<ExporterType>(ExporterType.FLAC, "FLAC"),
-				new NVPair<ExporterType>(ExporterType.FFmpeg_MP3, "MP3"),
-				new NVPair<ExporterType>(ExporterType.MP3, "MP3 [LAME]"),
-				new NVPair<ExporterType>(ExporterType.FFmpeg_AAC_M4A, "AAC (.m4a)"),
-				new NVPair<ExporterType>(ExporterType.AAC_M4A, "AAC (.m4a) [qaac]"),
-				new NVPair<ExporterType>(ExporterType.FFmpeg_AAC_ADTS, "AAC (ADTS .aac)"),
-				new NVPair<ExporterType>(ExporterType.AAC_ADTS, "AAC (ADTS .aac) [qaac]"),
-				new NVPair<ExporterType>(ExporterType.OggVorbis, "Vorbis (.ogg)"),
+				new NVPair<ExporterType>(ExporterType.FLAC, $"[{effectEngineName}] FLAC"),
+				new NVPair<ExporterType>(ExporterType.FFmpeg_MP3, $"[{effectEngineName}] MP3"),
+				new NVPair<ExporterType>(ExporterType.FFmpeg_AAC_M4A, $"[{effectEngineName}] AAC (.m4a)"),
+				new NVPair<ExporterType>(ExporterType.FFmpeg_AAC_ADTS, $"[{effectEngineName}] AAC (ADTS .aac)"),
+				new NVPair<ExporterType>(ExporterType.OggVorbis, $"[{effectEngineName}] Vorbis (.ogg)"),
+				new NVPair<ExporterType>(ExporterType.MP3, "[LAME] MP3"),
+				new NVPair<ExporterType>(ExporterType.AAC_M4A, "[qaac] AAC (.m4a)"),
+				new NVPair<ExporterType>(ExporterType.AAC_ADTS, "[qaac] AAC (ADTS .aac)"),
 			};
 			comboBox1.DataSource = exporters;
 			if (comboBox1.SelectedIndex < 0) comboBox1.SelectedIndex = 0;
