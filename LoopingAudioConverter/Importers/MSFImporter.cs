@@ -17,9 +17,6 @@ namespace LoopingAudioConverter {
 					msf.LoopStartSample,
 					msf.LoopStartSample + msf.LoopSampleCount,
 					!msf.IsLooping);
-				if (msf is MSF_MP3 mp3) {
-					lwav.OriginalMP3 = mp3.Body;
-				}
 				return Task.FromResult(lwav);
 			} catch (NotSupportedException) {
 				throw new AudioImporterException("Cannot read MSF file (unsupported codec?)");

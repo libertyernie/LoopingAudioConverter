@@ -457,27 +457,23 @@ src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhgAAAIBCAIAAACEP1EUAAAgAElEQ
         start until the loop end. The text in "suffix" will be appended
         to the filename.</li>
       <li><b>Skip re-encoding for similar formats when possible:</b>
-        This option only takes effect when no audio effects are
-        selected, and with certain encoders. (No longer enabled by
-        default in Looping Audio Converter 2.5 and above.)<br>
-      </li>
+        Choosing this option
+        allows Looping Audio Converter to skip re-encoding audio in
+        certain circumstances:</li>
       <ul>
-        <li><b>VGAudio</b><b>:</b> If the input format is supported by
-          VGAudio, the original audio data will be copied without
-          re-encoding.</li>
-        <li><b>BrawlLib (BRSTM, BCSTM, BFSTM):</b> If the input file is
-          also one of these three formats, the original audio data will
-          be copied without re-encoding.</li>
-        <li><b>MP3:</b> If the original file is an MSF file with MP3
-          data, the original audio data will be copied without
-          re-encoding.</li>
-        <li><b>Ogg Vorbis</b><b>:</b> If the original file is also Ogg
-          Vorbis, the original audio data will be copied, then loop
-          information will be added (or removed) as appropriate.</li>
+        <li>
+          A BrawlLib B*STM output format is used and the input format is also B*STM
+        </li>
+        <li>
+          A VGAudio output format is used and VGAudio also supports the input format
+        </li>
+        <li>
+          An output format is used that uses ffmpeg / SoX as the converter (such as Ogg Vorbis or MP3) and the input and output file extensions match
+        </li>
+        <li>
+          The "MP3" output format is used and the input file is an MSF file with MP3 data
+        </li>
       </ul>
-      <li><b>Use VGAudio decoder</b>: This option uses VGAudio to decode
-        when possible.<br>
-      </li>
       <li><b>Number of simultaneous encoding/decoding tasks</b>: Audio
         encoding can take a long time, so this program lets you run
         several encoding processes in parallel. This number represents

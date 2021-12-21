@@ -77,7 +77,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.numFadeOutTime = new System.Windows.Forms.NumericUpDown();
             this.chkShortCircuit = new System.Windows.Forms.CheckBox();
-            this.chkVGAudioDecoder = new System.Windows.Forms.CheckBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.numSimulTasks = new System.Windows.Forms.NumericUpDown();
             this.lblSimulTasks = new System.Windows.Forms.Label();
@@ -280,7 +279,6 @@
             this.flowLayoutPanel2.Controls.Add(this.pnlExportChannels);
             this.flowLayoutPanel2.Controls.Add(this.pnlExportSegments);
             this.flowLayoutPanel2.Controls.Add(this.chkShortCircuit);
-            this.flowLayoutPanel2.Controls.Add(this.chkVGAudioDecoder);
             this.flowLayoutPanel2.Controls.Add(this.panel3);
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
@@ -770,18 +768,6 @@
             this.chkShortCircuit.TabIndex = 4;
             this.chkShortCircuit.Text = "Skip re-encoding for similar formats when possible";
             // 
-            // chkVGAudioDecoder
-            // 
-            this.chkVGAudioDecoder.AutoSize = true;
-            this.chkVGAudioDecoder.Checked = true;
-            this.chkVGAudioDecoder.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkVGAudioDecoder.Location = new System.Drawing.Point(233, 215);
-            this.chkVGAudioDecoder.Name = "chkVGAudioDecoder";
-            this.chkVGAudioDecoder.Size = new System.Drawing.Size(132, 17);
-            this.chkVGAudioDecoder.TabIndex = 5;
-            this.chkVGAudioDecoder.Text = "Use VGAudio decoder";
-            this.chkVGAudioDecoder.UseVisualStyleBackColor = false;
-            // 
             // panel3
             // 
             this.panel3.AutoSize = true;
@@ -996,7 +982,6 @@
         private System.Windows.Forms.CheckBox chkShortCircuit;
         private System.Windows.Forms.Button btnSaveOptions;
         private System.Windows.Forms.Button btnLoadOptions;
-        private System.Windows.Forms.CheckBox chkVGAudioDecoder;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.ComboBox ddlUnknownLoopBehavior;
         private System.Windows.Forms.Label lblUnknownLoopBehavior;

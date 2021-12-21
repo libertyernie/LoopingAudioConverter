@@ -9,6 +9,7 @@ using VGAudio.Containers.Hca;
 using VGAudio.Containers.Hps;
 using VGAudio.Containers.Idsp;
 using VGAudio.Containers.NintendoWare;
+using VGAudio.Containers.Wave;
 using VGAudio.Formats;
 
 namespace LoopingAudioConverter {
@@ -40,7 +41,7 @@ namespace LoopingAudioConverter {
 			}
 		}
 
-		private static AudioData Read(byte[] data, string filename) {
+		public static AudioData Read(byte[] data, string filename) {
 			string extension = Path.GetExtension(filename).ToLowerInvariant();
 			if (extension.StartsWith("."))
 				extension = extension.Substring(1);
@@ -81,16 +82,23 @@ namespace LoopingAudioConverter {
 				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
 			}
 
-			byte[] data = File.ReadAllBytes(filename);
-			if (data.Length == 0) {
+			byte[] indata = File.ReadAllBytes(filename);
+			if (indata.Length == 0) {
 				throw new AudioImporterException("Empty input file");
 			}
 
 			try {
 				await Task.Yield();
-				return PCM16Factory.FromAudioData(Read(data, filename));
+
+				AudioData a = Read(indata, filename);
+				byte[] wavedata = new WaveWriter().GetFile(a);
+				var w = PCM16Factory.FromByteArray(wavedata);
+				if (a.GetAllFormats().All(f => !f.Looping)) {
+					w.NonLooping = true;
+				}
+				return w;
 			} catch (Exception e) {
-				throw new AudioImporterException("Could not convert from B" + (char)data[0] + "STM: " + e.Message);
+				throw new AudioImporterException("Could not convert using VGAudio: " + e.Message);
 			}
 		}
 	}
