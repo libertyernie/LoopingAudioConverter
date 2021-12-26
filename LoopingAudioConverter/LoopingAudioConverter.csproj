@@ -71,7 +71,7 @@
   <ItemGroup>
     <Compile Include="Exporters\BrawlLibRWAVExporter.cs" />
     <Compile Include="Exporters\BrawlLibRSTMExporter.cs" />
-    <Compile Include="Exporters\EffectEngineExporter.cs" />
+    <Compile Include="Exporters\FFmpegExporter.cs" />
     <Compile Include="FFmpeg.cs" />
     <Compile Include="VGAudioOptions\BxstmOptions.cs" />
     <Compile Include="VGAudioOptions\VGAudioOptionsBase.cs" />
@@ -143,7 +143,6 @@
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SoX.cs" />
     <Compile Include="Importers\VGMStreamImporter.cs" />
   </ItemGroup>
   <ItemGroup>

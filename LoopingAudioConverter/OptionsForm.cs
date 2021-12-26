@@ -60,10 +60,6 @@ namespace LoopingAudioConverter {
 			hcaOptions = new HcaOptions();
 			adxOptions = new AdxOptions();
 
-			string effectEngineName = ConfigurationManager.AppSettings["ffmpeg_path"] != null ? "ffmpeg"
-				: ConfigurationManager.AppSettings["sox_path"] != null ? "SoX"
-				: "???";
-
 			var exporters = new[] {
 				new NVPair<ExporterType>(ExporterType.BRSTM, "[VGAudio] BRSTM"),
 				new NVPair<ExporterType>(ExporterType.BCSTM, "[VGAudio] BCSTM"),
@@ -82,11 +78,11 @@ namespace LoopingAudioConverter {
 				new NVPair<ExporterType>(ExporterType.MSF_PCM16LE, "MSF (PCM16, little-endian)"),
 				new NVPair<ExporterType>(ExporterType.MSU1, "MSU-1"),
 				new NVPair<ExporterType>(ExporterType.WAV, "WAV"),
-				new NVPair<ExporterType>(ExporterType.FLAC, $"[{effectEngineName}] FLAC"),
-				new NVPair<ExporterType>(ExporterType.FFmpeg_MP3, $"[{effectEngineName}] MP3"),
-				new NVPair<ExporterType>(ExporterType.FFmpeg_AAC_M4A, $"[{effectEngineName}] AAC (.m4a)"),
-				new NVPair<ExporterType>(ExporterType.FFmpeg_AAC_ADTS, $"[{effectEngineName}] AAC (ADTS .aac)"),
-				new NVPair<ExporterType>(ExporterType.OggVorbis, $"[{effectEngineName}] Vorbis (.ogg)")
+				new NVPair<ExporterType>(ExporterType.FLAC, "[FFmpeg] FLAC"),
+				new NVPair<ExporterType>(ExporterType.FFmpeg_MP3, "[FFmpeg] MP3"),
+				new NVPair<ExporterType>(ExporterType.FFmpeg_AAC_M4A, "[FFmpeg] AAC (.m4a)"),
+				new NVPair<ExporterType>(ExporterType.FFmpeg_AAC_ADTS, "[FFmpeg] AAC (ADTS .aac)"),
+				new NVPair<ExporterType>(ExporterType.OggVorbis, "[FFmpeg] Vorbis (.ogg)")
 			}.ToList();
 			if (ConfigurationManager.AppSettings["lame_path"] != null) {
 				exporters.Add(new NVPair<ExporterType>(ExporterType.MP3, "[LAME] MP3"));
@@ -169,10 +165,10 @@ namespace LoopingAudioConverter {
 					numAmplifyRatio.Value = o.AmplifyRatio.Value;
 				chkPitch.Checked = o.PitchSemitones != null;
 				if (o.PitchSemitones != null)
-					numPitch.Value = o.PitchSemitones.Value;
+					numPitch.Value = (decimal)o.PitchSemitones.Value;
 				chkTempo.Checked = o.TempoRatio != null;
 				if (o.TempoRatio != null)
-					numTempo.Value = o.TempoRatio.Value;
+					numTempo.Value = (decimal)o.TempoRatio.Value;
 				if (o.ChannelSplit == ChannelSplit.Pairs)
 					radChannelsPairs.Checked = true;
 				else if (o.ChannelSplit == ChannelSplit.Each)
@@ -218,8 +214,8 @@ namespace LoopingAudioConverter {
 				SampleRate = chkSampleRate.Checked ? (int)numMaxSampleRate.Value : (int?)null,
 				AmplifydB = chkAmplifydB.Checked ? numAmplifydB.Value : (decimal?)null,
 				AmplifyRatio = chkAmplifyRatio.Checked ? numAmplifyRatio.Value : (decimal?)null,
-				PitchSemitones = chkPitch.Checked ? numPitch.Value : (decimal?)null,
-				TempoRatio = chkTempo.Checked ? numTempo.Value : (decimal?)null,
+				PitchSemitones = chkPitch.Checked ? (double)numPitch.Value : (double?)null,
+				TempoRatio = chkTempo.Checked ? (double)numTempo.Value : (double?)null,
 				ChannelSplit = radChannelsPairs.Checked ? ChannelSplit.Pairs
 					: radChannelsSeparate.Checked ? ChannelSplit.Each
 					: ChannelSplit.OneFile,

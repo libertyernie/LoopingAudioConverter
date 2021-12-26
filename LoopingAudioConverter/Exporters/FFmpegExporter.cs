@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using VorbisCommentSharp;
 
 namespace LoopingAudioConverter {
-	public class EffectEngineExporter : IAudioExporter {
-		private readonly IEffectEngine effectEngine;
+	public class FFmpegExporter : IAudioExporter {
+		private readonly FFmpeg effectEngine;
 		private readonly string encoding_parameters;
 		private readonly string output_extension;
 
-		public EffectEngineExporter(IEffectEngine effectEngine, string encoding_parameters, string output_extension) {
+		public FFmpegExporter(FFmpeg effectEngine, string encoding_parameters, string output_extension) {
 			this.effectEngine = effectEngine;
 			this.encoding_parameters = encoding_parameters;
 			this.output_extension = output_extension;
