@@ -60,11 +60,9 @@ namespace LoopingAudioConverter {
 			hcaOptions = new HcaOptions();
 			adxOptions = new AdxOptions();
 
-			string effectEngineName = Program.BuildImporters()
-				.OfType<IEffectEngine>()
-				.Select(x => x.GetImporterName())
-				.DefaultIfEmpty("???")
-				.First();
+			string effectEngineName = ConfigurationManager.AppSettings["ffmpeg_path"] != null ? "ffmpeg"
+				: ConfigurationManager.AppSettings["sox_path"] != null ? "SoX"
+				: "???";
 
 			var exporters = new[] {
 				new NVPair<ExporterType>(ExporterType.BRSTM, "[VGAudio] BRSTM"),
@@ -88,11 +86,15 @@ namespace LoopingAudioConverter {
 				new NVPair<ExporterType>(ExporterType.FFmpeg_MP3, $"[{effectEngineName}] MP3"),
 				new NVPair<ExporterType>(ExporterType.FFmpeg_AAC_M4A, $"[{effectEngineName}] AAC (.m4a)"),
 				new NVPair<ExporterType>(ExporterType.FFmpeg_AAC_ADTS, $"[{effectEngineName}] AAC (ADTS .aac)"),
-				new NVPair<ExporterType>(ExporterType.OggVorbis, $"[{effectEngineName}] Vorbis (.ogg)"),
-				new NVPair<ExporterType>(ExporterType.MP3, "[LAME] MP3"),
-				new NVPair<ExporterType>(ExporterType.AAC_M4A, "[qaac] AAC (.m4a)"),
-				new NVPair<ExporterType>(ExporterType.AAC_ADTS, "[qaac] AAC (ADTS .aac)"),
-			};
+				new NVPair<ExporterType>(ExporterType.OggVorbis, $"[{effectEngineName}] Vorbis (.ogg)")
+			}.ToList();
+			if (ConfigurationManager.AppSettings["lame_path"] != null) {
+				exporters.Add(new NVPair<ExporterType>(ExporterType.MP3, "[LAME] MP3"));
+			}
+			if (ConfigurationManager.AppSettings["qaac_path"] != null) {
+				exporters.Add(new NVPair<ExporterType>(ExporterType.AAC_M4A, "[qaac] AAC (.m4a)"));
+				exporters.Add(new NVPair<ExporterType>(ExporterType.AAC_ADTS, "[qaac] AAC (ADTS .aac)"));
+			}
 			comboBox1.DataSource = exporters;
 			if (comboBox1.SelectedIndex < 0) comboBox1.SelectedIndex = 0;
 			comboBox1.SelectedIndexChanged += (o, e) => {
