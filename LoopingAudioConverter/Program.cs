@@ -47,7 +47,6 @@ namespace LoopingAudioConverter {
 
 			{
 				Application.Run(f);
-				Task.WaitAll(f.RunningTasks.ToArray());
 			}
 		}
 
@@ -142,9 +141,6 @@ namespace LoopingAudioConverter {
 
 			IAudioExporter exporter = getExporter();
 
-			List<Task> tasks = new List<Task>();
-			SemaphoreSlim sem = new SemaphoreSlim(o.NumSimulTasks, o.NumSimulTasks);
-
 			MultipleProgressWindow window = new MultipleProgressWindow();
 			window.Show(owner);
 
@@ -180,7 +176,6 @@ namespace LoopingAudioConverter {
 			ConcurrentQueue<string> exported = new ConcurrentQueue<string>();
 			DateTime start = DateTime.UtcNow;
 			foreach (string inputFile in o.InputFiles) {
-				await sem.WaitAsync();
 				if (window.Canceled) break;
 
 				string outputDir = o.OutputDir;
@@ -275,18 +270,8 @@ namespace LoopingAudioConverter {
 				if (o.ChannelSplit == ChannelSplit.Pairs) wavsToExport = wavsToExport.SelectMany(x => x.SplitMultiChannelToStereo()).ToList();
 				if (o.ChannelSplit == ChannelSplit.Each) wavsToExport = wavsToExport.SelectMany(x => x.SplitMultiChannelToMono()).ToList();
 
-				sem.Release();
-
 				foreach (NamedAudio n in wavsToExport) {
 					NamedAudio toExport = n;
-					int claims = 1;
-					if (exporter is VGAudioExporter) {
-						// VGAudio runs tasks in parallel for each channel, so let's consider that when deciding how many tasks to run.
-						claims = Math.Min(n.Audio.Channels, o.NumSimulTasks);
-					}
-					for (int j = 0; j < claims; j++) {
-						await sem.WaitAsync();
-					}
 					switch (o.UnknownLoopBehavior) {
 						case UnknownLoopBehavior.ForceLoop:
 							if (!toExport.Audio.Looping && !toExport.Audio.NonLooping) {
@@ -311,13 +296,6 @@ namespace LoopingAudioConverter {
 							}
 							break;
 					}
-					if (toExport == null) {
-						i++;
-						for (int j = 0; j < claims; j++) {
-							sem.Release();
-						}
-						break;
-					}
 
 					if (!o.ShortCircuit) {
 						toExport.Audio.OriginalPath = null;
@@ -326,29 +304,17 @@ namespace LoopingAudioConverter {
 						toExport.Audio.Looping = false;
 					}
 
-					async Task Encode() {
-						var row = window.AddEncodingRow(toExport.Name);
-						try {
-							await exporter.WriteFileAsync(toExport.Audio, outputDir, toExport.Name);
-							exported.Enqueue(toExport.Name);
-						} finally {
-							for (int j = 0; j < claims; j++) {
-								sem.Release();
-							}
-							row.Remove();
-						}
+					var row = window.AddEncodingRow(toExport.Name);
+					try {
+						await exporter.WriteFileAsync(toExport.Audio, outputDir, toExport.Name);
+						exported.Enqueue(toExport.Name);
+					} catch (Exception ex) {
+						Console.Error.WriteLine($"{ex.GetType()}: {ex.Message}");
+						Console.Error.WriteLine(ex.StackTrace);
+						MessageBox.Show(owner, (ex.InnerException ?? ex).Message);
+					} finally {
+						row.Remove();
 					}
-
-					tasks.Add(Encode());
-				}
-			}
-			foreach (var t in tasks) {
-				try {
-					await t;
-				} catch (Exception ex) {
-					Console.Error.WriteLine($"{ex.GetType()}: {ex.Message}");
-					Console.Error.WriteLine(ex.StackTrace);
-					MessageBox.Show(owner, (ex.InnerException ?? ex).Message);
 				}
 			}
 			DateTime end = DateTime.UtcNow;

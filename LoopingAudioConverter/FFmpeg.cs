@@ -173,7 +173,7 @@ namespace LoopingAudioConverter {
 
 			ProcessStartInfo psi = new ProcessStartInfo {
 				FileName = ExePath,
-				Arguments = $"-i {infile} {encodingParameters} \"{output_filename}\"",
+				Arguments = $"-y -i {infile} {encodingParameters} \"{output_filename}\"",
 				UseShellExecute = false,
 				CreateNoWindow = true
 			};

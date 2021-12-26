@@ -27,8 +27,6 @@ namespace LoopingAudioConverter {
 			}
 		}
 
-		private HashSet<Task> runningTasks;
-
 		private class EncodingParameterCollection {
 			public string
 				MP3_LAME = "",
@@ -45,12 +43,6 @@ namespace LoopingAudioConverter {
 		private BxstmOptions bxstmOptions = new BxstmOptions();
 
 		private WaveEncoding waveEncoding = 0;
-
-		public IEnumerable<Task> RunningTasks {
-			get {
-				return runningTasks;
-			}
-		}
 
 		public bool Auto { get; set; } = false;
 
@@ -141,9 +133,6 @@ namespace LoopingAudioConverter {
 			};
 			ddlUnknownLoopBehavior.DataSource = unknownLoopBehaviors;
 			if (ddlUnknownLoopBehavior.SelectedIndex < 0) ddlUnknownLoopBehavior.SelectedIndex = 0;
-			numSimulTasks.Value = Math.Min(Environment.ProcessorCount, numSimulTasks.Maximum);
-
-			runningTasks = new HashSet<Task>();
 		}
 
 		public void AddInputFiles(IEnumerable<string> inputFiles) {
@@ -199,7 +188,6 @@ namespace LoopingAudioConverter {
 				txt0StartFilenamePattern.Text = o.PreLoopSuffix;
 				chkStartEnd.Checked = o.ExportLoop;
 				txtStartEndFilenamePattern.Text = o.LoopSuffix;
-				numSimulTasks.Value = o.NumSimulTasks;
 			} catch (Exception e) {
 				MessageBox.Show(e.Message);
 			}
@@ -243,7 +231,6 @@ namespace LoopingAudioConverter {
 				PreLoopSuffix = txt0StartFilenamePattern.Text,
 				ExportLoop = chkStartEnd.Checked,
 				LoopSuffix = txtStartEndFilenamePattern.Text,
-				NumSimulTasks = (int)numSimulTasks.Value,
 				ShortCircuit = chkShortCircuit.Checked,
 			};
 		}
@@ -398,40 +385,14 @@ namespace LoopingAudioConverter {
 				}
 			}
 			this.listBox1.Items.Clear();
-			Task t = Program.RunAsync(o, showEndDialog: !this.Auto, owner: this);
-			runningTasks.Add(t);
-			UpdateTitle();
 			try {
-				await t;
+				await Program.RunAsync(o, showEndDialog: !this.Auto, owner: this);
 			} catch (Exception ex) {
 				Console.Error.WriteLine(ex);
 			}
-			runningTasks.Remove(t);
-			UpdateTitle();
 			if (this.Auto) {
 				this.Close();
 			}
-		}
-
-		private void UpdateTitle() {
-			if (this.InvokeRequired) {
-				this.BeginInvoke(new Action(UpdateTitle));
-				return;
-			}
-			string text = this.Text + ":";
-			text = text.Substring(0, text.IndexOf(':'));
-			this.Enabled = runningTasks.Count == 0;
-			switch (runningTasks.Count) {
-				case 0:
-					break;
-				case 1:
-					text += ": batch running";
-					break;
-				default:
-					text += ": " + runningTasks.Count + " batches running";
-					break;
-			}
-			this.Text = text;
 		}
 
 		private void btnSuffixFilter_Click(object sender, EventArgs e) {

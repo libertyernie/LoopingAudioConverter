@@ -79,6 +79,5 @@ namespace LoopingAudioConverter {
 		public bool ExportLoop { get; set; }
 		public string LoopSuffix { get; set; }
 		public bool ShortCircuit { get; set; }
-		public int NumSimulTasks { get; set; }
 	}
 }
