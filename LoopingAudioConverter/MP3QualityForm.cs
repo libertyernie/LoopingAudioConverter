@@ -10,15 +10,6 @@ using System.Windows.Forms;
 
 namespace LoopingAudioConverter {
 	public partial class MP3QualityForm : Form {
-		public string LAMEParameters {
-			get {
-				return radVBR.Checked ? ("-V " + ddlVBRSetting.SelectedIndex)
-					: radCBR.Checked ? ("--cbr -b " + numBitrate.Value)
-					: radCustom.Checked ? txtParameters.Text
-					: "";
-			}
-		}
-
 		public string FFmpegParameters {
 			get {
 				return radVBR.Checked ? ("-q:a " + ddlVBRSetting.SelectedIndex)
