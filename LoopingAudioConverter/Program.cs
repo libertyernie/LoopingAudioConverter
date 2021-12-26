@@ -1,4 +1,5 @@
-﻿using BrawlLib.LoopSelection;
+﻿using BrawlLib.Internal.Windows.Forms;
+using BrawlLib.SSBB.Types.Audio;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -50,6 +51,24 @@ namespace LoopingAudioConverter {
 			}
 		}
 
+		public static IEnumerable<IAudioImporter> BuildImporters() {
+			yield return new WAVImporter();
+			yield return new VGAudioImporter();
+			yield return new MP3Importer();
+			if (ConfigurationManager.AppSettings["faad_path"] is string faad_path)
+				yield return new MP4Importer(faad_path);
+			if (ConfigurationManager.AppSettings["vgmplay_path"] is string vgmplay_path)
+				yield return new VGMImporter(vgmplay_path);
+			yield return new MSU1();
+			yield return new MSFImporter();
+			if (ConfigurationManager.AppSettings["vgmstream_path"] is string vgmstream_path)
+				yield return new VGMStreamImporter(vgmstream_path);
+			if (ConfigurationManager.AppSettings["ffmpeg_path"] is string ffmpeg_path)
+				yield return new FFmpeg(ffmpeg_path);
+			if (ConfigurationManager.AppSettings["sox_path"] is string sox_path)
+				yield return new SoX(sox_path);
+		}
+
 		/// <summary>
 		/// Runs a batch conversion process.
 		/// </summary>
@@ -60,25 +79,7 @@ namespace LoopingAudioConverter {
 					"Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
 
-			IEnumerable <IAudioImporter> buildImporters() {
-				yield return new WAVImporter();
-				yield return new VGAudioImporter();
-				yield return new MP3Importer();
-				if (ConfigurationManager.AppSettings["faad_path"] is string faad_path)
-					yield return new MP4Importer(faad_path);
-				if (ConfigurationManager.AppSettings["vgmplay_path"] is string vgmplay_path)
-					yield return new VGMImporter(vgmplay_path);
-				yield return new MSU1();
-				yield return new MSFImporter();
-				if (ConfigurationManager.AppSettings["vgmstream_path"] is string vgmstream_path)
-					yield return new VGMStreamImporter(vgmstream_path);
-				if (ConfigurationManager.AppSettings["ffmpeg_path"] is string ffmpeg_path)
-					yield return new FFmpeg(ffmpeg_path);
-				if (ConfigurationManager.AppSettings["sox_path"] is string sox_path)
-					yield return new SoX(sox_path);
-			}
-
-			List<IAudioImporter> importers = buildImporters().ToList();
+			List<IAudioImporter> importers = BuildImporters().ToList();
 
 			IEffectEngine effectEngine = importers.OfType<IEffectEngine>().FirstOrDefault() ?? throw new AudioImporterException("Could not find either ffmpeg or SoX - please specify ffmpeg_path or sox_path in .config file");
 
@@ -100,6 +101,16 @@ namespace LoopingAudioConverter {
 						return new HCAExporter(o.HcaOptions?.Configuration);
 					case ExporterType.ADX:
 						return new ADXExporter(o.AdxOptions?.Configuration);
+					case ExporterType.BrawlLib_BRSTM_ADPCM:
+						return new BrawlLibRSTMExporter(WaveEncoding.ADPCM, BrawlLibRSTMExporter.Container.RSTM);
+					case ExporterType.BrawlLib_BRSTM_PCM16:
+						return new BrawlLibRSTMExporter(WaveEncoding.PCM16, BrawlLibRSTMExporter.Container.RSTM);
+					case ExporterType.BrawlLib_BCSTM:	
+						return new BrawlLibRSTMExporter(WaveEncoding.ADPCM, BrawlLibRSTMExporter.Container.CSTM);
+					case ExporterType.BrawlLib_BFSTM:
+						return new BrawlLibRSTMExporter(WaveEncoding.ADPCM, BrawlLibRSTMExporter.Container.FSTM);
+					case ExporterType.BrawlLib_BRWAV:
+						return new BrawlLibRWAVExporter();
 					case ExporterType.MSF_PCM16BE:
 						return new MSFPCM16Exporter(big_endian: true);
 					case ExporterType.MSF_PCM16LE:
