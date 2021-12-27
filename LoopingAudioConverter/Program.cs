@@ -1,6 +1,8 @@
 ﻿using BrawlLib.Internal.Windows.Forms;
 using BrawlLib.SSBB.Types.Audio;
+using LoopingAudioConverter.MSF;
 using LoopingAudioConverter.PCM;
+using LoopingAudioConverter.WAV;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -64,14 +66,12 @@ namespace LoopingAudioConverter {
 
 			FFmpeg effectEngine = ConfigurationManager.AppSettings["ffmpeg_path"] is string ffmpeg_path
 				? new FFmpeg(ffmpeg_path)
-				: throw new AudioImporterException("Could not find either ffmpeg or SoX - please specify ffmpeg_path or sox_path in .config file");
+				: throw new AudioImporterException("Could not find SoX - please specify ffmpeg_path or sox_path in .config file");
 
 			IEnumerable<IAudioImporter> BuildImporters() {
-				yield return new WAVImporter();
+				yield return new WaveImporter();
 				yield return new VGAudioImporter();
 				yield return new MP3Importer();
-				if (ConfigurationManager.AppSettings["faad_path"] is string faad_path)
-					yield return new MP4Importer(faad_path);
 				if (ConfigurationManager.AppSettings["vgmplay_path"] is string vgmplay_path)
 					yield return new VGMImporter(vgmplay_path);
 				yield return new MSU1();
@@ -112,9 +112,9 @@ namespace LoopingAudioConverter {
 					case ExporterType.BrawlLib_BRWAV:
 						return new BrawlLibRWAVExporter();
 					case ExporterType.MSF_PCM16BE:
-						return new MSFPCM16Exporter(big_endian: true);
+						return new MSFExporter(big_endian: true);
 					case ExporterType.MSF_PCM16LE:
-						return new MSFPCM16Exporter(big_endian: false);
+						return new MSFExporter(big_endian: false);
 					case ExporterType.MSU1:
 						return new MSU1();
 					case ExporterType.FLAC:
@@ -132,7 +132,7 @@ namespace LoopingAudioConverter {
 					case ExporterType.OggVorbis:
 						return new FFmpegExporter(effectEngine, o.OggVorbisEncodingParameters, ".ogg");
 					case ExporterType.WAV:
-						return new WAVExporter();
+						return new WaveExporter();
 					default:
 						throw new Exception("Could not create exporter type " + o.ExporterType);
 				}

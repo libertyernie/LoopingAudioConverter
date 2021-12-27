@@ -1,17 +1,12 @@
-﻿using LoopingAudioConverter.MSF;
-using LoopingAudioConverter.PCM;
-using System;
-using System.Collections.Generic;
+﻿using LoopingAudioConverter.PCM;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace LoopingAudioConverter {
-	public class MSFPCM16Exporter : IAudioExporter {
+namespace LoopingAudioConverter.MSF {
+	public class MSFExporter : IAudioExporter {
 		private readonly bool big_endian;
 
-		public MSFPCM16Exporter(bool big_endian = true) {
+		public MSFExporter(bool big_endian = true) {
 			this.big_endian = big_endian;
 		}
 

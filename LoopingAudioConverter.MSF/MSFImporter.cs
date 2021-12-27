@@ -3,12 +3,12 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace LoopingAudioConverter {
+namespace LoopingAudioConverter.MSF {
 	public class MSFImporter : IAudioImporter {
 		public Task<PCM16Audio> ReadFileAsync(string filename) {
 			byte[] data = File.ReadAllBytes(filename);
 			try {
-				var msf = MSF.MSF.Parse(data);
+				var msf = MSF.Parse(data);
 				var lwav = msf.Decode();
 				return Task.FromResult(lwav);
 			} catch (NotSupportedException) {

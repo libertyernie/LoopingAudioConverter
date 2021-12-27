@@ -83,8 +83,6 @@
     <Compile Include="VGAudioOptions\VGAudioOptionsForm.Designer.cs">
       <DependentUpon>VGAudioOptionsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Exporters\MSFPCM16Exporter.cs" />
-    <Compile Include="Importers\MSFImporter.cs" />
     <Compile Include="MSU1.cs" />
     <Compile Include="Exporters\ADXExporter.cs" />
     <Compile Include="Exporters\HCAExporter.cs" />
@@ -96,7 +94,6 @@
     <Compile Include="Exporters\VGAudioExporter.cs" />
     <Compile Include="Importers\VGAudioImporter.cs" />
     <Compile Include="Exporters\RSTMExporter.cs" />
-    <Compile Include="Interfaces.cs" />
     <Compile Include="Exporters\AACExporter.cs" />
     <Compile Include="AACQualityForm.cs">
       <SubType>Form</SubType>
@@ -116,13 +113,10 @@
     <Compile Include="MP3QualityForm.Designer.cs">
       <DependentUpon>MP3QualityForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Importers\MP4Importer.cs" />
     <Compile Include="OptionsSerialization.cs" />
     <Compile Include="PCM16LoopWrapper.cs" />
     <Compile Include="TempFiles.cs" />
     <Compile Include="Importers\VGMImporter.cs" />
-    <Compile Include="Exporters\WAVExporter.cs" />
-    <Compile Include="Importers\WAVImporter.cs" />
     <Compile Include="Importers\MP3Importer.cs" />
     <Compile Include="MultipleProgressWindow.cs">
       <SubType>Form</SubType>

@@ -1,16 +1,15 @@
 ﻿using LoopingAudioConverter.PCM;
-using LoopingAudioConverter.WAV;
 using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LoopingAudioConverter {
+namespace LoopingAudioConverter.WAV {
 	/// <summary>
 	/// A wrapper around PCM16Factory that implements the IAudioImporter interface.
-	/// For .wav files, it makes sense to read them directly when possible instead of invoking SoX to convert them. If the file cannot be read, vgmstream (or SoX, if vgmstream fails) should be used to convert the file to a format PCM16Factory will recognize.
+	/// For .wav files, it makes sense to read them directly when possible. If the file cannot be read, vgmstream or ffmpeg should be used instead.
 	/// </summary>
-	public class WAVImporter : IAudioImporter {
+	public class WaveImporter : IAudioImporter {
 		private static string[] EXTENSIONS = new string[] { "wav", "lwav" };
 
 		/// <summary>
