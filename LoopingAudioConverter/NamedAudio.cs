@@ -1,4 +1,6 @@
-﻿namespace LoopingAudioConverter {
+﻿using LoopingAudioConverter.PCM;
+
+namespace LoopingAudioConverter {
 	public class NamedAudio {
 		public PCM16Audio Audio { get; private set; }
 		public string Name { get; private set; }

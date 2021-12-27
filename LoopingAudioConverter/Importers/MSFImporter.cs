@@ -1,7 +1,6 @@
-﻿using MSFContainerLib;
+﻿using LoopingAudioConverter.PCM;
 using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter {
@@ -9,14 +8,8 @@ namespace LoopingAudioConverter {
 		public Task<PCM16Audio> ReadFileAsync(string filename) {
 			byte[] data = File.ReadAllBytes(filename);
 			try {
-				IPcmAudioSource<short> msf = MSF.Parse(data);
-				var lwav = new PCM16Audio(
-					msf.Channels,
-					msf.SampleRate,
-					msf.SampleData.ToArray(),
-					msf.LoopStartSample,
-					msf.LoopStartSample + msf.LoopSampleCount,
-					!msf.IsLooping);
+				var msf = MSF.MSF.Parse(data);
+				var lwav = msf.Decode();
 				return Task.FromResult(lwav);
 			} catch (NotSupportedException) {
 				throw new AudioImporterException("Cannot read MSF file (unsupported codec?)");

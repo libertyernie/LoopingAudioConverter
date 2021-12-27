@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using LoopingAudioConverter.PCM;
+using LoopingAudioConverter.WAV;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter {

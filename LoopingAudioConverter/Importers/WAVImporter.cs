@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LoopingAudioConverter.PCM;
+using LoopingAudioConverter.WAV;
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,8 +25,8 @@ namespace LoopingAudioConverter {
 
 		public Task<PCM16Audio> ReadFileAsync(string filename) {
 			try {
-				return Task.FromResult(PCM16Factory.FromByteArray(File.ReadAllBytes(filename)));
-			} catch (PCM16FactoryException e) {
+				return Task.FromResult(WaveConverter.FromByteArray(File.ReadAllBytes(filename)));
+			} catch (WaveConverterException e) {
 				throw new AudioImporterException(e.Message, e);
 			}
 		}

@@ -1,4 +1,6 @@
-﻿using RunProcessAsTask;
+﻿using LoopingAudioConverter.PCM;
+using LoopingAudioConverter.WAV;
+using RunProcessAsTask;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -40,8 +42,8 @@ namespace LoopingAudioConverter {
 			var pr = await ProcessEx.RunAsync(psi);
 
 			try {
-				return PCM16Factory.FromFile(outfile, true);
-			} catch (PCM16FactoryException e) {
+				return WaveConverter.FromFile(outfile, true);
+			} catch (WaveConverterException e) {
 				throw new AudioImporterException("Could not read faad output: " + e.Message);
 			}
 		}

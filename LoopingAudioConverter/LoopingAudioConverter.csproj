@@ -118,8 +118,6 @@
     </Compile>
     <Compile Include="Importers\MP4Importer.cs" />
     <Compile Include="OptionsSerialization.cs" />
-    <Compile Include="PCM16Audio.cs" />
-    <Compile Include="PCM16Factory.cs" />
     <Compile Include="PCM16LoopWrapper.cs" />
     <Compile Include="TempFiles.cs" />
     <Compile Include="Importers\VGMImporter.cs" />
@@ -174,13 +172,21 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MSFContainerLib\MSFContainerLib.csproj">
+    <ProjectReference Include="..\LoopingAudioConverter.MSF\LoopingAudioConverter.MSF.csproj">
       <Project>{31bd3716-2d0b-49e4-a0e8-2c4e0add93f5}</Project>
-      <Name>MSFContainerLib</Name>
+      <Name>LoopingAudioConverter.MSF</Name>
     </ProjectReference>
-    <ProjectReference Include="..\VorbisCommentSharp\VorbisCommentSharp.csproj">
+    <ProjectReference Include="..\LoopingAudioConverter.PCM\LoopingAudioConverter.PCM.csproj">
+      <Project>{3bb57c1c-b3ed-4d0f-8719-29b036bfeec3}</Project>
+      <Name>LoopingAudioConverter.PCM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LoopingAudioConverter.Vorbis\LoopingAudioConverter.Vorbis.csproj">
       <Project>{5bd4854f-481b-4aa6-b838-32c21b2b069f}</Project>
-      <Name>VorbisCommentSharp</Name>
+      <Name>LoopingAudioConverter.Vorbis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LoopingAudioConverter.WAV\LoopingAudioConverter.WAV.csproj">
+      <Project>{ff053cc3-0cd5-4476-b51e-f3a26328a500}</Project>
+      <Name>LoopingAudioConverter.WAV</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

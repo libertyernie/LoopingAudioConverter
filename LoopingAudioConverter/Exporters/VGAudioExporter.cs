@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LoopingAudioConverter.PCM;
+using LoopingAudioConverter.WAV;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using VGAudio.Containers.Wave;

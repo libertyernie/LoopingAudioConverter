@@ -1,4 +1,5 @@
-﻿using MSFContainerLib;
+﻿using LoopingAudioConverter.MSF;
+using LoopingAudioConverter.PCM;
 using System;
 using System.IO;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace LoopingAudioConverter {
 
 			if (Path.GetExtension(lwav.OriginalPath ?? "").Equals(".msf", StringComparison.InvariantCultureIgnoreCase) && output_extension == ".mp3") {
 				byte[] data = File.ReadAllBytes(lwav.OriginalPath);
-				IPcmAudioSource<short> msf = MSF.Parse(data);
+				var msf = MSF.MSF.Parse(data);
 				if (msf is MSF_MP3 mp3) {
 					File.WriteAllBytes(output_filename, mp3.Body);
 					return;

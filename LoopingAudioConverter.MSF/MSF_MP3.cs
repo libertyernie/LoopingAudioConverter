@@ -1,13 +1,9 @@
 ﻿using MP3Sharp;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MSFContainerLib
+namespace LoopingAudioConverter.MSF
 {
     public class MSF_MP3 : MSF
     {
@@ -25,7 +21,7 @@ namespace MSFContainerLib
                 x /= Bitrate.Value;
                 return checked((int)x);
             }
-            set {
+            internal set {
                 long x = value;
                 x *= Bitrate.Value;
                 x /= sizeof(byte);
@@ -45,7 +41,7 @@ namespace MSFContainerLib
                 x /= Bitrate.Value;
                 return checked((int)x);
             }
-            set {
+            internal set {
                 long x = value;
                 x *= Bitrate.Value;
                 x /= sizeof(byte);

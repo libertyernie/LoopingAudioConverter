@@ -1,13 +1,11 @@
-﻿using System;
+﻿using LoopingAudioConverter.PCM;
+using System;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using VGAudio.Containers.Wave;
-using VGAudio.Formats;
 
-namespace LoopingAudioConverter {
-	public class PCM16FactoryException : Exception {
-		public PCM16FactoryException(string message) : base(message) { }
+namespace LoopingAudioConverter.WAV {
+	public class WaveConverterException : Exception {
+		public WaveConverterException(string message) : base(message) { }
 	}
 
 	/// <summary>
@@ -18,7 +16,7 @@ namespace LoopingAudioConverter {
 	/// This program will read the "fmt ", "data", and (if present) "smpl" chunks; any other chunks in the file will be ignored.
 	/// Output data will use WAVE_FORMAT_PCM and have "fmt " and "data" chunks, along with a "smpl" chunk if it is a looping track.
 	/// </summary>
-	public static class PCM16Factory {
+	public static class WaveConverter {
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		private struct fmt {
 			public ushort format;
@@ -94,16 +92,16 @@ namespace LoopingAudioConverter {
 			byte[] buffer = new byte[12];
 			int r = stream.Read(buffer, 0, 12);
 			if (r == 0) {
-				throw new PCM16FactoryException("No data in stream");
+				throw new WaveConverterException("No data in stream");
 			} else if (r < 12) {
-				throw new PCM16FactoryException("Unexpected end of stream in first 12 bytes");
+				throw new WaveConverterException("Unexpected end of stream in first 12 bytes");
 			}
 			fixed (byte* bptr = buffer) {
 				if (*(int*)bptr != tag("RIFF")) {
-					throw new PCM16FactoryException("RIFF header not found");
+					throw new WaveConverterException("RIFF header not found");
 				}
 				if (*(int*)(bptr + 8) != tag("WAVE")) {
-					throw new PCM16FactoryException("WAVE header not found");
+					throw new WaveConverterException("WAVE header not found");
 				}
 			}
 
@@ -119,7 +117,7 @@ namespace LoopingAudioConverter {
 			// Keep reading chunk headers into a buffer of 8 bytes
 			while ((r = stream.Read(buffer, 0, 8)) > 0) {
 				if (r < 8) {
-					throw new PCM16FactoryException("Unexpected end of stream in chunk header");
+					throw new WaveConverterException("Unexpected end of stream in chunk header");
 				} else {
 					fixed (byte* ptr1 = buffer) {
 						// Four ASCII characters
@@ -129,14 +127,9 @@ namespace LoopingAudioConverter {
 
 						byte[] buffer2;
 						if (id == "data" && chunklength == -1) {
-							// Special handling for streaming output of madplay.exe.
-							// If we were using temporary files, this would not be needed, but I like a good programming challenge.
+							// Chunk length is not specified properly in file - assume the chunk lasts until the end of the file.
 							using (MemoryStream ms = new MemoryStream()) {
-								byte[] databuffer = new byte[1024 * 1024];
-								while ((r = stream.Read(databuffer, 0, databuffer.Length)) > 0) {
-									ms.Write(databuffer, 0, r);
-								}
-
+								stream.CopyTo(ms);
 								buffer2 = ms.ToArray();
 							}
 						} else {
@@ -145,7 +138,7 @@ namespace LoopingAudioConverter {
 							int total = 0;
 							while (total < buffer2.Length) {
 								total += (r = stream.Read(buffer2, total, buffer2.Length - total));
-								if (r == 0) throw new PCM16FactoryException("Unexpected end of data in \"" + Marshal.PtrToStringAnsi((IntPtr)ptr1, 4) + "\" chunk: expected " + buffer2.Length + " bytes, got " + total + " bytes");
+								if (r == 0) throw new WaveConverterException("Unexpected end of data in \"" + Marshal.PtrToStringAnsi((IntPtr)ptr1, 4) + "\" chunk: expected " + buffer2.Length + " bytes, got " + total + " bytes");
 							}
 						}
 
@@ -160,16 +153,16 @@ namespace LoopingAudioConverter {
 										if (ext->subFormat == new Guid("00000001-0000-0010-8000-00aa00389b71")) {
 											// KSDATAFORMAT_SUBTYPE_PCM
 										} else {
-											throw new PCM16FactoryException("Only uncompressed PCM suppported - found WAVEFORMATEXTENSIBLE with subformat " + ext->subFormat);
+											throw new WaveConverterException("Only uncompressed PCM suppported - found WAVEFORMATEXTENSIBLE with subformat " + ext->subFormat);
 										}
 									} else {
-										throw new PCM16FactoryException("Only uncompressed PCM suppported - found format " + fmt->format);
+										throw new WaveConverterException("Only uncompressed PCM suppported - found format " + fmt->format);
 									}
 								} else if (fmt->bitsPerSample != 16) {
 									if (fmt->bitsPerSample == 8) {
 										convert_from_8_bit = true;
 									} else {
-										throw new PCM16FactoryException("Only 16-bit wave files supported");
+										throw new WaveConverterException("Only 16-bit wave files supported");
 									}
 								}
 
@@ -183,12 +176,12 @@ namespace LoopingAudioConverter {
 								// sampler chunk
 								smpl* smpl = (smpl*)ptr2;
 								if (smpl->sampleLoopCount > 1) {
-									throw new PCM16FactoryException("Cannot read looping .wav file with more than one loop");
+									throw new WaveConverterException("Cannot read looping .wav file with more than one loop");
 								} else if (smpl->sampleLoopCount == 1) {
 									// There is one loop - we only care about start and end points
 									smpl_loop* loop = (smpl_loop*)(smpl + 1);
 									if (loop->type != 0) {
-										throw new PCM16FactoryException("Cannot read looping .wav file with loop of type " + loop->type);
+										throw new WaveConverterException("Cannot read looping .wav file with loop of type " + loop->type);
 									}
 									loopStart = loop->start;
 									loopEnd = loop->end;
@@ -202,10 +195,10 @@ namespace LoopingAudioConverter {
 			}
 
 			if (sampleRate == 0) {
-				throw new PCM16FactoryException("Format chunk not found");
+				throw new WaveConverterException("Format chunk not found");
 			}
 			if (sample_data == null) {
-				throw new PCM16FactoryException("Data chunk not found");
+				throw new WaveConverterException("Data chunk not found");
 			}
 
 			if (convert_from_8_bit) {
@@ -247,9 +240,9 @@ namespace LoopingAudioConverter {
 			using (FileStream stream = new FileStream(filename, FileMode.Open, FileAccess.Read)) {
 				w = FromStream(stream);
 			}
-			if (delete) try {
-					File.Delete(filename);
-				} catch { }
+			try {
+				if (delete) File.Delete(filename);
+			} catch { }
 			return w;
 		}
 

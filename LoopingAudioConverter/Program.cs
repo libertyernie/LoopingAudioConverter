@@ -1,5 +1,6 @@
 ﻿using BrawlLib.Internal.Windows.Forms;
 using BrawlLib.SSBB.Types.Audio;
+using LoopingAudioConverter.PCM;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

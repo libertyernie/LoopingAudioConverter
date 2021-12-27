@@ -1,4 +1,6 @@
-﻿using RunProcessAsTask;
+﻿using LoopingAudioConverter.PCM;
+using LoopingAudioConverter.WAV;
+using RunProcessAsTask;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -56,7 +58,7 @@ namespace LoopingAudioConverter {
 			await ProcessEx.RunAsync(psi);
 
 			try {
-				PCM16Audio lwav = PCM16Factory.FromFile(outfile, true);
+				PCM16Audio lwav = WaveConverter.FromFile(outfile, true);
 				return lwav;
 			} catch (Exception e) {
 				throw new AudioImporterException("Could not read ffmpeg output: " + e.Message);
@@ -135,7 +137,7 @@ namespace LoopingAudioConverter {
 			File.Delete(infile);
 
 			try {
-				PCM16Audio l = PCM16Factory.FromFile(outfile, true);
+				PCM16Audio l = WaveConverter.FromFile(outfile, true);
 				l.Looping = lwav.Looping;
 				l.LoopStart = lwav.LoopStart;
 				l.LoopEnd = lwav.LoopEnd;

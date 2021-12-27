@@ -1,30 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using MSFContainerLib;
 
-namespace LoopingAudioConverter {
+namespace LoopingAudioConverter.PCM {
 	/// <summary>
 	/// Represents 16-bit uncompressed PCM data with an arbitary number of channels and an optional loop sequence.
 	/// The total sample length of this data is immutable, but the data itself and other properties can be modified.
 	/// </summary>
-	public class PCM16Audio : IPcmAudioSource<short> {
-		public short Channels { get; private set; }
-		public int SampleRate { get; private set; }
-		public short[] Samples { get; private set; }
+	public class PCM16Audio {
+		public short Channels { get; }
+		public int SampleRate { get; }
+		public short[] Samples { get; }
 
 		/// <summary>
 		/// Whether the file is known to loop.
 		/// </summary>
 		public bool Looping { get; set; }
+
 		/// <summary>
 		/// Whether the file is known to not loop (e.g. a non-looping .brstm or .vgm).
 		/// If both Looping and NonLooping are false (e.g. a wav file with no smpl), it is not known whether the file loops.
 		/// </summary>
 		public bool NonLooping { get; set; }
+
 		/// <summary>
 		/// The start of the loop, in samples.
 		/// </summary>
 		public int LoopStart { get; set; }
+
 		/// <summary>
 		/// The end of the loop, in samples.
 		/// </summary>
@@ -37,13 +38,6 @@ namespace LoopingAudioConverter {
 		}
 
 		public string OriginalPath { get; set; }
-
-		IEnumerable<short> IPcmAudioSource<short>.SampleData => Samples;
-		int IPcmAudioSource<short>.Channels => Channels;
-		int IPcmAudioSource<short>.SampleRate => SampleRate;
-		bool IPcmAudioSource<short>.IsLooping => Looping;
-		int IPcmAudioSource<short>.LoopStartSample => LoopStart;
-		int IPcmAudioSource<short>.LoopSampleCount => LoopEnd - LoopStart;
 
 		/// <summary>
 		/// Creates a WAV with the given metadata and length.

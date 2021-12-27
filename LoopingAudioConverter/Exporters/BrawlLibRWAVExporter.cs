@@ -1,4 +1,5 @@
 ﻿using BrawlLib.Wii.Audio;
+using LoopingAudioConverter.PCM;
 using System.IO;
 using System.Threading.Tasks;
 

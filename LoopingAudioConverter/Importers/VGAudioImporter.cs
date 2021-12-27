@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LoopingAudioConverter.PCM;
+using LoopingAudioConverter.WAV;
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -92,7 +94,7 @@ namespace LoopingAudioConverter {
 
 				AudioData a = Read(indata, filename);
 				byte[] wavedata = new WaveWriter().GetFile(a);
-				var w = PCM16Factory.FromByteArray(wavedata);
+				var w = WaveConverter.FromByteArray(wavedata);
 				if (a.GetAllFormats().All(f => !f.Looping)) {
 					w.NonLooping = true;
 				}

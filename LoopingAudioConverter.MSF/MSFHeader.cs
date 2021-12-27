@@ -5,17 +5,17 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MSFContainerLib
+namespace LoopingAudioConverter.MSF
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct BigEndianInt16
+    public struct bshort
     {
         private byte b1;
         private byte b2;
 
-        public static implicit operator short(BigEndianInt16 val) =>
+        public static implicit operator short(bshort val) =>
             (short)(val.b1 << 8 | val.b2);
-        public static implicit operator BigEndianInt16(short val) => new BigEndianInt16
+        public static implicit operator bshort(short val) => new bshort
         {
             b1 = (byte)(val >> 8),
             b2 = (byte)val
@@ -26,37 +26,19 @@ namespace MSFContainerLib
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct LittleEndianInt16
-    {
-        private byte b2;
-        private byte b1;
-
-        public static implicit operator short(LittleEndianInt16 val) =>
-            (short)(val.b1 << 8 | val.b2);
-        public static implicit operator LittleEndianInt16(short val) => new LittleEndianInt16
-        {
-            b1 = (byte)(val >> 8),
-            b2 = (byte)val
-        };
-
-        public int Value => this;
-        public override string ToString() => $"{Value}";
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct BigEndianInt32
+    public struct bint
     {
         private byte b1;
         private byte b2;
         private byte b3;
         private byte b4;
 
-        public static implicit operator int(BigEndianInt32 val) =>
+        public static implicit operator int(bint val) =>
             val.b1 << 24
             | val.b2 << 16
             | val.b3 << 8
             | val.b4;
-        public static implicit operator BigEndianInt32(int val) => new BigEndianInt32
+        public static implicit operator bint(int val) => new bint
         {
             b1 = (byte)(val >> 24),
             b2 = (byte)(val >> 16),
@@ -102,7 +84,7 @@ namespace MSFContainerLib
     [StructLayout(LayoutKind.Sequential)]
     public unsafe struct MSFFlags
     {
-        public BigEndianInt32 val;
+        public bint val;
 
         public MSFFlag Flags {
             get {
@@ -118,13 +100,13 @@ namespace MSFContainerLib
     public unsafe struct MSFHeader
     {
         public MSFTag tag;
-        public BigEndianInt32 codec;
-        public BigEndianInt32 channel_count;
-        public BigEndianInt32 data_size;
-        public BigEndianInt32 sample_rate;
+        public bint codec;
+        public bint channel_count;
+        public bint data_size;
+        public bint sample_rate;
         public MSFFlags flags;
-        public BigEndianInt32 loop_start;
-        public BigEndianInt32 loop_length;
+        public bint loop_start;
+        public bint loop_length;
 
         public fixed byte padding[32];
 

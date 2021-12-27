@@ -1,5 +1,6 @@
 ﻿using BrawlLib.Internal;
 using BrawlLib.Internal.Audio;
+using LoopingAudioConverter.PCM;
 using System;
 using System.Runtime.InteropServices;
 

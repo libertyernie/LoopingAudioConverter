@@ -1,4 +1,6 @@
-﻿using RunProcessAsTask;
+﻿using LoopingAudioConverter.PCM;
+using LoopingAudioConverter.WAV;
+using RunProcessAsTask;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -73,7 +75,7 @@ namespace LoopingAudioConverter {
 					Arguments = inFile
 				};
 				var pr = await ProcessEx.RunAsync(psi);
-				var data = PCM16Factory.FromFile(Path.Combine(tmpDir, "audio.wav"), true);
+				var data = WaveConverter.FromFile(Path.Combine(tmpDir, "audio.wav"), true);
 				Directory.Delete(tmpDir, true);
 
 				// Check format

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MSFContainerLib
+﻿namespace LoopingAudioConverter.MSF
 {
     public abstract class MSF_PCM16 : MSF
     {
@@ -20,7 +14,7 @@ namespace MSFContainerLib
         /// </summary>
         public override int LoopStartSample {
             get => _header.loop_start / sizeof(short) / Header.channel_count;
-            set => _header.loop_start = value * sizeof(short) * Header.channel_count;
+            internal set => _header.loop_start = value * sizeof(short) * Header.channel_count;
         }
 
         /// <summary>
@@ -28,7 +22,7 @@ namespace MSFContainerLib
         /// </summary>
         public override int LoopSampleCount {
             get => _header.loop_length / sizeof(short) / Header.channel_count;
-            set => _header.loop_length = value * sizeof(short) * Header.channel_count;
+            internal set => _header.loop_length = value * sizeof(short) * Header.channel_count;
         }
     }
 }

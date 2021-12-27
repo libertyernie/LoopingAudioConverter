@@ -2,6 +2,7 @@
 using BrawlLib.Internal.Windows.Forms;
 using BrawlLib.SSBB.Types.Audio;
 using BrawlLib.Wii.Audio;
+using LoopingAudioConverter.PCM;
 using System;
 using System.IO;
 using System.Threading.Tasks;
