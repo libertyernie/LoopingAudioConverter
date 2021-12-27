@@ -31,7 +31,6 @@ namespace LoopingAudioConverter {
 
 		private class EncodingParameterCollection {
 			public string
-				MP3_LAME = "",
 				MP3_FFmpeg = "",
 				Vorbis = "",
 				AAC_qaac = "",
@@ -84,9 +83,6 @@ namespace LoopingAudioConverter {
 				new NVPair<ExporterType>(ExporterType.FFmpeg_AAC_ADTS, "[FFmpeg] AAC (ADTS .aac)"),
 				new NVPair<ExporterType>(ExporterType.OggVorbis, "[FFmpeg] Vorbis (.ogg)")
 			}.ToList();
-			if (ConfigurationManager.AppSettings["lame_path"] != null) {
-				exporters.Add(new NVPair<ExporterType>(ExporterType.MP3, "[LAME] MP3"));
-			}
 			if (ConfigurationManager.AppSettings["qaac_path"] != null) {
 				exporters.Add(new NVPair<ExporterType>(ExporterType.AAC_M4A, "[qaac] AAC (.m4a)"));
 				exporters.Add(new NVPair<ExporterType>(ExporterType.AAC_ADTS, "[qaac] AAC (ADTS .aac)"));
@@ -98,7 +94,6 @@ namespace LoopingAudioConverter {
 					case ExporterType.BRSTM:
 					case ExporterType.BCSTM:
 					case ExporterType.BFSTM:
-					case ExporterType.MP3:
 					case ExporterType.OggVorbis:
 					case ExporterType.AAC_M4A:
 					case ExporterType.AAC_ADTS:
@@ -114,7 +109,6 @@ namespace LoopingAudioConverter {
 						break;
 				}
 				switch ((ExporterType)comboBox1.SelectedValue) {
-					case ExporterType.MP3:
 					case ExporterType.FLAC:
 					case ExporterType.AAC_M4A:
 					case ExporterType.AAC_ADTS:
@@ -176,7 +170,6 @@ namespace LoopingAudioConverter {
 				else if (o.ChannelSplit == ChannelSplit.OneFile)
 					radChannelsTogether.Checked = true;
 				comboBox1.SelectedValue = o.ExporterType;
-				encodingParameters.MP3_LAME = o.MP3EncodingParameters;
 				encodingParameters.AAC_qaac = o.AACEncodingParameters;
 				encodingParameters.MP3_FFmpeg = o.MP3FFmpegParameters;
 				encodingParameters.AAC_FFmpeg = o.AACFFmpegParameters;
@@ -220,7 +213,6 @@ namespace LoopingAudioConverter {
 					: radChannelsSeparate.Checked ? ChannelSplit.Each
 					: ChannelSplit.OneFile,
 				ExporterType = (ExporterType)comboBox1.SelectedValue,
-				MP3EncodingParameters = encodingParameters.MP3_LAME,
 				AACEncodingParameters = encodingParameters.AAC_qaac,
 				MP3FFmpegParameters = encodingParameters.MP3_FFmpeg,
 				AACFFmpegParameters = encodingParameters.AAC_FFmpeg,
@@ -463,12 +455,6 @@ namespace LoopingAudioConverter {
 
 		private void btnEncodingOptions_Click(object sender, EventArgs e) {
 			switch ((ExporterType)comboBox1.SelectedValue) {
-				case ExporterType.MP3:
-					using (var form = new MP3QualityForm(encodingParameters.MP3_LAME)) {
-						if (form.ShowDialog() != DialogResult.OK) return;
-						encodingParameters.MP3_LAME = form.LAMEParameters;
-					}
-					break;
 				case ExporterType.FFmpeg_MP3:
 					using (var form = new MP3QualityForm(encodingParameters.MP3_FFmpeg)) {
 						if (form.ShowDialog() != DialogResult.OK) return;

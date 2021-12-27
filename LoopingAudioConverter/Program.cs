@@ -56,7 +56,7 @@ namespace LoopingAudioConverter {
 		/// </summary>
 		/// <param name="o">Options for the batch.</param>
 		public static async Task RunAsync(Options o, bool showEndDialog = true, IWin32Window owner = null) {
-			if (o.ExporterType == ExporterType.MP3 && (o.ExportPreLoop || o.ExportLoop)) {
+			if (o.ExporterType == ExporterType.FFmpeg_MP3 && (o.ExportPreLoop || o.ExportLoop)) {
 				MessageBox.Show(owner, "MP3 encoding adds gaps at the start and end of each file, so the before-loop portion and the loop portion will not line up well.",
 					"Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
@@ -118,8 +118,6 @@ namespace LoopingAudioConverter {
 						return new MSU1();
 					case ExporterType.FLAC:
 						return new FFmpegExporter(effectEngine, "", ".flac");
-					case ExporterType.MP3:
-						return new MP3Exporter(ConfigurationManager.AppSettings["lame_path"], o.MP3EncodingParameters);
 					case ExporterType.FFmpeg_MP3:
 						return new FFmpegExporter(effectEngine, o.MP3FFmpegParameters, ".mp3");
 					case ExporterType.AAC_M4A:

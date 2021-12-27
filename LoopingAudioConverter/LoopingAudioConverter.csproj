@@ -125,7 +125,6 @@
     <Compile Include="Importers\VGMImporter.cs" />
     <Compile Include="Exporters\WAVExporter.cs" />
     <Compile Include="Importers\WAVImporter.cs" />
-    <Compile Include="Exporters\MP3Exporter.cs" />
     <Compile Include="Importers\MP3Importer.cs" />
     <Compile Include="MultipleProgressWindow.cs">
       <SubType>Form</SubType>
