@@ -24,6 +24,8 @@
         /// </summary>
         private void InitializeComponent() {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.txtInputDir = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.btnSuffixFilter = new System.Windows.Forms.Button();
             this.txtSuffixFilter = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -85,8 +87,6 @@
             this.btnHelp = new System.Windows.Forms.Button();
             this.btnOkay = new System.Windows.Forms.Button();
             this.btnSaveOptions = new System.Windows.Forms.Button();
-            this.txtInputDir = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -137,6 +137,26 @@
             this.splitContainer1.SplitterDistance = 161;
             this.splitContainer1.TabIndex = 0;
             // 
+            // txtInputDir
+            // 
+            this.txtInputDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtInputDir.Location = new System.Drawing.Point(383, 112);
+            this.txtInputDir.Name = "txtInputDir";
+            this.txtInputDir.Size = new System.Drawing.Size(148, 20);
+            this.txtInputDir.TabIndex = 7;
+            // 
+            // label5
+            // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label5.Location = new System.Drawing.Point(296, 112);
+            this.label5.Margin = new System.Windows.Forms.Padding(3);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(81, 20);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "Input directory:";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // btnSuffixFilter
             // 
             this.btnSuffixFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -151,18 +171,18 @@
             // txtSuffixFilter
             // 
             this.txtSuffixFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txtSuffixFilter.Location = new System.Drawing.Point(111, 112);
+            this.txtSuffixFilter.Location = new System.Drawing.Point(127, 112);
             this.txtSuffixFilter.Name = "txtSuffixFilter";
-            this.txtSuffixFilter.Size = new System.Drawing.Size(128, 20);
+            this.txtSuffixFilter.Size = new System.Drawing.Size(112, 20);
             this.txtSuffixFilter.TabIndex = 2;
             // 
             // label4
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label4.Location = new System.Drawing.Point(3, 111);
-            this.label4.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.label4.Margin = new System.Windows.Forms.Padding(3);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(128, 20);
+            this.label4.Size = new System.Drawing.Size(118, 20);
             this.label4.TabIndex = 1;
             this.label4.Text = "Only files ending with:";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -170,7 +190,7 @@
             // btnBrowse
             // 
             this.btnBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBrowse.Location = new System.Drawing.Point(419, 137);
+            this.btnBrowse.Location = new System.Drawing.Point(499, 137);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(32, 20);
             this.btnBrowse.TabIndex = 6;
@@ -184,7 +204,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtOutputDir.Location = new System.Drawing.Point(99, 137);
             this.txtOutputDir.Name = "txtOutputDir";
-            this.txtOutputDir.Size = new System.Drawing.Size(314, 20);
+            this.txtOutputDir.Size = new System.Drawing.Size(394, 20);
             this.txtOutputDir.TabIndex = 5;
             this.txtOutputDir.Text = "./output";
             // 
@@ -192,7 +212,7 @@
             // 
             this.lblOutputDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblOutputDir.Location = new System.Drawing.Point(3, 137);
-            this.lblOutputDir.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.lblOutputDir.Margin = new System.Windows.Forms.Padding(3);
             this.lblOutputDir.Name = "lblOutputDir";
             this.lblOutputDir.Size = new System.Drawing.Size(90, 20);
             this.lblOutputDir.TabIndex = 4;
@@ -217,16 +237,16 @@
             // 
             // flowLayoutPanel1
             // 
+            this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel1.AutoSize = true;
             this.flowLayoutPanel1.Controls.Add(this.btnAdd);
             this.flowLayoutPanel1.Controls.Add(this.btnAddDir);
             this.flowLayoutPanel1.Controls.Add(this.btnRemove);
             this.flowLayoutPanel1.Controls.Add(this.lblEnumerationStatus);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Right;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(454, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(80, 161);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(80, 105);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
             // btnAdd
@@ -610,7 +630,7 @@
             // lblOutputFormat
             // 
             this.lblOutputFormat.Location = new System.Drawing.Point(3, 3);
-            this.lblOutputFormat.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.lblOutputFormat.Margin = new System.Windows.Forms.Padding(3);
             this.lblOutputFormat.Name = "lblOutputFormat";
             this.lblOutputFormat.Size = new System.Drawing.Size(80, 21);
             this.lblOutputFormat.TabIndex = 0;
@@ -677,7 +697,7 @@
             // lblSeconds
             // 
             this.lblSeconds.Location = new System.Drawing.Point(231, 81);
-            this.lblSeconds.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.lblSeconds.Margin = new System.Windows.Forms.Padding(3);
             this.lblSeconds.Name = "lblSeconds";
             this.lblSeconds.Size = new System.Drawing.Size(40, 21);
             this.lblSeconds.TabIndex = 10;
@@ -687,7 +707,7 @@
             // lblNumberLoops
             // 
             this.lblNumberLoops.Location = new System.Drawing.Point(40, 56);
-            this.lblNumberLoops.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.lblNumberLoops.Margin = new System.Windows.Forms.Padding(3);
             this.lblNumberLoops.Name = "lblNumberLoops";
             this.lblNumberLoops.Size = new System.Drawing.Size(96, 20);
             this.lblNumberLoops.TabIndex = 6;
@@ -697,7 +717,7 @@
             // label3
             // 
             this.label3.Location = new System.Drawing.Point(169, 160);
-            this.label3.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.label3.Margin = new System.Windows.Forms.Padding(3);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(40, 20);
             this.label3.TabIndex = 16;
@@ -707,7 +727,7 @@
             // lblFadeOutTime
             // 
             this.lblFadeOutTime.Location = new System.Drawing.Point(40, 82);
-            this.lblFadeOutTime.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.lblFadeOutTime.Margin = new System.Windows.Forms.Padding(3);
             this.lblFadeOutTime.Name = "lblFadeOutTime";
             this.lblFadeOutTime.Size = new System.Drawing.Size(96, 20);
             this.lblFadeOutTime.TabIndex = 8;
@@ -717,7 +737,7 @@
             // label2
             // 
             this.label2.Location = new System.Drawing.Point(169, 134);
-            this.label2.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.label2.Margin = new System.Windows.Forms.Padding(3);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(40, 20);
             this.label2.TabIndex = 13;
@@ -744,7 +764,7 @@
             // label1
             // 
             this.label1.Location = new System.Drawing.Point(169, 30);
-            this.label1.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.label1.Margin = new System.Windows.Forms.Padding(3);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(40, 20);
             this.label1.TabIndex = 4;
@@ -762,8 +782,6 @@
             // chkShortCircuit
             // 
             this.chkShortCircuit.AutoSize = true;
-            this.chkShortCircuit.Checked = true;
-            this.chkShortCircuit.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkShortCircuit.Location = new System.Drawing.Point(233, 192);
             this.chkShortCircuit.Name = "chkShortCircuit";
             this.chkShortCircuit.Size = new System.Drawing.Size(259, 17);
@@ -775,7 +793,7 @@
             this.panel3.AutoSize = true;
             this.panel3.Controls.Add(this.numSimulTasks);
             this.panel3.Controls.Add(this.lblSimulTasks);
-            this.panel3.Location = new System.Drawing.Point(230, 238);
+            this.panel3.Location = new System.Drawing.Point(230, 215);
             this.panel3.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(198, 28);
@@ -868,26 +886,6 @@
             this.btnSaveOptions.Text = "Save Options";
             this.btnSaveOptions.UseVisualStyleBackColor = true;
             this.btnSaveOptions.Click += new System.EventHandler(this.btnSaveOptions_Click);
-            // 
-            // txtInputDir
-            // 
-            this.txtInputDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtInputDir.Location = new System.Drawing.Point(372, 112);
-            this.txtInputDir.Name = "txtInputDir";
-            this.txtInputDir.Size = new System.Drawing.Size(159, 20);
-            this.txtInputDir.TabIndex = 7;
-            // 
-            // label5
-            // 
-            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label5.Location = new System.Drawing.Point(295, 111);
-            this.label5.Margin = new System.Windows.Forms.Padding(3);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(81, 20);
-            this.label5.TabIndex = 8;
-            this.label5.Text = "Input Directory:";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // OptionsForm
             // 

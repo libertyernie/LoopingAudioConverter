@@ -1,4 +1,5 @@
-﻿using BrawlLib.LoopSelection;
+﻿using BrawlLib.Internal;
+using BrawlLib.Internal.Audio;
 using System;
 using System.Runtime.InteropServices;
 
@@ -7,8 +8,8 @@ namespace LoopingAudioConverter {
 	/// A wrapper for PCM16Audio to conform to BrawlLib's IAudioStream interface.
 	/// IAudioStream maintains a "current position" in the audio stream, while PCM16Audio does not, so this class handles SamplePosition, Wrap, and ReadSamples.
 	/// </summary>
-	class PCM16LoopWrapper : IAudioStream {
-		private PCM16Audio lwav;
+	public class PCM16LoopWrapper : IAudioStream {
+		private readonly PCM16Audio lwav;
 
 		public PCM16LoopWrapper(PCM16Audio lwav) {
 			this.lwav = lwav;
@@ -55,6 +56,8 @@ namespace LoopingAudioConverter {
 			SamplePosition += numSamples;
 			return numSamples;
 		}
+
+		unsafe int IAudioStream.ReadSamples(VoidPtr destAddr, int numSamples) => ReadSamples(destAddr, numSamples);
 
 		public int SamplePosition { get; set; }
 

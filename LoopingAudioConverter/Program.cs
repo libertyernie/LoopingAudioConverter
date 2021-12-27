@@ -1,4 +1,5 @@
-﻿using BrawlLib.LoopSelection;
+﻿using BrawlLib.Internal.Windows.Forms;
+using BrawlLib.SSBB.Types.Audio;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -60,7 +61,11 @@ namespace LoopingAudioConverter {
 					"Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
 
-			IEnumerable <IAudioImporter> buildImporters() {
+			FFmpeg effectEngine = ConfigurationManager.AppSettings["ffmpeg_path"] is string ffmpeg_path
+				? new FFmpeg(ffmpeg_path)
+				: throw new AudioImporterException("Could not find either ffmpeg or SoX - please specify ffmpeg_path or sox_path in .config file");
+
+			IEnumerable<IAudioImporter> BuildImporters() {
 				yield return new WAVImporter();
 				yield return new VGAudioImporter();
 				yield return new MP3Importer();
@@ -72,15 +77,10 @@ namespace LoopingAudioConverter {
 				yield return new MSFImporter();
 				if (ConfigurationManager.AppSettings["vgmstream_path"] is string vgmstream_path)
 					yield return new VGMStreamImporter(vgmstream_path);
-				if (ConfigurationManager.AppSettings["ffmpeg_path"] is string ffmpeg_path)
-					yield return new FFmpeg(ffmpeg_path);
-				if (ConfigurationManager.AppSettings["sox_path"] is string sox_path)
-					yield return new SoX(sox_path);
+				yield return effectEngine;
 			}
 
-			List<IAudioImporter> importers = buildImporters().ToList();
-
-			IEffectEngine effectEngine = importers.OfType<IEffectEngine>().FirstOrDefault() ?? throw new AudioImporterException("Could not find either ffmpeg or SoX - please specify ffmpeg_path or sox_path in .config file");
+			List<IAudioImporter> importers = BuildImporters().ToList();
 
 			IAudioExporter getExporter() {
 				switch (o.ExporterType) {
@@ -100,6 +100,16 @@ namespace LoopingAudioConverter {
 						return new HCAExporter(o.HcaOptions?.Configuration);
 					case ExporterType.ADX:
 						return new ADXExporter(o.AdxOptions?.Configuration);
+					case ExporterType.BrawlLib_BRSTM_ADPCM:
+						return new BrawlLibRSTMExporter(WaveEncoding.ADPCM, BrawlLibRSTMExporter.Container.RSTM);
+					case ExporterType.BrawlLib_BRSTM_PCM16:
+						return new BrawlLibRSTMExporter(WaveEncoding.PCM16, BrawlLibRSTMExporter.Container.RSTM);
+					case ExporterType.BrawlLib_BCSTM:	
+						return new BrawlLibRSTMExporter(WaveEncoding.ADPCM, BrawlLibRSTMExporter.Container.CSTM);
+					case ExporterType.BrawlLib_BFSTM:
+						return new BrawlLibRSTMExporter(WaveEncoding.ADPCM, BrawlLibRSTMExporter.Container.FSTM);
+					case ExporterType.BrawlLib_BRWAV:
+						return new BrawlLibRWAVExporter();
 					case ExporterType.MSF_PCM16BE:
 						return new MSFPCM16Exporter(big_endian: true);
 					case ExporterType.MSF_PCM16LE:
@@ -107,21 +117,21 @@ namespace LoopingAudioConverter {
 					case ExporterType.MSU1:
 						return new MSU1();
 					case ExporterType.FLAC:
-						return new EffectEngineExporter(effectEngine, "", ".flac");
+						return new FFmpegExporter(effectEngine, "", ".flac");
 					case ExporterType.MP3:
 						return new MP3Exporter(ConfigurationManager.AppSettings["lame_path"], o.MP3EncodingParameters);
 					case ExporterType.FFmpeg_MP3:
-						return new EffectEngineExporter(effectEngine, o.MP3FFmpegParameters, ".mp3");
+						return new FFmpegExporter(effectEngine, o.MP3FFmpegParameters, ".mp3");
 					case ExporterType.AAC_M4A:
 						return new AACExporter(ConfigurationManager.AppSettings["qaac_path"], o.AACEncodingParameters, adts: false);
 					case ExporterType.FFmpeg_AAC_M4A:
-						return new EffectEngineExporter(effectEngine, o.AACFFmpegParameters, ".m4a");
+						return new FFmpegExporter(effectEngine, o.AACFFmpegParameters, ".m4a");
 					case ExporterType.AAC_ADTS:
 						return new AACExporter(ConfigurationManager.AppSettings["qaac_path"], o.AACEncodingParameters, adts: true);
 					case ExporterType.FFmpeg_AAC_ADTS:
-						return new EffectEngineExporter(effectEngine, o.AACFFmpegParameters, ".aac");
+						return new FFmpegExporter(effectEngine, o.AACFFmpegParameters, ".aac");
 					case ExporterType.OggVorbis:
-						return new EffectEngineExporter(importers.OfType<SoX>().Single(), o.OggVorbisEncodingParameters, ".ogg");
+						return new FFmpegExporter(effectEngine, o.OggVorbisEncodingParameters, ".ogg");
 					case ExporterType.WAV:
 						return new WAVExporter();
 					default:
@@ -251,8 +261,8 @@ namespace LoopingAudioConverter {
 					rate: o.SampleRate ?? w.SampleRate,
 					db: o.AmplifydB ?? 0M,
 					amplitude: o.AmplifyRatio ?? 1M,
-					pitch_semitones: o.PitchSemitones ?? 0M,
-					tempo_ratio: o.TempoRatio ?? 1M);
+					pitch_semitones: o.PitchSemitones ?? 0,
+					tempo_ratio: o.TempoRatio ?? 1);
 				window.SetDecodingText("");
 
 				List<NamedAudio> wavsToExport = new List<NamedAudio>();
