@@ -1,4 +1,4 @@
-﻿namespace VorbisCommentSharp {
+﻿namespace LoopingAudioConverter.Vorbis {
     public static unsafe class UnsafeOggCRC {
         static uint[] crc_lookup = {
             0x00000000,0x04c11db7,0x09823b6e,0x0d4326d9,

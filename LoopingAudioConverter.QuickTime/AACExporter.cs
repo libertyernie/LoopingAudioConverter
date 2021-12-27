@@ -6,11 +6,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace LoopingAudioConverter {
+namespace LoopingAudioConverter.QuickTime {
 	public class AACExporter : IAudioExporter {
-		private string ExePath;
-		private bool Adts;
-		private string EncodingParameters;
+		private readonly string ExePath;
+		private readonly bool Adts;
+		private readonly string EncodingParameters;
 
 		public AACExporter(string exePath, string encodingParameters = null, bool adts = false) {
 			ExePath = exePath;
@@ -24,7 +24,7 @@ namespace LoopingAudioConverter {
 				throw new AudioExporterException("Invalid character (\") found in output filename");
 			}
 
-			string infile = TempFiles.Create("wav");
+			string infile = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".wav");
 			File.WriteAllBytes(infile, lwav.Export());
 
 			ProcessStartInfo psi = new ProcessStartInfo {

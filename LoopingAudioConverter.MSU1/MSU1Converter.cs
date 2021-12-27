@@ -3,16 +3,8 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace LoopingAudioConverter {
-	public class MSU1 : IAudioImporter, IAudioExporter {
-		public string GetExporterName() {
-			return "MSU-1";
-		}
-
-		public string GetImporterName() {
-			return "MSU-1";
-		}
-
+namespace LoopingAudioConverter.MSU1 {
+	public class MSU1Converter : IAudioImporter, IAudioExporter {
 		public Task<PCM16Audio> ReadFileAsync(string filename) {
 			using (var fs = new FileStream(filename, FileMode.Open, FileAccess.Read))
 			using (var br = new BinaryReader(fs)) {
@@ -58,9 +50,9 @@ namespace LoopingAudioConverter {
 				}
 
 				if (lwav.Looping) {
-					bw.Write((int)lwav.LoopStart);
+					bw.Write(lwav.LoopStart);
 				} else {
-					bw.Write((int)0);
+					bw.Write(0);
 				}
 				
 				foreach (short sample in lwav.Samples) {

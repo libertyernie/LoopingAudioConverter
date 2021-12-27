@@ -1,52 +1,19 @@
-﻿using MP3Sharp;
+﻿using LoopingAudioConverter.MP3;
+using LoopingAudioConverter.PCM;
 using System;
-using System.IO;
-using System.Runtime.InteropServices;
 
 namespace LoopingAudioConverter.MSF
 {
     public class MSF_MP3 : MSF
     {
-        private readonly Lazy<short[]> SampleData;
-        private readonly Lazy<long> Bitrate;
+        private readonly MP3Audio MP3;
 
-        /// <summary>
-        /// The sample at which the loop starts.
-        /// </summary>
-        public override int LoopStartSample {
+        public long Bitrate {
             get {
-                long x = _header.loop_start;
-                x *= Header.sample_rate;
-                x *= sizeof(byte);
-                x /= Bitrate.Value;
-                return checked((int)x);
-            }
-            internal set {
-                long x = value;
-                x *= Bitrate.Value;
-                x /= sizeof(byte);
-                x /= Header.sample_rate;
-                _header.loop_start = checked((int)x);
-            }
-        }
-
-        /// <summary>
-        /// The sample at which the loop ends.
-        /// </summary>
-        public override int LoopSampleCount {
-            get {
-                long x = _header.loop_length;
-                x *= Header.sample_rate;
-                x *= sizeof(byte);
-                x /= Bitrate.Value;
-                return checked((int)x);
-            }
-            internal set {
-                long x = value;
-                x *= Bitrate.Value;
-                x /= sizeof(byte);
-                x /= Header.sample_rate;
-                _header.loop_length = checked((int)x);
+                double sampleCount = MP3.Samples.Length / Header.channel_count;
+                double seconds = sampleCount / Header.sample_rate;
+                double bytes_per_second = MP3.MP3Data.Length / seconds;
+                return (long)Math.Round(bytes_per_second);
             }
         }
 
@@ -57,55 +24,33 @@ namespace LoopingAudioConverter.MSF
         /// <param name="body">The MP3 data.</param>
         public MSF_MP3(MSFHeader header, byte[] body) : base(header, body) {
             if (Header.codec != 7)
-            {
                 throw new FormatException("The codec in the MSF header is not MP3");
-            }
-            SampleData = new Lazy<short[]>(() => Decode());
-            Bitrate = new Lazy<long>(() =>
-            {
-                double sampleCount = SampleData.Value.Length / Header.channel_count;
-                double seconds = sampleCount / Header.sample_rate;
-                double bytes_per_second = body.Length / seconds;
-                return (long)Math.Round(bytes_per_second);
-            });
-        }
 
-        private unsafe short[] Decode()
-        {
-            using (var output = new MemoryStream())
-            {
-                ushort[] endian_test = new ushort[] { 0x1234 };
-                fixed (ushort* ptr1 = endian_test)
-                {
-                    byte* ptr2 = (byte*)ptr1;
-                    if (*ptr2 != 0x34)
-                        throw new NotSupportedException("MP3 decoding is only supported on little-endian processors");
-                }
-
-                using (var input = new MemoryStream(Body, false))
-                using (var mp3 = new MP3Stream(input))
-                {
-                    mp3.CopyTo(output);
-                }
-
-                byte[] array = output.ToArray();
-                fixed (byte* ptr = array)
-                {
-                    short* ptr16 = (short*)ptr;
-                    short[] array16 = new short[array.Length / sizeof(short)];
-                    Marshal.Copy((IntPtr)ptr16, array16, 0, array16.Length);
-                    return array16;
-                }
-            }
+            MP3 = MP3Audio.Read(body);
         }
 
         /// <summary>
-        /// Gets the audio data as raw 16-bit PCM, decoding it using the MP3Sharp library.
+        /// The sample at which the loop starts.
         /// </summary>
-        /// <returns></returns>
-        public unsafe override short[] GetPCM16Samples()
-        {
-            return SampleData.Value;
+        public override int GetLoopStartSample() {
+            long x = _header.loop_start;
+            x *= Header.sample_rate;
+            x *= sizeof(byte);
+            x /= Bitrate;
+            return checked((int)x);
         }
+
+        /// <summary>
+        /// The sample at which the loop ends.
+        /// </summary>
+        public override int GetLoopSampleCount() {
+            long x = _header.loop_length;
+            x *= Header.sample_rate;
+            x *= sizeof(byte);
+            x /= Bitrate;
+            return checked((int)x);
+        }
+
+        public override PCM16Audio Decode() => MP3;
     }
 }

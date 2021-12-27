@@ -7,32 +7,24 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace LoopingAudioConverter {
+namespace LoopingAudioConverter.FFmpeg {
 	/// <summary>
 	/// A class to interface with FFmpeg, using it to read and write non-looping audio data and to apply effects.
 	/// </summary>
-	public class FFmpeg : IAudioImporter {
+	public class FFmpegEngine : IAudioImporter {
 		private readonly string ExePath;
 
 		/// <summary>
 		/// Initializes the FFmpeg interfacing class and importer.
 		/// </summary>
 		/// <param name="exePath">Path to ffmpeg executable (relative or absolute.)</param>
-		public FFmpeg(string exePath) {
+		public FFmpegEngine(string exePath) {
 			ExePath = exePath;
 		}
 
-		/// <summary>
-		/// Will always return true. FFmpeg supports many file formats, and it should be tried once all importers that support looping audio fail to read a file.
-		/// </summary>
-		/// <param name="extension">Filename extension</param>
-		/// <returns>true</returns>
-		public bool SupportsExtension(string extension) {
-			return true;
-		}
+		bool IAudioImporter.SupportsExtension(string extension) => true;
 
 		/// <summary>
 		/// Converts a file to WAV using FFmpeg and reads it into a PCM16Audio object.
@@ -47,7 +39,7 @@ namespace LoopingAudioConverter {
 				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
 			}
 
-			string outfile = TempFiles.Create("wav");
+			string outfile = Path.GetTempFileName();
 
 			ProcessStartInfo psi = new ProcessStartInfo {
 				FileName = ExePath,
@@ -121,8 +113,8 @@ namespace LoopingAudioConverter {
 			if (parameters.Count == 0)
 				return lwav;
 
-			string infile = TempFiles.Create("wav");
-			string outfile = TempFiles.Create("wav");
+			string infile = Path.GetTempFileName();
+			string outfile = Path.GetTempFileName();
 
 			File.WriteAllBytes(infile, wav);
 
@@ -130,7 +122,7 @@ namespace LoopingAudioConverter {
 				FileName = ExePath,
 				UseShellExecute = false,
 				CreateNoWindow = true,
-				Arguments = $"-i {infile} {string.Join(" ", parameters)} -f wav -c:a pcm_s16le {outfile}"
+				Arguments = $"-f wav -i {infile} {string.Join(" ", parameters)} -f wav -c:a pcm_s16le {outfile}"
 			};
 			Process p = Process.Start(psi);
 			p.WaitForExit();
@@ -170,12 +162,12 @@ namespace LoopingAudioConverter {
 				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
 			}
 
-			string infile = TempFiles.Create("wav");
+			string infile = Path.GetTempFileName();
 			File.WriteAllBytes(infile, lwav.Export());
 
 			ProcessStartInfo psi = new ProcessStartInfo {
 				FileName = ExePath,
-				Arguments = $"-i {infile} {encodingParameters} \"{output_filename}\"",
+				Arguments = $"-f wav -i {infile} {encodingParameters} \"{output_filename}\"",
 				UseShellExecute = false,
 				CreateNoWindow = true
 			};
@@ -185,10 +177,6 @@ namespace LoopingAudioConverter {
 			if (pr.ExitCode != 0) {
 				throw new AudioExporterException("ffmpeg quit with exit code " + pr.ExitCode);
 			}
-		}
-
-		public string GetImporterName() {
-			return "FFmpeg";
 		}
 	}
 }

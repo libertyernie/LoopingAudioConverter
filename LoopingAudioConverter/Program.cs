@@ -1,7 +1,11 @@
 ﻿using BrawlLib.Internal.Windows.Forms;
 using BrawlLib.SSBB.Types.Audio;
+using LoopingAudioConverter.FFmpeg;
+using LoopingAudioConverter.MP3;
 using LoopingAudioConverter.MSF;
+using LoopingAudioConverter.MSU1;
 using LoopingAudioConverter.PCM;
+using LoopingAudioConverter.QuickTime;
 using LoopingAudioConverter.WAV;
 using System;
 using System.Collections.Concurrent;
@@ -64,8 +68,8 @@ namespace LoopingAudioConverter {
 					"Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
 
-			FFmpeg effectEngine = ConfigurationManager.AppSettings["ffmpeg_path"] is string ffmpeg_path
-				? new FFmpeg(ffmpeg_path)
+			FFmpegEngine effectEngine = ConfigurationManager.AppSettings["ffmpeg_path"] is string ffmpeg_path
+				? new FFmpegEngine(ffmpeg_path)
 				: throw new AudioImporterException("Could not find SoX - please specify ffmpeg_path or sox_path in .config file");
 
 			IEnumerable<IAudioImporter> BuildImporters() {
@@ -74,7 +78,7 @@ namespace LoopingAudioConverter {
 				yield return new MP3Importer();
 				if (ConfigurationManager.AppSettings["vgmplay_path"] is string vgmplay_path)
 					yield return new VGMImporter(vgmplay_path);
-				yield return new MSU1();
+				yield return new MSU1Converter();
 				yield return new MSFImporter();
 				if (ConfigurationManager.AppSettings["vgmstream_path"] is string vgmstream_path)
 					yield return new VGMStreamImporter(vgmstream_path);
@@ -116,7 +120,7 @@ namespace LoopingAudioConverter {
 					case ExporterType.MSF_PCM16LE:
 						return new MSFExporter(big_endian: false);
 					case ExporterType.MSU1:
-						return new MSU1();
+						return new MSU1Converter();
 					case ExporterType.FLAC:
 						return new FFmpegExporter(effectEngine, "", ".flac");
 					case ExporterType.FFmpeg_MP3:
@@ -318,6 +322,7 @@ namespace LoopingAudioConverter {
 					}
 
 					if (!o.ShortCircuit) {
+						if (toExport.Audio is MP3Audio) throw new NotImplementedException();
 						toExport.Audio.OriginalPath = null;
 					}
 					if (!o.WriteLoopingMetadata) {

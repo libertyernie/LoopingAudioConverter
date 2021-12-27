@@ -71,8 +71,6 @@
   <ItemGroup>
     <Compile Include="Exporters\BrawlLibRWAVExporter.cs" />
     <Compile Include="Exporters\BrawlLibRSTMExporter.cs" />
-    <Compile Include="Exporters\FFmpegExporter.cs" />
-    <Compile Include="FFmpeg.cs" />
     <Compile Include="VGAudioOptions\BxstmOptions.cs" />
     <Compile Include="VGAudioOptions\VGAudioOptionsBase.cs" />
     <Compile Include="VGAudioOptions\HcaOptions.cs" />
@@ -83,7 +81,6 @@
     <Compile Include="VGAudioOptions\VGAudioOptionsForm.Designer.cs">
       <DependentUpon>VGAudioOptionsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MSU1.cs" />
     <Compile Include="Exporters\ADXExporter.cs" />
     <Compile Include="Exporters\HCAExporter.cs" />
     <Compile Include="Exporters\HPSExporter.cs" />
@@ -94,7 +91,6 @@
     <Compile Include="Exporters\VGAudioExporter.cs" />
     <Compile Include="Importers\VGAudioImporter.cs" />
     <Compile Include="Exporters\RSTMExporter.cs" />
-    <Compile Include="Exporters\AACExporter.cs" />
     <Compile Include="AACQualityForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -166,13 +162,29 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\LoopingAudioConverter.FFmpeg\LoopingAudioConverter.FFmpeg.csproj">
+      <Project>{D3F294BD-4FE5-41F8-BE7F-22BC3C64EE21}</Project>
+      <Name>LoopingAudioConverter.FFmpeg</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LoopingAudioConverter.MP3\LoopingAudioConverter.MP3.csproj">
+      <Project>{F5DA7913-4A3C-4EED-BF34-827FB5A5D45D}</Project>
+      <Name>LoopingAudioConverter.MP3</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LoopingAudioConverter.MSF\LoopingAudioConverter.MSF.csproj">
       <Project>{31bd3716-2d0b-49e4-a0e8-2c4e0add93f5}</Project>
       <Name>LoopingAudioConverter.MSF</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LoopingAudioConverter.MSU1\LoopingAudioConverter.MSU1.csproj">
+      <Project>{3DC7ADBF-A065-4887-B3ED-B36FE0C590C1}</Project>
+      <Name>LoopingAudioConverter.MSU1</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LoopingAudioConverter.PCM\LoopingAudioConverter.PCM.csproj">
       <Project>{3bb57c1c-b3ed-4d0f-8719-29b036bfeec3}</Project>
       <Name>LoopingAudioConverter.PCM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LoopingAudioConverter.QuickTime\LoopingAudioConverter.QuickTime.csproj">
+      <Project>{3FFA0BD5-F5D2-402C-9C1B-C0FA1D20DF4C}</Project>
+      <Name>LoopingAudioConverter.QuickTime</Name>
     </ProjectReference>
     <ProjectReference Include="..\LoopingAudioConverter.Vorbis\LoopingAudioConverter.Vorbis.csproj">
       <Project>{5bd4854f-481b-4aa6-b838-32c21b2b069f}</Project>

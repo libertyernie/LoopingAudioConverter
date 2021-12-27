@@ -24,12 +24,6 @@ namespace LoopingAudioConverter.MSF
         public byte[] Body => _body;
 
         /// <summary>
-        /// Gets the audio data as raw 16-bit PCM (decoding if necessary.)
-        /// </summary>
-        /// <returns></returns>
-        public abstract short[] GetPCM16Samples();
-
-        /// <summary>
         /// Whether the stream is looping.
         /// </summary>
         public bool IsLooping {
@@ -60,12 +54,12 @@ namespace LoopingAudioConverter.MSF
         /// <summary>
         /// The sample at which the loop starts.
         /// </summary>
-        public abstract int LoopStartSample { get; internal set; }
+        public abstract int GetLoopStartSample();
 
         /// <summary>
         /// The number of samples in the loop.
         /// </summary>
-        public abstract int LoopSampleCount { get; internal set; }
+        public abstract int GetLoopSampleCount();
 
         /// <summary>
         /// Creates a new MSF file.
@@ -108,13 +102,7 @@ namespace LoopingAudioConverter.MSF
         /// Decodes the data of the MSF file.
         /// </summary>
         /// <returns>A PCM16Audio object with the header and uncompressed audio data</returns>
-        public unsafe PCM16Audio Decode() => new PCM16Audio(
-            channels: Header.channel_count,
-            sampleRate: Header.sample_rate,
-            sample_data: GetPCM16Samples(),
-            loop_start: LoopStartSample,
-            loop_end: LoopSampleCount - LoopStartSample,
-            non_looping: !IsLooping);
+        public abstract PCM16Audio Decode();
 
         /// <summary>
         /// Exports the data of the MSF file.
