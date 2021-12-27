@@ -74,8 +74,8 @@ namespace LoopingAudioConverter {
 
 			IEnumerable<IAudioImporter> BuildImporters() {
 				yield return new WaveImporter();
-				yield return new VGAudioImporter();
 				yield return new MP3Importer();
+				yield return new VGAudioImporter();
 				if (ConfigurationManager.AppSettings["vgmplay_path"] is string vgmplay_path)
 					yield return new VGMImporter(vgmplay_path);
 				yield return new MSU1Converter();
@@ -265,7 +265,8 @@ namespace LoopingAudioConverter {
 					db: o.AmplifydB ?? 0M,
 					amplitude: o.AmplifyRatio ?? 1M,
 					pitch_semitones: o.PitchSemitones ?? 0,
-					tempo_ratio: o.TempoRatio ?? 1);
+					tempo_ratio: o.TempoRatio ?? 1,
+					force: !o.ShortCircuit);
 				window.SetDecodingText("");
 
 				List<NamedAudio> wavsToExport = new List<NamedAudio>();
@@ -321,10 +322,6 @@ namespace LoopingAudioConverter {
 						break;
 					}
 
-					if (!o.ShortCircuit) {
-						if (toExport.Audio is MP3Audio) throw new NotImplementedException();
-						toExport.Audio.OriginalPath = null;
-					}
 					if (!o.WriteLoopingMetadata) {
 						toExport.Audio.Looping = false;
 					}

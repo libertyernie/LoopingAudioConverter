@@ -45,7 +45,7 @@ namespace LoopingAudioConverter.FFmpeg {
 				FileName = ExePath,
 				UseShellExecute = false,
 				CreateNoWindow = true,
-				Arguments = $"-i \"{filename}\" -f wav -acodec pcm_s16le {outfile}"
+				Arguments = $"-y -i \"{filename}\" -f wav -acodec pcm_s16le {outfile}"
 			};
 			await ProcessEx.RunAsync(psi);
 
@@ -68,8 +68,9 @@ namespace LoopingAudioConverter.FFmpeg {
 		/// <param name="rate">The new sample rate (if the PCM16Audio's sample rate is equal to this value, this effect will not be applied)</param>
 		/// <param name="pitch_semitones">Pitch adjustment, in semitones (if 0, this effect will not be applied)</param>
 		/// <param name="tempo_ratio">Tempo ratio (if 1, this effect will not be applied)</param>
+		/// <param name="force">If true, always return a new PCM16Audio object</param>
 		/// <returns>A new PCM16Audio object if one or more effects are applied; the same PCM16Audio object if no effects are applied.</returns>
-		public PCM16Audio ApplyEffects(PCM16Audio lwav, int channels = int.MaxValue, decimal db = 0, decimal amplitude = 1, int rate = int.MaxValue, double pitch_semitones = 0, double tempo_ratio = 1) {
+		public PCM16Audio ApplyEffects(PCM16Audio lwav, int channels = int.MaxValue, decimal db = 0, decimal amplitude = 1, int rate = int.MaxValue, double pitch_semitones = 0, double tempo_ratio = 1, bool force = false) {
 			byte[] wav = lwav.Export();
 
 			// This is where I wish I had F# list comprehensions
@@ -110,7 +111,7 @@ namespace LoopingAudioConverter.FFmpeg {
 			}
 
 			var parameters = getParameters().ToList();
-			if (parameters.Count == 0)
+			if (parameters.Count == 0 && !force)
 				return lwav;
 
 			string infile = Path.GetTempFileName();
@@ -120,9 +121,9 @@ namespace LoopingAudioConverter.FFmpeg {
 
 			ProcessStartInfo psi = new ProcessStartInfo {
 				FileName = ExePath,
-				UseShellExecute = false,
-				CreateNoWindow = true,
-				Arguments = $"-f wav -i {infile} {string.Join(" ", parameters)} -f wav -c:a pcm_s16le {outfile}"
+				//UseShellExecute = false,
+				//CreateNoWindow = true,
+				Arguments = $"-y -f wav -i {infile} {string.Join(" ", parameters)} -f wav -c:a pcm_s16le {outfile}"
 			};
 			Process p = Process.Start(psi);
 			p.WaitForExit();
@@ -167,7 +168,7 @@ namespace LoopingAudioConverter.FFmpeg {
 
 			ProcessStartInfo psi = new ProcessStartInfo {
 				FileName = ExePath,
-				Arguments = $"-f wav -i {infile} {encodingParameters} \"{output_filename}\"",
+				Arguments = $"-y -f wav -i {infile} {encodingParameters} \"{output_filename}\"",
 				UseShellExecute = false,
 				CreateNoWindow = true
 			};

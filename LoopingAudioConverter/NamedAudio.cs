@@ -2,8 +2,8 @@
 
 namespace LoopingAudioConverter {
 	public class NamedAudio {
-		public PCM16Audio Audio { get; private set; }
-		public string Name { get; private set; }
+		public readonly PCM16Audio Audio;
+		public readonly string Name;
 
 		public NamedAudio(PCM16Audio lwav, string name) {
 			this.Audio = lwav;

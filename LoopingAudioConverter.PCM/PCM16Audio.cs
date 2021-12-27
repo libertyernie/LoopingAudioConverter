@@ -31,12 +31,11 @@ namespace LoopingAudioConverter.PCM {
 		/// </summary>
 		public int LoopEnd { get; set; }
 
-		public int LoopLength {
-			get {
-				return LoopEnd - LoopStart;
-			}
-		}
+		public int LoopLength => LoopEnd - LoopStart;
 
+		/// <summary>
+		/// The original path of the file. The encoder may use this to go back to the original file for its audio data and skip re-encoding.
+		/// </summary>
 		public string OriginalPath { get; set; }
 
 		/// <summary>

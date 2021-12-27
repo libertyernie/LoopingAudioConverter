@@ -113,7 +113,6 @@
     <Compile Include="PCM16LoopWrapper.cs" />
     <Compile Include="TempFiles.cs" />
     <Compile Include="Importers\VGMImporter.cs" />
-    <Compile Include="Importers\MP3Importer.cs" />
     <Compile Include="MultipleProgressWindow.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -782,11 +782,13 @@
             // chkShortCircuit
             // 
             this.chkShortCircuit.AutoSize = true;
+            this.chkShortCircuit.Checked = true;
+            this.chkShortCircuit.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkShortCircuit.Location = new System.Drawing.Point(233, 192);
             this.chkShortCircuit.Name = "chkShortCircuit";
-            this.chkShortCircuit.Size = new System.Drawing.Size(259, 17);
+            this.chkShortCircuit.Size = new System.Drawing.Size(176, 17);
             this.chkShortCircuit.TabIndex = 4;
-            this.chkShortCircuit.Text = "Skip re-encoding for similar formats when possible";
+            this.chkShortCircuit.Text = "Skip re-encoding when possible";
             // 
             // panel3
             // 
