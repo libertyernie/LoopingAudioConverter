@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using VGAudio.Containers.Dsp;
 using VGAudio.Formats;
 
-namespace LoopingAudioConverter {
+namespace LoopingAudioConverter.VGAudio {
 	public class DSPExporter : VGAudioExporter {
 		protected override byte[] GetData(AudioData audio) {
 			return new DspWriter().GetFile(audio);

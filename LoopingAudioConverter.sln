@@ -13,13 +13,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoopingAudioConverter.WAV",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoopingAudioConverter.PCM", "LoopingAudioConverter.PCM\LoopingAudioConverter.PCM.csproj", "{3BB57C1C-B3ED-4D0F-8719-29B036BFEEC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoopingAudioConverter.MSU1", "LoopingAudioConverter.MSU1\LoopingAudioConverter.MSU1.csproj", "{3DC7ADBF-A065-4887-B3ED-B36FE0C590C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoopingAudioConverter.MSU1", "LoopingAudioConverter.MSU1\LoopingAudioConverter.MSU1.csproj", "{3DC7ADBF-A065-4887-B3ED-B36FE0C590C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoopingAudioConverter.FFmpeg", "LoopingAudioConverter.FFmpeg\LoopingAudioConverter.FFmpeg.csproj", "{D3F294BD-4FE5-41F8-BE7F-22BC3C64EE21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoopingAudioConverter.FFmpeg", "LoopingAudioConverter.FFmpeg\LoopingAudioConverter.FFmpeg.csproj", "{D3F294BD-4FE5-41F8-BE7F-22BC3C64EE21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoopingAudioConverter.QuickTime", "LoopingAudioConverter.QuickTime\LoopingAudioConverter.QuickTime.csproj", "{3FFA0BD5-F5D2-402C-9C1B-C0FA1D20DF4C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoopingAudioConverter.QuickTime", "LoopingAudioConverter.QuickTime\LoopingAudioConverter.QuickTime.csproj", "{3FFA0BD5-F5D2-402C-9C1B-C0FA1D20DF4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoopingAudioConverter.MP3", "LoopingAudioConverter.MP3\LoopingAudioConverter.MP3.csproj", "{F5DA7913-4A3C-4EED-BF34-827FB5A5D45D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoopingAudioConverter.MP3", "LoopingAudioConverter.MP3\LoopingAudioConverter.MP3.csproj", "{F5DA7913-4A3C-4EED-BF34-827FB5A5D45D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoopingAudioConverter.VGAudio", "LoopingAudioConverter.VGAudio\LoopingAudioConverter.VGAudio.csproj", "{999E29F5-469B-4B7B-89AB-CB6E69735593}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -99,6 +101,14 @@ Global
 		{F5DA7913-4A3C-4EED-BF34-827FB5A5D45D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F5DA7913-4A3C-4EED-BF34-827FB5A5D45D}.Release|x86.ActiveCfg = Release|Any CPU
 		{F5DA7913-4A3C-4EED-BF34-827FB5A5D45D}.Release|x86.Build.0 = Release|Any CPU
+		{999E29F5-469B-4B7B-89AB-CB6E69735593}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{999E29F5-469B-4B7B-89AB-CB6E69735593}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{999E29F5-469B-4B7B-89AB-CB6E69735593}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{999E29F5-469B-4B7B-89AB-CB6E69735593}.Debug|x86.Build.0 = Debug|Any CPU
+		{999E29F5-469B-4B7B-89AB-CB6E69735593}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{999E29F5-469B-4B7B-89AB-CB6E69735593}.Release|Any CPU.Build.0 = Release|Any CPU
+		{999E29F5-469B-4B7B-89AB-CB6E69735593}.Release|x86.ActiveCfg = Release|Any CPU
+		{999E29F5-469B-4B7B-89AB-CB6E69735593}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

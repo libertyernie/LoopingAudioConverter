@@ -6,6 +6,7 @@ using LoopingAudioConverter.MSF;
 using LoopingAudioConverter.MSU1;
 using LoopingAudioConverter.PCM;
 using LoopingAudioConverter.QuickTime;
+using LoopingAudioConverter.VGAudio;
 using LoopingAudioConverter.Vorbis;
 using LoopingAudioConverter.WAV;
 using System;

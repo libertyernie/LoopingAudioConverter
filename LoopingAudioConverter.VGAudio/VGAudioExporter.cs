@@ -1,25 +1,18 @@
 ﻿using LoopingAudioConverter.PCM;
 using LoopingAudioConverter.WAV;
-using System;
 using System.IO;
 using System.Threading.Tasks;
 using VGAudio.Containers.Wave;
 using VGAudio.Formats;
 
-namespace LoopingAudioConverter {
+namespace LoopingAudioConverter.VGAudio {
 	public abstract class VGAudioExporter : IAudioExporter {
 		protected abstract byte[] GetData(AudioData audio);
 		protected abstract string GetExtension();
 
-		private static AudioData Read(PCM16Audio lwav) {
-			try {
-				if (lwav.OriginalPath != null) {
-					return VGAudioImporter.Read(File.ReadAllBytes(lwav.OriginalPath), lwav.OriginalPath);
-				}
-			} catch (NotImplementedException) { }
-
-			return new WaveReader().Read(lwav.Export());
-		}
+		private static AudioData Read(PCM16Audio lwav) => lwav is VGAudioAudio v
+			? v.Export()
+			: new WaveReader().Read(lwav.Export());
 
 		public void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
 			AudioData audio = Read(lwav);

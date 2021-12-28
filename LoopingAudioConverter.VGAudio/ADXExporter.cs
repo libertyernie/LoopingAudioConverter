@@ -1,7 +1,7 @@
 ﻿using VGAudio.Containers.Adx;
 using VGAudio.Formats;
 
-namespace LoopingAudioConverter {
+namespace LoopingAudioConverter.VGAudio {
 	public class ADXExporter : VGAudioExporter {
 		private readonly AdxConfiguration _configuration;
 

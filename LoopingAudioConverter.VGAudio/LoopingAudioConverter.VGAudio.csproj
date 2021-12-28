@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="VGAudio" Version="2.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LoopingAudioConverter.PCM\LoopingAudioConverter.PCM.csproj" />
+    <ProjectReference Include="..\LoopingAudioConverter.WAV\LoopingAudioConverter.WAV.csproj" />
+  </ItemGroup>
+
+</Project>

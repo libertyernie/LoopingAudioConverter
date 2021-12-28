@@ -81,16 +81,6 @@
     <Compile Include="VGAudioOptions\VGAudioOptionsForm.Designer.cs">
       <DependentUpon>VGAudioOptionsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Exporters\ADXExporter.cs" />
-    <Compile Include="Exporters\HCAExporter.cs" />
-    <Compile Include="Exporters\HPSExporter.cs" />
-    <Compile Include="Exporters\IDSPExporter.cs" />
-    <Compile Include="Exporters\DSPExporter.cs" />
-    <Compile Include="Exporters\FSTMExporter.cs" />
-    <Compile Include="Exporters\CSTMExporter.cs" />
-    <Compile Include="Exporters\VGAudioExporter.cs" />
-    <Compile Include="Importers\VGAudioImporter.cs" />
-    <Compile Include="Exporters\RSTMExporter.cs" />
     <Compile Include="AACQualityForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -184,6 +174,10 @@
     <ProjectReference Include="..\LoopingAudioConverter.QuickTime\LoopingAudioConverter.QuickTime.csproj">
       <Project>{3FFA0BD5-F5D2-402C-9C1B-C0FA1D20DF4C}</Project>
       <Name>LoopingAudioConverter.QuickTime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LoopingAudioConverter.VGAudio\LoopingAudioConverter.VGAudio.csproj">
+      <Project>{999e29f5-469b-4b7b-89ab-cb6e69735593}</Project>
+      <Name>LoopingAudioConverter.VGAudio</Name>
     </ProjectReference>
     <ProjectReference Include="..\LoopingAudioConverter.Vorbis\LoopingAudioConverter.Vorbis.csproj">
       <Project>{5bd4854f-481b-4aa6-b838-32c21b2b069f}</Project>

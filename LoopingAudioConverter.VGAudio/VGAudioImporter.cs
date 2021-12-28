@@ -14,7 +14,7 @@ using VGAudio.Containers.NintendoWare;
 using VGAudio.Containers.Wave;
 using VGAudio.Formats;
 
-namespace LoopingAudioConverter {
+namespace LoopingAudioConverter.VGAudio {
 	public class VGAudioImporter : IAudioImporter {
 		public bool SupportsExtension(string extension) {
 			if (extension.StartsWith("."))
@@ -94,11 +94,12 @@ namespace LoopingAudioConverter {
 
 				AudioData a = Read(indata, filename);
 				byte[] wavedata = new WaveWriter().GetFile(a);
-				var w = WaveConverter.FromByteArray(wavedata);
+				var w1 = WaveConverter.FromByteArray(wavedata);
+				var w2 = new VGAudioAudio(a, w1);
 				if (a.GetAllFormats().All(f => !f.Looping)) {
-					w.NonLooping = true;
+					w2.NonLooping = true;
 				}
-				return w;
+				return w2;
 			} catch (Exception e) {
 				throw new AudioImporterException("Could not convert using VGAudio: " + e.Message);
 			}

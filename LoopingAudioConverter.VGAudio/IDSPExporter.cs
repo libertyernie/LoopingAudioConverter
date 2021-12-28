@@ -1,7 +1,7 @@
 ﻿using VGAudio.Containers.Idsp;
 using VGAudio.Formats;
 
-namespace LoopingAudioConverter {
+namespace LoopingAudioConverter.VGAudio {
 	public class IDSPExporter : VGAudioExporter {
 		protected override byte[] GetData(AudioData audio) {
 			return new IdspWriter().GetFile(audio);

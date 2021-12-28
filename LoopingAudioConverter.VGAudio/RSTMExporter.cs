@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using VGAudio.Containers.NintendoWare;
 using VGAudio.Formats;
 
-namespace LoopingAudioConverter {
+namespace LoopingAudioConverter.VGAudio {
 	public class RSTMExporter : VGAudioExporter {
 		private readonly BxstmConfiguration _configuration;
 

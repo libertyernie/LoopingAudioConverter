@@ -1,7 +1,7 @@
 ﻿using VGAudio.Containers.Hps;
 using VGAudio.Formats;
 
-namespace LoopingAudioConverter {
+namespace LoopingAudioConverter.VGAudio {
 	public class HPSExporter : VGAudioExporter {
 		protected override byte[] GetData(AudioData audio) {
 			return new HpsWriter().GetFile(audio);
