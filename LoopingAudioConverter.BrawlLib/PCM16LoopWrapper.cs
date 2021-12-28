@@ -4,7 +4,7 @@ using LoopingAudioConverter.PCM;
 using System;
 using System.Runtime.InteropServices;
 
-namespace LoopingAudioConverter {
+namespace LoopingAudioConverter.BrawlLib {
 	/// <summary>
 	/// A wrapper for PCM16Audio to conform to BrawlLib's IAudioStream interface.
 	/// IAudioStream maintains a "current position" in the audio stream, while PCM16Audio does not, so this class handles SamplePosition, Wrap, and ReadSamples.

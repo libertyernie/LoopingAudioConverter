@@ -1,5 +1,4 @@
-﻿using BrawlLib.Internal.IO;
-using BrawlLib.Internal.Windows.Forms;
+﻿using BrawlLib.Internal.Windows.Forms;
 using BrawlLib.SSBB.Types.Audio;
 using BrawlLib.Wii.Audio;
 using LoopingAudioConverter.PCM;
@@ -7,11 +6,11 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace LoopingAudioConverter {
+namespace LoopingAudioConverter.BrawlLib {
 	public class BrawlLibRSTMExporter : IAudioExporter {
 		public enum Container { RSTM, CSTM, FSTM }
 
-		public class SilentProgressTracker : IProgressTracker {
+		private class SilentProgressTracker : IProgressTracker {
 			public float MinValue { get; set; }
 			public float MaxValue { get; set; }
 			public float CurrentValue { get; set; }
@@ -47,21 +46,8 @@ namespace LoopingAudioConverter {
 			}
 		}
 
-		private byte[] Read(PCM16Audio lwav) {
-			string orig_path = lwav.OriginalPath?.ToLowerInvariant() ?? "";
-			if (orig_path.EndsWith(".brstm")) {
-				return File.ReadAllBytes(orig_path);
-			} else if (orig_path.EndsWith(".bcstm")) {
-				return CSTMConverter.ToRSTM(File.ReadAllBytes(orig_path));
-			} else if (orig_path.EndsWith(".bfstm")) {
-				return FSTMConverter.ToRSTM(File.ReadAllBytes(orig_path));
-			} else {
-				return Encode(lwav);
-			}
-		}
-
 		public void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
-			byte[] data = Read(lwav);
+			byte[] data = Encode(lwav);
 			string ext = ".brstm";
 			if (_container == Container.CSTM) {
 				data = CSTMConverter.FromRSTM(data);

@@ -69,8 +69,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exporters\BrawlLibRWAVExporter.cs" />
-    <Compile Include="Exporters\BrawlLibRSTMExporter.cs" />
     <Compile Include="VGAudioOptions\BxstmOptions.cs" />
     <Compile Include="VGAudioOptions\VGAudioOptionsBase.cs" />
     <Compile Include="VGAudioOptions\HcaOptions.cs" />
@@ -100,7 +98,6 @@
       <DependentUpon>MP3QualityForm.cs</DependentUpon>
     </Compile>
     <Compile Include="OptionsSerialization.cs" />
-    <Compile Include="PCM16LoopWrapper.cs" />
     <Compile Include="TempFiles.cs" />
     <Compile Include="Importers\VGMImporter.cs" />
     <Compile Include="MultipleProgressWindow.cs">
@@ -151,6 +148,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\LoopingAudioConverter.BrawlLib\LoopingAudioConverter.BrawlLib.csproj">
+      <Project>{AD0710AE-4959-4B58-BB14-35473259304E}</Project>
+      <Name>LoopingAudioConverter.BrawlLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LoopingAudioConverter.FFmpeg\LoopingAudioConverter.FFmpeg.csproj">
       <Project>{D3F294BD-4FE5-41F8-BE7F-22BC3C64EE21}</Project>
       <Name>LoopingAudioConverter.FFmpeg</Name>

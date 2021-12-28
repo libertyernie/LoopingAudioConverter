@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LoopingAudioConverter.PCM\LoopingAudioConverter.PCM.csproj" />
+    <ProjectReference Include="..\LoopingAudioConverter.WAV\LoopingAudioConverter.WAV.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="BrawlLib">
+      <HintPath>..\lib\BrawlLib.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK">
+      <HintPath>..\lib\OpenTK.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
