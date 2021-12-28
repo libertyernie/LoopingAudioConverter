@@ -232,7 +232,6 @@ namespace LoopingAudioConverter {
 							((IRenderingAudioImporter)importer).SampleRate = o.SampleRate;
 						}
 						w = await importer.ReadFileAsync(inputFile);
-						w.OriginalPath = inputFile;
 						break;
 					} catch (AudioImporterException e) {
 						//Console.Error.WriteLine(importer.GetImporterName() + " could not read file " + inputFile + ": " + e.Message);

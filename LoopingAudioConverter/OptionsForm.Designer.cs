@@ -786,16 +786,16 @@
             this.chkShortCircuit.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkShortCircuit.Location = new System.Drawing.Point(233, 192);
             this.chkShortCircuit.Name = "chkShortCircuit";
-            this.chkShortCircuit.Size = new System.Drawing.Size(176, 17);
+            this.chkShortCircuit.Size = new System.Drawing.Size(176, 30);
             this.chkShortCircuit.TabIndex = 4;
-            this.chkShortCircuit.Text = "Skip re-encoding when possible";
+            this.chkShortCircuit.Text = "Skip re-encoding when possible\r\n(VGAudio, MP3, Vorbis)";
             // 
             // panel3
             // 
             this.panel3.AutoSize = true;
             this.panel3.Controls.Add(this.numSimulTasks);
             this.panel3.Controls.Add(this.lblSimulTasks);
-            this.panel3.Location = new System.Drawing.Point(230, 215);
+            this.panel3.Location = new System.Drawing.Point(230, 228);
             this.panel3.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(198, 28);

@@ -24,11 +24,7 @@ namespace LoopingAudioConverter.FFmpeg {
 				return;
 			}
 
-			if (lwav.OriginalPath != null && output_extension.Equals(Path.GetExtension(lwav.OriginalPath), StringComparison.InvariantCultureIgnoreCase)) {
-				File.Copy(lwav.OriginalPath, output_filename, true);
-			} else {
-				await effectEngine.WriteFileAsync(lwav, output_filename, encoding_parameters);
-			}
+			await effectEngine.WriteFileAsync(lwav, output_filename, encoding_parameters);
 		}
 	}
 }
