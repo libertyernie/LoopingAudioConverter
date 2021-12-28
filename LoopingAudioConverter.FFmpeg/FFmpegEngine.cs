@@ -121,9 +121,9 @@ namespace LoopingAudioConverter.FFmpeg {
 
 			ProcessStartInfo psi = new ProcessStartInfo {
 				FileName = ExePath,
-				//UseShellExecute = false,
-				//CreateNoWindow = true,
-				Arguments = $"-y -f wav -i {infile} {string.Join(" ", parameters)} -f wav -c:a pcm_s16le {outfile}"
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                Arguments = $"-y -f wav -i {infile} {string.Join(" ", parameters)} -f wav -c:a pcm_s16le {outfile}"
 			};
 			Process p = Process.Start(psi);
 			p.WaitForExit();

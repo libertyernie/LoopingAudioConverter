@@ -45,13 +45,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="VorbisAudio.cs" />
     <Compile Include="UnsafeCRC.cs" />
+    <Compile Include="VorbisConverter.cs" />
     <Compile Include="VorbisHeader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VorbisFile.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="COPYING" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LoopingAudioConverter.FFmpeg\LoopingAudioConverter.FFmpeg.csproj">
+      <Project>{d3f294bd-4fe5-41f8-be7f-22bc3c64ee21}</Project>
+      <Name>LoopingAudioConverter.FFmpeg</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LoopingAudioConverter.PCM\LoopingAudioConverter.PCM.csproj">
+      <Project>{3bb57c1c-b3ed-4d0f-8719-29b036bfeec3}</Project>
+      <Name>LoopingAudioConverter.PCM</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

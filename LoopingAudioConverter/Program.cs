@@ -6,6 +6,7 @@ using LoopingAudioConverter.MSF;
 using LoopingAudioConverter.MSU1;
 using LoopingAudioConverter.PCM;
 using LoopingAudioConverter.QuickTime;
+using LoopingAudioConverter.Vorbis;
 using LoopingAudioConverter.WAV;
 using System;
 using System.Collections.Concurrent;
@@ -75,6 +76,7 @@ namespace LoopingAudioConverter {
 			IEnumerable<IAudioImporter> BuildImporters() {
 				yield return new WaveImporter();
 				yield return new MP3Importer();
+				yield return new VorbisConverter(effectEngine, "");
 				yield return new VGAudioImporter();
 				if (ConfigurationManager.AppSettings["vgmplay_path"] is string vgmplay_path)
 					yield return new VGMImporter(vgmplay_path);
@@ -134,7 +136,7 @@ namespace LoopingAudioConverter {
 					case ExporterType.FFmpeg_AAC_ADTS:
 						return new FFmpegExporter(effectEngine, o.AACFFmpegParameters, ".aac");
 					case ExporterType.OggVorbis:
-						return new FFmpegExporter(effectEngine, o.OggVorbisEncodingParameters, ".ogg");
+						return new VorbisConverter(effectEngine, o.OggVorbisEncodingParameters);
 					case ExporterType.WAV:
 						return new WaveExporter();
 					default:
