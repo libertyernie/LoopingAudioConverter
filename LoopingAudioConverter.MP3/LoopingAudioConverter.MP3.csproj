@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LoopingAudioConverter.FFmpeg\LoopingAudioConverter.FFmpeg.csproj" />
     <ProjectReference Include="..\LoopingAudioConverter.PCM\LoopingAudioConverter.PCM.csproj" />
   </ItemGroup>
 

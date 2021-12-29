@@ -75,32 +75,6 @@ namespace LoopingAudioConverter {
 				? new FFmpegEngine(ffmpeg_path)
 				: throw new AudioImporterException("Could not find SoX - please specify ffmpeg_path or sox_path in .config file");
 
-			IEnumerable<IAudioImporter> BuildImporters() {
-				yield return new WaveImporter();
-				yield return new MP3Importer();
-				yield return new VorbisConverter(effectEngine, "");
-				switch (o.ExporterType) {
-					case ExporterType.BrawlLib_BRSTM_ADPCM:
-					case ExporterType.BrawlLib_BRSTM_PCM16:
-					case ExporterType.BrawlLib_BCSTM:
-					case ExporterType.BrawlLib_BFSTM:
-						yield return new BrawlLibRSTMImporter();
-						break;
-					default:
-						break;
-				}
-				yield return new VGAudioImporter();
-				if (ConfigurationManager.AppSettings["vgmplay_path"] is string vgmplay_path)
-					yield return new VGMImporter(vgmplay_path);
-				yield return new MSU1Converter();
-				yield return new MSFImporter();
-				if (ConfigurationManager.AppSettings["vgmstream_path"] is string vgmstream_path)
-					yield return new VGMStreamImporter(vgmstream_path);
-				yield return effectEngine;
-			}
-
-			List<IAudioImporter> importers = BuildImporters().ToList();
-
 			IAudioExporter getExporter() {
 				switch (o.ExporterType) {
 					case ExporterType.BRSTM:
@@ -148,7 +122,7 @@ namespace LoopingAudioConverter {
 					case ExporterType.FFmpeg_AAC_ADTS:
 						return new FFmpegExporter(effectEngine, o.AACFFmpegParameters, ".aac");
 					case ExporterType.OggVorbis:
-						return new VorbisConverter(effectEngine, o.OggVorbisEncodingParameters);
+						return new VorbisExporter(effectEngine, o.OggVorbisEncodingParameters);
 					case ExporterType.WAV:
 						return new WaveExporter();
 					default:
@@ -157,6 +131,36 @@ namespace LoopingAudioConverter {
 			}
 
 			IAudioExporter exporter = getExporter();
+
+			IEnumerable<IAudioImporter> BuildImporters() {
+				yield return new WaveImporter();
+				yield return new MP3Importer();
+				yield return new VorbisImporter(effectEngine);
+				if (ConfigurationManager.AppSettings["vgmplay_path"] is string vgmplay_path)
+					yield return new VGMImporter(vgmplay_path);
+				yield return new MSU1Converter();
+				yield return new MSFImporter();
+				if (ConfigurationManager.AppSettings["vgmstream_path"] is string vgmstream_path)
+					yield return new VGMStreamImporter(vgmstream_path);
+				yield return new VGAudioImporter();
+				yield return new BrawlLibImporter();
+				yield return effectEngine;
+			}
+
+			bool IsPreferred(IAudioImporter importer) {
+				if (exporter is BrawlLibRSTMExporter)
+					return importer is BrawlLibImporter;
+				else if (exporter is VGAudioExporter)
+					return importer is VGAudioImporter;
+				else if (exporter is MP3Exporter)
+					return importer is MP3Importer || importer is MSFImporter;
+				else if (exporter is VorbisExporter)
+					return importer is VorbisImporter;
+				else
+					return false;
+			}
+
+			List<IAudioImporter> importers = BuildImporters().OrderBy(x => IsPreferred(x) ? 1 : 2).ToList();
 
 			List<Task> tasks = new List<Task>();
 			SemaphoreSlim sem = new SemaphoreSlim(o.NumSimulTasks, o.NumSimulTasks);

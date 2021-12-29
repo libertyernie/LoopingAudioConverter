@@ -47,7 +47,7 @@ namespace LoopingAudioConverter.BrawlLib {
 		}
 
 		public void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
-			byte[] data = lwav is BrawlLibAudio a && !a.LoopChanged
+			byte[] data = lwav is BrawlLibRSTMAudio a && !a.LoopChanged
 				? a.ExportRSTM()
 				: Encode(lwav);
 
