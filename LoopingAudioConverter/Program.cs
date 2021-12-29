@@ -79,6 +79,16 @@ namespace LoopingAudioConverter {
 				yield return new WaveImporter();
 				yield return new MP3Importer();
 				yield return new VorbisConverter(effectEngine, "");
+				switch (o.ExporterType) {
+					case ExporterType.BrawlLib_BRSTM_ADPCM:
+					case ExporterType.BrawlLib_BRSTM_PCM16:
+					case ExporterType.BrawlLib_BCSTM:
+					case ExporterType.BrawlLib_BFSTM:
+						yield return new BrawlLibRSTMImporter();
+						break;
+					default:
+						break;
+				}
 				yield return new VGAudioImporter();
 				if (ConfigurationManager.AppSettings["vgmplay_path"] is string vgmplay_path)
 					yield return new VGMImporter(vgmplay_path);

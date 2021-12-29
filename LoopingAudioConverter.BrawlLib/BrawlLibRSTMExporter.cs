@@ -47,7 +47,10 @@ namespace LoopingAudioConverter.BrawlLib {
 		}
 
 		public void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
-			byte[] data = Encode(lwav);
+			byte[] data = lwav is BrawlLibAudio a && !a.LoopChanged
+				? a.ExportRSTM()
+				: Encode(lwav);
+
 			string ext = ".brstm";
 			if (_container == Container.CSTM) {
 				data = CSTMConverter.FromRSTM(data);
@@ -57,6 +60,7 @@ namespace LoopingAudioConverter.BrawlLib {
 				data = FSTMConverter.FromRSTM(data);
 				ext = ".bfstm";
 			}
+
 			File.WriteAllBytes(
 				Path.Combine(output_dir, original_filename_no_ext + ext),
 				data);
