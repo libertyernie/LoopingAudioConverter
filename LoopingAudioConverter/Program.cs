@@ -309,7 +309,7 @@ namespace LoopingAudioConverter {
 					}
 					switch (o.UnknownLoopBehavior) {
 						case UnknownLoopBehavior.ForceLoop:
-							if (!toExport.Audio.Looping && !toExport.Audio.NonLooping) {
+							if (!toExport.Audio.Looping) {
 								toExport.Audio.Looping = true;
 								toExport.Audio.LoopStart = 0;
 								toExport.Audio.LoopEnd = toExport.Audio.Samples.Length / toExport.Audio.Channels;
@@ -317,7 +317,7 @@ namespace LoopingAudioConverter {
 							break;
 						case UnknownLoopBehavior.Ask:
 						case UnknownLoopBehavior.AskAll:
-							if (toExport.Audio.Looping || toExport.Audio.NonLooping) {
+							if (toExport.Audio.Looping) {
 								if (o.UnknownLoopBehavior != UnknownLoopBehavior.AskAll) {
 									break;
 								}

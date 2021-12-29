@@ -26,7 +26,6 @@ namespace LoopingAudioConverter.MSU1 {
 				if (loopStart == 0) {
 					// This might be a non-looping song, or a song that loops without any lead-in.
 					pcm16.Looping = false;
-					pcm16.NonLooping = false;
 				}
 				return Task.FromResult(pcm16);
 			}

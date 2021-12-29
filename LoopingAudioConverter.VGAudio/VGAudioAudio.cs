@@ -5,7 +5,7 @@ namespace LoopingAudioConverter.VGAudio {
     public class VGAudioAudio : PCM16Audio {
         private readonly AudioData _audioData;
 
-		public VGAudioAudio(AudioData encoded, PCM16Audio decoded) : base(decoded.Channels, decoded.SampleRate, decoded.Samples) {
+		public VGAudioAudio(AudioData encoded, PCM16Audio decoded) : base(decoded.Channels, decoded.SampleRate, decoded.Samples, decoded.LoopStart, decoded.LoopEnd) {
 			_audioData = encoded;
 		}
 

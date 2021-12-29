@@ -96,9 +96,6 @@ namespace LoopingAudioConverter.VGAudio {
 				byte[] wavedata = new WaveWriter().GetFile(a);
 				var w1 = WaveConverter.FromByteArray(wavedata);
 				var w2 = new VGAudioAudio(a, w1);
-				if (a.GetAllFormats().All(f => !f.Looping)) {
-					w2.NonLooping = true;
-				}
 				return w2;
 			} catch (Exception e) {
 				throw new AudioImporterException("Could not convert using VGAudio: " + e.Message);

@@ -45,7 +45,6 @@ namespace LoopingAudioConverter.MSF
             sampleRate: Header.sample_rate,
             sample_data: GetPCM16Samples(),
             loop_start: GetLoopStartSample(),
-            loop_end: GetLoopSampleCount() - GetLoopStartSample(),
-            non_looping: !IsLooping);
+            loop_end: GetLoopSampleCount() - GetLoopStartSample());
     }
 }
