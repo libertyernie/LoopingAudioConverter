@@ -114,7 +114,7 @@ namespace LoopingAudioConverter {
 					case ExporterType.FLAC:
 						return new FFmpegExporter(effectEngine, "", ".flac");
 					case ExporterType.FFmpeg_MP3:
-						return new FFmpegExporter(effectEngine, o.MP3FFmpegParameters, ".mp3");
+						return new MP3Exporter(effectEngine, o.MP3FFmpegParameters);
 					case ExporterType.AAC_M4A:
 						return new AACExporter(ConfigurationManager.AppSettings["qaac_path"], o.AACEncodingParameters, adts: false);
 					case ExporterType.FFmpeg_AAC_M4A:
@@ -149,20 +149,9 @@ namespace LoopingAudioConverter {
 				yield return effectEngine;
 			}
 
-			bool IsPreferred(IAudioImporter importer) {
-				if (exporter is BrawlLibRSTMExporter)
-					return importer is BrawlLibImporter;
-				else if (exporter is VGAudioExporter)
-					return importer is VGAudioImporter;
-				else if (exporter is MP3Exporter)
-					return importer is MP3Importer || importer is MSFImporter;
-				else if (exporter is VorbisExporter)
-					return importer is VorbisImporter;
-				else
-					return false;
-			}
-
-			List<IAudioImporter> importers = BuildImporters().OrderBy(x => IsPreferred(x) ? 1 : 2).ToList();
+			List<IAudioImporter> importers = BuildImporters()
+				.OrderBy(x => x is IOpinionatedAudioImporter ox && ox.SharesCodecsWith(exporter) ? 1 : 2)
+				.ToList();
 
 			List<Task> tasks = new List<Task>();
 			SemaphoreSlim sem = new SemaphoreSlim(o.NumSimulTasks, o.NumSimulTasks);

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter.Vorbis {
-    public class VorbisImporter : IAudioImporter {
+    public class VorbisImporter : IOpinionatedAudioImporter {
 		private readonly FFmpegEngine effectEngine;
 
 		public VorbisImporter(FFmpegEngine effectEngine) {
@@ -17,6 +17,8 @@ namespace LoopingAudioConverter.Vorbis {
             if (extension.StartsWith(".")) extension = extension.Substring(1);
             return new[] { "ogg", "logg", "oga" }.Any(x => x.Equals(extension, StringComparison.InvariantCultureIgnoreCase));
         }
+
+        public bool SharesCodecsWith(IAudioExporter exporter) => exporter is VorbisExporter;
 
         public async Task<PCM16Audio> ReadFileAsync(string filename) {
             var audio1 = await effectEngine.ReadFileAsync(filename);

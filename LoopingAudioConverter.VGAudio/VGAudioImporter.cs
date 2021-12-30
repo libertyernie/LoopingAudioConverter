@@ -15,7 +15,7 @@ using VGAudio.Containers.Wave;
 using VGAudio.Formats;
 
 namespace LoopingAudioConverter.VGAudio {
-	public class VGAudioImporter : IAudioImporter {
+	public class VGAudioImporter : IOpinionatedAudioImporter {
 		public bool SupportsExtension(string extension) {
 			if (extension.StartsWith("."))
 				extension = extension.Substring(1);
@@ -42,6 +42,8 @@ namespace LoopingAudioConverter.VGAudio {
 					return false;
 			}
 		}
+
+		public bool SharesCodecsWith(IAudioExporter exporter) => exporter is VGAudioExporter;
 
 		public static AudioData Read(byte[] data, string filename) {
 			string extension = Path.GetExtension(filename).ToLowerInvariant();

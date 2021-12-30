@@ -1,10 +1,11 @@
-﻿using LoopingAudioConverter.PCM;
+﻿using LoopingAudioConverter.MP3;
+using LoopingAudioConverter.PCM;
 using System;
 using System.IO;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter.MSF {
-	public class MSFImporter : IAudioImporter {
+	public class MSFImporter : IOpinionatedAudioImporter {
 		public Task<PCM16Audio> ReadFileAsync(string filename) {
 			byte[] data = File.ReadAllBytes(filename);
 			try {
@@ -15,6 +16,8 @@ namespace LoopingAudioConverter.MSF {
 				throw new AudioImporterException("Cannot read MSF file (unsupported codec?)");
 			}
 		}
+
+		public bool SharesCodecsWith(IAudioExporter exporter) => exporter is MP3Exporter;
 
 		public bool SupportsExtension(string extension) {
 			if (extension.StartsWith(".")) extension = extension.Substring(1);

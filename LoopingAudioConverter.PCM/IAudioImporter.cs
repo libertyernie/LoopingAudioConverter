@@ -15,4 +15,8 @@ namespace LoopingAudioConverter.PCM {
 	public interface IRenderingAudioImporter : IAudioImporter {
 		int? SampleRate { set; }
 	}
+
+	public interface IOpinionatedAudioImporter : IAudioImporter {
+		bool SharesCodecsWith(IAudioExporter exporter);
+	}
 }

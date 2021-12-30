@@ -788,7 +788,7 @@
             this.chkShortCircuit.Name = "chkShortCircuit";
             this.chkShortCircuit.Size = new System.Drawing.Size(176, 30);
             this.chkShortCircuit.TabIndex = 4;
-            this.chkShortCircuit.Text = "Skip re-encoding when possible\r\n(VGAudio, MP3, Vorbis)";
+            this.chkShortCircuit.Text = "Skip re-encoding when possible";
             // 
             // panel3
             // 
