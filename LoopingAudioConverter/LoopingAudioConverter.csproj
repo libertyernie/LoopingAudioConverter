@@ -99,7 +99,6 @@
     </Compile>
     <Compile Include="OptionsSerialization.cs" />
     <Compile Include="TempFiles.cs" />
-    <Compile Include="Importers\VGMImporter.cs" />
     <Compile Include="MultipleProgressWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -116,7 +115,6 @@
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Importers\VGMStreamImporter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -179,6 +177,14 @@
     <ProjectReference Include="..\LoopingAudioConverter.VGAudio\LoopingAudioConverter.VGAudio.csproj">
       <Project>{999e29f5-469b-4b7b-89ab-cb6e69735593}</Project>
       <Name>LoopingAudioConverter.VGAudio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LoopingAudioConverter.VGMPlay\LoopingAudioConverter.VGMPlay.csproj">
+      <Project>{A5F82D6A-3ED0-4718-AA2A-094244484B3F}</Project>
+      <Name>LoopingAudioConverter.VGMPlay</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LoopingAudioConverter.VGMStream\LoopingAudioConverter.VGMStream.csproj">
+      <Project>{46A65452-8347-4E9D-8D1A-2E28FB1AB66A}</Project>
+      <Name>LoopingAudioConverter.VGMStream</Name>
     </ProjectReference>
     <ProjectReference Include="..\LoopingAudioConverter.Vorbis\LoopingAudioConverter.Vorbis.csproj">
       <Project>{5bd4854f-481b-4aa6-b838-32c21b2b069f}</Project>

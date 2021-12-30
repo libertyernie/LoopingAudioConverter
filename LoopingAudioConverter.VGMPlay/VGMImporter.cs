@@ -8,12 +8,12 @@ using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LoopingAudioConverter {
+namespace LoopingAudioConverter.VGMPlay {
 	/// <summary>
 	/// A class to use VGMPlay to render VGM/VGM files to WAV format.
 	/// </summary>
 	public class VGMImporter : IRenderingAudioImporter {
-		private string ExePath;
+		private readonly string ExePath;
 
 		public int? SampleRate { get; set; }
 

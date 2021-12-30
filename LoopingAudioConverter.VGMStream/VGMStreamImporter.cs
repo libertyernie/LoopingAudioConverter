@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LoopingAudioConverter {
+namespace LoopingAudioConverter.VGMStream {
 	/// <summary>
 	/// A class to use vgmstream's test.exe to convert formats it supports to PCM16Audio format.
 	/// </summary>
@@ -56,7 +56,7 @@ namespace LoopingAudioConverter {
 				CreateNoWindow = true,
 				Arguments = "-L -l 1 -f 0 -o dump.wav \"" + filename + "\""
 			};
-			var pr = await ProcessEx.RunAsync(psi);
+			await ProcessEx.RunAsync(psi);
 
 			try {
 				PCM16Audio lwav = WaveConverter.FromFile("tmp/dump.wav", true);

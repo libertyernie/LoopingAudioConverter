@@ -8,6 +8,8 @@ using LoopingAudioConverter.MSU1;
 using LoopingAudioConverter.PCM;
 using LoopingAudioConverter.QuickTime;
 using LoopingAudioConverter.VGAudio;
+using LoopingAudioConverter.VGMPlay;
+using LoopingAudioConverter.VGMStream;
 using LoopingAudioConverter.Vorbis;
 using LoopingAudioConverter.WAV;
 using System;
