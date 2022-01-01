@@ -15,7 +15,7 @@ namespace LoopingAudioConverter.FFmpeg {
 			this.output_extension = output_extension;
 		}
 
-		public async Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
+		public async Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IProgress<double> progress) {
 			string output_filename = Path.Combine(output_dir, original_filename_no_ext + output_extension);
 
 			await effectEngine.WriteFileAsync(lwav, output_filename, encoding_parameters);

@@ -81,7 +81,7 @@ namespace LoopingAudioConverter.VGAudio {
 			}
 		}
 
-		public async Task<PCM16Audio> ReadFileAsync(string filename) {
+		public async Task<PCM16Audio> ReadFileAsync(string filename, IProgress<double> progress) {
 			if (filename.Contains('"')) {
 				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
 			}

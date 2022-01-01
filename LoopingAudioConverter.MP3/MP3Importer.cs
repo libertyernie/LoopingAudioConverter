@@ -12,7 +12,7 @@ namespace LoopingAudioConverter.MP3 {
 
 		public bool SharesCodecsWith(IAudioExporter exporter) => exporter is MP3Exporter;
 
-		public Task<PCM16Audio> ReadFileAsync(string filename) {
+		public Task<PCM16Audio> ReadFileAsync(string filename, IProgress<double> progress) {
 			byte[] mp3data = File.ReadAllBytes(filename);
 			return Task.Run(() => {
 				PCM16Audio a = MP3Audio.Read(mp3data);

@@ -102,12 +102,14 @@ namespace LoopingAudioConverter.Conversion {
                 throw new Exception("No input files were selected.");
             }
 
-            var pc = new ProgressCollection(progress, inputFiles.Count);
-
+            double x = 1.0 / inputFiles.Count;
             int i = 0;
             foreach (string inputFile in inputFiles) {
-                if (env.Cancelled) break;
-                await ConvertFileAsync(env, o, importers, effectEngine, exporter, inputFile, pc[i++]);
+                var pr = new ProgressSubset(progress, x * i, x * (i + 1));
+                if (!env.Cancelled)
+                    await ConvertFileAsync(env, o, importers, effectEngine, exporter, inputFile, pr);
+                pr.Report(1.0);
+                i++;
             }
         }
 
@@ -120,6 +122,8 @@ namespace LoopingAudioConverter.Conversion {
             string inputFile,
             IProgress<double> progress = null
         ) {
+            progress?.Report(0.0);
+
             string outputDir = o.OutputDir;
             string inputDir = Path.GetDirectoryName(inputFile);
             for (int x = 0; x < 100; x++) {
@@ -162,7 +166,7 @@ namespace LoopingAudioConverter.Conversion {
                         a.SampleRate = o.SampleRate;
                     }
                     env.UpdateStatus(filename_no_ext, $"Decoding ({importer.GetType().Name})");
-                    w = await importer.ReadFileAsync(inputFile);
+                    w = await importer.ReadFileAsync(inputFile, new ProgressSubset(progress, 0.0, 0.20));
                     break;
                 } catch (AudioImporterException e) {
                     env.UpdateStatus(filename_no_ext, $"Could not decode ({importer.GetType().Name}) - {e.Message}");
@@ -182,7 +186,7 @@ namespace LoopingAudioConverter.Conversion {
             if (w == null) {
                 env.ReportFailure(filename_no_ext, "Could not read " + inputFile);
             } else {
-                progress?.Report(0.3);
+                progress?.Report(0.20);
                 env.UpdateStatus(filename_no_ext, "Applying effects");
                 w = effectEngine.ApplyEffects(w,
                     channels: o.Channels ?? w.Channels,
@@ -193,7 +197,7 @@ namespace LoopingAudioConverter.Conversion {
                     tempo_ratio: o.TempoRatio ?? 1,
                     force: !o.BypassEncodingWhenPossible);
                 env.UpdateStatus(filename_no_ext, "Applied effects");
-                progress?.Report(0.5);
+                progress?.Report(0.25);
 
                 List<NamedAudio> wavsToExport = new List<NamedAudio>();
 
@@ -234,7 +238,7 @@ namespace LoopingAudioConverter.Conversion {
 
                         if (toExport != null) {
                             env.UpdateStatus(filename_no_ext, $"Encoding ({exporter.GetType().Name})");
-                            await exporter.WriteFileAsync(toExport.Audio, outputDir, toExport.Name);
+                            await exporter.WriteFileAsync(toExport.Audio, outputDir, toExport.Name, new ProgressSubset(progress, 0.5, 1.0));
                         }
                     }
 

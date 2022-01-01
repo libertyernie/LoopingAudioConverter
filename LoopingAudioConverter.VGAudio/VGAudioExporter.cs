@@ -1,5 +1,6 @@
 ﻿using LoopingAudioConverter.PCM;
 using LoopingAudioConverter.WAV;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using VGAudio.Containers.Wave;
@@ -21,7 +22,7 @@ namespace LoopingAudioConverter.VGAudio {
 			File.WriteAllBytes(Path.Combine(output_dir, original_filename_no_ext + GetExtension()), data);
 		}
 
-		public Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
+		public Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IProgress<double> progress) {
 			Task task = new Task(() => WriteFile(lwav, output_dir, original_filename_no_ext));
 			task.Start();
 			return task;

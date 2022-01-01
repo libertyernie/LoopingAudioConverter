@@ -1,5 +1,6 @@
 ﻿using BrawlLib.Wii.Audio;
 using LoopingAudioConverter.PCM;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -16,7 +17,7 @@ namespace LoopingAudioConverter.BrawlLib {
 			}
 		}
 
-		Task IAudioExporter.WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
+		Task IAudioExporter.WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IProgress<double> progress) {
 			return Task.Run(() => WriteFile(lwav, output_dir, original_filename_no_ext));
 		}
 	}

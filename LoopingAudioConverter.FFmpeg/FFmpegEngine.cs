@@ -31,7 +31,7 @@ namespace LoopingAudioConverter.FFmpeg {
 		/// </summary>
 		/// <param name="filename">The path of the file to read</param>
 		/// <returns>A non-looping PCM16Audio</returns>
-		public async Task<PCM16Audio> ReadFileAsync(string filename) {
+		public async Task<PCM16Audio> ReadFileAsync(string filename, IProgress<double> progress) {
 			if (!File.Exists(ExePath)) {
 				throw new AudioImporterException("FFmpeg not found at path: " + ExePath);
 			}

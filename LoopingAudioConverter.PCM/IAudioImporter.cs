@@ -9,7 +9,7 @@ namespace LoopingAudioConverter.PCM {
 
 	public interface IAudioImporter {
 		bool SupportsExtension(string extension);
-		Task<PCM16Audio> ReadFileAsync(string filename);
+		Task<PCM16Audio> ReadFileAsync(string filename, IProgress<double> progress = null);
 	}
 
 	public interface IRenderingAudioImporter : IAudioImporter {

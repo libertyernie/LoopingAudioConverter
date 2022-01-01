@@ -18,7 +18,7 @@ namespace LoopingAudioConverter.QuickTime {
 			EncodingParameters = encodingParameters ?? "";
 		}
 
-		public async Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
+		public async Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IProgress<double> progress) {
 			string outPath = Path.Combine(output_dir, original_filename_no_ext + (Adts ? ".aac" : ".m4a"));
 			if (outPath.Contains("\"")) {
 				throw new AudioExporterException("Invalid character (\") found in output filename");

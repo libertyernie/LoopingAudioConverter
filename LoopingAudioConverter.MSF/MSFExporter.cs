@@ -1,4 +1,5 @@
 ﻿using LoopingAudioConverter.PCM;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -10,7 +11,7 @@ namespace LoopingAudioConverter.MSF {
 			this.big_endian = big_endian;
 		}
 
-		public Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
+		public Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IProgress<double> progress) {
 			var msf = big_endian
 				? (MSF_PCM16)MSF_PCM16BE.FromPCM(lwav)
 				: MSF_PCM16LE.FromPCM(lwav);

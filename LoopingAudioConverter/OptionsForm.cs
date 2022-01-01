@@ -535,6 +535,13 @@ namespace LoopingAudioConverter {
 		}
 
 		void IProgress<double>.Report(double value) {
+			if (InvokeRequired) {
+				BeginInvoke(new Action(() => {
+					IProgress<double> pr = this;
+					pr.Report(value);
+				}));
+				return;
+			}
 			progressBar1.Value = (int)(value * (progressBar1.Maximum - progressBar1.Minimum)) + progressBar1.Minimum;
 		}
 

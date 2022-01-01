@@ -27,6 +27,7 @@ namespace LoopingAudioConverter.MP3 {
 			using (var output = new MemoryStream())
 			using (var input = new MemoryStream(mp3data, false))
 			using (var mp3 = new MP3Stream(input)) {
+				// TODO figure out why CopyTo is slow
 				mp3.CopyTo(output);
 				byte[] array = output.ToArray();
 

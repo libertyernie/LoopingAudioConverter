@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace LoopingAudioConverter.MSU1 {
 	public class MSU1Converter : IAudioImporter, IAudioExporter {
-		public Task<PCM16Audio> ReadFileAsync(string filename) {
+		public Task<PCM16Audio> ReadFileAsync(string filename, IProgress<double> progress) {
 			using (var fs = new FileStream(filename, FileMode.Open, FileAccess.Read))
 			using (var br = new BinaryReader(fs)) {
 				foreach (char c in "MSU1") {
@@ -36,7 +36,7 @@ namespace LoopingAudioConverter.MSU1 {
 			return extension.Equals("pcm", StringComparison.InvariantCultureIgnoreCase);
 		}
 
-		public Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
+		public Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IProgress<double> progress) {
 			if (lwav.Channels != 2 || lwav.SampleRate != 44100) {
 				throw new AudioExporterException("MSU-1 output must be 2-channel audio at a sample rate of 44100Hz.");
 			}

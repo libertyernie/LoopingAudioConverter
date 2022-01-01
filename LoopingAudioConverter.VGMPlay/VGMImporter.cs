@@ -43,7 +43,7 @@ namespace LoopingAudioConverter.VGMPlay {
 		/// <param name="filename">The path of the file to read</param>
 		/// <param name="preferredSampleRate">The sample rate to render the VGM at</param>
 		/// <returns>A PCM16Audio, which may or may not be looping</returns>
-		public async Task<PCM16Audio> ReadFileAsync(string filename) {
+		public async Task<PCM16Audio> ReadFileAsync(string filename, IProgress<double> progress) {
 			if (!File.Exists(ExePath)) {
 				throw new AudioImporterException("VGMPlay not found at path: " + ExePath);
 			}

@@ -4,26 +4,60 @@ using BrawlLib.Wii.Audio;
 using LoopingAudioConverter.PCM;
 using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter.BrawlLib {
 	public class BrawlLibRSTMExporter : IAudioExporter {
 		public enum Container { RSTM, CSTM, FSTM }
 
-		private class SilentProgressTracker : IProgressTracker {
-			public float MinValue { get; set; }
-			public float MaxValue { get; set; }
-			public float CurrentValue { get; set; }
-			public bool Cancelled { get; set; }
+		private class ProgressTracker : IProgressTracker {
+			private readonly IProgress<double> _progress;
 
-			public void Begin(float min, float max, float current) { }
+			private float _min, _max, _current;
 
-			public void Cancel() => throw new NotImplementedException();
+            public ProgressTracker(IProgress<double> progress) {
+                _progress = progress;
+            }
 
-			public void Finish() { }
+            public bool Cancelled { get; set; }
 
-			public void Update(float value) { }
-		}
+            float IProgressTracker.MinValue { get => _min; set { _min = value; UpdateInternal(); } }
+			float IProgressTracker.MaxValue { get => _max; set { _max = value; UpdateInternal(); } }
+			float IProgressTracker.CurrentValue { get => _current; set { _current = value; UpdateInternal(); } }
+
+            public void Cancel() {
+				Cancelled = true;
+            }
+
+            void IProgressTracker.Begin(float min, float max, float current) {
+				_min = min;
+				_max = max;
+				_current = current;
+				UpdateInternal();
+            }
+
+            void IProgressTracker.Finish() {
+				_current = _max;
+				UpdateInternal();
+            }
+
+            void IProgressTracker.Update(float value) {
+				_current = value;
+				UpdateInternal();
+            }
+
+			private void UpdateInternal() {
+				if (_max == _min) {
+					_progress?.Report(0);
+				} else {
+					double ratio = (_current - _min) / (_max - _min);
+					if (ratio < 0) ratio = 0;
+					if (ratio > 1) ratio = 1;
+					_progress?.Report(ratio);
+				}
+            }
+        }
 
 		private readonly WaveEncoding _waveEncoding;
 		private readonly Container _container;
@@ -33,11 +67,11 @@ namespace LoopingAudioConverter.BrawlLib {
 			_container = container;
 		}
 
-		private unsafe byte[] Encode(PCM16Audio lwav) {
+		private unsafe byte[] Encode(PCM16Audio lwav, IProgressTracker progressTracker) {
 			using (var ms = new MemoryStream()) {
 				var wrapper = new PCM16LoopWrapper(lwav);
 
-				using (var fileMap = RSTMConverter.Encode(wrapper, new SilentProgressTracker(), _waveEncoding))
+				using (var fileMap = RSTMConverter.Encode(wrapper, progressTracker, _waveEncoding))
 				using (var inputStream = new UnmanagedMemoryStream((byte*)fileMap.Address.address, fileMap.Length)) {
 					inputStream.CopyTo(ms);
 				}
@@ -46,10 +80,10 @@ namespace LoopingAudioConverter.BrawlLib {
 			}
 		}
 
-		public void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
+		public void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IProgressTracker progressTracker) {
 			byte[] data = lwav is BrawlLibRSTMAudio a && !a.LoopChanged
 				? a.ExportRSTM()
-				: Encode(lwav);
+				: Encode(lwav, progressTracker);
 
 			string ext = ".brstm";
 			if (_container == Container.CSTM) {
@@ -66,9 +100,9 @@ namespace LoopingAudioConverter.BrawlLib {
 				data);
 		}
 
-		async Task IAudioExporter.WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
+        public async Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IProgress<double> progress = null) {
 			await Task.Yield();
-			await Task.Run(() => WriteFile(lwav, output_dir, original_filename_no_ext));
+			await Task.Run(() => WriteFile(lwav, output_dir, original_filename_no_ext, new ProgressTracker(progress)));
 		}
-	}
+    }
 }
