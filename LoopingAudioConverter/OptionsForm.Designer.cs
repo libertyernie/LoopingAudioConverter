@@ -60,7 +60,6 @@
             this.radChannelsPairs = new System.Windows.Forms.RadioButton();
             this.radChannelsSeparate = new System.Windows.Forms.RadioButton();
             this.pnlExportSegments = new System.Windows.Forms.Panel();
-            this.chkWriteLoopingMetadata = new System.Windows.Forms.CheckBox();
             this.btnEncodingOptions = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.lblOutputFormat = new System.Windows.Forms.Label();
@@ -87,6 +86,10 @@
             this.btnHelp = new System.Windows.Forms.Button();
             this.btnOkay = new System.Windows.Forms.Button();
             this.btnSaveOptions = new System.Windows.Forms.Button();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -107,6 +110,7 @@
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSimulTasks)).BeginInit();
             this.panel1.SuspendLayout();
+            this.panel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -133,7 +137,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.flowLayoutPanel2);
-            this.splitContainer1.Size = new System.Drawing.Size(534, 481);
+            this.splitContainer1.Size = new System.Drawing.Size(534, 492);
             this.splitContainer1.SplitterDistance = 161;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -305,7 +309,7 @@
             this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(534, 316);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(534, 327);
             this.flowLayoutPanel2.TabIndex = 0;
             // 
             // panel2
@@ -571,7 +575,6 @@
             // 
             this.pnlExportSegments.AutoSize = true;
             this.pnlExportSegments.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.pnlExportSegments.Controls.Add(this.chkWriteLoopingMetadata);
             this.pnlExportSegments.Controls.Add(this.btnEncodingOptions);
             this.pnlExportSegments.Controls.Add(this.comboBox1);
             this.pnlExportSegments.Controls.Add(this.lblOutputFormat);
@@ -592,19 +595,8 @@
             this.pnlExportSegments.Location = new System.Drawing.Point(230, 3);
             this.pnlExportSegments.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.pnlExportSegments.Name = "pnlExportSegments";
-            this.pnlExportSegments.Size = new System.Drawing.Size(298, 183);
+            this.pnlExportSegments.Size = new System.Drawing.Size(298, 157);
             this.pnlExportSegments.TabIndex = 3;
-            // 
-            // chkWriteLoopingMetadata
-            // 
-            this.chkWriteLoopingMetadata.Checked = true;
-            this.chkWriteLoopingMetadata.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkWriteLoopingMetadata.Location = new System.Drawing.Point(41, 108);
-            this.chkWriteLoopingMetadata.Name = "chkWriteLoopingMetadata";
-            this.chkWriteLoopingMetadata.Size = new System.Drawing.Size(184, 20);
-            this.chkWriteLoopingMetadata.TabIndex = 11;
-            this.chkWriteLoopingMetadata.Text = "Write looping metadata";
-            this.chkWriteLoopingMetadata.UseVisualStyleBackColor = true;
             // 
             // btnEncodingOptions
             // 
@@ -658,7 +650,7 @@
             // 
             // chk0Start
             // 
-            this.chk0Start.Location = new System.Drawing.Point(3, 134);
+            this.chk0Start.Location = new System.Drawing.Point(3, 108);
             this.chk0Start.Name = "chk0Start";
             this.chk0Start.Size = new System.Drawing.Size(168, 20);
             this.chk0Start.TabIndex = 12;
@@ -669,7 +661,7 @@
             // txt0StartFilenamePattern
             // 
             this.txt0StartFilenamePattern.Enabled = false;
-            this.txt0StartFilenamePattern.Location = new System.Drawing.Point(215, 134);
+            this.txt0StartFilenamePattern.Location = new System.Drawing.Point(215, 108);
             this.txt0StartFilenamePattern.Name = "txt0StartFilenamePattern";
             this.txt0StartFilenamePattern.Size = new System.Drawing.Size(80, 20);
             this.txt0StartFilenamePattern.TabIndex = 14;
@@ -677,7 +669,7 @@
             // 
             // chkStartEnd
             // 
-            this.chkStartEnd.Location = new System.Drawing.Point(3, 160);
+            this.chkStartEnd.Location = new System.Drawing.Point(3, 134);
             this.chkStartEnd.Name = "chkStartEnd";
             this.chkStartEnd.Size = new System.Drawing.Size(160, 20);
             this.chkStartEnd.TabIndex = 15;
@@ -688,7 +680,7 @@
             // txtStartEndFilenamePattern
             // 
             this.txtStartEndFilenamePattern.Enabled = false;
-            this.txtStartEndFilenamePattern.Location = new System.Drawing.Point(215, 160);
+            this.txtStartEndFilenamePattern.Location = new System.Drawing.Point(215, 134);
             this.txtStartEndFilenamePattern.Name = "txtStartEndFilenamePattern";
             this.txtStartEndFilenamePattern.Size = new System.Drawing.Size(80, 20);
             this.txtStartEndFilenamePattern.TabIndex = 17;
@@ -716,7 +708,7 @@
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(169, 160);
+            this.label3.Location = new System.Drawing.Point(169, 134);
             this.label3.Margin = new System.Windows.Forms.Padding(3);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(40, 20);
@@ -736,7 +728,7 @@
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(169, 134);
+            this.label2.Location = new System.Drawing.Point(169, 108);
             this.label2.Margin = new System.Windows.Forms.Padding(3);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(40, 20);
@@ -784,9 +776,9 @@
             this.chkShortCircuit.AutoSize = true;
             this.chkShortCircuit.Checked = true;
             this.chkShortCircuit.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkShortCircuit.Location = new System.Drawing.Point(233, 192);
+            this.chkShortCircuit.Location = new System.Drawing.Point(233, 166);
             this.chkShortCircuit.Name = "chkShortCircuit";
-            this.chkShortCircuit.Size = new System.Drawing.Size(176, 30);
+            this.chkShortCircuit.Size = new System.Drawing.Size(176, 17);
             this.chkShortCircuit.TabIndex = 4;
             this.chkShortCircuit.Text = "Skip re-encoding when possible";
             // 
@@ -795,7 +787,7 @@
             this.panel3.AutoSize = true;
             this.panel3.Controls.Add(this.numSimulTasks);
             this.panel3.Controls.Add(this.lblSimulTasks);
-            this.panel3.Location = new System.Drawing.Point(230, 228);
+            this.panel3.Location = new System.Drawing.Point(230, 189);
             this.panel3.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(198, 28);
@@ -839,7 +831,7 @@
             this.panel1.Controls.Add(this.btnOkay);
             this.panel1.Controls.Add(this.btnSaveOptions);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 481);
+            this.panel1.Location = new System.Drawing.Point(0, 521);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(534, 30);
             this.panel1.TabIndex = 1;
@@ -889,13 +881,57 @@
             this.btnSaveOptions.UseVisualStyleBackColor = true;
             this.btnSaveOptions.Click += new System.EventHandler(this.btnSaveOptions_Click);
             // 
+            // panel5
+            // 
+            this.panel5.Controls.Add(this.btnCancel);
+            this.panel5.Controls.Add(this.label6);
+            this.panel5.Controls.Add(this.progressBar1);
+            this.panel5.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel5.Location = new System.Drawing.Point(0, 492);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(534, 29);
+            this.panel5.TabIndex = 4;
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnCancel.Location = new System.Drawing.Point(457, 3);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(74, 23);
+            this.btnCancel.TabIndex = 4;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // label6
+            // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label6.AutoEllipsis = true;
+            this.label6.Location = new System.Drawing.Point(296, 3);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(155, 23);
+            this.label6.TabIndex = 1;
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.progressBar1.Location = new System.Drawing.Point(3, 3);
+            this.progressBar1.Maximum = 10000;
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(287, 23);
+            this.progressBar1.TabIndex = 0;
+            // 
             // OptionsForm
             // 
             this.AcceptButton = this.btnOkay;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(534, 511);
+            this.ClientSize = new System.Drawing.Size(534, 551);
             this.Controls.Add(this.splitContainer1);
+            this.Controls.Add(this.panel5);
             this.Controls.Add(this.panel1);
             this.Name = "OptionsForm";
             this.Text = "Looping Audio Converter";
@@ -925,6 +961,7 @@
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numSimulTasks)).EndInit();
             this.panel1.ResumeLayout(false);
+            this.panel5.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -988,12 +1025,15 @@
         private System.Windows.Forms.ComboBox ddlUnknownLoopBehavior;
         private System.Windows.Forms.Label lblUnknownLoopBehavior;
         private System.Windows.Forms.Button btnEncodingOptions;
-        private System.Windows.Forms.CheckBox chkWriteLoopingMetadata;
 		private System.Windows.Forms.NumericUpDown numPitch;
 		private System.Windows.Forms.CheckBox chkPitch;
 		private System.Windows.Forms.NumericUpDown numTempo;
 		private System.Windows.Forms.CheckBox chkTempo;
 		private System.Windows.Forms.TextBox txtInputDir;
 		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.Panel panel5;
+		private System.Windows.Forms.Button btnCancel;
+		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.ProgressBar progressBar1;
 	}
 }

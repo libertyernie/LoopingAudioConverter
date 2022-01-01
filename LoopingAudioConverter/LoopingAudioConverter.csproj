@@ -150,6 +150,10 @@
       <Project>{AD0710AE-4959-4B58-BB14-35473259304E}</Project>
       <Name>LoopingAudioConverter.BrawlLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LoopingAudioConverter.Conversion\LoopingAudioConverter.Conversion.csproj">
+      <Project>{c3d3dd9c-92fb-4563-a7fa-cfe7594e424b}</Project>
+      <Name>LoopingAudioConverter.Conversion</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LoopingAudioConverter.FFmpeg\LoopingAudioConverter.FFmpeg.csproj">
       <Project>{D3F294BD-4FE5-41F8-BE7F-22BC3C64EE21}</Project>
       <Name>LoopingAudioConverter.FFmpeg</Name>

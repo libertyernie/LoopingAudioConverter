@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="VGAudio" Version="2.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LoopingAudioConverter.BrawlLib\LoopingAudioConverter.BrawlLib.csproj" />
+    <ProjectReference Include="..\LoopingAudioConverter.FFmpeg\LoopingAudioConverter.FFmpeg.csproj" />
+    <ProjectReference Include="..\LoopingAudioConverter.MP3\LoopingAudioConverter.MP3.csproj" />
+    <ProjectReference Include="..\LoopingAudioConverter.MSF\LoopingAudioConverter.MSF.csproj" />
+    <ProjectReference Include="..\LoopingAudioConverter.MSU1\LoopingAudioConverter.MSU1.csproj" />
+    <ProjectReference Include="..\LoopingAudioConverter.PCM\LoopingAudioConverter.PCM.csproj" />
+    <ProjectReference Include="..\LoopingAudioConverter.QuickTime\LoopingAudioConverter.QuickTime.csproj" />
+    <ProjectReference Include="..\LoopingAudioConverter.VGAudio\LoopingAudioConverter.VGAudio.csproj" />
+    <ProjectReference Include="..\LoopingAudioConverter.VGMPlay\LoopingAudioConverter.VGMPlay.csproj" />
+    <ProjectReference Include="..\LoopingAudioConverter.VGMStream\LoopingAudioConverter.VGMStream.csproj" />
+    <ProjectReference Include="..\LoopingAudioConverter.Vorbis\LoopingAudioConverter.Vorbis.csproj" />
+    <ProjectReference Include="..\LoopingAudioConverter.WAV\LoopingAudioConverter.WAV.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="BrawlLib">
+      <HintPath>..\lib\BrawlLib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
