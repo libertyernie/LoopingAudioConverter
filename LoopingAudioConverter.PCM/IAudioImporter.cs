@@ -12,10 +12,6 @@ namespace LoopingAudioConverter.PCM {
 		Task<PCM16Audio> ReadFileAsync(string filename, IProgress<double> progress = null);
 	}
 
-	public interface IRenderingAudioImporter : IAudioImporter {
-		int? SampleRate { set; }
-	}
-
 	public interface IOpinionatedAudioImporter : IAudioImporter {
 		bool SharesCodecsWith(IAudioExporter exporter);
 	}

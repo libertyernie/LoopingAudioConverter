@@ -7,7 +7,6 @@ using LoopingAudioConverter.MSU1;
 using LoopingAudioConverter.PCM;
 using LoopingAudioConverter.QuickTime;
 using LoopingAudioConverter.VGAudio;
-using LoopingAudioConverter.VGMPlay;
 using LoopingAudioConverter.VGMStream;
 using LoopingAudioConverter.Vorbis;
 using LoopingAudioConverter.WAV;
@@ -86,7 +85,7 @@ namespace LoopingAudioConverter.Conversion {
                 yield return new MP3Importer();
                 yield return new VorbisImporter(effectEngine);
                 if (env.VGMPlayPath is string vgmplay_path)
-                    yield return new VGMImporter(vgmplay_path);
+                    yield return new VGMPlay.VGMImporter(vgmplay_path, o.SampleRate ?? 44100);
                 yield return new MSU1Converter();
                 yield return new MSFImporter();
                 if (env.VGMStreamPath is string vgmstream_path)
@@ -162,9 +161,6 @@ namespace LoopingAudioConverter.Conversion {
 
             foreach (IAudioImporter importer in importers_supported) {
                 try {
-                    if (importer is IRenderingAudioImporter a) {
-                        a.SampleRate = o.SampleRate;
-                    }
                     env.UpdateStatus(filename_no_ext, $"Decoding ({importer.GetType().Name})");
                     w = await importer.ReadFileAsync(inputFile, new ProgressSubset(progress, 0.0, 0.5));
                     progress?.Report(0.5);

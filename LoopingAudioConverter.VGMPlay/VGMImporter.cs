@@ -11,18 +11,17 @@ namespace LoopingAudioConverter.VGMPlay {
 	/// <summary>
 	/// A class to use VGMPlay to render VGM/VGM files to WAV format.
 	/// </summary>
-	public class VGMImporter : IRenderingAudioImporter {
+	public class VGMImporter : IAudioImporter {
 		private readonly string ExePath;
-
-		public int? SampleRate { get; set; }
+		public readonly int SampleRate;
 
 		/// <summary>
 		/// Initializes the VGM importer.
 		/// </summary>
 		/// <param name="exePath">Path to vgmplay.exe (relative or absolute.)</param>
-		public VGMImporter(string exePath) {
+		public VGMImporter(string exePath, int sampleRate = 44100) {
 			ExePath = exePath;
-			SampleRate = null;
+			SampleRate = sampleRate;
 		}
 
 		/// <summary>
@@ -58,9 +57,7 @@ namespace LoopingAudioConverter.VGMPlay {
 				File.Copy(filename, inFile);
 				using (var sw = new StreamWriter(new FileStream(Path.Combine(tmpDir, "VGMPlay.ini"), FileMode.Create, FileAccess.Write))) {
 					sw.WriteLine("[General]");
-					if (SampleRate != null) {
-						sw.WriteLine("SampleRate = " + SampleRate);
-					}
+					sw.WriteLine("SampleRate = " + SampleRate);
 					sw.WriteLine("FadeTime = 500");
 					sw.WriteLine("LogSound = 1");
 					sw.WriteLine("MaxLoops = 0x01");
