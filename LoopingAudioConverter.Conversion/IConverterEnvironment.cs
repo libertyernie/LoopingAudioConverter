@@ -1,10 +1,7 @@
-﻿using LoopingAudioConverter.PCM;
-
-namespace LoopingAudioConverter.Conversion {
+﻿namespace LoopingAudioConverter.Conversion {
     public interface IConverterEnvironment {
         string FFmpegPath { get; }
         string QaacPath { get; }
-        string VGMPlayPath { get; }
         string VGMStreamPath { get; }
 
         bool Cancelled { get; }

@@ -182,10 +182,6 @@
       <Project>{999e29f5-469b-4b7b-89ab-cb6e69735593}</Project>
       <Name>LoopingAudioConverter.VGAudio</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LoopingAudioConverter.VGMPlay\LoopingAudioConverter.VGMPlay.csproj">
-      <Project>{A5F82D6A-3ED0-4718-AA2A-094244484B3F}</Project>
-      <Name>LoopingAudioConverter.VGMPlay</Name>
-    </ProjectReference>
     <ProjectReference Include="..\LoopingAudioConverter.VGMStream\LoopingAudioConverter.VGMStream.csproj">
       <Project>{46A65452-8347-4E9D-8D1A-2E28FB1AB66A}</Project>
       <Name>LoopingAudioConverter.VGMStream</Name>

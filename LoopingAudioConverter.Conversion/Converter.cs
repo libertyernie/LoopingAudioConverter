@@ -84,14 +84,13 @@ namespace LoopingAudioConverter.Conversion {
                 yield return new WaveImporter();
                 yield return new MP3Importer();
                 yield return new VorbisImporter(effectEngine);
-                if (env.VGMPlayPath is string vgmplay_path)
-                    yield return new VGMPlay.VGMImporter(vgmplay_path, o.SampleRate ?? 44100);
                 yield return new MSU1Converter();
                 yield return new MSFImporter();
                 if (env.VGMStreamPath is string vgmstream_path)
                     yield return new VGMStreamImporter(vgmstream_path);
                 yield return new VGAudioImporter();
                 yield return new BrawlLibImporter();
+                yield return new VGMImporter(effectEngine, o.SampleRate ?? 44100);
                 yield return effectEngine;
             }
 

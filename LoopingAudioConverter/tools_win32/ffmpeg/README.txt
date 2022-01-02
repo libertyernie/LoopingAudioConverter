@@ -1,10 +1,10 @@
 FFmpeg 64-bit static Windows build from www.gyan.dev
 
-Version: 2021-10-14-git-c336c7a9d7-essentials_build-www.gyan.dev
+Version: 2021-12-30-git-12f21849e5-essentials_build-www.gyan.dev
 
 License: GPL v3
 
-Source Code: https://github.com/FFmpeg/FFmpeg/commit/c336c7a9d7
+Source Code: https://github.com/FFmpeg/FFmpeg/commit/12f21849e5
 
 git-essentials build configuration: 
 
@@ -18,6 +18,7 @@ git-essentials build configuration:
     --enable-gnutls
     --enable-libxml2
     --enable-gmp
+    --enable-bzlib
     --enable-lzma
     --enable-zlib
     --enable-libsrt
@@ -32,6 +33,7 @@ git-essentials build configuration:
     --enable-libaom
     --enable-libopenjpeg
     --enable-libvpx
+    --enable-mediafoundation
     --enable-libass
     --enable-libfreetype
     --enable-libfribidi

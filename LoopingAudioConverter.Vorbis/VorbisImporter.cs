@@ -21,7 +21,7 @@ namespace LoopingAudioConverter.Vorbis {
         public bool SharesCodecsWith(IAudioExporter exporter) => exporter is VorbisExporter;
 
         public async Task<PCM16Audio> ReadFileAsync(string filename, IProgress<double> progress) {
-            var audio1 = await effectEngine.ReadFileAsync(filename, progress);
+            var audio1 = await effectEngine.ReadFileAsync(filename, progress: progress);
 
 			var originalFile = File.ReadAllBytes(filename);
 			return new VorbisAudio(originalFile, audio1);

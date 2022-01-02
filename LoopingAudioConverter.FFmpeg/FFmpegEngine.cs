@@ -30,8 +30,10 @@ namespace LoopingAudioConverter.FFmpeg {
 		/// Converts a file to WAV using FFmpeg and reads it into a PCM16Audio object.
 		/// </summary>
 		/// <param name="filename">The path of the file to read</param>
+		/// <param name="input_format_parameters">Additional parameters for ffmpeg to include just before the input parameter (optional)</param>
+		/// <param name="progress">Progress bar callback (values range from 0.0 to 1.0, inclusive) (optional)</param>
 		/// <returns>A non-looping PCM16Audio</returns>
-		public async Task<PCM16Audio> ReadFileAsync(string filename, IProgress<double> progress) {
+		public async Task<PCM16Audio> ReadFileAsync(string filename, string input_format_parameters = "", IProgress<double> progress = null) {
 			if (!File.Exists(ExePath)) {
 				throw new AudioImporterException("FFmpeg not found at path: " + ExePath);
 			}
@@ -45,7 +47,7 @@ namespace LoopingAudioConverter.FFmpeg {
 				FileName = ExePath,
 				UseShellExecute = false,
 				CreateNoWindow = true,
-				Arguments = $"-y -i \"{filename}\" -f wav -acodec pcm_s16le {outfile}"
+				Arguments = $"-y {input_format_parameters} - i \"{filename}\" -f wav -acodec pcm_s16le {outfile}"
 			};
 			await ProcessEx.RunAsync(psi);
 
@@ -56,6 +58,8 @@ namespace LoopingAudioConverter.FFmpeg {
 				throw new AudioImporterException("Could not read ffmpeg output: " + e.Message);
 			}
 		}
+
+		Task<PCM16Audio> IAudioImporter.ReadFileAsync(string filename, IProgress<double> progress) => ReadFileAsync(filename, progress: progress);
 
 		/// <summary>
 		/// Applies one or more effects to the PCM16Audio given and reads the result into a new PCM16Audio.
