@@ -1,6 +1,5 @@
 ﻿using LoopingAudioConverter.PCM;
 using LoopingAudioConverter.WAV;
-using RunProcessAsTask;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -72,9 +71,29 @@ namespace LoopingAudioConverter.VGMPlay {
 					WorkingDirectory = tmpDir,
 					UseShellExecute = false,
 					CreateNoWindow = true,
+					RedirectStandardOutput = true,
 					Arguments = inFile
 				};
-				var pr = await ProcessEx.RunAsync(psi);
+
+				var process = Process.Start(psi);
+
+				string line;
+				double pr = 0.0;
+				using (var sr = process.StandardOutput) {
+					while ((line = await sr.ReadLineAsync()) != null) {
+						if (line.StartsWith("Playing ")) {
+							int stop = line.IndexOf('%');
+							if (stop > 8 && double.TryParse(line.Substring(8, stop - 8), out double percentage) && percentage > pr) {
+								progress?.Report(pr = percentage);
+							}
+						}
+                    }
+                }
+
+				process.WaitForExit();
+				if (process.ExitCode != 0)
+					throw new AudioImporterException($"VGMPlay exited with status code {process.ExitCode}");
+
 				var data = WaveConverter.FromFile(Path.Combine(tmpDir, "audio.wav"), true);
 				Directory.Delete(tmpDir, true);
 
@@ -83,7 +102,6 @@ namespace LoopingAudioConverter.VGMPlay {
 				using (var fs = new FileStream(filename, FileMode.Open, FileAccess.Read))
 				using (var br = new BinaryReader(fs)) {
 					int tag = br.ReadUInt16();
-					if (tag == 0x1F8B) throw new Exception("Machine is big-endian");
 					compressed = tag == 0x8B1F;
 				}
 
@@ -92,8 +110,7 @@ namespace LoopingAudioConverter.VGMPlay {
 				using (var gz = compressed ? new GZipStream(fs, CompressionMode.Decompress) : fs as Stream)
 				using (var br = new BinaryReader(gz)) {
 					int tag = br.ReadInt32();
-					if (tag == 0x56676D20) throw new Exception("Machine is big-endian");
-					if (tag != 0x206D6756) throw new Exception($"File not in Vgm format ({tag.ToString("X8")})");
+					if (tag != 0x206D6756) throw new Exception($"File not in Vgm format ({tag:X8})");
 
 					for (int i = 0; i < 5; i++) br.ReadInt32();
 
@@ -114,10 +131,7 @@ namespace LoopingAudioConverter.VGMPlay {
 
 				return data;
 			} catch (Exception e) {
-				Console.Error.WriteLine(e.GetType());
-				Console.Error.WriteLine(e.Message);
-				Console.Error.WriteLine(e.StackTrace);
-				throw new AudioImporterException("Could not read output of VGMPlay: " + e.Message);
+				throw new AudioImporterException("Could not read output of VGMPlay: " + e.Message, e);
 			}
 		}
 	}
