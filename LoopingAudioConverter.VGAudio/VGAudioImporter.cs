@@ -15,7 +15,7 @@ using VGAudio.Containers.Wave;
 using VGAudio.Formats;
 
 namespace LoopingAudioConverter.VGAudio {
-	public class VGAudioImporter : IOpinionatedAudioImporter {
+	public class VGAudioImporter : IAudioImporter {
 		public bool SupportsExtension(string extension) {
 			if (extension.StartsWith("."))
 				extension = extension.Substring(1);
@@ -81,7 +81,7 @@ namespace LoopingAudioConverter.VGAudio {
 			}
 		}
 
-		public async Task<PCM16Audio> ReadFileAsync(string filename, IProgress<double> progress) {
+		public async Task<PCM16Audio> ReadFileAsync(string filename, IAudioHints hints, IProgress<double> progress) {
 			if (filename.Contains('"')) {
 				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
 			}

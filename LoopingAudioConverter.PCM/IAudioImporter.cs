@@ -7,12 +7,14 @@ namespace LoopingAudioConverter.PCM {
 		public AudioImporterException(string message, Exception innerException) : base(message, innerException) { }
 	}
 
-	public interface IAudioImporter {
-		bool SupportsExtension(string extension);
-		Task<PCM16Audio> ReadFileAsync(string filename, IProgress<double> progress = null);
+	public interface IAudioHints {
+		int? SampleRateForRendering { get; }
+		TimeSpan? Duration { get; }
 	}
 
-	public interface IOpinionatedAudioImporter : IAudioImporter {
+	public interface IAudioImporter {
+		bool SupportsExtension(string extension);
 		bool SharesCodecsWith(IAudioExporter exporter);
+		Task<PCM16Audio> ReadFileAsync(string filename, IAudioHints hints = null, IProgress<double> progress = null);
 	}
 }

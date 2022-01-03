@@ -1,4 +1,5 @@
-﻿using VGAudio.Containers.Adx;
+﻿using LoopingAudioConverter.PCM;
+using VGAudio.Containers.Adx;
 using VGAudio.Containers.Hca;
 using VGAudio.Containers.NintendoWare;
 
@@ -73,6 +74,8 @@ namespace LoopingAudioConverter.Conversion {
     public interface IConverterOptions {
         string InputDir { get; }
         string OutputDir { get; }
+
+        IAudioHints GetAudioHints(string filename);
 
         ChannelSplit ChannelSplit { get; }
         InputLoopBehavior InputLoopBehavior { get; }

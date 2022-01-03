@@ -26,6 +26,8 @@ namespace LoopingAudioConverter.FFmpeg {
 
 		bool IAudioImporter.SupportsExtension(string extension) => true;
 
+		bool IAudioImporter.SharesCodecsWith(IAudioExporter exporter) => false;
+
 		private async Task<TimeSpan?> GetDurationAsync(string filename) {
 			ProcessStartInfo psi = new ProcessStartInfo {
 				FileName = ExePath,
@@ -52,7 +54,7 @@ namespace LoopingAudioConverter.FFmpeg {
 		/// <param name="default_max_duration">A maximum duration for the input file. Only used if the actual duration cannot be determined.</param>
 		/// <param name="progress">Progress bar callback (values range from 0.0 to 1.0, inclusive) (optional)</param>
 		/// <returns>A non-looping PCM16Audio</returns>
-		public async Task<PCM16Audio> ReadFileAsync(string filename, string input_format_parameters = "", TimeSpan? default_max_duration = null, IProgress<double> progress = null) {
+		public async Task<PCM16Audio> ReadFileAsync(string filename, IAudioHints hints, IProgress<double> progress = null) {
 			if (!File.Exists(ExePath)) {
 				throw new AudioImporterException("FFmpeg not found at path: " + ExePath);
 			}
@@ -60,10 +62,8 @@ namespace LoopingAudioConverter.FFmpeg {
 				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
 			}
 
-			TimeSpan? expected_duration = default_max_duration ?? await GetDurationAsync(filename);
-			if (expected_duration == null) {
-				throw new AudioImporterException("Cannot import a file with no known duration");
-			}
+			TimeSpan? actual_duration = await GetDurationAsync(filename);
+			TimeSpan expected_duration = hints.Duration ?? TimeSpan.FromMinutes(10);
 
 			string outfile = Path.GetTempFileName();
 
@@ -72,11 +72,11 @@ namespace LoopingAudioConverter.FFmpeg {
 				UseShellExecute = false,
 				CreateNoWindow = true,
 				RedirectStandardOutput = true,
-				Arguments = $"-y {input_format_parameters} {(default_max_duration is TimeSpan md ? $"-t {md.TotalSeconds}" : "")} -i \"{filename}\" -f wav -acodec pcm_s16le {outfile} -progress pipe:1"
+				Arguments = $"-y {(hints.SampleRateForRendering is int dsr ? $"-sample_rate {dsr}" : "")} {(actual_duration == null ? $"-t {expected_duration.TotalSeconds}" : "")} -i \"{filename}\" -f wav -acodec pcm_s16le {outfile} -progress pipe:1"
 			};
 			var process = Process.Start(psi);
 			using (var sr = process.StandardOutput) {
-				double expected_ticks = expected_duration.Value.Ticks;
+				double expected_ticks = expected_duration.Ticks;
 
 				string line;
 				while ((line = await sr.ReadLineAsync()) != null) {
@@ -97,8 +97,6 @@ namespace LoopingAudioConverter.FFmpeg {
 				throw new AudioImporterException("Could not read ffmpeg output: " + e.Message);
 			}
 		}
-
-		Task<PCM16Audio> IAudioImporter.ReadFileAsync(string filename, IProgress<double> progress) => ReadFileAsync(filename, progress: progress);
 
 		/// <summary>
 		/// Applies one or more effects to the PCM16Audio given and reads the result into a new PCM16Audio.

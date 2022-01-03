@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 using WX = BrawlLib.Internal.Audio.WAV;
 
 namespace LoopingAudioConverter.BrawlLib {
-    public class BrawlLibImporter : IOpinionatedAudioImporter {
+    public class BrawlLibImporter : IAudioImporter {
         public bool SupportsExtension(string extension) => true;
 
         public bool SharesCodecsWith(IAudioExporter exporter) => exporter is BrawlLibRSTMExporter;
 
-        public async Task<PCM16Audio> ReadFileAsync(string filename, IProgress<double> progress) {
+        public async Task<PCM16Audio> ReadFileAsync(string filename, IAudioHints hints, IProgress<double> progress) {
             await Task.Yield();
 
             try {

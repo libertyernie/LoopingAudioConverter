@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace LoopingAudioConverter.MSU1 {
 	public class MSU1Converter : IAudioImporter, IAudioExporter {
-		public Task<PCM16Audio> ReadFileAsync(string filename, IProgress<double> progress) {
+		public Task<PCM16Audio> ReadFileAsync(string filename, IAudioHints hints, IProgress<double> progress) {
 			using (var fs = new FileStream(filename, FileMode.Open, FileAccess.Read))
 			using (var br = new BinaryReader(fs)) {
 				foreach (char c in "MSU1") {
@@ -35,6 +35,8 @@ namespace LoopingAudioConverter.MSU1 {
 			if (extension.StartsWith(".")) extension = extension.Substring(1);
 			return extension.Equals("pcm", StringComparison.InvariantCultureIgnoreCase);
 		}
+
+		bool IAudioImporter.SharesCodecsWith(IAudioExporter exporter) => false;
 
 		public Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IProgress<double> progress) {
 			if (lwav.Channels != 2 || lwav.SampleRate != 44100) {

@@ -31,13 +31,15 @@ namespace LoopingAudioConverter.VGMStream {
 			return true;
 		}
 
+		bool IAudioImporter.SharesCodecsWith(IAudioExporter exporter) => false;
+
 		/// <summary>
 		/// Converts a file to WAV using test.exe and reads it into a PCM16Audio object.
 		/// If the format is not supported, test.exe will write a message to the console and this function will throw an AudioImporterException.
 		/// </summary>
 		/// <param name="filename">The path of the file to read</param>
 		/// <returns>A PCM16Audio, which may or may not be looping</returns>
-		public async Task<PCM16Audio> ReadFileAsync(string filename, IProgress<double> progress) {
+		public async Task<PCM16Audio> ReadFileAsync(string filename, IAudioHints hints, IProgress<double> progress) {
 			if (!File.Exists(TestExePath)) {
 				throw new AudioImporterException("test.exe not found at path: " + TestExePath);
 			}

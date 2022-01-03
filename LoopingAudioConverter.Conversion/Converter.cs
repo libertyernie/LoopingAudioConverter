@@ -91,7 +91,7 @@ namespace LoopingAudioConverter.Conversion {
                     yield return new VGMStreamImporter(vgmstream_path);
                 yield return new VGAudioImporter();
                 yield return new BrawlLibImporter();
-                yield return new VGMImporter(effectEngine, o.SampleRate ?? 44100);
+                yield return new VGMImporter(effectEngine);
                 yield return effectEngine;
             }
 
@@ -162,7 +162,7 @@ namespace LoopingAudioConverter.Conversion {
             foreach (IAudioImporter importer in importers_supported) {
                 try {
                     env.UpdateStatus(filename_no_ext, $"Decoding ({importer.GetType().Name})");
-                    w = await importer.ReadFileAsync(inputFile, new ProgressSubset(progress, 0.0, 0.5));
+                    w = await importer.ReadFileAsync(inputFile, o.GetAudioHints(inputFile), new ProgressSubset(progress, 0.0, 0.5));
                     progress?.Report(0.5);
                     break;
                 } catch (AudioImporterException e) {

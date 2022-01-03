@@ -22,7 +22,9 @@ namespace LoopingAudioConverter.WAV {
 			return EXTENSIONS.Any(s => s.Equals(extension, StringComparison.InvariantCultureIgnoreCase));
 		}
 
-		public Task<PCM16Audio> ReadFileAsync(string filename, IProgress<double> progress) {
+		bool IAudioImporter.SharesCodecsWith(IAudioExporter exporter) => false;
+
+		public Task<PCM16Audio> ReadFileAsync(string filename, IAudioHints hints, IProgress<double> progress) {
 			try {
 				return Task.FromResult(WaveConverter.FromByteArray(File.ReadAllBytes(filename)));
 			} catch (WaveConverterException e) {

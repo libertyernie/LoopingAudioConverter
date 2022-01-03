@@ -1,5 +1,6 @@
 ﻿using BrawlLib.SSBB.Types.Audio;
 using LoopingAudioConverter.Conversion;
+using LoopingAudioConverter.PCM;
 using LoopingAudioConverter.VGAudioOptions;
 using System;
 using System.Collections.Generic;
@@ -65,7 +66,14 @@ namespace LoopingAudioConverter {
 
 		string IEncodingParameters.FFMpeg_Vorbis => OggVorbisEncodingParameters;
 
-		LoopOverride? IConverterOptions.GetLoopOverrides(string filename) {
+		private class NoHints : IAudioHints {
+			int? IAudioHints.SampleRateForRendering => null;
+			TimeSpan? IAudioHints.Duration => null;
+		}
+
+		IAudioHints IConverterOptions.GetAudioHints(string filename) => new NoHints();
+
+		public LoopOverride? GetLoopOverrides(string filename) {
 			if (File.Exists("loop.txt")) {
 				using (StreamReader sr = new StreamReader("loop.txt")) {
 					string line;
