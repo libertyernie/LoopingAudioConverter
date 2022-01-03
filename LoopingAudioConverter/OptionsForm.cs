@@ -129,7 +129,6 @@ namespace LoopingAudioConverter {
 			};
 			ddlUnknownLoopBehavior.DataSource = unknownLoopBehaviors;
 			if (ddlUnknownLoopBehavior.SelectedIndex < 0) ddlUnknownLoopBehavior.SelectedIndex = 0;
-			numSimulTasks.Value = Math.Min(Environment.ProcessorCount, numSimulTasks.Maximum);
 
 			runningTasks = new HashSet<Task>();
 		}
@@ -185,7 +184,6 @@ namespace LoopingAudioConverter {
 				txt0StartFilenamePattern.Text = o.PreLoopSuffix;
 				chkStartEnd.Checked = o.ExportLoop;
 				txtStartEndFilenamePattern.Text = o.LoopSuffix;
-				numSimulTasks.Value = o.NumSimulTasks;
 			} catch (Exception e) {
 				MessageBox.Show(e.Message);
 			}
@@ -227,7 +225,6 @@ namespace LoopingAudioConverter {
 				PreLoopSuffix = txt0StartFilenamePattern.Text,
 				ExportLoop = chkStartEnd.Checked,
 				LoopSuffix = txtStartEndFilenamePattern.Text,
-				NumSimulTasks = (int)numSimulTasks.Value,
 				ShortCircuit = chkShortCircuit.Checked,
 			};
 		}

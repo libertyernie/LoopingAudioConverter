@@ -23,6 +23,7 @@ namespace LoopingAudioConverter {
 		public decimal? AmplifyRatio { get; set; }
 		public double? PitchSemitones { get; set; }
 		public double? TempoRatio { get; set; }
+		public TimeSpan DefaultInputDuration { get; set; } = TimeSpan.FromMinutes(20);
 		public ChannelSplit ChannelSplit { get; set; }
 		public ExporterType ExporterType { get; set; }
 		public string AACEncodingParameters { get; set; }
@@ -43,7 +44,6 @@ namespace LoopingAudioConverter {
 		public bool ExportLoop { get; set; }
 		public string LoopSuffix { get; set; }
 		public bool ShortCircuit { get; set; }
-		public int NumSimulTasks { get; set; }
 
 		ILoopExportParameters IConverterOptions.LoopExportParameters => this;
 

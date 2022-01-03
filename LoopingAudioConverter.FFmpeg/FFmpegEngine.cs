@@ -49,10 +49,10 @@ namespace LoopingAudioConverter.FFmpeg {
 		/// </summary>
 		/// <param name="filename">The path of the file to read</param>
 		/// <param name="input_format_parameters">Additional parameters for ffmpeg to include just before the input parameter (optional)</param>
-		/// <param name="max_duration">A maximum duration for the input file. Only used if the actual duration cannot be determined.</param>
+		/// <param name="default_max_duration">A maximum duration for the input file. Only used if the actual duration cannot be determined.</param>
 		/// <param name="progress">Progress bar callback (values range from 0.0 to 1.0, inclusive) (optional)</param>
 		/// <returns>A non-looping PCM16Audio</returns>
-		public async Task<PCM16Audio> ReadFileAsync(string filename, string input_format_parameters = "", TimeSpan? max_duration = null, IProgress<double> progress = null) {
+		public async Task<PCM16Audio> ReadFileAsync(string filename, string input_format_parameters = "", TimeSpan? default_max_duration = null, IProgress<double> progress = null) {
 			if (!File.Exists(ExePath)) {
 				throw new AudioImporterException("FFmpeg not found at path: " + ExePath);
 			}
@@ -60,7 +60,7 @@ namespace LoopingAudioConverter.FFmpeg {
 				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
 			}
 
-			TimeSpan? expected_duration = max_duration ?? await GetDurationAsync(filename);
+			TimeSpan? expected_duration = default_max_duration ?? await GetDurationAsync(filename);
 			if (expected_duration == null) {
 				throw new AudioImporterException("Cannot import a file with no known duration");
 			}
@@ -72,7 +72,7 @@ namespace LoopingAudioConverter.FFmpeg {
 				UseShellExecute = false,
 				CreateNoWindow = true,
 				RedirectStandardOutput = true,
-				Arguments = $"-y {input_format_parameters} {(max_duration is TimeSpan md ? $"-t {md.TotalSeconds}" : "")} -i \"{filename}\" -f wav -acodec pcm_s16le {outfile} -progress pipe:1"
+				Arguments = $"-y {input_format_parameters} {(default_max_duration is TimeSpan md ? $"-t {md.TotalSeconds}" : "")} -i \"{filename}\" -f wav -acodec pcm_s16le {outfile} -progress pipe:1"
 			};
 			var process = Process.Start(psi);
 			using (var sr = process.StandardOutput) {

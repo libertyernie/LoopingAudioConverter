@@ -78,9 +78,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.numFadeOutTime = new System.Windows.Forms.NumericUpDown();
             this.chkShortCircuit = new System.Windows.Forms.CheckBox();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.numSimulTasks = new System.Windows.Forms.NumericUpDown();
-            this.lblSimulTasks = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnLoadOptions = new System.Windows.Forms.Button();
             this.btnHelp = new System.Windows.Forms.Button();
@@ -107,8 +104,6 @@
             this.pnlExportSegments.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numNumberLoops)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numFadeOutTime)).BeginInit();
-            this.panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numSimulTasks)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel5.SuspendLayout();
             this.SuspendLayout();
@@ -303,7 +298,6 @@
             this.flowLayoutPanel2.Controls.Add(this.pnlExportChannels);
             this.flowLayoutPanel2.Controls.Add(this.pnlExportSegments);
             this.flowLayoutPanel2.Controls.Add(this.chkShortCircuit);
-            this.flowLayoutPanel2.Controls.Add(this.panel3);
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 0);
@@ -782,48 +776,6 @@
             this.chkShortCircuit.TabIndex = 4;
             this.chkShortCircuit.Text = "Skip re-encoding when possible";
             // 
-            // panel3
-            // 
-            this.panel3.AutoSize = true;
-            this.panel3.Controls.Add(this.numSimulTasks);
-            this.panel3.Controls.Add(this.lblSimulTasks);
-            this.panel3.Location = new System.Drawing.Point(230, 189);
-            this.panel3.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(198, 28);
-            this.panel3.TabIndex = 6;
-            // 
-            // numSimulTasks
-            // 
-            this.numSimulTasks.Location = new System.Drawing.Point(142, 4);
-            this.numSimulTasks.Maximum = new decimal(new int[] {
-            128,
-            0,
-            0,
-            0});
-            this.numSimulTasks.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numSimulTasks.Name = "numSimulTasks";
-            this.numSimulTasks.Size = new System.Drawing.Size(53, 20);
-            this.numSimulTasks.TabIndex = 1;
-            this.numSimulTasks.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // lblSimulTasks
-            // 
-            this.lblSimulTasks.Location = new System.Drawing.Point(3, 0);
-            this.lblSimulTasks.Name = "lblSimulTasks";
-            this.lblSimulTasks.Size = new System.Drawing.Size(133, 28);
-            this.lblSimulTasks.TabIndex = 0;
-            this.lblSimulTasks.Text = "Number of simultaneous encoding/decoding tasks:";
-            this.lblSimulTasks.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.btnLoadOptions);
@@ -838,7 +790,6 @@
             // 
             // btnLoadOptions
             // 
-            this.btnLoadOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnLoadOptions.Location = new System.Drawing.Point(84, 4);
             this.btnLoadOptions.Name = "btnLoadOptions";
             this.btnLoadOptions.Size = new System.Drawing.Size(100, 23);
@@ -872,7 +823,6 @@
             // 
             // btnSaveOptions
             // 
-            this.btnSaveOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSaveOptions.Location = new System.Drawing.Point(190, 4);
             this.btnSaveOptions.Name = "btnSaveOptions";
             this.btnSaveOptions.Size = new System.Drawing.Size(100, 23);
@@ -958,8 +908,6 @@
             this.pnlExportSegments.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numNumberLoops)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numFadeOutTime)).EndInit();
-            this.panel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numSimulTasks)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -1009,9 +957,6 @@
         private System.Windows.Forms.TextBox txtOutputDir;
         private System.Windows.Forms.Label lblOutputDir;
         private System.Windows.Forms.Button btnBrowse;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.NumericUpDown numSimulTasks;
-        private System.Windows.Forms.Label lblSimulTasks;
         private System.Windows.Forms.Button btnHelp;
         private System.Windows.Forms.TextBox txtSuffixFilter;
         private System.Windows.Forms.Label label4;
