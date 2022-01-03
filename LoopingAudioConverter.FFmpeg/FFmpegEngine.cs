@@ -28,7 +28,18 @@ namespace LoopingAudioConverter.FFmpeg {
 
 		bool IAudioImporter.SharesCodecsWith(IAudioExporter exporter) => false;
 
-		private async Task<TimeSpan?> GetDurationAsync(string filename) {
+		private struct Metadata {
+			public string codec;
+			public TimeSpan? duration;
+			public int? sample_rate;
+        }
+
+		private async Task<Metadata> GetInputMetadataAsync(string filename) {
+			Metadata m = new Metadata {
+				codec = null,
+				duration = null,
+				sample_rate = null
+			};
 			ProcessStartInfo psi = new ProcessStartInfo {
 				FileName = ExePath,
 				UseShellExecute = false,
@@ -37,13 +48,19 @@ namespace LoopingAudioConverter.FFmpeg {
 			};
 			var result = await ProcessEx.RunAsync(psi);
 			foreach (string line in result.StandardError) {
-				if (line.StartsWith("  Duration: ")) {
-					string str = line.Substring(12).Split(',').First();
+				if (line.StartsWith("Input #0, ")) {
+					m.codec = line.Substring("Input #0, ".Length).Split(',').First();
+                } else if (line.StartsWith("  Duration: ")) {
+					string str = line.Substring("  Duration: ".Length).Split(',').First();
 					if (TimeSpan.TryParse(str, out TimeSpan ts))
-						return ts;
-                }
-            }
-			return null;
+						m.duration = ts;
+				} else if (line.StartsWith("  Stream #0:0: Audio: pcm_s16le, ")) {
+					string str = line.Substring("  Stream #0:0: Audio: pcm_s16le, ".Length).Split(' ').First();
+					if (int.TryParse(str, out int sr))
+						m.sample_rate = sr;
+				}
+			}
+			return m;
 		}
 
 		/// <summary>
@@ -62,8 +79,16 @@ namespace LoopingAudioConverter.FFmpeg {
 				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
 			}
 
-			TimeSpan? actual_duration = await GetDurationAsync(filename);
-			TimeSpan expected_duration = hints.Duration ?? TimeSpan.FromMinutes(10);
+			var metadata = await GetInputMetadataAsync(filename);
+
+			TimeSpan? actual_duration = metadata.duration;
+
+			TimeSpan getExpectedDuration() {
+				if (hints.SampleCount is int sc && metadata.sample_rate is int rr)
+					return TimeSpan.FromSeconds(sc / (double)rr);
+				else
+					return actual_duration ?? TimeSpan.FromMinutes(10);
+			}
 
 			string outfile = Path.GetTempFileName();
 
@@ -72,11 +97,11 @@ namespace LoopingAudioConverter.FFmpeg {
 				UseShellExecute = false,
 				CreateNoWindow = true,
 				RedirectStandardOutput = true,
-				Arguments = $"-y {(hints.SampleRateForRendering is int dsr ? $"-sample_rate {dsr}" : "")} {(actual_duration == null ? $"-t {expected_duration.TotalSeconds}" : "")} -i \"{filename}\" -f wav -acodec pcm_s16le {outfile} -progress pipe:1"
+				Arguments = $"-y {(metadata.codec == "libgme" ? "-f libgme" : "")} {(hints.SampleRate is int gr && metadata.codec == "libgme" ? $"-sample_rate {gr}" : "")} {(actual_duration == null ? $"-t {getExpectedDuration().TotalSeconds + 1}" : "")} -i \"{filename}\" -f wav -acodec pcm_s16le {outfile} -progress pipe:1"
 			};
 			var process = Process.Start(psi);
 			using (var sr = process.StandardOutput) {
-				double expected_ticks = expected_duration.Ticks;
+				double expected_ticks = getExpectedDuration().Ticks;
 
 				string line;
 				while ((line = await sr.ReadLineAsync()) != null) {

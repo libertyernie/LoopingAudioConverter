@@ -34,14 +34,9 @@ namespace LoopingAudioConverter.VGM {
 		bool IAudioImporter.SharesCodecsWith(IAudioExporter exporter) => false;
 
         private class Hints : IAudioHints {
-            public int? SampleRateForRendering { get; }
-            public TimeSpan? Duration { get; }
-
-            public Hints(int? sampleRateForRendering, TimeSpan? duration) {
-                SampleRateForRendering = sampleRateForRendering;
-                Duration = duration;
-            }
-        }
+            public int? SampleRate { get; set; }
+			public int? SampleCount { get; set; }
+		}
 
         /// <summary>
         /// Renders a file to WAV using VGMPlay and reads it into a PCM16Audio object.
@@ -75,8 +70,11 @@ namespace LoopingAudioConverter.VGM {
 					loopSamples = br.ReadInt32();
 				}
 
-				int r = hints.SampleRateForRendering ?? 44100;
-				var data = await Engine.ReadFileAsync(filename, new Hints(r, TimeSpan.FromSeconds(samples / (double)r + 1.0)), progress);
+				int r = hints.SampleRate ?? 44100;
+				var data = await Engine.ReadFileAsync(filename, new Hints {
+					SampleRate = r,
+					SampleCount = samples
+				}, progress);
 				if (loopSamples != 0) {
 					data.Looping = true;
 					data.LoopStart = (int)Math.Round((samples - loopSamples) * (r / 44100.0));

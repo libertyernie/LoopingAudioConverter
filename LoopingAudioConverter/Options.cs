@@ -66,12 +66,18 @@ namespace LoopingAudioConverter {
 
 		string IEncodingParameters.FFMpeg_Vorbis => OggVorbisEncodingParameters;
 
-		private class NoHints : IAudioHints {
-			int? IAudioHints.SampleRateForRendering => null;
-			TimeSpan? IAudioHints.Duration => null;
+		private class Hints : IAudioHints {
+			public LoopOverride? LoopOverride { get; set; }
+
+			public int? SampleRate => null;
+			public int? SampleCount => LoopOverride?.LoopEnd;
+
+			public Hints(LoopOverride? loopOverride) {
+				LoopOverride = loopOverride;
+			}
 		}
 
-		IAudioHints IConverterOptions.GetAudioHints(string filename) => new NoHints();
+		IAudioHints IConverterOptions.GetAudioHints(string filename) => new Hints(GetLoopOverrides(filename));
 
 		public LoopOverride? GetLoopOverrides(string filename) {
 			if (File.Exists("loop.txt")) {
