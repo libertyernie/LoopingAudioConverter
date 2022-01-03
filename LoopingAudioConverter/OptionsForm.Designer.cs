@@ -934,7 +934,7 @@
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.panel1);
             this.Name = "OptionsForm";
-            this.Text = "Looping Audio Converter";
+            this.Text = "Looping Audio Converter 3.0";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OptionsForm_FormClosing);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
