@@ -26,19 +26,43 @@ namespace LoopingAudioConverter.FFmpeg {
 
 		bool IAudioImporter.SupportsExtension(string extension) => true;
 
+		private async Task<TimeSpan?> GetDurationAsync(string filename) {
+			ProcessStartInfo psi = new ProcessStartInfo {
+				FileName = ExePath,
+				UseShellExecute = false,
+				CreateNoWindow = true,
+				Arguments = $"-t 1.0 -i \"{filename}\" -f null -"
+			};
+			var result = await ProcessEx.RunAsync(psi);
+			foreach (string line in result.StandardError) {
+				if (line.StartsWith("  Duration: ")) {
+					string str = line.Substring(12).Split(',').First();
+					if (TimeSpan.TryParse(str, out TimeSpan ts))
+						return ts;
+                }
+            }
+			return null;
+		}
+
 		/// <summary>
 		/// Converts a file to WAV using FFmpeg and reads it into a PCM16Audio object.
 		/// </summary>
 		/// <param name="filename">The path of the file to read</param>
 		/// <param name="input_format_parameters">Additional parameters for ffmpeg to include just before the input parameter (optional)</param>
+		/// <param name="max_duration">A maximum duration for the input file. Only used if the actual duration cannot be determined.</param>
 		/// <param name="progress">Progress bar callback (values range from 0.0 to 1.0, inclusive) (optional)</param>
 		/// <returns>A non-looping PCM16Audio</returns>
-		public async Task<PCM16Audio> ReadFileAsync(string filename, string input_format_parameters = "", IProgress<double> progress = null) {
+		public async Task<PCM16Audio> ReadFileAsync(string filename, string input_format_parameters = "", TimeSpan? max_duration = null, IProgress<double> progress = null) {
 			if (!File.Exists(ExePath)) {
 				throw new AudioImporterException("FFmpeg not found at path: " + ExePath);
 			}
 			if (filename.Contains('"')) {
 				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
+			}
+
+			TimeSpan? expected_duration = max_duration ?? await GetDurationAsync(filename);
+			if (expected_duration == null) {
+				throw new AudioImporterException("Cannot import a file with no known duration");
 			}
 
 			string outfile = Path.GetTempFileName();
@@ -47,9 +71,24 @@ namespace LoopingAudioConverter.FFmpeg {
 				FileName = ExePath,
 				UseShellExecute = false,
 				CreateNoWindow = true,
-				Arguments = $"-y {input_format_parameters} - i \"{filename}\" -f wav -acodec pcm_s16le {outfile}"
+				RedirectStandardOutput = true,
+				Arguments = $"-y {input_format_parameters} {(max_duration is TimeSpan md ? $"-t {md.TotalSeconds}" : "")} -i \"{filename}\" -f wav -acodec pcm_s16le {outfile} -progress pipe:1"
 			};
-			await ProcessEx.RunAsync(psi);
+			var process = Process.Start(psi);
+			using (var sr = process.StandardOutput) {
+				double expected_ticks = expected_duration.Value.Ticks;
+
+				string line;
+				while ((line = await sr.ReadLineAsync()) != null) {
+					foreach (var str in line.Split(' ')) {
+						if (str.StartsWith("out_time=") && TimeSpan.TryParse(str.Substring(9), out TimeSpan ts)) {
+							double ratio = ts.Ticks / expected_ticks;
+							progress?.Report(Math.Min(1.0, ratio));
+                        }
+					}
+				}
+            }
+			process.WaitForExit();
 
 			try {
 				PCM16Audio lwav = WaveConverter.FromFile(outfile, true);

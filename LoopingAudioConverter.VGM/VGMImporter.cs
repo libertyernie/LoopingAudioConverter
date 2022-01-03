@@ -1,10 +1,11 @@
-﻿using LoopingAudioConverter.PCM;
+﻿using LoopingAudioConverter.FFmpeg;
+using LoopingAudioConverter.PCM;
 using System;
 using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
 
-namespace LoopingAudioConverter.FFmpeg {
+namespace LoopingAudioConverter.VGM {
 	/// <summary>
 	/// A class to use ffmpeg to render VGM/VGZ files to WAV format.
 	/// </summary>
@@ -65,7 +66,7 @@ namespace LoopingAudioConverter.FFmpeg {
 					loopSamples = br.ReadInt32();
 				}
 
-				var data = await Engine.ReadFileAsync(filename, $"-f libgme -sample_rate {SampleRate} -t {samples / 44100.0}", progress);
+				var data = await Engine.ReadFileAsync(filename, $"-f libgme -sample_rate {SampleRate}", TimeSpan.FromSeconds(samples / 44100.0), progress);
 				if (loopSamples != 0) {
 					data.Looping = true;
 					data.LoopStart = (int)Math.Round((samples - loopSamples) * (SampleRate / 44100.0));
