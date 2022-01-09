@@ -78,6 +78,32 @@ namespace LoopingAudioConverter {
 		}
 
 		/// <summary>
+		/// Performs a crude mix down to one channel by averaging all channels equally.
+		/// </summary>
+		/// <returns>A new PCM16Audio object (or possibly the current object, if already mono)</returns>
+		public PCM16Audio MixToMono() {
+			if (Channels == 1)
+				return this;
+
+			short[] data = new short[Samples.Length / Channels];
+
+			IEnumerable<short> sampleSource = Samples;
+			var enumerator = sampleSource.GetEnumerator();
+
+			for (int i = 0; i < data.Length; i++) {
+				int sum = 0;
+				for (int j = 0; j < Channels ; j++) {
+					if (!enumerator.MoveNext())
+						break;
+					sum += enumerator.Current;
+				}
+				data[i] = (short)(sum / Channels);
+			}
+
+			return new PCM16Audio(1, SampleRate, data, LoopStart, LoopEnd, NonLooping);
+		}
+
+		/// <summary>
 		/// Creates a new non-looping PCM16Audio object containing only the pre-loop portion of this track.
 		/// </summary>
 		/// <returns>A new PCM16Audio object</returns>
