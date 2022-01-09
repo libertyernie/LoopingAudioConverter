@@ -98,7 +98,6 @@
       <DependentUpon>MP3QualityForm.cs</DependentUpon>
     </Compile>
     <Compile Include="OptionsSerialization.cs" />
-    <Compile Include="TempFiles.cs" />
     <Compile Include="OptionsForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -505,10 +505,6 @@ namespace LoopingAudioConverter {
 			}
 		}
 
-		private void OptionsForm_FormClosing(object sender, FormClosingEventArgs e) {
-			TempFiles.DeleteAll();
-		}
-
 		bool IConverterEnvironment.ShowLoopConversionDialog(Conversion.NamedAudio file) {
 			PCM16LoopWrapper audioStream = new PCM16LoopWrapper(file.Audio);
 			using (BrstmConverterDialog dialog = new BrstmConverterDialog(audioStream)) {
