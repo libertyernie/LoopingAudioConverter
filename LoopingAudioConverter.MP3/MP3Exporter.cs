@@ -22,7 +22,7 @@ namespace LoopingAudioConverter.MP3 {
 				return;
 			}
 
-			await effectEngine.WriteFileAsync(lwav, output_filename, encoding_parameters);
+			await effectEngine.WriteFileAsync(lwav, output_filename, encoding_parameters, progress);
 		}
 	}
 }

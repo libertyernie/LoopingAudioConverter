@@ -99,13 +99,6 @@
     </Compile>
     <Compile Include="OptionsSerialization.cs" />
     <Compile Include="TempFiles.cs" />
-    <Compile Include="MultipleProgressWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MultipleProgressWindow.Designer.cs">
-      <DependentUpon>MultipleProgressWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="NamedAudio.cs" />
     <Compile Include="OptionsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -135,9 +128,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="OptionsForm.resx">
       <DependentUpon>OptionsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MultipleProgressWindow.resx">
-      <DependentUpon>MultipleProgressWindow.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

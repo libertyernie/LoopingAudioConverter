@@ -224,7 +224,9 @@ namespace LoopingAudioConverter.FFmpeg {
 		/// </summary>
 		/// <param name="lwav">Input audio</param>
 		/// <param name="output_filename">Path of output file</param>
-		public async Task WriteFileAsync(PCM16Audio lwav, string output_filename, string encodingParameters) {
+		/// <param name="encodingParameters">Additional encoding parameters for ffmpeg</param>
+		/// <param name="progress">Progress tracker (optional)</param>
+		public async Task WriteFileAsync(PCM16Audio lwav, string output_filename, string encodingParameters, IProgress<double> progress = null) {
 			if (output_filename.Contains('"')) {
 				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
 			}
@@ -234,15 +236,32 @@ namespace LoopingAudioConverter.FFmpeg {
 
 			ProcessStartInfo psi = new ProcessStartInfo {
 				FileName = ExePath,
-				Arguments = $"-y -f wav -i {infile} {encodingParameters} \"{output_filename}\"",
+				Arguments = $"-y -f wav -i {infile} {encodingParameters} \"{output_filename}\" -progress pipe:1",
 				UseShellExecute = false,
-				CreateNoWindow = true
+				CreateNoWindow = true,
+				RedirectStandardOutput = true
 			};
-			var pr = await ProcessEx.RunAsync(psi);
+			var process = Process.Start(psi);
+			using (var sr = process.StandardOutput) {
+				double sample_count = lwav.Samples.Length / lwav.Channels;
+				double seconds_count = sample_count / lwav.SampleRate;
+				double expected_ticks = TimeSpan.FromSeconds(seconds_count).Ticks;
+
+				string line;
+				while ((line = await sr.ReadLineAsync()) != null) {
+					foreach (var str in line.Split(' ')) {
+						if (str.StartsWith("out_time=") && TimeSpan.TryParse(str.Substring(9), out TimeSpan ts)) {
+							double ratio = ts.Ticks / expected_ticks;
+							progress?.Report(Math.Min(1.0, ratio));
+						}
+					}
+				}
+			}
+			process.WaitForExit();
 			File.Delete(infile);
 
-			if (pr.ExitCode != 0) {
-				throw new AudioExporterException("ffmpeg quit with exit code " + pr.ExitCode);
+			if (process.ExitCode != 0) {
+				throw new AudioExporterException("ffmpeg quit with exit code " + process.ExitCode);
 			}
 		}
 	}
