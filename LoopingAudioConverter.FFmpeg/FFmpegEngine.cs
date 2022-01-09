@@ -92,12 +92,29 @@ namespace LoopingAudioConverter.FFmpeg {
 
 			string outfile = Path.GetTempFileName();
 
+			IEnumerable<string> getArgs() {
+				yield return "-y";
+				if (metadata.codec == "libgme") {
+					yield return "-f libgme";
+					if (hints.RenderingSampleRate is int gr) {
+						yield return $"-sample_rate {gr}";
+                    }
+				}
+				if (actual_duration == null) {
+					yield return $"-t {getExpectedDuration().TotalSeconds + 1}";
+				}
+				yield return $"-i \"{filename}\"";
+				yield return "-f wav";
+				yield return "-acodec pcm_s16le";
+				yield return $"\"{outfile}\"";
+				yield return "-progress pipe:1";
+			}
 			ProcessStartInfo psi = new ProcessStartInfo {
 				FileName = ExePath,
 				UseShellExecute = false,
 				CreateNoWindow = true,
 				RedirectStandardOutput = true,
-				Arguments = $"-y {(metadata.codec == "libgme" ? "-f libgme" : "")} {(hints.SampleRate is int gr && metadata.codec == "libgme" ? $"-sample_rate {gr}" : "")} {(actual_duration == null ? $"-t {getExpectedDuration().TotalSeconds + 1}" : "")} -i \"{filename}\" -f wav -acodec pcm_s16le {outfile} -progress pipe:1"
+				Arguments = string.Join(" ", getArgs())
 			};
 			var process = Process.Start(psi);
 			using (var sr = process.StandardOutput) {

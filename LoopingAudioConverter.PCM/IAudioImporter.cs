@@ -8,7 +8,7 @@ namespace LoopingAudioConverter.PCM {
 	}
 
 	public interface IAudioHints {
-		int? SampleRate { get; }
+		int RenderingSampleRate { get; }
 		int? SampleCount { get; }
 	}
 

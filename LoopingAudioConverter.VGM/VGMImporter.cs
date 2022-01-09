@@ -34,7 +34,7 @@ namespace LoopingAudioConverter.VGM {
 		bool IAudioImporter.SharesCodecsWith(IAudioExporter exporter) => false;
 
         private class Hints : IAudioHints {
-            public int? SampleRate { get; set; }
+            public int RenderingSampleRate { get; set; }
 			public int? SampleCount { get; set; }
 		}
 
@@ -70,15 +70,14 @@ namespace LoopingAudioConverter.VGM {
 					loopSamples = br.ReadInt32();
 				}
 
-				int r = hints.SampleRate ?? 44100;
 				var data = await Engine.ReadFileAsync(filename, new Hints {
-					SampleRate = r,
+					RenderingSampleRate = hints.RenderingSampleRate,
 					SampleCount = samples
 				}, progress);
 				if (loopSamples != 0) {
 					data.Looping = true;
-					data.LoopStart = (int)Math.Round((samples - loopSamples) * (r / 44100.0));
-					data.LoopEnd = (int)Math.Round(samples * (r / 44100.0));
+					data.LoopStart = (int)Math.Round((samples - loopSamples) * (hints.RenderingSampleRate / 44100.0));
+					data.LoopEnd = (int)Math.Round(samples * (hints.RenderingSampleRate / 44100.0));
 				}
 				return data;
 			} catch (Exception e) when (!(e is AudioImporterException)) {
