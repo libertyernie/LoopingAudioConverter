@@ -507,7 +507,7 @@
             this.lblUnknownLoopBehavior.Name = "lblUnknownLoopBehavior";
             this.lblUnknownLoopBehavior.Size = new System.Drawing.Size(221, 21);
             this.lblUnknownLoopBehavior.TabIndex = 0;
-            this.lblUnknownLoopBehavior.Text = "For non-looping files:";
+            this.lblUnknownLoopBehavior.Text = "Loop options:";
             this.lblUnknownLoopBehavior.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pnlExportChannels

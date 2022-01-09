@@ -6,336 +6,472 @@
     <title></title>
   </head>
   <body>
-    <h1>Looping Audio Converter 2.5</h1>
+    <h1>Looping Audio Converter 3.0<br>
+    </h1>
     <p>This application acts as a frontend to other programs and
       libraries, and allows conversion between a variety of looping
       audio formats.<br>
     </p>
-    <p>Supported input formats:<br>
+    <p>Supported importers:<br>
     </p>
-    <p> </p>
-    <table border="1">
+    <table cellspacing="2" cellpadding="2" border="1">
       <thead> <tr>
-          <th align="left" height="17">File extension</th>
-          <th align="left">Container(s)</th>
-          <th align="left">Decoder</th>
-          <th align="left">Supports looping</th>
+          <th valign="top">Name<br>
+          </th>
+          <th valign="top">Formats<br>
+          </th>
+          <th valign="top">Decoder<br>
+          </th>
+          <th valign="top">Supports Looping Input<br>
+          </th>
+          <th valign="top">Notes<br>
+          </th>
         </tr>
-      </thead><tbody>
+      </thead> <tbody>
         <tr>
-          <td align="left" height="32">.wav<br>
-            .lwav</td>
-          <td align="left">RIFF WAVE</td>
-          <td align="left">LoopingAudioConverter</td>
-          <td align="left">✓</td>
-        </tr>
-        <tr>
-          <td align="left" height="17">.bfstm</td>
-          <td align="left">BFSTM</td>
-          <td rowspan="13" colspan="1" align="left"><a
-              href="https://github.com/Thealexbarney/VGAudio">VGAudio</a></td>
-          <td align="left">✓</td>
-        </tr>
-        <tr>
-          <td align="left" height="17">.bcstm</td>
-          <td align="left">BCSTM</td>
-          <td align="left">✓</td>
-        </tr>
-        <tr>
-          <td align="left" height="17">.brstm</td>
-          <td align="left">BRSTM</td>
-          <td align="left">✓</td>
-        </tr>
-        <tr>
-          <td align="left" height="32">.brwav<br>
-            .rwav</td>
-          <td align="left">BRWAV</td>
-          <td align="left">✓</td>
-        </tr>
-        <tr>
-          <td align="left" height="32">.bcwav<br>
-            .cwav</td>
-          <td align="left">BCWAV</td>
-          <td align="left">✓</td>
-        </tr>
-        <tr>
-          <td align="left" height="17">.bfwav</td>
-          <td align="left">BFWAV</td>
-          <td align="left">✓</td>
-        </tr>
-        <tr>
-          <td align="left" height="17">.bcstp</td>
-          <td align="left">BCSTP</td>
-          <td align="left">✓</td>
-        </tr>
-        <tr>
-          <td align="left" height="17">.bfstp</td>
-          <td align="left">BFSTP</td>
-          <td align="left">✓</td>
-        </tr>
-        <tr>
-          <td align="left" height="32">.dsp<br>
-            .mdsp</td>
-          <td align="left">DSP (Nintendo)</td>
-          <td align="left">✓</td>
-        </tr>
-        <tr>
-          <td align="left" height="17">.idsp</td>
-          <td align="left">Interleaved DSP (Nintendo)</td>
-          <td align="left">✓</td>
-        </tr>
-        <tr>
-          <td align="left" height="17">.hps</td>
-          <td align="left">HPS (HAL)</td>
-          <td align="left">✓</td>
-        </tr>
-        <tr>
-          <td align="left" height="17">.adx</td>
-          <td align="left">CRI ADX</td>
-          <td align="left">✓</td>
-        </tr>
-        <tr>
-          <td align="left" height="17">.hca</td>
-          <td align="left">CRI HCA</td>
-          <td align="left">✓</td>
-        </tr>
-        <tr>
-          <td align="left" height="17">.mp3</td>
-          <td align="left">MP3</td>
-          <td align="left"><a href="https://github.com/Nihlus/MP3Sharp">MP3Sharp</a></td>
-          <td align="left"><br>
+          <td valign="top">WaveImporter<br>
           </td>
-        </tr>
-        <tr>
-          <td align="left" height="17">.aac</td>
-          <td align="left">AAC</td>
-          <td rowspan="2" colspan="1" align="left"><a
-              href="http://www.audiocoding.com/faad2.html">faad</a></td>
-          <td align="left"><br>
+          <td valign="top">*.wav (signed 16-bit PCM)<br>
           </td>
-        </tr>
-        <tr>
-          <td align="left" height="17">.m4a</td>
-          <td align="left">MP4</td>
-          <td align="left"><br>
+          <td valign="top"><br>
           </td>
-        </tr>
-        <tr>
-          <td align="left" height="32">.vgm<br>
-            .vgz</td>
-          <td align="left">VGM </td>
-          <td align="left"><a href="https://github.com/vgmrips/vgmplay">VGMPlay</a></td>
-          <td align="left">✓ </td>
-        </tr>
-        <tr>
-          <td align="left" height="17">.pcm</td>
-          <td align="left">MSU-1</td>
-          <td align="left">LoopingAudioConverter</td>
-          <td align="left">✓</td>
-        </tr>
-        <tr>
-          <td align="left" height="17">.msf</td>
-          <td align="left">MSF (PlayStation 3) – PCM</td>
-          <td align="left"><a
-href="https://github.com/libertyernie/LoopingAudioConverter/tree/master/MSFContainerLib">MSFContainerLib</a></td>
-          <td align="left">✓ </td>
-        </tr>
-        <tr>
-          <td align="left" height="17">.msf</td>
-          <td align="left">MSF (PlayStation 3) – MP3</td>
-          <td align="left">MSFContainerLib + MP3Sharp</td>
-          <td align="left">✓</td>
-        </tr>
-        <tr>
-          <td align="left" height="17">.msf</td>
-          <td align="left">MSF (PlayStation 3) – Other</td>
-          <td rowspan="4" colspan="1" align="left"><a
-              href="https://gitlab.kode54.net/kode54/vgmstream">vgmstream</a></td>
-          <td align="left">✓</td>
-        </tr>
-        <tr>
-          <td align="left" height="32">.ogg<br>
-            .logg</td>
-          <td align="left">Ogg</td>
-          <td align="left">✓</td>
-        </tr>
-        <tr>
-          <td align="left" height="17">.flac</td>
-          <td align="left">FLAC</td>
-          <td align="left"><br>
-          </td>
-        </tr>
-        <tr>
-          <td align="left" height="17">.*</td>
-          <td align="left">Miscellaneous</td>
-          <td align="left">✓</td>
-        </tr>
-        <tr>
-          <td valign="top">.*<br>
-          </td>
-          <td valign="top">Miscellaneous<br>
-          </td>
-          <td valign="top"><a moz-do-not-send="true"
-              href="https://www.gyan.dev/ffmpeg/builds/">ffmpeg</a><br>
+          <td valign="top">Yes (smpl)<br>
           </td>
           <td valign="top"><br>
           </td>
         </tr>
         <tr>
-          <td align="left" height="17">.*</td>
-          <td align="left">Miscellaneous</td>
-          <td align="left"><a href="http://sox.sourceforge.net">SoX</a></td>
-          <td align="left"><br>
+          <td valign="top">MP3Importer<br>
+          </td>
+          <td valign="top">*.mp3<br>
+          </td>
+          <td valign="top"><a href="https://github.com/Nihlus/MP3Sharp">MP3Sharp</a></td>
+          <td valign="top">No<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">VorbisImporter<br>
+          </td>
+          <td valign="top">*.ogg, *.oga<br>
+          </td>
+          <td valign="top"><a moz-do-not-send="true"
+              href="https://www.gyan.dev/ffmpeg/builds/">ffmpeg</a> </td>
+          <td valign="top">Yes (LOOPSTART/LOOPLENGTH)<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">MSU1Converter<br>
+          </td>
+          <td valign="top">*.pcm<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top">Yes<br>
+          </td>
+          <td valign="top">Files with a "loop start" of 0 are treated as
+            non-looping<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">MSFImporter<br>
+          </td>
+          <td valign="top">*.msf<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top">Supports 16-bit PCM (big or little endian),
+            or MP3 (via MP3Sharp)<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">VGMStreamImporter<br>
+          </td>
+          <td valign="top">*<br>
+          </td>
+          <td valign="top"><a
+              href="https://gitlab.kode54.net/kode54/vgmstream">vgmstream</a><br>
+            (test.exe)<br>
+          </td>
+          <td valign="top">Yes (via vgmstream)<br>
+          </td>
+          <td valign="top">Only attempted if test.exe is present<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">VGAudioImporter<br>
+          </td>
+          <td valign="top">*.adx, *.brstm, *.bcstm, *.bcstp, *.bcwav,
+            *.cwav, *.bfstm, *.bfstp, *.bfwav, *.brwav, *.rwav, *.dsp,
+            *.mdsp, *.idsp, *.genh, *.hca, *.hps<br>
+          </td>
+          <td valign="top"><a
+              href="https://github.com/Thealexbarney/VGAudio">VGAudio</a>
+          </td>
+          <td valign="top">Yes<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">BrawlLibImporter<br>
+          </td>
+          <td valign="top">*<br>
+          </td>
+          <td valign="top"><a moz-do-not-send="true"
+              href="https://github.com/soopercool101/BrawlCrate">BrawlCrate</a>
+            (BrawlLib.dll)<br>
+          </td>
+          <td valign="top">Yes<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">VGMImporter<br>
+          </td>
+          <td valign="top">*.vgm, *.vgz<br>
+          </td>
+          <td valign="top"><a moz-do-not-send="true"
+              href="https://www.gyan.dev/ffmpeg/builds/">ffmpeg</a> </td>
+          <td valign="top">Yes (from file header)<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">FFmpegEngine<br>
+          </td>
+          <td valign="top">*<br>
+          </td>
+          <td valign="top"><a moz-do-not-send="true"
+              href="https://www.gyan.dev/ffmpeg/builds/">ffmpeg</a> </td>
+          <td valign="top">No<br>
+          </td>
+          <td valign="top"><br>
           </td>
         </tr>
       </tbody>
     </table>
-    <p>Supported output formats:<br>
+    <p>Supported exporters:<br>
     </p>
-    <table border="1">
+    <p>(Note: some exporters have one or more "preferred importers" -
+      these importers will be tried first, and they may allow
+      LoopingAudioConverter to skip re-encoding the audio data.)<br>
+    </p>
+    <table cellspacing="2" cellpadding="2" border="1">
       <thead> <tr>
-          <th align="left" height="17">File extension</th>
-          <th align="left">Container(s)</th>
-          <th align="left">Codec(s)</th>
-          <th align="left">Encoder</th>
-          <th align="left">Supports looping</th>
+          <th valign="top">Name<br>
+          </th>
+          <th valign="top">Formats<br>
+          </th>
+          <th valign="top">Encoder<br>
+          </th>
+          <th valign="top">Supports Looping Input<br>
+          </th>
+          <th valign="top">Additional Options Available<br>
+          </th>
+          <th valign="top">Preferred Importers <br>
+          </th>
         </tr>
-      </thead><tbody>
+      </thead> <tbody>
         <tr>
-          <td align="left" height="32">.wav<br>
-            .lwav</td>
-          <td align="left">RIFF WAVE</td>
-          <td align="left">16-bit PCM (little endian)</td>
-          <td align="left">LoopingAudioConverter</td>
-          <td align="left">✓</td>
-        </tr>
-        <tr>
-          <td align="left" height="62">.bfstm<br>
-            .bcstm<br>
-            .brstm</td>
-          <td align="left">BFSTM<br>
-            BCSTM<br>
-            BRSTM</td>
-          <td align="left">ADPCM (Nintendo)<br>
-            16-bit PCM<br>
-            8-bit PCM</td>
-          <td rowspan="6" colspan="1" align="left">VGAudio</td>
-          <td align="left">✓</td>
-        </tr>
-        <tr>
-          <td align="left" height="17">.dsp</td>
-          <td align="left">DSP (Nintendo)</td>
-          <td rowspan="3" colspan="1" align="left">ADPCM (Nintendo)</td>
-          <td align="left">✓</td>
-        </tr>
-        <tr>
-          <td align="left" height="17">.idsp</td>
-          <td align="left">DSP (Nintendo) (interleaved)</td>
-          <td align="left">✓</td>
-        </tr>
-        <tr>
-          <td align="left" height="17">.hps</td>
-          <td align="left">HPS (HAL)</td>
-          <td align="left">✓</td>
-        </tr>
-        <tr>
-          <td align="left" height="17">.adx</td>
-          <td colspan="2" align="left">CRI ADX</td>
-          <td align="left">✓</td>
-        </tr>
-        <tr>
-          <td align="left" height="17">.hca</td>
-          <td colspan="2" align="left">CRI HCA</td>
-          <td align="left">✓</td>
-        </tr>
-        <tr>
-          <td valign="middle">.brstm<br>
+          <td valign="top">[VGAudio] BRSTM<br>
           </td>
-          <td valign="middle">BRSTM<br>
+          <td valign="top">*.brstm<br>
           </td>
-          <td valign="middle">ADPCM (Nintendo)<br>
-            16-bit PCM (big endian)<br>
+          <td valign="top">VGAudio<br>
           </td>
-          <td rowspan="4" colspan="1" valign="middle">BrawlLib<br>
+          <td valign="top">Yes<br>
           </td>
-          <td valign="middle">✓</td>
-        </tr>
-        <tr>
-          <td valign="middle">.bcstm<br>
+          <td valign="top">Yes (including codec: ADPCM, PCM16, etc.)<br>
           </td>
-          <td valign="middle">BCSTM<br>
-          </td>
-          <td rowspan="3" colspan="1" valign="middle">ADPCM (Nintendo)</td>
-          <td valign="middle">✓</td>
-        </tr>
-        <tr>
-          <td valign="middle">.bfstm<br>
-          </td>
-          <td valign="middle">BFSTM<br>
-          </td>
-          <td valign="middle">✓</td>
-        </tr>
-        <tr>
-          <td valign="middle">.brwav<br>
-          </td>
-          <td valign="middle">BRWAV<br>
-          </td>
-          <td valign="middle">✓</td>
-        </tr>
-        <tr>
-          <td align="left" height="17">.mp3</td>
-          <td colspan="2" align="left">MP3</td>
-          <td align="left"><a href="http://lame.sourceforge.net">lame</a></td>
-          <td align="left"><br>
+          <td valign="top">VGAudioImporter<br>
           </td>
         </tr>
         <tr>
-          <td align="left" height="17">.aac</td>
-          <td align="left">AAC</td>
-          <td rowspan="2" colspan="1" align="left">AAC</td>
-          <td rowspan="2" colspan="1" align="left"><a
-              href="https://github.com/nu774/qaac">qaac</a></td>
-          <td align="left"><br>
+          <td valign="top">[VGAudio] BCSTM<br>
+          </td>
+          <td valign="top">*.bcstm<br>
+          </td>
+          <td valign="top">VGAudio</td>
+          <td valign="top">Yes</td>
+          <td valign="top">Yes (including codec: ADPCM, PCM16, etc.)</td>
+          <td valign="top">VGAudioImporter</td>
+        </tr>
+        <tr>
+          <td valign="top">[VGAudio] BFSTM<br>
+          </td>
+          <td valign="top">*.bfstm<br>
+          </td>
+          <td valign="top">VGAudio</td>
+          <td valign="top">Yes</td>
+          <td valign="top">Yes (including codec: ADPCM, PCM16, etc.)</td>
+          <td valign="top">VGAudioImporter</td>
+        </tr>
+        <tr>
+          <td valign="top">[VGAudio] DSP </td>
+          <td valign="top">*.dsp<br>
+          </td>
+          <td valign="top">VGAudio</td>
+          <td valign="top">Yes</td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top">VGAudioImporter</td>
+        </tr>
+        <tr>
+          <td valign="top">[VGAudio] IDSP </td>
+          <td valign="top">*.idsp<br>
+          </td>
+          <td valign="top">VGAudio</td>
+          <td valign="top">Yes</td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top">VGAudioImporter</td>
+        </tr>
+        <tr>
+          <td valign="top">[VGAudio] HPS </td>
+          <td valign="top">*.hps<br>
+          </td>
+          <td valign="top">VGAudio</td>
+          <td valign="top">Yes</td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top">VGAudioImporter</td>
+        </tr>
+        <tr>
+          <td valign="top">[VGAudio] HCA </td>
+          <td valign="top">*.hca<br>
+          </td>
+          <td valign="top">VGAudio</td>
+          <td valign="top">Yes</td>
+          <td valign="top">Yes</td>
+          <td valign="top">VGAudioImporter</td>
+        </tr>
+        <tr>
+          <td valign="top">[VGAudio] ADX </td>
+          <td valign="top">*.adx<br>
+          </td>
+          <td valign="top">VGAudio</td>
+          <td valign="top">Yes</td>
+          <td valign="top">Yes</td>
+          <td valign="top">VGAudioImporter</td>
+        </tr>
+        <tr>
+          <td valign="top">[BrawlLib] BRSTM (ADPCM)<br>
+          </td>
+          <td valign="top">*.brstm<br>
+          </td>
+          <td valign="top">BrawlCrate<br>
+          </td>
+          <td valign="top">Yes</td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top">BrawlLibImporter</td>
+        </tr>
+        <tr>
+          <td valign="top">[BrawlLib] BRSTM (PCM16) </td>
+          <td valign="top">*.brstm<br>
+          </td>
+          <td valign="top">BrawlCrate</td>
+          <td valign="top">Yes</td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top">BrawlLibImporter</td>
+        </tr>
+        <tr>
+          <td valign="top">[BrawlLib] BCSTM (ADPCM) </td>
+          <td valign="top">*.bcstm<br>
+          </td>
+          <td valign="top">BrawlCrate</td>
+          <td valign="top">Yes</td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top">BrawlLibImporter</td>
+        </tr>
+        <tr>
+          <td valign="top">[BrawlLib] BFSTM (ADPCM) </td>
+          <td valign="top">*.bfstm<br>
+          </td>
+          <td valign="top">BrawlCrate</td>
+          <td valign="top">Yes</td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top">BrawlLibImporter</td>
+        </tr>
+        <tr>
+          <td valign="top">[BrawlLib] BRWAV (ADPCM) </td>
+          <td valign="top">*.brwav<br>
+          </td>
+          <td valign="top">BrawlCrate</td>
+          <td valign="top">Yes</td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
           </td>
         </tr>
         <tr>
-          <td align="left" height="17">.m4a</td>
-          <td align="left">MP4</td>
-          <td align="left"><br>
+          <td valign="top">MSF (PCM16, big-endian)<br>
+          </td>
+          <td valign="top">*.msf<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
           </td>
         </tr>
         <tr>
-          <td align="left" height="17">.pcm</td>
-          <td align="left">MSU-1</td>
-          <td align="left">16-bit PCM (little endian)</td>
-          <td align="left">LoopingAudioConverter</td>
-          <td align="left">✓</td>
+          <td valign="top">MSF (PCM16, little-endian)<br>
+          </td>
+          <td valign="top">*.msf<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
         </tr>
         <tr>
-          <td align="left" height="32">.msf</td>
-          <td align="left">MSF (PlayStation 3)</td>
-          <td align="left">16-bit PCM (big endian)<br>
-            16-bit PCM (little endian)</td>
-          <td align="left">MSFContainerLib</td>
-          <td align="left">✓ </td>
+          <td valign="top">MSU-1<br>
+          </td>
+          <td valign="top">*.pcm<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
         </tr>
         <tr>
-          <td align="left" height="17">.ogg</td>
-          <td align="left">Ogg</td>
-          <td align="left">Vorbis</td>
-          <td align="left">ffmpeg or SoX + <a
-href="https://github.com/libertyernie/LoopingAudioConverter/tree/master/VorbisCommentSharp">VorbisCommentSharp</a></td>
-          <td align="left">✓ </td>
+          <td valign="top">WAV<br>
+          </td>
+          <td valign="top">*.wav<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
         </tr>
         <tr>
-          <td align="left" height="17">.flac</td>
-          <td colspan="2" align="left">FLAC</td>
-          <td align="left">ffmpeg or SoX</td>
-          <td align="left"><br>
+          <td valign="top">[FFmpeg] FLAC<br>
+          </td>
+          <td valign="top">*.flac<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">[FFmpeg] MP3<br>
+          </td>
+          <td valign="top">*.mp3<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top">MP3Importer, MSFImporter<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">[FFmpeg] AAC (.m4a)<br>
+          </td>
+          <td valign="top">*.m4a<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">[FFmpeg] AAC (ADTS .aac)<br>
+          </td>
+          <td valign="top">*.aac<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">[FFmpeg] Vorbis (.ogg)<br>
+          </td>
+          <td valign="top">*.ogg<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top">VorbisImporter<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">[qaac] AAC (.m4a)<br>
+          </td>
+          <td valign="top">*.m4a<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">[qaac] AAC (ADTS .aac)<br>
+          </td>
+          <td valign="top">*.aac<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
           </td>
         </tr>
       </tbody>
     </table>
+    <br>
     <hr width="100%" size="2">
     <p>The source code to Looping Audio Converter is released under the
       GNU LGPL, version 3 or later.<br>
@@ -388,7 +524,7 @@ src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhgAAAIfCAIAAAC94zL/AAAgAElEQ
           of the audio. In dB, negative values reduce the volume. For
           amplitude ratio, use 2 to double the volume or 0.5 to cut it
           in half.</li>
-        <li><b>Adjust pictch (semitones):</b> adjusts the pitch up or
+        <li><b>Adjust pitch (semitones):</b> adjusts the pitch up or
           down without affecting the tempo. Twelve semitones = one
           octave.</li>
         <li><b>Adjust tempo:</b> makes the audio faster or slower
@@ -396,21 +532,20 @@ src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhgAAAIfCAIAAAC94zL/AAAgAElEQ
           result in a lower sample rate.)<br>
         </li>
       </ul>
-      <li>Options for files with no loop information (e.g. MP3, FLAC,
-        WAV without smpl)<br>
+      <li>Looping options<br>
       </li>
       <ul>
-        <li><b>Force start-to-end loop</b>: Any input files that are
-          non-looping or lack loop information will be looped start to
-          end in the output.<br>
-        </li>
-        <li><b>Keep as non-looping</b>: Any input files that are
-          non-looping (including some VGM, BRSTM, etc.) or lack loop
-          information (MP3, usually WAV) will result in a non-looping
-          output.</li>
-        <li><b>Ask</b>: The audio import dialog from BrawlCrate will be
-          shown for each input file without loop information after
-          decoding so you can specify your own loop point.<br>
+        <li><b>Keep as is</b>: Loop points will be kept in input files
+          that have them, and will not be added to files that do not.</li>
+        <li><b>Remove loop information if present</b>: All input files
+          will be treated as non-looping.</li>
+        <li><b>Add loop information if missing (start-to-end loop)</b>:
+          Any input files that are non-looping or lack loop information
+          will be looped start to end in the output.</li>
+        <li><b>Ask for non-looping files</b>: The audio import dialog
+          from BrawlCrate will be shown for each input file without loop
+          information after decoding so you can specify your own loop
+          point.<br>
         </li>
         <li><b>Ask for all files</b>: The audio import dialog from
           BrawlCrate will be shown for all input files. For looping
@@ -431,16 +566,9 @@ src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhgAAAIfCAIAAAC94zL/AAAgAElEQ
         <li><b>Put each channel in its own file</b>: With this option,
           even stereo files will be split up.</li>
       </ul>
-      <li><b>Output format</b>: see above. Note that WAV files can have
-        a "smpl" chunk at the end of the file if the audio is looping;
-        most programs will simply ignore this data, but this program can
-        read it and loop the song appropriately.</li>
+      <li><b>Output format</b>: see above.</li>
       <ul>
-        <li><b>Options</b>: Audio quality options for encoding. Only
-          available for Ogg Vorbis and MP3.</li>
-        <li>BRSTM, BCSTM, and BFSTM will allow you to select an encoding
-          (ADPCM, PCM16, or PCM8.)<br>
-        </li>
+        <li><b>Options</b>: Audio quality options for encoding.</li>
       </ul>
       <li><b>Export whole song</b>: exports from the beginning of the
         track through at least one loop and with an optional amount of
@@ -463,26 +591,9 @@ src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhgAAAIfCAIAAAC94zL/AAAgAElEQ
       <li><b>Export loop segment</b>: exports the section from the loop
         start until the loop end. The text in "suffix" will be appended
         to the filename.</li>
-      <li><b>Skip re-encoding for similar formats when possible:</b>
-        Choosing this option allows Looping Audio Converter to skip
-        re-encoding audio in certain circumstances:</li>
-      <ul>
-        <li> A BrawlLib B*STM output format is used and the input format
-          is also B*STM </li>
-        <li> A VGAudio output format is used and VGAudio also supports
-          the input format </li>
-        <li> An output format is used that uses ffmpeg / SoX as the
-          converter (such as Ogg Vorbis or MP3) and the input and output
-          file extensions match </li>
-        <li> The "MP3" output format is used and the input file is an
-          MSF file with MP3 data </li>
-      </ul>
-      <li><b>Number of simultaneous encoding/decoding tasks</b>: Audio
-        encoding can take a long time, so this program lets you run
-        several encoding processes in parallel. This number represents
-        the maximum amount of "threads," including the decoding
-        operation. The default value (recommended) is the number of
-        logical processor cores in your PC.</li>
+      <li><b>Skip re-encoding when possible:</b> Choosing this option
+        allows Looping Audio Converter to skip re-encoding audio in
+        certain circumstances.</li>
       <li><b>Load Options</b> and <b>Save Options</b>: These buttons
         allow you to load and save the options listed above to an .xml
         file. If there is a file in the current directory named
