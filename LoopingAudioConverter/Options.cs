@@ -91,8 +91,8 @@ namespace LoopingAudioConverter {
 								line = line.Substring(line.IndexOf(" ") + 1);
 								int loopEnd = int.Parse(line.Substring(0, line.IndexOf(" ")));
 								line = line.Substring(line.IndexOf(" ") + 1);
-
-								return new LoopOverride { LoopStart = loopStart, LoopEnd = loopEnd };
+								if (line == filename)
+									return new LoopOverride { LoopStart = loopStart, LoopEnd = loopEnd };
 							} catch (Exception e) {
 								Console.Error.WriteLine("Could not parse line in loop.txt: " + line + " - " + e.Message);
 							}

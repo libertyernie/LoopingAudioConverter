@@ -505,7 +505,7 @@ namespace LoopingAudioConverter {
 			}
 		}
 
-		bool IConverterEnvironment.ShowLoopConversionDialog(Conversion.NamedAudio file) {
+		bool IConverterEnvironment.ShowLoopConversionDialog(NamedAudio file) {
 			PCM16LoopWrapper audioStream = new PCM16LoopWrapper(file.Audio);
 			using (BrstmConverterDialog dialog = new BrstmConverterDialog(audioStream)) {
 				dialog.AudioSource = file.Name;
