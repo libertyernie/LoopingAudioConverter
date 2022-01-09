@@ -13,7 +13,9 @@ namespace LoopingAudioConverter.BrawlLib {
 		private readonly PCM16Audio lwav;
 
 		public PCM16LoopWrapper(PCM16Audio lwav) {
-			this.lwav = lwav;
+			this.lwav = lwav.Channels > 2
+				? lwav.MixToMono()
+				: lwav;
 		}
 
 		public int BitsPerSample => 16;
