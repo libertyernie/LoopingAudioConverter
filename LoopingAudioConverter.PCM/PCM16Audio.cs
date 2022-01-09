@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace LoopingAudioConverter.PCM {
 	/// <summary>
@@ -78,7 +79,7 @@ namespace LoopingAudioConverter.PCM {
 				data[i] = (short)(sum / Channels);
 			}
 
-			return new PCM16Audio(1, SampleRate, data, LoopStart, LoopEnd, NonLooping);
+			return new PCM16Audio(1, SampleRate, data, LoopStart, LoopEnd);
 		}
 
 		/// <summary>
