@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace LoopingAudioConverter.MSU1 {
 	public class MSU1Converter : IAudioImporter, IAudioExporter {
-		public Task<PCM16Audio> ReadFileAsync(string filename, IAudioHints hints, IProgress<double> progress) {
+		public Task<PCM16Audio> ReadFileAsync(string filename, IRenderingHints hints, IProgress<double> progress) {
 			using (var fs = new FileStream(filename, FileMode.Open, FileAccess.Read))
 			using (var br = new BinaryReader(fs)) {
 				foreach (char c in "MSU1") {

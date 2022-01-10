@@ -75,7 +75,7 @@ namespace LoopingAudioConverter.Conversion {
         string InputDir { get; }
         string OutputDir { get; }
 
-        IAudioHints GetAudioHints(string filename);
+        IRenderingHints GetAudioHints(string filename);
 
         ChannelSplit ChannelSplit { get; }
         InputLoopBehavior InputLoopBehavior { get; }

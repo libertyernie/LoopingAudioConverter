@@ -44,9 +44,11 @@ namespace LoopingAudioConverter.VGM {
 
 		bool IAudioImporter.SharesCodecsWith(IAudioExporter exporter) => false;
 
-        private class Hints : IAudioHints {
+        private class Hints : IRenderingHints {
             public int RenderingSampleRate { get; set; }
-			public int? SampleCount { get; set; }
+			public int SampleCount { get; set; }
+
+			TimeSpan? IRenderingHints.Duration => TimeSpan.FromSeconds(SampleCount / (double)RenderingSampleRate);
 		}
 
         /// <summary>
@@ -55,7 +57,7 @@ namespace LoopingAudioConverter.VGM {
         /// <param name="filename">The path of the file to read</param>
         /// <param name="preferredSampleRate">The sample rate to render the VGM at</param>
         /// <returns>A PCM16Audio, which may or may not be looping</returns>
-        public async Task<PCM16Audio> ReadFileAsync(string filename, IAudioHints hints, IProgress<double> progress) {
+        public async Task<PCM16Audio> ReadFileAsync(string filename, IRenderingHints hints, IProgress<double> progress) {
 			try {
 				// Check format
 				bool compressed;

@@ -39,7 +39,7 @@ namespace LoopingAudioConverter.VGMStream {
 		/// </summary>
 		/// <param name="filename">The path of the file to read</param>
 		/// <returns>A PCM16Audio, which may or may not be looping</returns>
-		public async Task<PCM16Audio> ReadFileAsync(string filename, IAudioHints hints, IProgress<double> progress) {
+		public async Task<PCM16Audio> ReadFileAsync(string filename, IRenderingHints hints, IProgress<double> progress) {
 			if (!File.Exists(TestExePath)) {
 				throw new AudioImporterException("test.exe not found at path: " + TestExePath);
 			}

@@ -14,7 +14,7 @@ namespace LoopingAudioConverter.BrawlLib {
 
         public bool SharesCodecsWith(IAudioExporter exporter) => exporter is BrawlLibRSTMExporter;
 
-        public async Task<PCM16Audio> ReadFileAsync(string filename, IAudioHints hints, IProgress<double> progress) {
+        public async Task<PCM16Audio> ReadFileAsync(string filename, IRenderingHints hints, IProgress<double> progress) {
             await Task.Yield();
 
             try {

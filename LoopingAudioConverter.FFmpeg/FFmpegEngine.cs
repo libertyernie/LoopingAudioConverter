@@ -31,14 +31,12 @@ namespace LoopingAudioConverter.FFmpeg {
 		private struct Metadata {
 			public string codec;
 			public TimeSpan? duration;
-			public int? sample_rate;
         }
 
 		private async Task<Metadata> GetInputMetadataAsync(string filename) {
 			Metadata m = new Metadata {
 				codec = null,
-				duration = null,
-				sample_rate = null
+				duration = null
 			};
 			ProcessStartInfo psi = new ProcessStartInfo {
 				FileName = ExePath,
@@ -54,10 +52,6 @@ namespace LoopingAudioConverter.FFmpeg {
 					string str = line.Substring("  Duration: ".Length).Split(',').First();
 					if (TimeSpan.TryParse(str, out TimeSpan ts))
 						m.duration = ts;
-				} else if (line.StartsWith("  Stream #0:0: Audio: pcm_s16le, ")) {
-					string str = line.Substring("  Stream #0:0: Audio: pcm_s16le, ".Length).Split(' ').First();
-					if (int.TryParse(str, out int sr))
-						m.sample_rate = sr;
 				}
 			}
 			return m;
@@ -71,7 +65,7 @@ namespace LoopingAudioConverter.FFmpeg {
 		/// <param name="default_max_duration">A maximum duration for the input file. Only used if the actual duration cannot be determined.</param>
 		/// <param name="progress">Progress bar callback (values range from 0.0 to 1.0, inclusive) (optional)</param>
 		/// <returns>A non-looping PCM16Audio</returns>
-		public async Task<PCM16Audio> ReadFileAsync(string filename, IAudioHints hints, IProgress<double> progress = null) {
+		public async Task<PCM16Audio> ReadFileAsync(string filename, IRenderingHints hints, IProgress<double> progress = null) {
 			if (!File.Exists(ExePath)) {
 				throw new AudioImporterException("FFmpeg not found at path: " + ExePath);
 			}
@@ -82,13 +76,7 @@ namespace LoopingAudioConverter.FFmpeg {
 			var metadata = await GetInputMetadataAsync(filename);
 
 			TimeSpan? actual_duration = metadata.duration;
-
-			TimeSpan getExpectedDuration() {
-				if (hints.SampleCount is int sc && metadata.sample_rate is int rr)
-					return TimeSpan.FromSeconds(sc / (double)rr);
-				else
-					return actual_duration ?? TimeSpan.FromMinutes(10);
-			}
+			TimeSpan expectedDuration = hints.Duration ?? actual_duration ?? TimeSpan.FromMinutes(10);
 
 			string outfile = Path.GetTempFileName();
 
@@ -101,7 +89,7 @@ namespace LoopingAudioConverter.FFmpeg {
                     }
 				}
 				if (actual_duration == null) {
-					yield return $"-t {getExpectedDuration().TotalSeconds + 1}";
+					yield return $"-t {expectedDuration.TotalSeconds + 1}";
 				}
 				yield return $"-i \"{filename}\"";
 				yield return "-f wav";
@@ -118,7 +106,7 @@ namespace LoopingAudioConverter.FFmpeg {
 			};
 			var process = Process.Start(psi);
 			using (var sr = process.StandardOutput) {
-				double expected_ticks = getExpectedDuration().Ticks;
+				double expected_ticks = expectedDuration.Ticks;
 
 				string line;
 				while ((line = await sr.ReadLineAsync()) != null) {
