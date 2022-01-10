@@ -59,6 +59,7 @@ namespace LoopingAudioConverter {
 
 		string IConverterEnvironment.FFmpegPath => ConfigurationManager.AppSettings["ffmpeg_path"];
 		string IConverterEnvironment.QaacPath => ConfigurationManager.AppSettings["qaac_path"];
+		string IConverterEnvironment.VGMPlayPath => ConfigurationManager.AppSettings["vgmplay_path"];
 		string IConverterEnvironment.VGMStreamPath => ConfigurationManager.AppSettings["vgmstream_path"];
 
 		bool IConverterEnvironment.Cancelled => !btnCancel.Enabled;

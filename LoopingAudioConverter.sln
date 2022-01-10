@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoopingAudioConverter.VGMSt
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoopingAudioConverter.Conversion", "LoopingAudioConverter.Conversion\LoopingAudioConverter.Conversion.csproj", "{C3D3DD9C-92FB-4563-A7FA-CFE7594E424B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoopingAudioConverter.VGM", "LoopingAudioConverter.VGM\LoopingAudioConverter.VGM.csproj", "{F03960E4-C63D-4D38-95DA-996965063D6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoopingAudioConverter.VGM", "LoopingAudioConverter.VGM\LoopingAudioConverter.VGM.csproj", "{F03960E4-C63D-4D38-95DA-996965063D6A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

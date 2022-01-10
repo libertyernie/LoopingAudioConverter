@@ -85,6 +85,8 @@ namespace LoopingAudioConverter.Conversion {
                 yield return new WaveImporter();
                 yield return new MP3Importer();
                 yield return new VorbisImporter(effectEngine);
+                if (env.VGMPlayPath is string vgmplay_path)
+                    yield return new VGMImporter(vgmplay_path);
                 yield return new MSU1Converter();
                 yield return new MSFImporter();
                 if (env.VGMStreamPath is string vgmstream_path)
