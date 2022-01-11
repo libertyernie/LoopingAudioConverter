@@ -7,8 +7,8 @@
     <ProjectGuid>{5BD4854F-481B-4AA6-B838-32C21B2B069F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VorbisCommentSharp</RootNamespace>
-    <AssemblyName>VorbisCommentSharp</AssemblyName>
+    <RootNamespace>LoopingAudioConverter.Vorbis</RootNamespace>
+    <AssemblyName>LoopingAudioConverter.Vorbis</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
