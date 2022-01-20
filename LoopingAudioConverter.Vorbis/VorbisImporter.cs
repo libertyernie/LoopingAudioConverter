@@ -26,7 +26,7 @@ namespace LoopingAudioConverter.Vorbis {
             var audio1 = await effectEngine.ReadFileAsync(filename, hints, progress);
 
 			var originalFile = File.ReadAllBytes(filename);
-			return new VorbisAudio(originalFile, audio1);
+			return VorbisAudio.Create(originalFile, audio1.Audio);
 		}
     }
 }

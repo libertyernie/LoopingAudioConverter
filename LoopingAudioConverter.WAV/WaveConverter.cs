@@ -1,4 +1,5 @@
-﻿using LoopingAudioConverter.PCM;
+﻿using LoopingAudioConverter.Immutable;
+using LoopingAudioConverter.PCM;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -212,7 +213,9 @@ namespace LoopingAudioConverter.WAV {
 				sample_data = new_sample_data;
 			}
 
-			PCM16Audio wav = new PCM16Audio(channels, sampleRate, sample_data, loopStart, loopEnd);
+			PCM16Audio wav = new PCM16Audio(
+				new PCMData(channels, sampleRate, sample_data),
+				loopStart is int s && loopEnd is int e ? LoopType.NewLooping(s, e) : LoopType.NonLooping);
 			return wav;
 		}
 
@@ -275,7 +278,7 @@ namespace LoopingAudioConverter.WAV {
 
 				fmt* fmt = (fmt*)ptr;
 				fmt->format = 1;
-				fmt->channels = lwav.Channels;
+				fmt->channels = checked((short)lwav.Channels);
 				fmt->sampleRate = lwav.SampleRate;
 				fmt->byteRate = lwav.SampleRate * lwav.Channels * 2;
 				fmt->blockAlign = (short)(lwav.Channels * 2);

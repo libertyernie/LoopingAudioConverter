@@ -1,4 +1,5 @@
-﻿using LoopingAudioConverter.PCM;
+﻿using LoopingAudioConverter.Immutable;
+using LoopingAudioConverter.PCM;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -22,12 +23,11 @@ namespace LoopingAudioConverter.MSU1 {
 					sampleData[i] = br.ReadInt16();
 				}
 
-				var pcm16 = new PCM16Audio(2, 44100, sampleData, checked((int)loopStart));
-				if (loopStart == 0) {
-					// This might be a non-looping song, or a song that loops without any lead-in.
-					pcm16.Looping = false;
-				}
-				return Task.FromResult(pcm16);
+				return Task.FromResult(new PCM16Audio(
+					new PCMData(2, 44100, sampleData),
+					loopStart == 0
+						? LoopType.NonLooping
+						: LoopType.NewLooping(checked((int)loopStart), sampleData.Length / 2)));
 			}
 		}
 

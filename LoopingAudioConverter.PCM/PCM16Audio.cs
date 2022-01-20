@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LoopingAudioConverter.Immutable;
+using System;
 using System.Collections.Generic;
 
 namespace LoopingAudioConverter.PCM {
@@ -7,53 +8,32 @@ namespace LoopingAudioConverter.PCM {
 	/// The total sample length of this data is immutable, but the data itself and other properties can be modified.
 	/// </summary>
 	public class PCM16Audio {
-		public short Channels { get; }
-		public int SampleRate { get; }
-		public short[] Samples { get; }
+		public PCMData Audio { get; }
 
-		/// <summary>
-		/// Whether the file is known to loop.
-		/// </summary>
-		public bool Looping { get; set; }
+		public int Channels => Audio.channels;
+		public int SampleRate => Audio.sample_rate;
+		public short[] Samples => Audio.samples;
 
-		/// <summary>
-		/// The start of the loop, in samples.
-		/// </summary>
-		public int LoopStart { get; set; }
+		public LoopType OriginalLoop { get; }
+		public LoopType Loop { get; set; }
 
-		/// <summary>
-		/// The end of the loop, in samples.
-		/// </summary>
-		public int LoopEnd { get; set; }
-
+		public bool Looping => Loop.IsLooping;
+		public int LoopStart => Looping ? Loop.LoopStart : 0;
+		public int LoopEnd => Looping ? Loop.LoopEnd : Audio.SamplesPerChannel;
 		public int LoopLength => LoopEnd - LoopStart;
 
-		/// <summary>
-		/// Creates a WAV with the given metadata and length.
-		/// </summary>
-		/// <param name="channels">Number of channels</param>
-		/// <param name="sampleRate">Sample rate</param>
-		/// <param name="sample_data">Audio data (array will not be modified)</param>
-		/// <param name="loop_start">Start of loop, in samples (or null for no loop)</param>
-		/// <param name="loop_end">End of loop, in samples (or null for end of file); ignored if loop_start is null</param>
-		public PCM16Audio(int channels, int sampleRate, short[] sample_data, int? loop_start = null, int? loop_end = null) {
-			if (channels > short.MaxValue) throw new ArgumentException("Streams of more than " + short.MaxValue + " channels not supported");
-			if (channels <= 0) throw new ArgumentException("Number of channels must be a positive integer");
-			if (sampleRate <= 0) throw new ArgumentException("Sample rate must be a positive integer");
+		public PCM16Audio(PCMData audio, LoopType loop) {
+			if (audio.channels > short.MaxValue) throw new ArgumentException("Streams of more than " + short.MaxValue + " channels not supported");
+			if (audio.channels <= 0) throw new ArgumentException("Number of channels must be a positive integer");
+			if (audio.sample_rate <= 0) throw new ArgumentException("Sample rate must be a positive integer");
 
-			if (loop_start != null && loop_end != null && loop_end.Value > sample_data.Length / channels) {
-				throw new Exception("The end of the loop (" + loop_end + " samples) is past the end of the file (" + sample_data.Length / channels + " samples). Double-check the program that generated this data.");
+			if (loop.IsLooping && loop.LoopEnd > audio.SamplesPerChannel) {
+				throw new Exception("The end of the loop is past the end of the file. Double-check the program that generated this data.");
 			}
 
-			Channels = (short)channels;
-			SampleRate = sampleRate;
-
-			Samples = new short[sample_data.Length];
-			Array.Copy(sample_data, Samples, Samples.Length);
-
-			Looping = (loop_start != null);
-			LoopStart = loop_start ?? 0;
-			LoopEnd = loop_end ?? (Samples.Length / channels);
+			Audio = audio;
+			OriginalLoop = loop;
+			Loop = loop;
 		}
 
 		/// <summary>
@@ -79,7 +59,7 @@ namespace LoopingAudioConverter.PCM {
 				data[i] = (short)(sum / Channels);
 			}
 
-			return new PCM16Audio(1, SampleRate, data, LoopStart, LoopEnd);
+			return new PCM16Audio(new PCMData(1, SampleRate, data), this.Loop);
 		}
 
 		/// <summary>
@@ -89,7 +69,7 @@ namespace LoopingAudioConverter.PCM {
 		public PCM16Audio GetPreLoopSegment() {
 			short[] data = new short[Channels * LoopStart];
 			Array.Copy(Samples, 0, data, 0, data.Length);
-			return new PCM16Audio(Channels, SampleRate, data);
+			return new PCM16Audio(new PCMData(Channels, SampleRate, data), LoopType.NonLooping);
 		}
 
 		/// <summary>
@@ -99,7 +79,7 @@ namespace LoopingAudioConverter.PCM {
 		public PCM16Audio GetLoopSegment() {
 			short[] data = new short[Channels * (LoopEnd - LoopStart)];
 			Array.Copy(Samples, Channels * LoopStart, data, 0, data.Length);
-			return new PCM16Audio(Channels, SampleRate, data, 0);
+			return new PCM16Audio(new PCMData(Channels, SampleRate, data), LoopType.NewLooping(0, data.Length / Channels));
 		}
 
 		/// <summary>
@@ -132,7 +112,7 @@ namespace LoopingAudioConverter.PCM {
 				}
 			}
 
-			return new PCM16Audio(this.Channels, this.SampleRate, data, this.LoopStart, this.LoopEnd);
+			return new PCM16Audio(new PCMData(this.Channels, this.SampleRate, data), this.Loop);
 		}
 
 		public override string ToString() {

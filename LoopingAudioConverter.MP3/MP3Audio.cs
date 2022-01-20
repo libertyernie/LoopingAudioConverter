@@ -1,4 +1,5 @@
-﻿using LoopingAudioConverter.PCM;
+﻿using LoopingAudioConverter.Immutable;
+using LoopingAudioConverter.PCM;
 using MP3Sharp;
 using System;
 using System.IO;
@@ -19,7 +20,7 @@ namespace LoopingAudioConverter.MP3 {
             }
         }
 
-		private MP3Audio(byte[] mp3data, int channels, int sampleRate, short[] sample_data) : base(channels, sampleRate, sample_data) {
+		private MP3Audio(byte[] mp3data, PCMData audio) : base(audio, LoopType.NonLooping) {
 			_mp3Data = mp3data;
 		}
 
@@ -37,7 +38,7 @@ namespace LoopingAudioConverter.MP3 {
 					Marshal.Copy((IntPtr)ptr16, samples, 0, samples.Length);
 				}
 
-				return new MP3Audio(mp3data, mp3.ChannelCount, mp3.Frequency, samples);
+				return new MP3Audio(mp3data, new PCMData(mp3.ChannelCount, mp3.Frequency, samples));
 			}
 		}
 

@@ -24,9 +24,10 @@ namespace LoopingAudioConverter.Conversion {
 					samples[j] = Audio.Samples[Audio.Channels * j + i];
 				}
 				array[i] = new NamedAudio(
-					new PCM16Audio(1, Audio.SampleRate, samples, Audio.LoopStart, Audio.LoopEnd),
-					Name + " (channel " + i + ")"
-					);
+					new PCM16Audio(
+						new Immutable.PCMData(1, Audio.SampleRate, samples),
+						Audio.Loop),
+					Name + " (channel " + i + ")");
 			}
 			return array;
 		}
@@ -52,9 +53,10 @@ namespace LoopingAudioConverter.Conversion {
 						fromIndex += (Audio.Channels - 1);
 					}
 					array[i] = new NamedAudio(
-						new PCM16Audio(1, Audio.SampleRate, samples, Audio.LoopStart, Audio.LoopEnd),
-						Name + " (channel " + leftChannel + ")"
-						);
+						new PCM16Audio(
+							new Immutable.PCMData(1, Audio.SampleRate, samples),
+							Audio.Loop),
+						Name + " (channel " + leftChannel + ")");
 				} else {
 					// Create stereo track
 					short[] samples = new short[2 * Audio.Samples.Length / Audio.Channels];
@@ -66,9 +68,10 @@ namespace LoopingAudioConverter.Conversion {
 						fromIndex += (Audio.Channels - 2);
 					}
 					array[i] = new NamedAudio(
-						new PCM16Audio(2, Audio.SampleRate, samples, Audio.LoopStart, Audio.LoopEnd),
-						Name + " (channels " + leftChannel + " and " + rightChannel + ")"
-						);
+						new PCM16Audio(
+							new Immutable.PCMData(2, Audio.SampleRate, samples),
+							Audio.Loop),
+						Name + " (channels " + leftChannel + " and " + rightChannel + ")");
 				}
 			}
 			return array;

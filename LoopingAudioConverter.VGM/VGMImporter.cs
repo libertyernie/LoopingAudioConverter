@@ -1,4 +1,5 @@
 ﻿using LoopingAudioConverter.FFmpeg;
+using LoopingAudioConverter.Immutable;
 using LoopingAudioConverter.PCM;
 using LoopingAudioConverter.WAV;
 using System;
@@ -137,9 +138,9 @@ namespace LoopingAudioConverter.VGM {
 					throw new NotImplementedException();
                 }
 				if (loopSamples != 0) {
-					data.Looping = true;
-					data.LoopStart = (int)Math.Round((samples - loopSamples) * (hints.RenderingSampleRate / 44100.0));
-					data.LoopEnd = (int)Math.Round(samples * (hints.RenderingSampleRate / 44100.0));
+					data.Loop = LoopType.NewLooping(
+						(int)Math.Round((samples - loopSamples) * (hints.RenderingSampleRate / 44100.0)),
+						(int)Math.Round(samples * (hints.RenderingSampleRate / 44100.0)));
 				}
 				return data;
 			} catch (Exception e) when (!(e is AudioImporterException)) {

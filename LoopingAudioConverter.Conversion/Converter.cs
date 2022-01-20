@@ -1,6 +1,7 @@
 ﻿using BrawlLib.SSBB.Types.Audio;
 using LoopingAudioConverter.BrawlLib;
 using LoopingAudioConverter.FFmpeg;
+using LoopingAudioConverter.Immutable;
 using LoopingAudioConverter.MP3;
 using LoopingAudioConverter.MSF;
 using LoopingAudioConverter.MSU1;
@@ -174,11 +175,9 @@ namespace LoopingAudioConverter.Conversion {
 
             if (o.GetLoopOverrides(Path.GetFileName(inputFile)) is LoopOverride loopOverride) {
                 if (loopOverride.LoopStart < 0) {
-                    w.Looping = false;
+                    w.Loop = LoopType.NonLooping;
                 } else {
-                    w.Looping = true;
-                    w.LoopStart = loopOverride.LoopStart;
-                    w.LoopEnd = loopOverride.LoopEnd;
+                    w.Loop = LoopType.NewLooping(loopOverride.LoopStart, loopOverride.LoopEnd);
                 }
             }
 
@@ -214,9 +213,7 @@ namespace LoopingAudioConverter.Conversion {
                         switch (o.InputLoopBehavior) {
                             case InputLoopBehavior.ForceLoop:
                                 if (!toExport.Audio.Looping) {
-                                    toExport.Audio.Looping = true;
-                                    toExport.Audio.LoopStart = 0;
-                                    toExport.Audio.LoopEnd = toExport.Audio.Samples.Length / toExport.Audio.Channels;
+                                    toExport.Audio.Loop = LoopType.NewLooping(0, toExport.Audio.Audio.SamplesPerChannel);
                                 }
                                 break;
                             case InputLoopBehavior.AskForNonLooping:
@@ -229,7 +226,7 @@ namespace LoopingAudioConverter.Conversion {
                                 }
                                 break;
                             case InputLoopBehavior.DiscardForAll:
-                                toExport.Audio.Looping = false;
+                                toExport.Audio.Loop = LoopType.NonLooping;
                                 break;
                         }
 

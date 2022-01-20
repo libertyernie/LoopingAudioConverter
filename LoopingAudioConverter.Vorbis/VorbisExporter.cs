@@ -19,15 +19,17 @@ namespace LoopingAudioConverter.Vorbis {
 
 			VorbisAudio audio;
 			if (lwav is VorbisAudio v) {
+				// Data is already encoded and loop points are already set
 				audio = v;
 			} else {
+				// Encode to temporary file
 				string tempFile = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".ogg");
 				await effectEngine.WriteFileAsync(lwav, tempFile, encoding_parameters, progress);
-				audio = new VorbisAudio(File.ReadAllBytes(tempFile), lwav) {
-                    LoopStart = lwav.LoopStart,
-                    LoopEnd = lwav.LoopEnd,
-                    Looping = lwav.Looping
-                };
+				// Read temporary file
+				audio = VorbisAudio.Create(File.ReadAllBytes(tempFile), lwav.Audio);
+				// Apply original loop points
+				audio.Loop = lwav.Loop;
+				// Delete temporary file
 				File.Delete(tempFile);
 			}
 

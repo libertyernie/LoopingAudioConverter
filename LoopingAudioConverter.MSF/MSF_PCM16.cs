@@ -1,4 +1,5 @@
-﻿using LoopingAudioConverter.PCM;
+﻿using LoopingAudioConverter.Immutable;
+using LoopingAudioConverter.PCM;
 
 namespace LoopingAudioConverter.MSF
 {
@@ -41,10 +42,12 @@ namespace LoopingAudioConverter.MSF
         /// </summary>
         /// <returns>A PCM16Audio object with the header and uncompressed audio data</returns>
         public override PCM16Audio Decode() => new PCM16Audio(
-            channels: Header.channel_count,
-            sampleRate: Header.sample_rate,
-            sample_data: GetPCM16Samples(),
-            loop_start: GetLoopStartSample(),
-            loop_end: GetLoopSampleCount() - GetLoopStartSample());
+            new PCMData(
+                Header.channel_count,
+                Header.sample_rate,
+                GetPCM16Samples()),
+            LoopType.NewLooping(
+                GetLoopStartSample(),
+                GetLoopSampleCount() - GetLoopStartSample()));
     }
 }

@@ -202,21 +202,21 @@ namespace LoopingAudioConverter.FFmpeg {
 
 			try {
 				PCM16Audio l = WaveConverter.FromFile(outfile, true);
-				l.Looping = lwav.Looping;
-				l.LoopStart = lwav.LoopStart;
-				l.LoopEnd = lwav.LoopEnd;
+				l.Loop = lwav.Loop;
 
 				if (l.Looping && l.SampleRate != lwav.SampleRate) {
 					// When the sample rate is changed, we need to change the loop points to match.
 					double ratio = (double)l.SampleRate / lwav.SampleRate;
-					l.LoopStart = (int)(l.LoopStart * ratio);
-					l.LoopEnd = (int)(l.LoopEnd * ratio);
+					l.Loop = Immutable.LoopType.NewLooping(
+						(int)(l.LoopStart * ratio),
+						(int)(l.LoopEnd * ratio));
 				}
 
 				if (l.Looping && tempo_ratio != 1) {
 					// When the tempo is changed, we need to change the loop points to match.
-					l.LoopStart = (int)(l.LoopStart / tempo_ratio);
-					l.LoopEnd = (int)(l.LoopEnd / tempo_ratio);
+					l.Loop = Immutable.LoopType.NewLooping(
+						(int)(l.LoopStart / tempo_ratio),
+						(int)(l.LoopEnd / tempo_ratio));
 				}
 				return l;
 			} catch (Exception e) {
