@@ -97,7 +97,7 @@ namespace LoopingAudioConverter.Conversion {
                 yield return effectEngine;
             }
 
-            List<IAudioImporter> importers = BuildImporters().ToList();
+            List<IAudioImporter> importers = BuildImporters().OrderBy(y => y.SharesCodecsWith(exporter) ? 1 : 2).ToList();
 
             if (!inputFiles.Any()) {
                 throw new Exception("No input files were selected.");
