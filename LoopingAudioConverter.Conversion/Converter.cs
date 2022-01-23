@@ -4,7 +4,6 @@ using LoopingAudioConverter.FFmpeg;
 using LoopingAudioConverter.Immutable;
 using LoopingAudioConverter.MP3;
 using LoopingAudioConverter.MSF;
-using LoopingAudioConverter.MSU1;
 using LoopingAudioConverter.PCM;
 using LoopingAudioConverter.QuickTime;
 using LoopingAudioConverter.VGAudio;
@@ -58,7 +57,7 @@ namespace LoopingAudioConverter.Conversion {
                     case ExporterType.MSF_PCM16LE:
                         return new MSFExporter(big_endian: false);
                     case ExporterType.MSU1:
-                        return new MSU1Converter();
+                        return MSU1.Exporter;
                     case ExporterType.FLAC:
                         return new FFmpegExporter(effectEngine, "", ".flac");
                     case ExporterType.MP3:
@@ -88,7 +87,7 @@ namespace LoopingAudioConverter.Conversion {
                 yield return new VorbisImporter(effectEngine);
                 if (env.VGMPlayPath is string vgmplay_path)
                     yield return new VGMImporter(vgmplay_path);
-                yield return new MSU1Converter();
+                yield return MSU1.Importer;
                 yield return new MSFImporter();
                 if (env.VGMStreamPath is string vgmstream_path)
                     yield return new VGMStreamImporter(vgmstream_path);

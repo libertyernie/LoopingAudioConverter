@@ -4,7 +4,6 @@ using LoopingAudioConverter.BrawlLib;
 using LoopingAudioConverter.FFmpeg;
 using LoopingAudioConverter.MP3;
 using LoopingAudioConverter.MSF;
-using LoopingAudioConverter.MSU1;
 using LoopingAudioConverter.PCM;
 using LoopingAudioConverter.QuickTime;
 using LoopingAudioConverter.VGAudio;

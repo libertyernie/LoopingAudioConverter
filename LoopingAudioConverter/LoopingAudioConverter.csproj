@@ -155,8 +155,8 @@
       <Project>{31bd3716-2d0b-49e4-a0e8-2c4e0add93f5}</Project>
       <Name>LoopingAudioConverter.MSF</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LoopingAudioConverter.MSU1\LoopingAudioConverter.MSU1.csproj">
-      <Project>{3DC7ADBF-A065-4887-B3ED-B36FE0C590C1}</Project>
+    <ProjectReference Include="..\LoopingAudioConverter.MSU1\LoopingAudioConverter.MSU1.fsproj">
+      <Project>{70a5f3f8-3179-4113-9e22-3ec176167488}</Project>
       <Name>LoopingAudioConverter.MSU1</Name>
     </ProjectReference>
     <ProjectReference Include="..\LoopingAudioConverter.PCM\LoopingAudioConverter.PCM.csproj">
