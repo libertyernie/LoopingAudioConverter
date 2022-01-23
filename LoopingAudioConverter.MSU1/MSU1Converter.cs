@@ -1,6 +1,7 @@
 ﻿using LoopingAudioConverter.PCM;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter.MSU1 {
@@ -56,7 +57,7 @@ namespace LoopingAudioConverter.MSU1 {
 					bw.Write(0);
 				}
 				
-				foreach (short sample in lwav.Samples) {
+				foreach (short sample in lwav.Samples.Take(lwav.LoopEnd * lwav.Channels)) {
 					bw.Write(sample);
 				}
 			}
