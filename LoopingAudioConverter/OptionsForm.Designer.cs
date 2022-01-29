@@ -70,7 +70,6 @@
             this.chkStartEnd = new System.Windows.Forms.CheckBox();
             this.txtStartEndFilenamePattern = new System.Windows.Forms.TextBox();
             this.lblSeconds = new System.Windows.Forms.Label();
-            this.lblNumberLoops = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.lblFadeOutTime = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -87,6 +86,10 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.label7 = new System.Windows.Forms.Label();
+            this.numDesiredDuration = new System.Windows.Forms.NumericUpDown();
+            this.radNumberLoops = new System.Windows.Forms.RadioButton();
+            this.radDesiredDuration = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -106,6 +109,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numFadeOutTime)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numDesiredDuration)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -569,6 +573,10 @@
             // 
             this.pnlExportSegments.AutoSize = true;
             this.pnlExportSegments.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlExportSegments.Controls.Add(this.radDesiredDuration);
+            this.pnlExportSegments.Controls.Add(this.radNumberLoops);
+            this.pnlExportSegments.Controls.Add(this.label7);
+            this.pnlExportSegments.Controls.Add(this.numDesiredDuration);
             this.pnlExportSegments.Controls.Add(this.btnEncodingOptions);
             this.pnlExportSegments.Controls.Add(this.comboBox1);
             this.pnlExportSegments.Controls.Add(this.lblOutputFormat);
@@ -579,7 +587,6 @@
             this.pnlExportSegments.Controls.Add(this.chkStartEnd);
             this.pnlExportSegments.Controls.Add(this.txtStartEndFilenamePattern);
             this.pnlExportSegments.Controls.Add(this.lblSeconds);
-            this.pnlExportSegments.Controls.Add(this.lblNumberLoops);
             this.pnlExportSegments.Controls.Add(this.label3);
             this.pnlExportSegments.Controls.Add(this.lblFadeOutTime);
             this.pnlExportSegments.Controls.Add(this.label2);
@@ -589,7 +596,7 @@
             this.pnlExportSegments.Location = new System.Drawing.Point(230, 3);
             this.pnlExportSegments.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.pnlExportSegments.Name = "pnlExportSegments";
-            this.pnlExportSegments.Size = new System.Drawing.Size(298, 157);
+            this.pnlExportSegments.Size = new System.Drawing.Size(298, 185);
             this.pnlExportSegments.TabIndex = 3;
             // 
             // btnEncodingOptions
@@ -644,10 +651,10 @@
             // 
             // chk0Start
             // 
-            this.chk0Start.Location = new System.Drawing.Point(3, 108);
+            this.chk0Start.Location = new System.Drawing.Point(3, 136);
             this.chk0Start.Name = "chk0Start";
             this.chk0Start.Size = new System.Drawing.Size(168, 20);
-            this.chk0Start.TabIndex = 12;
+            this.chk0Start.TabIndex = 14;
             this.chk0Start.Text = "Export segment before loop";
             this.chk0Start.UseVisualStyleBackColor = true;
             this.chk0Start.CheckedChanged += new System.EventHandler(this.chk0Start_CheckedChanged);
@@ -655,18 +662,18 @@
             // txt0StartFilenamePattern
             // 
             this.txt0StartFilenamePattern.Enabled = false;
-            this.txt0StartFilenamePattern.Location = new System.Drawing.Point(215, 108);
+            this.txt0StartFilenamePattern.Location = new System.Drawing.Point(215, 136);
             this.txt0StartFilenamePattern.Name = "txt0StartFilenamePattern";
             this.txt0StartFilenamePattern.Size = new System.Drawing.Size(80, 20);
-            this.txt0StartFilenamePattern.TabIndex = 14;
+            this.txt0StartFilenamePattern.TabIndex = 16;
             this.txt0StartFilenamePattern.Text = " (beginning)";
             // 
             // chkStartEnd
             // 
-            this.chkStartEnd.Location = new System.Drawing.Point(3, 134);
+            this.chkStartEnd.Location = new System.Drawing.Point(3, 162);
             this.chkStartEnd.Name = "chkStartEnd";
             this.chkStartEnd.Size = new System.Drawing.Size(160, 20);
-            this.chkStartEnd.TabIndex = 15;
+            this.chkStartEnd.TabIndex = 17;
             this.chkStartEnd.Text = "Export loop segment";
             this.chkStartEnd.UseVisualStyleBackColor = true;
             this.chkStartEnd.CheckedChanged += new System.EventHandler(this.chkStartEnd_CheckedChanged);
@@ -674,59 +681,49 @@
             // txtStartEndFilenamePattern
             // 
             this.txtStartEndFilenamePattern.Enabled = false;
-            this.txtStartEndFilenamePattern.Location = new System.Drawing.Point(215, 134);
+            this.txtStartEndFilenamePattern.Location = new System.Drawing.Point(215, 162);
             this.txtStartEndFilenamePattern.Name = "txtStartEndFilenamePattern";
             this.txtStartEndFilenamePattern.Size = new System.Drawing.Size(80, 20);
-            this.txtStartEndFilenamePattern.TabIndex = 17;
+            this.txtStartEndFilenamePattern.TabIndex = 19;
             this.txtStartEndFilenamePattern.Text = " (loop)";
             // 
             // lblSeconds
             // 
-            this.lblSeconds.Location = new System.Drawing.Point(231, 81);
+            this.lblSeconds.Location = new System.Drawing.Point(231, 106);
             this.lblSeconds.Margin = new System.Windows.Forms.Padding(3);
             this.lblSeconds.Name = "lblSeconds";
             this.lblSeconds.Size = new System.Drawing.Size(40, 21);
-            this.lblSeconds.TabIndex = 10;
+            this.lblSeconds.TabIndex = 13;
             this.lblSeconds.Text = "sec";
             this.lblSeconds.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // lblNumberLoops
-            // 
-            this.lblNumberLoops.Location = new System.Drawing.Point(40, 56);
-            this.lblNumberLoops.Margin = new System.Windows.Forms.Padding(3);
-            this.lblNumberLoops.Name = "lblNumberLoops";
-            this.lblNumberLoops.Size = new System.Drawing.Size(96, 20);
-            this.lblNumberLoops.TabIndex = 6;
-            this.lblNumberLoops.Text = "Number of loops:";
-            this.lblNumberLoops.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(169, 134);
+            this.label3.Location = new System.Drawing.Point(169, 162);
             this.label3.Margin = new System.Windows.Forms.Padding(3);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(40, 20);
-            this.label3.TabIndex = 16;
+            this.label3.TabIndex = 18;
             this.label3.Text = "Suffix:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblFadeOutTime
             // 
-            this.lblFadeOutTime.Location = new System.Drawing.Point(40, 82);
+            this.lblFadeOutTime.Location = new System.Drawing.Point(40, 107);
             this.lblFadeOutTime.Margin = new System.Windows.Forms.Padding(3);
             this.lblFadeOutTime.Name = "lblFadeOutTime";
             this.lblFadeOutTime.Size = new System.Drawing.Size(96, 20);
-            this.lblFadeOutTime.TabIndex = 8;
+            this.lblFadeOutTime.TabIndex = 11;
             this.lblFadeOutTime.Text = "Fade-out time";
             this.lblFadeOutTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(169, 108);
+            this.label2.Location = new System.Drawing.Point(169, 136);
             this.label2.Margin = new System.Windows.Forms.Padding(3);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(40, 20);
-            this.label2.TabIndex = 13;
+            this.label2.TabIndex = 15;
             this.label2.Text = "Suffix:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -760,17 +757,17 @@
             // numFadeOutTime
             // 
             this.numFadeOutTime.DecimalPlaces = 3;
-            this.numFadeOutTime.Location = new System.Drawing.Point(172, 82);
+            this.numFadeOutTime.Location = new System.Drawing.Point(172, 107);
             this.numFadeOutTime.Name = "numFadeOutTime";
             this.numFadeOutTime.Size = new System.Drawing.Size(53, 20);
-            this.numFadeOutTime.TabIndex = 9;
+            this.numFadeOutTime.TabIndex = 12;
             // 
             // chkShortCircuit
             // 
             this.chkShortCircuit.AutoSize = true;
             this.chkShortCircuit.Checked = true;
             this.chkShortCircuit.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkShortCircuit.Location = new System.Drawing.Point(233, 166);
+            this.chkShortCircuit.Location = new System.Drawing.Point(233, 194);
             this.chkShortCircuit.Name = "chkShortCircuit";
             this.chkShortCircuit.Size = new System.Drawing.Size(176, 17);
             this.chkShortCircuit.TabIndex = 4;
@@ -874,6 +871,55 @@
             this.progressBar1.Size = new System.Drawing.Size(287, 23);
             this.progressBar1.TabIndex = 0;
             // 
+            // label7
+            // 
+            this.label7.Location = new System.Drawing.Point(231, 80);
+            this.label7.Margin = new System.Windows.Forms.Padding(3);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(40, 21);
+            this.label7.TabIndex = 10;
+            this.label7.Text = "sec";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // numDesiredDuration
+            // 
+            this.numDesiredDuration.Location = new System.Drawing.Point(172, 81);
+            this.numDesiredDuration.Maximum = new decimal(new int[] {
+            7200,
+            0,
+            0,
+            0});
+            this.numDesiredDuration.Name = "numDesiredDuration";
+            this.numDesiredDuration.Size = new System.Drawing.Size(53, 20);
+            this.numDesiredDuration.TabIndex = 9;
+            this.numDesiredDuration.Value = new decimal(new int[] {
+            900,
+            0,
+            0,
+            0});
+            // 
+            // radNumberLoops
+            // 
+            this.radNumberLoops.AutoSize = true;
+            this.radNumberLoops.Checked = true;
+            this.radNumberLoops.Location = new System.Drawing.Point(43, 56);
+            this.radNumberLoops.Name = "radNumberLoops";
+            this.radNumberLoops.Size = new System.Drawing.Size(102, 17);
+            this.radNumberLoops.TabIndex = 20;
+            this.radNumberLoops.TabStop = true;
+            this.radNumberLoops.Text = "Number of loops";
+            this.radNumberLoops.UseVisualStyleBackColor = true;
+            // 
+            // radDesiredDuration
+            // 
+            this.radDesiredDuration.AutoSize = true;
+            this.radDesiredDuration.Location = new System.Drawing.Point(43, 82);
+            this.radDesiredDuration.Name = "radDesiredDuration";
+            this.radDesiredDuration.Size = new System.Drawing.Size(102, 17);
+            this.radDesiredDuration.TabIndex = 21;
+            this.radDesiredDuration.Text = "Desired duration";
+            this.radDesiredDuration.UseVisualStyleBackColor = true;
+            // 
             // OptionsForm
             // 
             this.AcceptButton = this.btnOkay;
@@ -909,6 +955,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numFadeOutTime)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numDesiredDuration)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -931,7 +978,6 @@
         private System.Windows.Forms.NumericUpDown numFadeOutTime;
         private System.Windows.Forms.NumericUpDown numNumberLoops;
         private System.Windows.Forms.Label lblFadeOutTime;
-        private System.Windows.Forms.Label lblNumberLoops;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
@@ -979,5 +1025,9 @@
 		private System.Windows.Forms.Button btnCancel;
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.ProgressBar progressBar1;
+		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.NumericUpDown numDesiredDuration;
+		private System.Windows.Forms.RadioButton radDesiredDuration;
+		private System.Windows.Forms.RadioButton radNumberLoops;
 	}
 }

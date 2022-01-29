@@ -179,7 +179,10 @@ namespace LoopingAudioConverter {
 				ddlUnknownLoopBehavior.SelectedValue = o.InputLoopBehavior;
 				chk0End.Checked = o.ExportWholeSong;
 				txt0EndFilenamePattern.Text = o.WholeSongSuffix;
+				radNumberLoops.Checked = !o.WholeSongExportByDesiredDuration;
 				numNumberLoops.Value = o.NumberOfLoops;
+				radDesiredDuration.Checked = o.WholeSongExportByDesiredDuration;
+				numDesiredDuration.Value = o.DesiredDuration;
 				numFadeOutTime.Value = o.FadeOutSec;
 				chk0Start.Checked = o.ExportPreLoop;
 				txt0StartFilenamePattern.Text = o.PreLoopSuffix;
@@ -220,7 +223,9 @@ namespace LoopingAudioConverter {
 				InputLoopBehavior = (InputLoopBehavior)ddlUnknownLoopBehavior.SelectedValue,
 				ExportWholeSong = chk0End.Checked,
 				WholeSongSuffix = txt0EndFilenamePattern.Text,
+				WholeSongExportByDesiredDuration = radDesiredDuration.Checked,
 				NumberOfLoops = (int)numNumberLoops.Value,
+				DesiredDuration = numDesiredDuration.Value,
 				FadeOutSec = numFadeOutTime.Value,
 				ExportPreLoop = chk0Start.Checked,
 				PreLoopSuffix = txt0StartFilenamePattern.Text,

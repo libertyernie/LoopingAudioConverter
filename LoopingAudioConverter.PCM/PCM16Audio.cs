@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LoopingAudioConverter.PCM {
 	/// <summary>
@@ -103,15 +104,16 @@ namespace LoopingAudioConverter.PCM {
 		}
 
 		/// <summary>
-		/// Returns an PCM16Audio object that represents this audio when the looping portion is played a given amount of times, with an optional amount of fade-out.
-		/// If this is not a looping track, or if the loop count is 1 and the fade is 0 seconds, this object will be returned; otherwise, a new one will be created.
+		/// Returns a PCM16Audio object that represents this audio when the looping portion is played a given amount of times, with an optional amount of fade-out.
+		/// Any existing loop data will be maintained.
+		/// If the file is non-looping, the original file will be returned.
 		/// </summary>
 		/// <param name="loopCount">Times to play the loop (must be more than 0)</param>
 		/// <param name="fadeSec">Amount of time, in seconds, to fade out at the end after the last loop (must be 0 or greater)</param>
 		/// <returns>A PCM16Audio object (this or a new one)</returns>
 		public PCM16Audio PlayLoopAndFade(int loopCount, decimal fadeSec) {
 			if (!Looping) return this;
-			if (loopCount == 1 && fadeSec == 0) return this;
+			if (loopCount == 1 && fadeSec == 0 && this.Samples.Length == this.LoopEnd * this.Channels) return this;
 
 			if (loopCount < 1) {
 				throw new ArgumentException("Loop count must be at least 1. To play only the portion before the loop, use GetPreLoopSegment.");
@@ -133,6 +135,54 @@ namespace LoopingAudioConverter.PCM {
 			}
 
 			return new PCM16Audio(this.Channels, this.SampleRate, data, this.LoopStart, this.LoopEnd);
+		}
+
+		/// <summary>
+		/// Returns an PCM16Audio object that represents this audio when played for a given amount of time, with an optional amount of fade-out.
+		/// Loop data will not be maintained in the output file.
+		/// If the file is already non-looping, the original file will be returned.
+		/// </summary>
+		/// <param name="duration">Amount of time to play, in seconds</param>
+		/// <param name="fadeSec">Amount of time, in seconds, to fade out at the end after the last loop (must be 0 or greater)</param>
+		/// <returns>A PCM16Audio object (this or a new one)</returns>
+		public PCM16Audio PlayAndFade(decimal duration, decimal fadeSec) {
+			if (!Looping) return this;
+
+			if (duration <= 0) {
+				throw new ArgumentException("Duration must be greater than 0.");
+			}
+
+			int playSamples = (int)(SampleRate * duration);
+			int fadeSamples = Math.Min((int)(SampleRate * fadeSec), LoopLength);
+
+			IEnumerable<short> getSamples() {
+				int pos = 0;
+				int fadePos = playSamples;
+				int endPos = playSamples + fadeSamples;
+
+				for (int k = 0; k < LoopEnd; k++) {
+					for (int c = 0; c < Channels; c++) {
+						yield return this.Samples[k * Channels + c];
+					}
+					pos++;
+				}
+				while (true) {
+					for (int k = LoopStart; k < LoopEnd; k++) {
+						for (int c = 0; c < Channels; c++) {
+							if (pos >= fadePos) {
+								double factor = 1.0 - (pos - fadePos) / (double)(endPos - fadePos);
+								yield return (short)(this.Samples[k * Channels + c] * factor);
+							} else {
+								yield return this.Samples[k * Channels + c];
+							}
+						}
+						pos++;
+						if (pos >= endPos) yield break;
+					}
+				}
+			}
+
+			return new PCM16Audio(this.Channels, this.SampleRate, getSamples().ToArray());
 		}
 
 		public override string ToString() {

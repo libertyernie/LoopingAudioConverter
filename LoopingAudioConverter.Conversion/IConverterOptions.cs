@@ -55,15 +55,21 @@ namespace LoopingAudioConverter.Conversion {
         string FFMpeg_Vorbis { get; }
     }
 
+    public enum WholeSongExportType {
+        NumberOfLoops, DesiredDuration
+    }
+
     public interface ILoopExportParameters {
         bool ExportPreLoop { get; }
         string PreLoopSuffix { get; }
         bool ExportLoop { get; }
         string LoopSuffix { get; }
         bool ExportWholeSong { get; }
+        WholeSongExportType WholeSongExportType { get; }
         string WholeSongSuffix { get; }
 
         int NumberOfLoops { get; }
+        decimal DesiredDuration { get; }
         decimal FadeOutSec { get; }
     }
 

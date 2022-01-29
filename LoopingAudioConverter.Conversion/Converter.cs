@@ -200,9 +200,15 @@ namespace LoopingAudioConverter.Conversion {
 
                 if (!env.Cancelled) {
                     var l = o.LoopExportParameters;
-                    if (l.ExportWholeSong) wavsToExport.Add(new NamedAudio(w.PlayLoopAndFade(l.NumberOfLoops, l.FadeOutSec), filename_no_ext + l.WholeSongSuffix));
-                    if (l.ExportPreLoop) wavsToExport.Add(new NamedAudio(w.GetPreLoopSegment(), filename_no_ext + l.PreLoopSuffix));
-                    if (l.ExportLoop) wavsToExport.Add(new NamedAudio(w.GetLoopSegment(), filename_no_ext + l.LoopSuffix));
+                    if (l.ExportWholeSong)
+                        if (l.WholeSongExportType == WholeSongExportType.NumberOfLoops)
+                            wavsToExport.Add(new NamedAudio(w.PlayLoopAndFade(l.NumberOfLoops, l.FadeOutSec), filename_no_ext + l.WholeSongSuffix));
+                        else if (l.WholeSongExportType == WholeSongExportType.DesiredDuration)
+                            wavsToExport.Add(new NamedAudio(w.PlayAndFade(l.DesiredDuration, l.FadeOutSec), filename_no_ext + l.WholeSongSuffix));
+                    if (l.ExportPreLoop)
+                        wavsToExport.Add(new NamedAudio(w.GetPreLoopSegment(), filename_no_ext + l.PreLoopSuffix));
+                    if (l.ExportLoop)
+                        wavsToExport.Add(new NamedAudio(w.GetLoopSegment(), filename_no_ext + l.LoopSuffix));
 
                     if (o.ChannelSplit == ChannelSplit.Pairs) wavsToExport = wavsToExport.SelectMany(x => x.SplitMultiChannelToStereo()).ToList();
                     if (o.ChannelSplit == ChannelSplit.Each) wavsToExport = wavsToExport.SelectMany(x => x.SplitMultiChannelToMono()).ToList();

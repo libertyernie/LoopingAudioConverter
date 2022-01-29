@@ -37,8 +37,10 @@ namespace LoopingAudioConverter {
 		public WaveEncoding? WaveEncoding { get; set; }
 		public InputLoopBehavior InputLoopBehavior { get; set; }
 		public bool ExportWholeSong { get; set; }
+		public bool WholeSongExportByDesiredDuration { get; set; }
 		public string WholeSongSuffix { get; set; }
 		public int NumberOfLoops { get; set; }
+		public decimal DesiredDuration { get; set; }
 		public decimal FadeOutSec { get; set; }
 		public bool ExportPreLoop { get; set; }
 		public string PreLoopSuffix { get; set; }
@@ -65,6 +67,8 @@ namespace LoopingAudioConverter {
 		string IEncodingParameters.FFMpeg_AAC => AACFFmpegParameters;
 
 		string IEncodingParameters.FFMpeg_Vorbis => OggVorbisEncodingParameters;
+
+		WholeSongExportType ILoopExportParameters.WholeSongExportType => WholeSongExportByDesiredDuration ? WholeSongExportType.DesiredDuration : WholeSongExportType.NumberOfLoops;
 
 		private class Hints : IRenderingHints {
 			public int RenderingSampleRate { get; set; }
