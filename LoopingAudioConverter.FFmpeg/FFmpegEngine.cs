@@ -76,7 +76,7 @@ namespace LoopingAudioConverter.FFmpeg {
 			var metadata = await GetInputMetadataAsync(filename);
 
 			TimeSpan? actual_duration = metadata.duration;
-			TimeSpan expectedDuration = hints.Duration ?? actual_duration ?? TimeSpan.FromMinutes(10);
+			TimeSpan expectedDuration = hints.RequiredDecodingDuration ?? actual_duration ?? TimeSpan.FromMinutes(10);
 
 			string outfile = Path.GetTempFileName();
 

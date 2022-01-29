@@ -5,6 +5,7 @@ using LoopingAudioConverter.VGAudioOptions;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using VGAudio.Containers.Adx;
@@ -72,16 +73,14 @@ namespace LoopingAudioConverter {
 
 		private class Hints : IRenderingHints {
 			public int RenderingSampleRate { get; set; }
-			public LoopOverride? LoopOverride { get; set; }
-
-			TimeSpan? IRenderingHints.Duration => LoopOverride is LoopOverride l
-				? TimeSpan.FromSeconds(l.LoopEnd / (double)RenderingSampleRate)
-				: (TimeSpan?)null;
+			public TimeSpan? RequiredDecodingDuration { get; set; }
 		}
 
 		IRenderingHints IConverterOptions.GetAudioHints(string filename) => new Hints {
 			RenderingSampleRate = SampleRate ?? 44100,
-			LoopOverride = GetLoopOverrides(filename)
+			RequiredDecodingDuration = WholeSongExportByDesiredDuration ? TimeSpan.FromSeconds((double)(DesiredDuration + FadeOutSec))
+				: GetLoopOverrides(filename) is LoopOverride l ? TimeSpan.FromSeconds(l.LoopEnd / (double)(SampleRate ?? 44100))
+				: (TimeSpan?)null
 		};
 
 		public LoopOverride? GetLoopOverrides(string filename) {

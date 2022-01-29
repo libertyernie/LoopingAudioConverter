@@ -9,7 +9,7 @@ namespace LoopingAudioConverter.PCM {
 
 	public interface IRenderingHints {
 		int RenderingSampleRate { get; }
-		TimeSpan? Duration { get; }
+		TimeSpan? RequiredDecodingDuration { get; }
 	}
 
 	public interface IAudioImporter {

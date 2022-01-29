@@ -48,7 +48,7 @@ namespace LoopingAudioConverter.VGM {
             public int RenderingSampleRate { get; set; }
 			public int SampleCount { get; set; }
 
-			TimeSpan? IRenderingHints.Duration => TimeSpan.FromSeconds(SampleCount / (double)RenderingSampleRate);
+			TimeSpan? IRenderingHints.RequiredDecodingDuration => TimeSpan.FromSeconds(SampleCount / (double)RenderingSampleRate);
 		}
 
         /// <summary>
