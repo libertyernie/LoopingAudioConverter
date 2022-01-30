@@ -1,5 +1,6 @@
 ﻿using BrawlLib.SSBB.Types.Audio;
 using LoopingAudioConverter.Conversion;
+using LoopingAudioConverter.Immutable;
 using LoopingAudioConverter.PCM;
 using LoopingAudioConverter.VGAudioOptions;
 using System;
@@ -13,7 +14,7 @@ using VGAudio.Containers.Hca;
 using VGAudio.Containers.NintendoWare;
 
 namespace LoopingAudioConverter {
-	public class Options : IConverterOptions, ILoopExportParameters, IEncodingParameters {
+	public class Options : IConverterOptions, IEncodingParameters {
 		[XmlIgnore]
 		public IEnumerable<string> InputFiles { get; set; }
 
@@ -49,7 +50,26 @@ namespace LoopingAudioConverter {
 		public string LoopSuffix { get; set; }
 		public bool ShortCircuit { get; set; }
 
-		ILoopExportParameters IConverterOptions.LoopExportParameters => this;
+		IEnumerable<SongExport> IConverterOptions.SongExports {
+			get {
+				if (ExportWholeSong)
+					yield return SongExport.NewSongExport(
+						SongExportType.NewWholeSong(
+							WholeSongExportByDesiredDuration
+								? WholeSongContext.NewDuration(DesiredDuration)
+								: WholeSongContext.NewLoopCount(NumberOfLoops),
+							FadeOutSec),
+						WholeSongSuffix);
+				if (ExportPreLoop)
+					yield return SongExport.NewSongExport(
+						SongExportType.PreLoopSegment,
+						PreLoopSuffix);
+				if (ExportLoop)
+					yield return SongExport.NewSongExport(
+						SongExportType.LoopSegment,
+						LoopSuffix);
+			}
+		}
 
 		bool IConverterOptions.BypassEncodingWhenPossible => ShortCircuit;
 
@@ -68,8 +88,6 @@ namespace LoopingAudioConverter {
 		string IEncodingParameters.FFMpeg_AAC => AACFFmpegParameters;
 
 		string IEncodingParameters.FFMpeg_Vorbis => OggVorbisEncodingParameters;
-
-		WholeSongExportType ILoopExportParameters.WholeSongExportType => WholeSongExportByDesiredDuration ? WholeSongExportType.DesiredDuration : WholeSongExportType.NumberOfLoops;
 
 		private class Hints : IRenderingHints {
 			public int RenderingSampleRate { get; set; }

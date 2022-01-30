@@ -1,4 +1,6 @@
-﻿using LoopingAudioConverter.PCM;
+﻿using LoopingAudioConverter.Immutable;
+using LoopingAudioConverter.PCM;
+using System.Collections.Generic;
 using VGAudio.Containers.Adx;
 using VGAudio.Containers.Hca;
 using VGAudio.Containers.NintendoWare;
@@ -55,24 +57,6 @@ namespace LoopingAudioConverter.Conversion {
         string FFMpeg_Vorbis { get; }
     }
 
-    public enum WholeSongExportType {
-        NumberOfLoops, DesiredDuration
-    }
-
-    public interface ILoopExportParameters {
-        bool ExportPreLoop { get; }
-        string PreLoopSuffix { get; }
-        bool ExportLoop { get; }
-        string LoopSuffix { get; }
-        bool ExportWholeSong { get; }
-        WholeSongExportType WholeSongExportType { get; }
-        string WholeSongSuffix { get; }
-
-        int NumberOfLoops { get; }
-        decimal DesiredDuration { get; }
-        decimal FadeOutSec { get; }
-    }
-
     public struct LoopOverride {
         public int LoopStart, LoopEnd;
     }
@@ -85,7 +69,7 @@ namespace LoopingAudioConverter.Conversion {
 
         ChannelSplit ChannelSplit { get; }
         InputLoopBehavior InputLoopBehavior { get; }
-        ILoopExportParameters LoopExportParameters { get; }
+        IEnumerable<SongExport> SongExports { get; }
         LoopOverride? GetLoopOverrides(string filename);
 
         int? Channels { get; }

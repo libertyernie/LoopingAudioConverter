@@ -147,6 +147,10 @@
       <Project>{D3F294BD-4FE5-41F8-BE7F-22BC3C64EE21}</Project>
       <Name>LoopingAudioConverter.FFmpeg</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LoopingAudioConverter.Immutable\LoopingAudioConverter.Immutable.fsproj">
+      <Project>{4c9d050e-5d0d-4678-b8b0-5f4773db96b2}</Project>
+      <Name>LoopingAudioConverter.Immutable</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LoopingAudioConverter.MP3\LoopingAudioConverter.MP3.csproj">
       <Project>{F5DA7913-4A3C-4EED-BF34-827FB5A5D45D}</Project>
       <Name>LoopingAudioConverter.MP3</Name>
