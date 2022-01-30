@@ -1,4 +1,5 @@
-﻿using LoopingAudioConverter.PCM;
+﻿using LoopingAudioConverter.Immutable;
+using LoopingAudioConverter.PCM;
 using System.Linq;
 
 namespace LoopingAudioConverter.Vorbis {
@@ -8,9 +9,11 @@ namespace LoopingAudioConverter.Vorbis {
 	public class VorbisAudio : PCM16Audio {
 		private readonly byte[] _originalData;
 
-		public VorbisAudio(byte[] encoded, PCM16Audio decoded) : base(decoded.Channels, decoded.SampleRate, decoded.Samples) {
+		private VorbisAudio(byte[] encoded, Audio decoded, Loop loop) : base(decoded, loop) {
 			_originalData = encoded;
+		}
 
+		public static VorbisAudio Create(byte[] encoded, Audio decoded) {
 			using (VorbisFile vorbisFile = new VorbisFile(encoded)) {
 				VorbisComments c = vorbisFile.GetPageHeaders()
 					.Select(p => p.GetCommentHeader())
@@ -18,13 +21,18 @@ namespace LoopingAudioConverter.Vorbis {
 					.Select(h => h.ExtractComments())
 					.DefaultIfEmpty(new VorbisComments())
 					.First();
-				if (c.Comments.TryGetValue("LOOPSTART", out string loopStart)) {
-					Looping = true;
-					LoopStart = int.Parse(loopStart);
+				Loop GetLoop() {
+					if (c.Comments.TryGetValue("LOOPSTART", out string s1) && int.TryParse(s1, out int s2)) {
+						if (c.Comments.TryGetValue("LOOPLENGTH", out string l1) && int.TryParse(s1, out int l2)) {
+							return Loop.NewLoop(s2, l2);
+						} else {
+							return Loop.NewLoop(s2, decoded.SamplesPerChannel);
+						}
+					} else {
+						return Loop.NonLooping;
+					}
 				}
-				if (c.Comments.TryGetValue("LOOPLENGTH", out string loopLength)) {
-					LoopEnd = int.Parse(loopStart) + int.Parse(loopLength);
-				}
+				return new VorbisAudio(encoded, decoded, GetLoop());
 			}
 		}
 

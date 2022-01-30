@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Loop.fs" />
+    <Compile Include="Audio.fs" />
     <Compile Include="SongExport.fs" />
   </ItemGroup>
 

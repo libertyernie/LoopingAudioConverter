@@ -175,11 +175,9 @@ namespace LoopingAudioConverter.Conversion {
 
             if (o.GetLoopOverrides(Path.GetFileName(inputFile)) is LoopOverride loopOverride) {
                 if (loopOverride.LoopStart < 0) {
-                    w.Looping = false;
+                    w.CurrentLoop = Loop.NonLooping;
                 } else {
-                    w.Looping = true;
-                    w.LoopStart = loopOverride.LoopStart;
-                    w.LoopEnd = loopOverride.LoopEnd;
+                    w.CurrentLoop = Loop.NewLoop(loopOverride.LoopStart, loopOverride.LoopEnd);
                 }
             }
 
@@ -222,9 +220,7 @@ namespace LoopingAudioConverter.Conversion {
                         switch (o.InputLoopBehavior) {
                             case InputLoopBehavior.ForceLoop:
                                 if (!toExport.Audio.Looping) {
-                                    toExport.Audio.Looping = true;
-                                    toExport.Audio.LoopStart = 0;
-                                    toExport.Audio.LoopEnd = toExport.Audio.Samples.Length / toExport.Audio.Channels;
+                                    toExport.Audio.CurrentLoop = Loop.NewLoop(0, toExport.Audio.SamplesPerChannel);
                                 }
                                 break;
                             case InputLoopBehavior.AskForNonLooping:
@@ -237,7 +233,7 @@ namespace LoopingAudioConverter.Conversion {
                                 }
                                 break;
                             case InputLoopBehavior.DiscardForAll:
-                                toExport.Audio.Looping = false;
+                                toExport.Audio.CurrentLoop = Loop.NonLooping;
                                 break;
                         }
 

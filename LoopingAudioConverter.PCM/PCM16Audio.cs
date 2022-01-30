@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LoopingAudioConverter.Immutable;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,26 +9,45 @@ namespace LoopingAudioConverter.PCM {
 	/// The total sample length of this data is immutable, but the data itself and other properties can be modified.
 	/// </summary>
 	public class PCM16Audio {
-		public short Channels { get; }
-		public int SampleRate { get; }
-		public short[] Samples { get; }
+		public readonly Audio ImmutableAudio;
+
+		public short Channels => checked((short)ImmutableAudio.Channels);
+		public int SampleRate => ImmutableAudio.SampleRate;
+		public short[] Samples => ImmutableAudio.Samples;
+
+		public readonly Loop OriginalLoop;
+
+		public Loop CurrentLoop { get; set; }
 
 		/// <summary>
 		/// Whether the file is known to loop.
 		/// </summary>
-		public bool Looping { get; set; }
+		public bool Looping => CurrentLoop.IsLoop;
 
 		/// <summary>
 		/// The start of the loop, in samples.
 		/// </summary>
-		public int LoopStart { get; set; }
+		public int LoopStart => CurrentLoop is Loop.Loop x ? x.LoopStart : 0;
 
 		/// <summary>
 		/// The end of the loop, in samples.
 		/// </summary>
-		public int LoopEnd { get; set; }
+		public int LoopEnd => CurrentLoop is Loop.Loop x ? x.LoopEnd : (Samples.Length / Channels);
 
 		public int LoopLength => LoopEnd - LoopStart;
+
+		public int SamplesPerChannel => ImmutableAudio.SamplesPerChannel;
+
+		/// <summary>
+		/// Creates a WAV with the given audio data and loop point.
+		/// </summary>
+		/// <param name="audio">The 16-bit PCM audio data</param>
+		/// <param name="loop">The loop point data</param>
+		public PCM16Audio(Audio audio, Loop loop) {
+			ImmutableAudio = audio;
+			OriginalLoop = loop;
+			CurrentLoop = loop;
+		}
 
 		/// <summary>
 		/// Creates a WAV with the given metadata and length.
@@ -46,15 +66,15 @@ namespace LoopingAudioConverter.PCM {
 				throw new Exception("The end of the loop (" + loop_end + " samples) is past the end of the file (" + sample_data.Length / channels + " samples). Double-check the program that generated this data.");
 			}
 
-			Channels = (short)channels;
-			SampleRate = sampleRate;
+			short[] samples = new short[sample_data.Length];
+			Array.Copy(sample_data, samples, samples.Length);
 
-			Samples = new short[sample_data.Length];
-			Array.Copy(sample_data, Samples, Samples.Length);
+			ImmutableAudio = new Audio(channels, sampleRate, samples);
 
-			Looping = (loop_start != null);
-			LoopStart = loop_start ?? 0;
-			LoopEnd = loop_end ?? (Samples.Length / channels);
+			OriginalLoop = loop_start != null
+				? Loop.NewLoop(loop_start ?? 0, loop_end ?? (samples.Length / channels))
+				: Loop.NonLooping;
+			CurrentLoop = OriginalLoop;
 		}
 
 		/// <summary>

@@ -1,5 +1,6 @@
 ﻿using BrawlLib.Internal;
 using BrawlLib.Internal.Audio;
+using LoopingAudioConverter.Immutable;
 using LoopingAudioConverter.PCM;
 using System;
 using System.Runtime.InteropServices;
@@ -28,7 +29,9 @@ namespace LoopingAudioConverter.BrawlLib {
 				return lwav.Looping;
 			}
 			set {
-				lwav.Looping = value;
+				lwav.CurrentLoop = value
+					? Loop.NewLoop(lwav.LoopStart, lwav.LoopEnd)
+					: Loop.NonLooping;
 			}
 		}
 
@@ -37,7 +40,9 @@ namespace LoopingAudioConverter.BrawlLib {
 				return lwav.LoopEnd;
 			}
 			set {
-				lwav.LoopEnd = value;
+				lwav.CurrentLoop = lwav.Looping
+					? Loop.NewLoop(lwav.LoopStart, value)
+					: Loop.NonLooping;
 			}
 		}
 
@@ -46,7 +51,9 @@ namespace LoopingAudioConverter.BrawlLib {
 				return lwav.LoopStart;
 			}
 			set {
-				lwav.LoopStart = value;
+				lwav.CurrentLoop = lwav.Looping
+					? Loop.NewLoop(lwav.LoopStart, value)
+					: Loop.NonLooping;
 			}
 		}
 
