@@ -142,8 +142,6 @@ namespace LoopingAudioConverter.FFmpeg {
 		/// <param name="force">If true, always return a new PCM16Audio object</param>
 		/// <returns>A new PCM16Audio object if one or more effects are applied; the same PCM16Audio object if no effects are applied.</returns>
 		public PCM16Audio ApplyEffects(PCM16Audio lwav, int channels = int.MaxValue, decimal db = 0, decimal amplitude = 1, int rate = int.MaxValue, double pitch_semitones = 0, double tempo_ratio = 1, bool force = false) {
-			byte[] wav = lwav.Export();
-
 			// This is where I wish I had F# list comprehensions
 
 			IEnumerable<string> getParameters() {
@@ -185,42 +183,57 @@ namespace LoopingAudioConverter.FFmpeg {
 			if (parameters.Count == 0 && !force)
 				return lwav;
 
-			string infile = Path.GetTempFileName();
-			string outfile = Path.GetTempFileName();
+			PCM16Audio convert(PCM16Audio lin) {
+				string infile = Path.GetTempFileName();
+				string outfile = Path.GetTempFileName();
 
-			File.WriteAllBytes(infile, wav);
+				byte[] wav = lin.Export();
+				File.WriteAllBytes(infile, wav);
 
-			ProcessStartInfo psi = new ProcessStartInfo {
-				FileName = ExePath,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                Arguments = $"-y -f wav -i {infile} {string.Join(" ", parameters)} -f wav -c:a pcm_s16le {outfile}"
-			};
-			Process p = Process.Start(psi);
-			p.WaitForExit();
-			File.Delete(infile);
+				ProcessStartInfo psi = new ProcessStartInfo
+				{
+					FileName = ExePath,
+					UseShellExecute = false,
+					CreateNoWindow = true,
+					Arguments = $"-y -f wav -i {infile} {string.Join(" ", parameters)} -f wav -c:a pcm_s16le {outfile}"
+				};
+				Process p = Process.Start(psi);
+				p.WaitForExit();
+				File.Delete(infile);
+
+				return WaveConverter.FromFile(outfile, true);
+			}
 
 			try {
-				PCM16Audio l = WaveConverter.FromFile(outfile, true);
-				l.Looping = lwav.Looping;
-				l.LoopStart = lwav.LoopStart;
-				l.LoopEnd = lwav.LoopEnd;
+				if (!lwav.Looping)
+					return convert(lwav);
 
-				if (l.Looping && l.SampleRate != lwav.SampleRate) {
-					// When the sample rate is changed, we need to change the loop points to match.
-					double ratio = (double)l.SampleRate / lwav.SampleRate;
-					l.LoopStart = (int)(l.LoopStart * ratio);
-					l.LoopEnd = (int)(l.LoopEnd * ratio);
+				var segments = new[]
+				{
+					lwav.GetPreLoopSegment(),
+					lwav.GetLoopSegment(),
+					lwav.GetPostLoopSegment()
+				}.Where(x => x.Samples.Length != 0).Select(convert).ToArray();
+
+				short[] samples = new short[segments.Select(x => x.Samples.Length).Sum()];
+				int i = 0;
+				foreach (var s in segments)
+				{
+					Array.Copy(s.Samples, 0, samples, i, s.Samples.Length);
+					i += s.Samples.Length;
 				}
 
-				if (l.Looping && tempo_ratio != 1) {
-					// When the tempo is changed, we need to change the loop points to match.
-					l.LoopStart = (int)(l.LoopStart / tempo_ratio);
-					l.LoopEnd = (int)(l.LoopEnd / tempo_ratio);
-				}
-				return l;
+				int loopStart = segments[0].Samples.Length / segments[0].Channels;
+				int loopLength = segments[1].Samples.Length / segments[1].Channels;
+
+				return new PCM16Audio(
+					segments.Select(x => x.Channels).Distinct().Single(),
+					segments.Select(x => x.SampleRate).Distinct().Single(),
+					samples,
+					loopStart,
+					loopStart + loopLength);
 			} catch (Exception e) {
-				throw new AudioImporterException("Could not read ffmpeg output: " + e.Message);
+				throw new AudioImporterException("Could not read ffmpeg output: " + e.Message, e);
 			}
 		}
 
