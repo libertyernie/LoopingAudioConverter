@@ -104,6 +104,17 @@ namespace LoopingAudioConverter.PCM {
 		}
 
 		/// <summary>
+		/// Creates a new non-looping PCM16Audio object containing only the portion of this track after the loop end point. Usually empty (no samples).
+		/// </summary>
+		/// <returns>A new PCM16Audio object</returns>
+		public PCM16Audio GetPostLoopSegment()
+		{
+			short[] data = new short[Samples.Length - Channels * LoopEnd];
+			Array.Copy(Samples, Channels * LoopEnd, data, 0, data.Length);
+			return new PCM16Audio(Channels, SampleRate, data, 0);
+		}
+
+		/// <summary>
 		/// Returns a PCM16Audio object that represents this audio when the looping portion is played a given amount of times, with an optional amount of fade-out.
 		/// Any existing loop data will be maintained.
 		/// If the file is non-looping, the original file will be returned.

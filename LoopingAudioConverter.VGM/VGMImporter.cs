@@ -93,7 +93,7 @@ namespace LoopingAudioConverter.VGM {
 					using (var sw = new StreamWriter(new FileStream(Path.Combine(tmpDir, "VGMPlay.ini"), FileMode.Create, FileAccess.Write))) {
 						sw.WriteLine("[General]");
 						sw.WriteLine("SampleRate = " + hints.RenderingSampleRate);
-						sw.WriteLine("FadeTime = 500");
+						sw.WriteLine("FadeTime = 0");
 						sw.WriteLine("LogSound = 1");
 						sw.WriteLine("MaxLoops = 0x01");
 					}

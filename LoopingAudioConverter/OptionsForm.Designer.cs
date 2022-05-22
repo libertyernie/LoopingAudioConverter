@@ -60,6 +60,10 @@
             this.radChannelsPairs = new System.Windows.Forms.RadioButton();
             this.radChannelsSeparate = new System.Windows.Forms.RadioButton();
             this.pnlExportSegments = new System.Windows.Forms.Panel();
+            this.radDesiredDuration = new System.Windows.Forms.RadioButton();
+            this.radNumberLoops = new System.Windows.Forms.RadioButton();
+            this.label7 = new System.Windows.Forms.Label();
+            this.numDesiredDuration = new System.Windows.Forms.NumericUpDown();
             this.btnEncodingOptions = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.lblOutputFormat = new System.Windows.Forms.Label();
@@ -86,10 +90,9 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.label7 = new System.Windows.Forms.Label();
-            this.numDesiredDuration = new System.Windows.Forms.NumericUpDown();
-            this.radNumberLoops = new System.Windows.Forms.RadioButton();
-            this.radDesiredDuration = new System.Windows.Forms.RadioButton();
+            this.chkEndFinal = new System.Windows.Forms.CheckBox();
+            this.txtEndFinalFilenamePattern = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -105,11 +108,11 @@
             this.panel4.SuspendLayout();
             this.pnlExportChannels.SuspendLayout();
             this.pnlExportSegments.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numDesiredDuration)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numNumberLoops)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numFadeOutTime)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numDesiredDuration)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -573,6 +576,9 @@
             // 
             this.pnlExportSegments.AutoSize = true;
             this.pnlExportSegments.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlExportSegments.Controls.Add(this.chkEndFinal);
+            this.pnlExportSegments.Controls.Add(this.txtEndFinalFilenamePattern);
+            this.pnlExportSegments.Controls.Add(this.label8);
             this.pnlExportSegments.Controls.Add(this.radDesiredDuration);
             this.pnlExportSegments.Controls.Add(this.radNumberLoops);
             this.pnlExportSegments.Controls.Add(this.label7);
@@ -596,8 +602,57 @@
             this.pnlExportSegments.Location = new System.Drawing.Point(230, 3);
             this.pnlExportSegments.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.pnlExportSegments.Name = "pnlExportSegments";
-            this.pnlExportSegments.Size = new System.Drawing.Size(298, 185);
+            this.pnlExportSegments.Size = new System.Drawing.Size(298, 211);
             this.pnlExportSegments.TabIndex = 3;
+            // 
+            // radDesiredDuration
+            // 
+            this.radDesiredDuration.AutoSize = true;
+            this.radDesiredDuration.Location = new System.Drawing.Point(43, 82);
+            this.radDesiredDuration.Name = "radDesiredDuration";
+            this.radDesiredDuration.Size = new System.Drawing.Size(102, 17);
+            this.radDesiredDuration.TabIndex = 21;
+            this.radDesiredDuration.Text = "Desired duration";
+            this.radDesiredDuration.UseVisualStyleBackColor = true;
+            // 
+            // radNumberLoops
+            // 
+            this.radNumberLoops.AutoSize = true;
+            this.radNumberLoops.Checked = true;
+            this.radNumberLoops.Location = new System.Drawing.Point(43, 56);
+            this.radNumberLoops.Name = "radNumberLoops";
+            this.radNumberLoops.Size = new System.Drawing.Size(102, 17);
+            this.radNumberLoops.TabIndex = 20;
+            this.radNumberLoops.TabStop = true;
+            this.radNumberLoops.Text = "Number of loops";
+            this.radNumberLoops.UseVisualStyleBackColor = true;
+            // 
+            // label7
+            // 
+            this.label7.Location = new System.Drawing.Point(231, 80);
+            this.label7.Margin = new System.Windows.Forms.Padding(3);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(40, 21);
+            this.label7.TabIndex = 10;
+            this.label7.Text = "sec";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // numDesiredDuration
+            // 
+            this.numDesiredDuration.Location = new System.Drawing.Point(172, 81);
+            this.numDesiredDuration.Maximum = new decimal(new int[] {
+            7200,
+            0,
+            0,
+            0});
+            this.numDesiredDuration.Name = "numDesiredDuration";
+            this.numDesiredDuration.Size = new System.Drawing.Size(53, 20);
+            this.numDesiredDuration.TabIndex = 9;
+            this.numDesiredDuration.Value = new decimal(new int[] {
+            900,
+            0,
+            0,
+            0});
             // 
             // btnEncodingOptions
             // 
@@ -638,7 +693,7 @@
             this.chk0End.Name = "chk0End";
             this.chk0End.Size = new System.Drawing.Size(160, 20);
             this.chk0End.TabIndex = 3;
-            this.chk0End.Text = "Export whole song";
+            this.chk0End.Text = "Export all through loop end";
             this.chk0End.UseVisualStyleBackColor = true;
             this.chk0End.CheckedChanged += new System.EventHandler(this.chk0End_CheckedChanged);
             // 
@@ -767,7 +822,7 @@
             this.chkShortCircuit.AutoSize = true;
             this.chkShortCircuit.Checked = true;
             this.chkShortCircuit.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkShortCircuit.Location = new System.Drawing.Point(233, 194);
+            this.chkShortCircuit.Location = new System.Drawing.Point(233, 220);
             this.chkShortCircuit.Name = "chkShortCircuit";
             this.chkShortCircuit.Size = new System.Drawing.Size(176, 17);
             this.chkShortCircuit.TabIndex = 4;
@@ -871,54 +926,34 @@
             this.progressBar1.Size = new System.Drawing.Size(287, 23);
             this.progressBar1.TabIndex = 0;
             // 
-            // label7
+            // chkEndFinal
             // 
-            this.label7.Location = new System.Drawing.Point(231, 80);
-            this.label7.Margin = new System.Windows.Forms.Padding(3);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(40, 21);
-            this.label7.TabIndex = 10;
-            this.label7.Text = "sec";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.chkEndFinal.Location = new System.Drawing.Point(3, 188);
+            this.chkEndFinal.Name = "chkEndFinal";
+            this.chkEndFinal.Size = new System.Drawing.Size(160, 20);
+            this.chkEndFinal.TabIndex = 22;
+            this.chkEndFinal.Text = "Export segment after loop";
+            this.chkEndFinal.UseVisualStyleBackColor = true;
+            this.chkEndFinal.CheckedChanged += new System.EventHandler(this.chkEndFinal_CheckedChanged);
             // 
-            // numDesiredDuration
+            // txtEndFinalFilenamePattern
             // 
-            this.numDesiredDuration.Location = new System.Drawing.Point(172, 81);
-            this.numDesiredDuration.Maximum = new decimal(new int[] {
-            7200,
-            0,
-            0,
-            0});
-            this.numDesiredDuration.Name = "numDesiredDuration";
-            this.numDesiredDuration.Size = new System.Drawing.Size(53, 20);
-            this.numDesiredDuration.TabIndex = 9;
-            this.numDesiredDuration.Value = new decimal(new int[] {
-            900,
-            0,
-            0,
-            0});
+            this.txtEndFinalFilenamePattern.Enabled = false;
+            this.txtEndFinalFilenamePattern.Location = new System.Drawing.Point(215, 188);
+            this.txtEndFinalFilenamePattern.Name = "txtEndFinalFilenamePattern";
+            this.txtEndFinalFilenamePattern.Size = new System.Drawing.Size(80, 20);
+            this.txtEndFinalFilenamePattern.TabIndex = 24;
+            this.txtEndFinalFilenamePattern.Text = " (end)";
             // 
-            // radNumberLoops
+            // label8
             // 
-            this.radNumberLoops.AutoSize = true;
-            this.radNumberLoops.Checked = true;
-            this.radNumberLoops.Location = new System.Drawing.Point(43, 56);
-            this.radNumberLoops.Name = "radNumberLoops";
-            this.radNumberLoops.Size = new System.Drawing.Size(102, 17);
-            this.radNumberLoops.TabIndex = 20;
-            this.radNumberLoops.TabStop = true;
-            this.radNumberLoops.Text = "Number of loops";
-            this.radNumberLoops.UseVisualStyleBackColor = true;
-            // 
-            // radDesiredDuration
-            // 
-            this.radDesiredDuration.AutoSize = true;
-            this.radDesiredDuration.Location = new System.Drawing.Point(43, 82);
-            this.radDesiredDuration.Name = "radDesiredDuration";
-            this.radDesiredDuration.Size = new System.Drawing.Size(102, 17);
-            this.radDesiredDuration.TabIndex = 21;
-            this.radDesiredDuration.Text = "Desired duration";
-            this.radDesiredDuration.UseVisualStyleBackColor = true;
+            this.label8.Location = new System.Drawing.Point(169, 188);
+            this.label8.Margin = new System.Windows.Forms.Padding(3);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(40, 20);
+            this.label8.TabIndex = 23;
+            this.label8.Text = "Suffix:";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // OptionsForm
             // 
@@ -951,11 +986,11 @@
             this.pnlExportChannels.PerformLayout();
             this.pnlExportSegments.ResumeLayout(false);
             this.pnlExportSegments.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numDesiredDuration)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numNumberLoops)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numFadeOutTime)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numDesiredDuration)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1029,5 +1064,8 @@
 		private System.Windows.Forms.NumericUpDown numDesiredDuration;
 		private System.Windows.Forms.RadioButton radDesiredDuration;
 		private System.Windows.Forms.RadioButton radNumberLoops;
+		private System.Windows.Forms.CheckBox chkEndFinal;
+		private System.Windows.Forms.TextBox txtEndFinalFilenamePattern;
+		private System.Windows.Forms.Label label8;
 	}
 }

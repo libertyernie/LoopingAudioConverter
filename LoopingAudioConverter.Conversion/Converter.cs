@@ -210,6 +210,12 @@ namespace LoopingAudioConverter.Conversion {
                     if (l.ExportLoop)
                         wavsToExport.Add(new NamedAudio(w.GetLoopSegment(), filename_no_ext + l.LoopSuffix));
 
+                    if (l.ExportPostLoop) {
+                        PCM16Audio segment = w.GetPostLoopSegment();
+                        if (segment.Samples.Any())
+                            wavsToExport.Add(new NamedAudio(segment, filename_no_ext + l.PostLoopSuffix));
+                    }
+
                     if (o.ChannelSplit == ChannelSplit.Pairs) wavsToExport = wavsToExport.SelectMany(x => x.SplitMultiChannelToStereo()).ToList();
                     if (o.ChannelSplit == ChannelSplit.Each) wavsToExport = wavsToExport.SelectMany(x => x.SplitMultiChannelToMono()).ToList();
                 }

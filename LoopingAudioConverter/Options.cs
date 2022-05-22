@@ -47,6 +47,8 @@ namespace LoopingAudioConverter {
 		public string PreLoopSuffix { get; set; }
 		public bool ExportLoop { get; set; }
 		public string LoopSuffix { get; set; }
+		public bool ExportPostLoop { get; set; }
+		public string PostLoopSuffix { get; set; }
 		public bool ShortCircuit { get; set; }
 
 		ILoopExportParameters IConverterOptions.LoopExportParameters => this;
