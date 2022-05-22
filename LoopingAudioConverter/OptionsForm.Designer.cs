@@ -90,6 +90,7 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.btnOpenOutputDir = new System.Windows.Forms.Button();
             this.chkEndFinal = new System.Windows.Forms.CheckBox();
             this.txtEndFinalFilenamePattern = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -125,6 +126,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.btnOpenOutputDir);
             this.splitContainer1.Panel1.Controls.Add(this.txtInputDir);
             this.splitContainer1.Panel1.Controls.Add(this.label5);
             this.splitContainer1.Panel1.Controls.Add(this.btnSuffixFilter);
@@ -196,7 +198,7 @@
             // btnBrowse
             // 
             this.btnBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBrowse.Location = new System.Drawing.Point(499, 137);
+            this.btnBrowse.Location = new System.Drawing.Point(445, 137);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(32, 20);
             this.btnBrowse.TabIndex = 6;
@@ -210,7 +212,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtOutputDir.Location = new System.Drawing.Point(99, 137);
             this.txtOutputDir.Name = "txtOutputDir";
-            this.txtOutputDir.Size = new System.Drawing.Size(394, 20);
+            this.txtOutputDir.Size = new System.Drawing.Size(340, 20);
             this.txtOutputDir.TabIndex = 5;
             this.txtOutputDir.Text = "./output";
             // 
@@ -926,6 +928,17 @@
             this.progressBar1.Size = new System.Drawing.Size(287, 23);
             this.progressBar1.TabIndex = 0;
             // 
+            // btnOpenOutputDir
+            // 
+            this.btnOpenOutputDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOpenOutputDir.Location = new System.Drawing.Point(483, 137);
+            this.btnOpenOutputDir.Name = "btnOpenOutputDir";
+            this.btnOpenOutputDir.Size = new System.Drawing.Size(48, 20);
+            this.btnOpenOutputDir.TabIndex = 9;
+            this.btnOpenOutputDir.Text = "Open";
+            this.btnOpenOutputDir.UseVisualStyleBackColor = true;
+            this.btnOpenOutputDir.Click += new System.EventHandler(this.btnOpenOutputDir_Click);
+            // 
             // chkEndFinal
             // 
             this.chkEndFinal.Location = new System.Drawing.Point(3, 188);
@@ -1064,6 +1077,7 @@
 		private System.Windows.Forms.NumericUpDown numDesiredDuration;
 		private System.Windows.Forms.RadioButton radDesiredDuration;
 		private System.Windows.Forms.RadioButton radNumberLoops;
+		private System.Windows.Forms.Button btnOpenOutputDir;
 		private System.Windows.Forms.CheckBox chkEndFinal;
 		private System.Windows.Forms.TextBox txtEndFinalFilenamePattern;
 		private System.Windows.Forms.Label label8;

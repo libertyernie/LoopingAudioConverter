@@ -356,6 +356,17 @@ namespace LoopingAudioConverter {
 			}
 		}
 
+		private void btnOpenOutputDir_Click(object sender, EventArgs e) {
+			try {
+				string path = Path.GetFullPath(txtOutputDir.Text);
+				if (Directory.Exists(path)) {
+					Process.Start(path);
+				}
+			} catch (Exception ex) {
+				MessageBox.Show(ex.Message);
+			}
+		}
+
 		private void btnHelp_Click(object sender, EventArgs e) {
 			Process.Start("About.html");
 		}
