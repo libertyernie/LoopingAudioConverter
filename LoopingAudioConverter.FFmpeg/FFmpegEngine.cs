@@ -141,7 +141,7 @@ namespace LoopingAudioConverter.FFmpeg {
 		/// <param name="tempo_ratio">Tempo ratio (if 1, this effect will not be applied)</param>
 		/// <param name="force">If true, always return a new PCM16Audio object</param>
 		/// <returns>A new PCM16Audio object if one or more effects are applied; the same PCM16Audio object if no effects are applied.</returns>
-		public PCM16Audio ApplyEffects(PCM16Audio lwav, int channels = int.MaxValue, decimal db = 0, decimal amplitude = 1, int rate = int.MaxValue, double pitch_semitones = 0, double tempo_ratio = 1, bool force = false) {
+		public async Task<PCM16Audio> ApplyEffectsAsync(PCM16Audio lwav, int channels = int.MaxValue, decimal db = 0, decimal amplitude = 1, int rate = int.MaxValue, double pitch_semitones = 0, double tempo_ratio = 1, bool force = false) {
 			// This is where I wish I had F# list comprehensions
 
 			IEnumerable<string> getParameters() {
@@ -183,7 +183,7 @@ namespace LoopingAudioConverter.FFmpeg {
 			if (parameters.Count == 0 && !force)
 				return lwav;
 
-			PCM16Audio convert(PCM16Audio lin) {
+			async Task<PCM16Audio> convert(PCM16Audio lin) {
 				string infile = Path.GetTempFileName();
 				string outfile = Path.GetTempFileName();
 
@@ -197,8 +197,7 @@ namespace LoopingAudioConverter.FFmpeg {
 					CreateNoWindow = true,
 					Arguments = $"-y -f wav -i {infile} {string.Join(" ", parameters)} -f wav -c:a pcm_s16le {outfile}"
 				};
-				Process p = Process.Start(psi);
-				p.WaitForExit();
+				await ProcessEx.RunAsync(psi);
 				File.Delete(infile);
 
 				return WaveConverter.FromFile(outfile, true);
@@ -206,14 +205,13 @@ namespace LoopingAudioConverter.FFmpeg {
 
 			try {
 				if (!lwav.Looping)
-					return convert(lwav);
+					return await convert(lwav);
 
-				var segments = new[]
-				{
+				var segments = await Task.WhenAll(new[] {
 					lwav.GetPreLoopSegment(),
 					lwav.GetLoopSegment(),
 					lwav.GetPostLoopSegment()
-				}.Where(x => x.Samples.Length != 0).Select(convert).ToArray();
+				}.Where(x => x.Samples.Length != 0).Select(convert));
 
 				short[] samples = new short[segments.Select(x => x.Samples.Length).Sum()];
 				int i = 0;

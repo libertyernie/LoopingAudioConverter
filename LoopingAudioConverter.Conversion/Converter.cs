@@ -186,7 +186,7 @@ namespace LoopingAudioConverter.Conversion {
                 env.ReportFailure(filename_no_ext, "Could not read " + inputFile);
             } else {
                 env.UpdateStatus(filename_no_ext, "Applying effects");
-                w = effectEngine.ApplyEffects(w,
+                w = await effectEngine.ApplyEffectsAsync(w,
                     channels: o.Channels ?? w.Channels,
                     rate: o.SampleRate ?? w.SampleRate,
                     db: o.AmplifydB ?? 0M,
