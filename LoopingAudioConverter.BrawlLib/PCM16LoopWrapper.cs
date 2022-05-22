@@ -10,43 +10,44 @@ namespace LoopingAudioConverter.BrawlLib {
 	/// IAudioStream maintains a "current position" in the audio stream, while PCM16Audio does not, so this class handles SamplePosition, Wrap, and ReadSamples.
 	/// </summary>
 	public class PCM16LoopWrapper : IAudioStream {
-		private readonly PCM16Audio lwav;
+		private readonly PCM16Audio original, mixed;
 
 		public PCM16LoopWrapper(PCM16Audio lwav) {
-			this.lwav = lwav.Channels > 2
+			original = lwav;
+			mixed = lwav.Channels > 2
 				? lwav.MixToMono()
 				: lwav;
 		}
 
 		public int BitsPerSample => 16;
-		public int Channels => lwav.Channels;
+		public int Channels => mixed.Channels;
 		public WaveFormatTag Format => WaveFormatTag.WAVE_FORMAT_PCM;
-		public int Frequency => lwav.SampleRate;
+		public int Frequency => mixed.SampleRate;
 
 		public bool IsLooping {
 			get {
-				return lwav.Looping;
+				return original.Looping;
 			}
 			set {
-				lwav.Looping = value;
+				original.Looping = value;
 			}
 		}
 
 		public int LoopEndSample {
 			get {
-				return lwav.LoopEnd;
+				return original.LoopEnd;
 			}
 			set {
-				lwav.LoopEnd = value;
+				original.LoopEnd = value;
 			}
 		}
 
 		public int LoopStartSample {
 			get {
-				return lwav.LoopStart;
+				return original.LoopStart;
 			}
 			set {
-				lwav.LoopStart = value;
+				original.LoopStart = value;
 			}
 		}
 
@@ -55,7 +56,7 @@ namespace LoopingAudioConverter.BrawlLib {
 				numSamples = Samples - SamplePosition;
 			}
 
-			Marshal.Copy(lwav.Samples, SamplePosition * Channels, destAddr, numSamples * Channels);
+			Marshal.Copy(mixed.Samples, SamplePosition * Channels, destAddr, numSamples * Channels);
 			SamplePosition += numSamples;
 			return numSamples;
 		}
@@ -64,7 +65,7 @@ namespace LoopingAudioConverter.BrawlLib {
 
 		public int SamplePosition { get; set; }
 
-		public int Samples => lwav.Samples.Length / lwav.Channels;
+		public int Samples => mixed.Samples.Length / mixed.Channels;
 
 		public void Wrap() {
 			SamplePosition = LoopStartSample;
