@@ -54,7 +54,7 @@ namespace LoopingAudioConverter {
 			if (auto) {
 				f.Auto = true;
 				f.Shown += (o, e) => f.AcceptButton.PerformClick();
-			} 
+			}
 
 			{
 				Application.Run(f);
