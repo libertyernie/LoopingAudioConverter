@@ -132,6 +132,23 @@ namespace LoopingAudioConverter {
 			if (ddlUnknownLoopBehavior.SelectedIndex < 0) ddlUnknownLoopBehavior.SelectedIndex = 0;
 
 			runningTasks = new HashSet<Task>();
+
+			Shown += (o, e) => {
+				foreach (string str in new[] {
+					"ffmpeg_path",
+					"qaac_path",
+					"vgmplay_path",
+					"vgmstream_path"
+				}) {
+					string v = ConfigurationManager.AppSettings[str];
+					if (v == null) {
+						MessageBox.Show(this, $"The .config file setting {str} could not be found.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					}
+					if (!File.Exists(v)) {
+						MessageBox.Show(this, $"The file {v} could not be found.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					}
+				}
+			};
 		}
 
 		public void AddInputFiles(IEnumerable<string> inputFiles) {
@@ -414,6 +431,7 @@ namespace LoopingAudioConverter {
 				await t;
 			} catch (Exception ex) {
 				Console.Error.WriteLine(ex);
+				MessageBox.Show(this, "An error occurred.\r\nFor more details, run from cmd.exe and write a log file:\r\n\r\nLoopingAudioConverter.exe 2> log.txt", ex.GetType().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 			runningTasks.Remove(t);
 			UpdateTitle();

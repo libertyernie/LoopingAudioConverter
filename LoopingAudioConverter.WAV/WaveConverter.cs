@@ -187,7 +187,7 @@ namespace LoopingAudioConverter.WAV {
 									loopEnd = loop->end;
 								}
 							} else {
-								Console.Error.WriteLine("Ignoring unknown chunk " + id);
+								//Console.Error.WriteLine("Ignoring unknown chunk " + id);
 							}
 						}
 					}
