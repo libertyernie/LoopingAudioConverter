@@ -6,6 +6,7 @@ namespace LoopingAudioConverter.Conversion {
         string QaacPath { get; }
         string VGMPlayPath { get; }
         string VGMStreamPath { get; }
+        string MetaflacPath { get; }
 
         bool Cancelled { get; }
 
