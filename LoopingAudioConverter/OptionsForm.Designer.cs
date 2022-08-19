@@ -24,6 +24,7 @@
         /// </summary>
         private void InitializeComponent() {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.btnOpenOutputDir = new System.Windows.Forms.Button();
             this.txtInputDir = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.btnSuffixFilter = new System.Windows.Forms.Button();
@@ -40,6 +41,8 @@
             this.lblEnumerationStatus = new System.Windows.Forms.Label();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnEffectsFinalLap = new System.Windows.Forms.Button();
+            this.btnEffectsReset = new System.Windows.Forms.Button();
             this.numTempo = new System.Windows.Forms.NumericUpDown();
             this.chkTempo = new System.Windows.Forms.CheckBox();
             this.numPitch = new System.Windows.Forms.NumericUpDown();
@@ -60,6 +63,9 @@
             this.radChannelsPairs = new System.Windows.Forms.RadioButton();
             this.radChannelsSeparate = new System.Windows.Forms.RadioButton();
             this.pnlExportSegments = new System.Windows.Forms.Panel();
+            this.chkEndFinal = new System.Windows.Forms.CheckBox();
+            this.txtEndFinalFilenamePattern = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.radDesiredDuration = new System.Windows.Forms.RadioButton();
             this.radNumberLoops = new System.Windows.Forms.RadioButton();
             this.label7 = new System.Windows.Forms.Label();
@@ -90,10 +96,6 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.btnOpenOutputDir = new System.Windows.Forms.Button();
-            this.chkEndFinal = new System.Windows.Forms.CheckBox();
-            this.txtEndFinalFilenamePattern = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -141,9 +143,20 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.flowLayoutPanel2);
-            this.splitContainer1.Size = new System.Drawing.Size(534, 492);
+            this.splitContainer1.Size = new System.Drawing.Size(534, 522);
             this.splitContainer1.SplitterDistance = 161;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // btnOpenOutputDir
+            // 
+            this.btnOpenOutputDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOpenOutputDir.Location = new System.Drawing.Point(483, 137);
+            this.btnOpenOutputDir.Name = "btnOpenOutputDir";
+            this.btnOpenOutputDir.Size = new System.Drawing.Size(48, 20);
+            this.btnOpenOutputDir.TabIndex = 9;
+            this.btnOpenOutputDir.Text = "Open";
+            this.btnOpenOutputDir.UseVisualStyleBackColor = true;
+            this.btnOpenOutputDir.Click += new System.EventHandler(this.btnOpenOutputDir_Click);
             // 
             // txtInputDir
             // 
@@ -312,12 +325,14 @@
             this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(534, 327);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(534, 357);
             this.flowLayoutPanel2.TabIndex = 0;
             // 
             // panel2
             // 
             this.panel2.AutoSize = true;
+            this.panel2.Controls.Add(this.btnEffectsFinalLap);
+            this.panel2.Controls.Add(this.btnEffectsReset);
             this.panel2.Controls.Add(this.numTempo);
             this.panel2.Controls.Add(this.chkTempo);
             this.panel2.Controls.Add(this.numPitch);
@@ -332,8 +347,28 @@
             this.panel2.Location = new System.Drawing.Point(0, 3);
             this.panel2.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(227, 156);
+            this.panel2.Size = new System.Drawing.Size(227, 185);
             this.panel2.TabIndex = 0;
+            // 
+            // btnEffectsFinalLap
+            // 
+            this.btnEffectsFinalLap.Location = new System.Drawing.Point(149, 159);
+            this.btnEffectsFinalLap.Name = "btnEffectsFinalLap";
+            this.btnEffectsFinalLap.Size = new System.Drawing.Size(75, 23);
+            this.btnEffectsFinalLap.TabIndex = 12;
+            this.btnEffectsFinalLap.Text = "Final Lap";
+            this.btnEffectsFinalLap.UseVisualStyleBackColor = true;
+            this.btnEffectsFinalLap.Click += new System.EventHandler(this.btnEffectsFinalLap_Click);
+            // 
+            // btnEffectsReset
+            // 
+            this.btnEffectsReset.Location = new System.Drawing.Point(43, 159);
+            this.btnEffectsReset.Name = "btnEffectsReset";
+            this.btnEffectsReset.Size = new System.Drawing.Size(100, 23);
+            this.btnEffectsReset.TabIndex = 11;
+            this.btnEffectsReset.Text = "Standard Speed";
+            this.btnEffectsReset.UseVisualStyleBackColor = true;
+            this.btnEffectsReset.Click += new System.EventHandler(this.btnEffectsReset_Click);
             // 
             // numTempo
             // 
@@ -348,6 +383,11 @@
             this.numTempo.Name = "numTempo";
             this.numTempo.Size = new System.Drawing.Size(66, 20);
             this.numTempo.TabIndex = 10;
+            this.numTempo.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // chkTempo
             // 
@@ -493,7 +533,7 @@
             this.panel4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panel4.Controls.Add(this.ddlUnknownLoopBehavior);
             this.panel4.Controls.Add(this.lblUnknownLoopBehavior);
-            this.panel4.Location = new System.Drawing.Point(0, 165);
+            this.panel4.Location = new System.Drawing.Point(0, 194);
             this.panel4.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(227, 48);
@@ -527,7 +567,7 @@
             this.pnlExportChannels.Controls.Add(this.radChannelsTogether);
             this.pnlExportChannels.Controls.Add(this.radChannelsPairs);
             this.pnlExportChannels.Controls.Add(this.radChannelsSeparate);
-            this.pnlExportChannels.Location = new System.Drawing.Point(0, 219);
+            this.pnlExportChannels.Location = new System.Drawing.Point(0, 248);
             this.pnlExportChannels.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.pnlExportChannels.Name = "pnlExportChannels";
             this.pnlExportChannels.Size = new System.Drawing.Size(230, 90);
@@ -606,6 +646,35 @@
             this.pnlExportSegments.Name = "pnlExportSegments";
             this.pnlExportSegments.Size = new System.Drawing.Size(298, 211);
             this.pnlExportSegments.TabIndex = 3;
+            // 
+            // chkEndFinal
+            // 
+            this.chkEndFinal.Location = new System.Drawing.Point(3, 188);
+            this.chkEndFinal.Name = "chkEndFinal";
+            this.chkEndFinal.Size = new System.Drawing.Size(160, 20);
+            this.chkEndFinal.TabIndex = 22;
+            this.chkEndFinal.Text = "Export segment after loop";
+            this.chkEndFinal.UseVisualStyleBackColor = true;
+            this.chkEndFinal.CheckedChanged += new System.EventHandler(this.chkEndFinal_CheckedChanged);
+            // 
+            // txtEndFinalFilenamePattern
+            // 
+            this.txtEndFinalFilenamePattern.Enabled = false;
+            this.txtEndFinalFilenamePattern.Location = new System.Drawing.Point(215, 188);
+            this.txtEndFinalFilenamePattern.Name = "txtEndFinalFilenamePattern";
+            this.txtEndFinalFilenamePattern.Size = new System.Drawing.Size(80, 20);
+            this.txtEndFinalFilenamePattern.TabIndex = 24;
+            this.txtEndFinalFilenamePattern.Text = " (end)";
+            // 
+            // label8
+            // 
+            this.label8.Location = new System.Drawing.Point(169, 188);
+            this.label8.Margin = new System.Windows.Forms.Padding(3);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(40, 20);
+            this.label8.TabIndex = 23;
+            this.label8.Text = "Suffix:";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // radDesiredDuration
             // 
@@ -837,7 +906,7 @@
             this.panel1.Controls.Add(this.btnOkay);
             this.panel1.Controls.Add(this.btnSaveOptions);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 521);
+            this.panel1.Location = new System.Drawing.Point(0, 551);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(534, 30);
             this.panel1.TabIndex = 1;
@@ -891,7 +960,7 @@
             this.panel5.Controls.Add(this.label6);
             this.panel5.Controls.Add(this.progressBar1);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel5.Location = new System.Drawing.Point(0, 492);
+            this.panel5.Location = new System.Drawing.Point(0, 522);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(534, 29);
             this.panel5.TabIndex = 4;
@@ -928,52 +997,12 @@
             this.progressBar1.Size = new System.Drawing.Size(287, 23);
             this.progressBar1.TabIndex = 0;
             // 
-            // btnOpenOutputDir
-            // 
-            this.btnOpenOutputDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOpenOutputDir.Location = new System.Drawing.Point(483, 137);
-            this.btnOpenOutputDir.Name = "btnOpenOutputDir";
-            this.btnOpenOutputDir.Size = new System.Drawing.Size(48, 20);
-            this.btnOpenOutputDir.TabIndex = 9;
-            this.btnOpenOutputDir.Text = "Open";
-            this.btnOpenOutputDir.UseVisualStyleBackColor = true;
-            this.btnOpenOutputDir.Click += new System.EventHandler(this.btnOpenOutputDir_Click);
-            // 
-            // chkEndFinal
-            // 
-            this.chkEndFinal.Location = new System.Drawing.Point(3, 188);
-            this.chkEndFinal.Name = "chkEndFinal";
-            this.chkEndFinal.Size = new System.Drawing.Size(160, 20);
-            this.chkEndFinal.TabIndex = 22;
-            this.chkEndFinal.Text = "Export segment after loop";
-            this.chkEndFinal.UseVisualStyleBackColor = true;
-            this.chkEndFinal.CheckedChanged += new System.EventHandler(this.chkEndFinal_CheckedChanged);
-            // 
-            // txtEndFinalFilenamePattern
-            // 
-            this.txtEndFinalFilenamePattern.Enabled = false;
-            this.txtEndFinalFilenamePattern.Location = new System.Drawing.Point(215, 188);
-            this.txtEndFinalFilenamePattern.Name = "txtEndFinalFilenamePattern";
-            this.txtEndFinalFilenamePattern.Size = new System.Drawing.Size(80, 20);
-            this.txtEndFinalFilenamePattern.TabIndex = 24;
-            this.txtEndFinalFilenamePattern.Text = " (end)";
-            // 
-            // label8
-            // 
-            this.label8.Location = new System.Drawing.Point(169, 188);
-            this.label8.Margin = new System.Windows.Forms.Padding(3);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(40, 20);
-            this.label8.TabIndex = 23;
-            this.label8.Text = "Suffix:";
-            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // OptionsForm
             // 
             this.AcceptButton = this.btnOkay;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(534, 551);
+            this.ClientSize = new System.Drawing.Size(534, 581);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.panel1);
@@ -1081,5 +1110,7 @@
 		private System.Windows.Forms.CheckBox chkEndFinal;
 		private System.Windows.Forms.TextBox txtEndFinalFilenamePattern;
 		private System.Windows.Forms.Label label8;
+		private System.Windows.Forms.Button btnEffectsFinalLap;
+		private System.Windows.Forms.Button btnEffectsReset;
 	}
 }

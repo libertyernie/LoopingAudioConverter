@@ -581,6 +581,20 @@ namespace LoopingAudioConverter {
 			progressBar1.Value = (int)(value * (progressBar1.Maximum - progressBar1.Minimum)) + progressBar1.Minimum;
 		}
 
+		private void btnEffectsReset_Click(object sender, EventArgs e) {
+			numPitch.Value = 0;
+			chkPitch.Checked = false;
+			numTempo.Value = 1;
+			chkTempo.Checked = false;
+		}
+
+		private void btnEffectsFinalLap_Click(object sender, EventArgs e) {
+			numPitch.Value = 1;
+			chkPitch.Checked = true;
+			numTempo.Value = 1.1m;
+			chkTempo.Checked = true;
+		}
+
 		private void btnCancel_Click(object sender, EventArgs e) {
 			btnCancel.Enabled = false;
 		}
