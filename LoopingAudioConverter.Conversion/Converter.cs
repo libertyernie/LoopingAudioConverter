@@ -59,7 +59,7 @@ namespace LoopingAudioConverter.Conversion {
                     case ExporterType.MSU1:
                         return new MSU1Converter();
                     case ExporterType.FLAC:
-                        return new FLACExporter(effectEngine, "", env.MetaflacPath);
+                        return new FLACConverter(effectEngine, "", env.MetaflacPath);
                     case ExporterType.MP3:
                         return new MP3Exporter(effectEngine, o.EncodingParameters.FFMpeg_MP3);
                     case ExporterType.QAAC_M4A:
@@ -84,6 +84,7 @@ namespace LoopingAudioConverter.Conversion {
             IEnumerable<IAudioImporter> BuildImporters() {
                 yield return new WaveImporter();
                 yield return new MP3Importer();
+                yield return new FLACConverter(effectEngine, "", env.MetaflacPath);
                 yield return new VorbisImporter(effectEngine);
                 if (env.VGMPlayPath is string vgmplay_path)
                     yield return new VGMImporter(vgmplay_path);
