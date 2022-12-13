@@ -14,22 +14,24 @@ namespace LoopingAudioConverter.Vorbis {
 			this.encoding_parameters = encoding_parameters;
 		}
 
-        public async Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IProgress<double> progress) {
+		public void TryWriteFile(IAudio audio, string output_dir, string original_filename_no_ext) {
+			if (audio is VorbisAudio v) {
+				string output_filename = Path.Combine(output_dir, original_filename_no_ext + ".ogg");
+				File.WriteAllBytes(output_filename, v.Export());
+			}
+		}
+
+		public async Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IProgress<double> progress) {
 			string output_filename = Path.Combine(output_dir, original_filename_no_ext + ".ogg");
 
-			VorbisAudio audio;
-			if (lwav is VorbisAudio v) {
-				audio = v;
-			} else {
-				string tempFile = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".ogg");
-				await effectEngine.WriteFileAsync(lwav, tempFile, encoding_parameters, progress);
-				audio = new VorbisAudio(File.ReadAllBytes(tempFile), lwav) {
-                    LoopStart = lwav.LoopStart,
-                    LoopEnd = lwav.LoopEnd,
-                    Looping = lwav.Looping
-                };
-				File.Delete(tempFile);
-			}
+			string tempFile = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".ogg");
+			await effectEngine.WriteFileAsync(lwav, tempFile, encoding_parameters, progress);
+			VorbisAudio audio = new VorbisAudio(File.ReadAllBytes(tempFile)) {
+                LoopStart = lwav.LoopStart,
+                LoopEnd = lwav.LoopEnd,
+                Looping = lwav.Looping
+            };
+			File.Delete(tempFile);
 
 			File.WriteAllBytes(output_filename, audio.Export());
 		}

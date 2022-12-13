@@ -5,11 +5,12 @@ using System.IO;
 using System.Runtime.InteropServices;
 
 namespace LoopingAudioConverter.MP3 {
-	/// <summary>
-	/// Represents 16-bit uncompressed PCM data sourced from an original MP3 rendition.
-	/// </summary>
-	public class MP3Audio : PCM16Audio {
+	public sealed class MP3Audio : IAudio {
 		private readonly byte[] _mp3Data;
+
+		public bool Looping { get; set; }
+		public int LoopStart { get; set; }
+		public int LoopEnd { get; set; }
 
 		public byte[] MP3Data {
             get {
@@ -19,13 +20,13 @@ namespace LoopingAudioConverter.MP3 {
             }
         }
 
-		private MP3Audio(byte[] mp3data, int channels, int sampleRate, short[] sample_data) : base(channels, sampleRate, sample_data) {
+		public MP3Audio(byte[] mp3data) {
 			_mp3Data = mp3data;
 		}
 
-		public unsafe static MP3Audio Read(byte[] mp3data) {
+		public unsafe PCM16Audio Decode() {
 			using (var output = new MemoryStream())
-			using (var input = new MemoryStream(mp3data, false))
+			using (var input = new MemoryStream(MP3Data, false))
 			using (var mp3 = new MP3Stream(input)) {
 				// TODO figure out why CopyTo is slow
 				mp3.CopyTo(output);
@@ -37,12 +38,18 @@ namespace LoopingAudioConverter.MP3 {
 					Marshal.Copy((IntPtr)ptr16, samples, 0, samples.Length);
 				}
 
-				return new MP3Audio(mp3data, mp3.ChannelCount, mp3.Frequency, samples);
+				return new PCM16Audio(mp3.ChannelCount, mp3.Frequency, samples) {
+					Looping = Looping,
+					LoopStart = LoopStart,
+					LoopEnd = LoopEnd
+				};
 			}
 		}
 
 		public override string ToString() {
 			return base.ToString() + " (MP3)";
 		}
+
+		void IDisposable.Dispose() { }
 	}
 }

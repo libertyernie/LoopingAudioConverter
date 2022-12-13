@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter.PCM {
@@ -12,9 +13,12 @@ namespace LoopingAudioConverter.PCM {
 		TimeSpan? RequiredDecodingDuration { get; }
 	}
 
-	public interface IAudioImporter {
+	public interface IPCMAudioImporter {
 		bool SupportsExtension(string extension);
-		bool SharesCodecsWith(IAudioExporter exporter);
 		Task<PCM16Audio> ReadFileAsync(string filename, IRenderingHints hints = null, IProgress<double> progress = null);
+	}
+
+	public interface IAudioImporter : IPCMAudioImporter {
+		IEnumerable<IAudio> TryReadFile(string filename);
 	}
 }

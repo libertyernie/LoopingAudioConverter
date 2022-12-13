@@ -13,7 +13,7 @@ namespace LoopingAudioConverter.FFmpeg {
 	/// <summary>
 	/// A class to interface with FFmpeg, using it to read and write non-looping audio data and to apply effects.
 	/// </summary>
-	public class FFmpegEngine : IAudioImporter {
+	public class FFmpegEngine : IPCMAudioImporter {
 		private readonly string ExePath;
 
 		/// <summary>
@@ -24,9 +24,7 @@ namespace LoopingAudioConverter.FFmpeg {
 			ExePath = exePath;
 		}
 
-		bool IAudioImporter.SupportsExtension(string extension) => true;
-
-		bool IAudioImporter.SharesCodecsWith(IAudioExporter exporter) => false;
+		public bool SupportsExtension(string extension) => true;
 
 		private struct Metadata {
 			public string codec;

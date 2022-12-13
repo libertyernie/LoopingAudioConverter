@@ -11,7 +11,7 @@ namespace LoopingAudioConverter.VGMStream {
 	/// <summary>
 	/// A class to use vgmstream's test.exe to convert formats it supports to PCM16Audio format.
 	/// </summary>
-	public class VGMStreamImporter : IAudioImporter {
+	public class VGMStreamImporter : IPCMAudioImporter {
 		private string TestExePath;
 
 		/// <summary>
@@ -30,8 +30,6 @@ namespace LoopingAudioConverter.VGMStream {
 		public bool SupportsExtension(string extension) {
 			return true;
 		}
-
-		bool IAudioImporter.SharesCodecsWith(IAudioExporter exporter) => false;
 
 		/// <summary>
 		/// Converts a file to WAV using test.exe and reads it into a PCM16Audio object.

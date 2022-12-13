@@ -7,7 +7,7 @@ namespace LoopingAudioConverter.PCM {
 	/// Represents 16-bit uncompressed PCM data with an arbitary number of channels and an optional loop sequence.
 	/// The total sample length of this data is immutable, but the data itself and other properties can be modified.
 	/// </summary>
-	public class PCM16Audio {
+	public sealed class PCM16Audio : IAudio {
 		public short Channels { get; }
 		public int SampleRate { get; }
 		public short[] Samples { get; }
@@ -199,6 +199,10 @@ namespace LoopingAudioConverter.PCM {
 		public override string ToString() {
 			return SampleRate + "Hz " + Channels + " channels: " + Samples.Length + " (" + TimeSpan.FromSeconds(Samples.Length / (SampleRate * Channels)) + ")"
 				+ (Looping ? (" loop " + LoopStart + "-" + LoopEnd) : "");
+		}
+
+		void IDisposable.Dispose() {
+			throw new NotImplementedException();
 		}
 	}
 }

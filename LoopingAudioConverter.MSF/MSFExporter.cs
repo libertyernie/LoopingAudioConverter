@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter.MSF {
-	public class MSFExporter : IAudioExporter {
+	public class MSFExporter : IPCMAudioExporter {
 		private readonly bool big_endian;
 
 		public MSFExporter(bool big_endian = true) {

@@ -46,5 +46,7 @@ namespace LoopingAudioConverter.MSF
             sample_data: GetPCM16Samples(),
             loop_start: GetLoopStartSample(),
             loop_end: GetLoopSampleCount() - GetLoopStartSample());
+
+        public override IAudio Read() => Decode();
     }
 }

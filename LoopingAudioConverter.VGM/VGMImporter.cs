@@ -11,7 +11,7 @@ namespace LoopingAudioConverter.VGM {
 	/// <summary>
 	/// A class to use either FFmpeg or VGMPlay to render VGM/VGZ files to WAV format.
 	/// </summary>
-	public class VGMImporter : IAudioImporter {
+	public class VGMImporter : IPCMAudioImporter {
 		private readonly FFmpegEngine Engine;
 		private readonly string VGMPlayPath;
 
@@ -41,8 +41,6 @@ namespace LoopingAudioConverter.VGM {
 			return string.Equals(extension, "vgm", StringComparison.InvariantCultureIgnoreCase)
 				|| string.Equals(extension, "vgz", StringComparison.InvariantCultureIgnoreCase);
 		}
-
-		bool IAudioImporter.SharesCodecsWith(IAudioExporter exporter) => false;
 
         private class Hints : IRenderingHints {
             public int RenderingSampleRate { get; set; }

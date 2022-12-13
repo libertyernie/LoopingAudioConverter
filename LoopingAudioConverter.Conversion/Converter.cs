@@ -24,7 +24,7 @@ namespace LoopingAudioConverter.Conversion {
                 ? new FFmpegEngine(env.FFmpegPath)
                 : throw new Exception("Could not find ffmpeg - please specify ffmpeg_path in .config file");
 
-            IAudioExporter getExporter() {
+            IPCMAudioExporter getExporter() {
                 switch (o.ExporterType) {
                     case ExporterType.VGAudio_BRSTM:
                         return new RSTMExporter(o.EncodingParameters.VGAudio_BXSTM);
@@ -79,9 +79,9 @@ namespace LoopingAudioConverter.Conversion {
                 }
             }
 
-            IAudioExporter exporter = getExporter();
+			IPCMAudioExporter exporter = getExporter();
 
-            IEnumerable<IAudioImporter> BuildImporters() {
+            IEnumerable<IPCMAudioImporter> BuildImporters() {
                 yield return new WaveImporter();
                 yield return new MP3Importer();
                 yield return new VorbisImporter(effectEngine);
@@ -97,7 +97,7 @@ namespace LoopingAudioConverter.Conversion {
                 yield return effectEngine;
             }
 
-            List<IAudioImporter> importers = BuildImporters().OrderBy(y => y.SharesCodecsWith(exporter) ? 1 : 2).ToList();
+            List<IPCMAudioImporter> importers = BuildImporters().ToList();
 
             if (!inputFiles.Any()) {
                 throw new Exception("No input files were selected.");
@@ -118,9 +118,9 @@ namespace LoopingAudioConverter.Conversion {
         public static async Task ConvertFileAsync(
             IConverterEnvironment env,
             IConverterOptions o,
-            IEnumerable<IAudioImporter> importers,
+            IEnumerable<IPCMAudioImporter> importers,
             FFmpegEngine effectEngine,
-            IAudioExporter exporter,
+			IPCMAudioExporter exporter,
             string inputFile,
             IProgress<double> progress = null
         ) {

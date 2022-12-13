@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter.FFmpeg {
-	public class FFmpegExporter : IAudioExporter {
+	public class FFmpegExporter : IPCMAudioExporter {
 		private readonly FFmpegEngine effectEngine;
 		private readonly string encoding_parameters;
 		private readonly string output_extension;

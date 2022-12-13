@@ -3,6 +3,7 @@ using BrawlLib.SSBB.ResourceNodes;
 using LoopingAudioConverter.PCM;
 using LoopingAudioConverter.WAV;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -22,10 +23,7 @@ namespace LoopingAudioConverter.BrawlLib {
                 using (var node = NodeFactory.FromFile(null, filename)) {
                     if (node is IAudioSource rstmNode) {
                         WX.ToFile(rstmNode.CreateStreams()[0], file);
-                        var decoded = WaveConverter.FromFile(file, true);
-                        return node is RSTMNode
-                            ? new BrawlLibRSTMAudio(File.ReadAllBytes(filename), decoded)
-                            : decoded;
+                        return WaveConverter.FromFile(file, true);
                     } else {
                         throw new AudioImporterException("Could not export to .wav using BrawlLib");
                     }
@@ -35,5 +33,13 @@ namespace LoopingAudioConverter.BrawlLib {
                 throw new AudioImporterException("Could not export to .wav using BrawlLib", ex);
             }
         }
-    }
+
+		public IEnumerable<IAudio> TryReadFile(string filename) {
+            var node = NodeFactory.FromFile(null, filename);
+            if (node is RSTMNode r)
+                yield return new BrawlLibRSTMAudio(r);
+            else
+                node.Dispose();
+		}
+	}
 }

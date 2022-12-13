@@ -1,5 +1,6 @@
 ﻿using LoopingAudioConverter.PCM;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,14 +23,16 @@ namespace LoopingAudioConverter.WAV {
 			return EXTENSIONS.Any(s => s.Equals(extension, StringComparison.InvariantCultureIgnoreCase));
 		}
 
-		bool IAudioImporter.SharesCodecsWith(IAudioExporter exporter) => false;
-
 		public Task<PCM16Audio> ReadFileAsync(string filename, IRenderingHints hints, IProgress<double> progress) {
 			try {
 				return Task.FromResult(WaveConverter.FromByteArray(File.ReadAllBytes(filename)));
 			} catch (WaveConverterException e) {
 				throw new AudioImporterException(e.Message, e);
 			}
+		}
+
+		public IEnumerable<IAudio> TryReadFile(string filename) {
+			yield return WaveConverter.FromByteArray(File.ReadAllBytes(filename));
 		}
 	}
 }

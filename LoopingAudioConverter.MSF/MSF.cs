@@ -96,13 +96,19 @@ namespace LoopingAudioConverter.MSF
                         throw new NotSupportedException($"The codec {header.codec} is not supported.");
                 }
             }
-        }
+		}
 
-        /// <summary>
-        /// Decodes the data of the MSF file.
-        /// </summary>
-        /// <returns>A PCM16Audio object with the header and uncompressed audio data</returns>
-        public abstract PCM16Audio Decode();
+		/// <summary>
+		/// Reads the data of the MSF file.
+		/// </summary>
+		/// <returns>An IAudio object with the header and audio data</returns>
+		public abstract IAudio Read();
+
+		/// <summary>
+		/// Decodes the data of the MSF file.
+		/// </summary>
+		/// <returns>A PCM16Audio object with the header and uncompressed audio data</returns>
+		public abstract PCM16Audio Decode();
 
         /// <summary>
         /// Exports the data of the MSF file.

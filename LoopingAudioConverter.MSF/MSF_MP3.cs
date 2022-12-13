@@ -7,10 +7,11 @@ namespace LoopingAudioConverter.MSF
     public class MSF_MP3 : MSF
     {
         private readonly MP3Audio MP3;
+        private readonly PCM16Audio Decoded;
 
         public long Bitrate {
             get {
-                double sampleCount = MP3.Samples.Length / Header.channel_count;
+                double sampleCount = Decoded.Samples.Length / Header.channel_count;
                 double seconds = sampleCount / Header.sample_rate;
                 double bytes_per_second = MP3.MP3Data.Length / seconds;
                 return (long)Math.Round(bytes_per_second);
@@ -26,7 +27,8 @@ namespace LoopingAudioConverter.MSF
             if (Header.codec != 7)
                 throw new FormatException("The codec in the MSF header is not MP3");
 
-            MP3 = MP3Audio.Read(body);
+            MP3 = new MP3Audio(body);
+            Decoded = MP3.Decode();
         }
 
         /// <summary>
@@ -51,6 +53,7 @@ namespace LoopingAudioConverter.MSF
             return checked((int)x);
         }
 
-        public override PCM16Audio Decode() => MP3;
+        public override PCM16Audio Decode() => Decoded;
+        public override IAudio Read() => MP3;
     }
 }

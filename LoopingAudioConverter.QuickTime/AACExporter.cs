@@ -7,7 +7,7 @@ using System.IO;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter.QuickTime {
-	public class AACExporter : IAudioExporter {
+	public class AACExporter : IPCMAudioExporter {
 		private readonly string ExePath;
 		private readonly bool Adts;
 		private readonly string EncodingParameters;

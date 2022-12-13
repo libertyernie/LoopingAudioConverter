@@ -1,14 +1,16 @@
 ﻿using LoopingAudioConverter.PCM;
+using System;
 using System.Linq;
 
 namespace LoopingAudioConverter.Vorbis {
-	/// <summary>
-	/// Represents 16-bit uncompressed PCM data sourced from an original Ogg Vorbis rendition.
-	/// </summary>
-	public class VorbisAudio : PCM16Audio {
+	public sealed class VorbisAudio : IAudio {
 		private readonly byte[] _originalData;
 
-		public VorbisAudio(byte[] encoded, PCM16Audio decoded) : base(decoded.Channels, decoded.SampleRate, decoded.Samples) {
+		public bool Looping { get; set; }
+		public int LoopStart { get; set; }
+		public int LoopEnd { get; set; }
+
+		public VorbisAudio(byte[] encoded) {
 			_originalData = encoded;
 
 			using (VorbisFile vorbisFile = new VorbisFile(encoded)) {
@@ -38,7 +40,7 @@ namespace LoopingAudioConverter.Vorbis {
 					.First();
 				if (Looping) {
 					c.Comments["LOOPSTART"] = LoopStart.ToString();
-					c.Comments["LOOPLENGTH"] = LoopLength.ToString();
+					c.Comments["LOOPLENGTH"] = (LoopEnd - LoopStart).ToString();
 				} else {
 					c.Comments.Remove("LOOPSTART");
 					c.Comments.Remove("LOOPLENGTH");
@@ -52,5 +54,7 @@ namespace LoopingAudioConverter.Vorbis {
 		public override string ToString() {
 			return base.ToString() + " (Ogg Vorbis)";
 		}
+
+		void IDisposable.Dispose() { }
     }
 }
