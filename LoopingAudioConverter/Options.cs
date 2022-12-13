@@ -5,7 +5,6 @@ using LoopingAudioConverter.VGAudioOptions;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using VGAudio.Containers.Adx;
@@ -49,6 +48,8 @@ namespace LoopingAudioConverter {
 		public string LoopSuffix { get; set; }
 		public bool ExportPostLoop { get; set; }
 		public string PostLoopSuffix { get; set; }
+		public bool ExportLastLap { get; set; }
+		public string LastLapSuffix { get; set; }
 		public bool ShortCircuit { get; set; }
 
 		ILoopExportParameters IConverterOptions.LoopExportParameters => this;

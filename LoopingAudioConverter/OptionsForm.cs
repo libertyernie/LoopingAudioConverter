@@ -207,6 +207,8 @@ namespace LoopingAudioConverter {
 				txtStartEndFilenamePattern.Text = o.LoopSuffix;
 				chkEndFinal.Checked = o.ExportPostLoop;
 				txtEndFinalFilenamePattern.Text = o.PostLoopSuffix;
+				chkLastLap.Checked = o.ExportLastLap;
+				txtLastLapFilenamePattern.Text = o.LastLapSuffix;
 			} catch (Exception e) {
 				MessageBox.Show(e.Message);
 			}
@@ -252,6 +254,8 @@ namespace LoopingAudioConverter {
 				LoopSuffix = txtStartEndFilenamePattern.Text,
 				ExportPostLoop = chkEndFinal.Checked,
 				PostLoopSuffix = txtEndFinalFilenamePattern.Text,
+				ExportLastLap = chkLastLap.Checked,
+				LastLapSuffix = txtLastLapFilenamePattern.Text,
 				ShortCircuit = chkShortCircuit.Checked,
 			};
 		}
@@ -342,6 +346,11 @@ namespace LoopingAudioConverter {
 		private void chkEndFinal_CheckedChanged(object sender, EventArgs e) {
 			CheckBox cb = (CheckBox)sender;
 			txtEndFinalFilenamePattern.Enabled = cb.Checked;
+		}
+
+		private void checkBox1_CheckedChanged(object sender, EventArgs e) {
+			CheckBox cb = (CheckBox)sender;
+			txtLastLapFilenamePattern.Enabled = cb.Checked;
 		}
 
 		private void chkMaxSampleRate_CheckedChanged(object sender, EventArgs e) {

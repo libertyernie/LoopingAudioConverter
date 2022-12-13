@@ -216,6 +216,13 @@ namespace LoopingAudioConverter.Conversion {
                             wavsToExport.Add(new NamedAudio(segment, filename_no_ext + l.PostLoopSuffix));
                     }
 
+                    if (l.ExportLastLap) {
+                        var lastLap = w = await effectEngine.ApplyEffectsAsync(w,
+					        pitch_semitones: 1,
+					        tempo_ratio: 1.1);
+						wavsToExport.Add(new NamedAudio(lastLap, filename_no_ext + l.LastLapSuffix));
+					}
+
                     if (o.ChannelSplit == ChannelSplit.Pairs) wavsToExport = wavsToExport.SelectMany(x => x.SplitMultiChannelToStereo()).ToList();
                     if (o.ChannelSplit == ChannelSplit.Each) wavsToExport = wavsToExport.SelectMany(x => x.SplitMultiChannelToMono()).ToList();
                 }
