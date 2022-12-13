@@ -26,7 +26,8 @@ namespace LoopingAudioConverter.MSF {
 		public IEnumerable<IAudio> TryReadFile(string filename) {
 			byte[] data = File.ReadAllBytes(filename);
 			var msf = MSF.Parse(data);
-			yield return msf.Read();
+			if (msf is MSF_MP3 x)
+				yield return x.MP3;
 		}
 	}
 }

@@ -1,8 +1,9 @@
 ﻿using BrawlLib.SSBB.ResourceNodes;
 using LoopingAudioConverter.PCM;
+using LoopingAudioConverter.WAV;
 using System;
 using System.IO;
-using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace LoopingAudioConverter.BrawlLib {
     public unsafe sealed class BrawlLibRSTMAudio : IAudio {
@@ -29,9 +30,16 @@ namespace LoopingAudioConverter.BrawlLib {
                 throw new Exception("Cannot export RSTM with changed loop parameters");
 
             _node.Export(path);
-        }
+		}
 
-        public override string ToString() {
+		public Task<PCM16Audio> DecodeAsync() {
+			string file = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".wav");
+			var audio = Task.FromResult(WaveConverter.FromFile(file, true));
+            File.Delete(file);
+            return audio;
+		}
+
+		public override string ToString() {
 			return base.ToString() + " (BrawlLib)";
         }
 

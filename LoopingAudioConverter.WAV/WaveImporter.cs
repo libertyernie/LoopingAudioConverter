@@ -10,7 +10,7 @@ namespace LoopingAudioConverter.WAV {
 	/// A wrapper around PCM16Factory that implements the IAudioImporter interface.
 	/// For .wav files, it makes sense to read them directly when possible. If the file cannot be read, vgmstream or ffmpeg should be used instead.
 	/// </summary>
-	public class WaveImporter : IAudioImporter {
+	public class WaveImporter : IPCMAudioImporter {
 		private static string[] EXTENSIONS = new string[] { "wav", "lwav" };
 
 		/// <summary>
@@ -29,10 +29,6 @@ namespace LoopingAudioConverter.WAV {
 			} catch (WaveConverterException e) {
 				throw new AudioImporterException(e.Message, e);
 			}
-		}
-
-		public IEnumerable<IAudio> TryReadFile(string filename) {
-			yield return WaveConverter.FromByteArray(File.ReadAllBytes(filename));
 		}
 	}
 }

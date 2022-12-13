@@ -3,6 +3,7 @@ using MP3Sharp;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace LoopingAudioConverter.MP3 {
 	public sealed class MP3Audio : IAudio {
@@ -45,6 +46,8 @@ namespace LoopingAudioConverter.MP3 {
 				};
 			}
 		}
+
+		public Task<PCM16Audio> DecodeAsync() => Task.FromResult(Decode());
 
 		public override string ToString() {
 			return base.ToString() + " (MP3)";

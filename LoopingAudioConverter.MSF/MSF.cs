@@ -99,12 +99,6 @@ namespace LoopingAudioConverter.MSF
 		}
 
 		/// <summary>
-		/// Reads the data of the MSF file.
-		/// </summary>
-		/// <returns>An IAudio object with the header and audio data</returns>
-		public abstract IAudio Read();
-
-		/// <summary>
 		/// Decodes the data of the MSF file.
 		/// </summary>
 		/// <returns>A PCM16Audio object with the header and uncompressed audio data</returns>

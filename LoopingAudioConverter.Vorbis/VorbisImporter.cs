@@ -25,7 +25,7 @@ namespace LoopingAudioConverter.Vorbis {
 
 		public IEnumerable<IAudio> TryReadFile(string filename) {
 			var originalFile = File.ReadAllBytes(filename);
-			yield return new VorbisAudio(originalFile);
+			yield return new VorbisAudio(originalFile, effectEngine);
 		}
 	}
 }

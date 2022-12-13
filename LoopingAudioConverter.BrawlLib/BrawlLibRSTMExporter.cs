@@ -119,14 +119,6 @@ namespace LoopingAudioConverter.BrawlLib {
 
 			if (audio is BrawlLibRSTMAudio r) {
 				r.Export(outfile);
-			} else if (audio is PCM16Audio pcm) {
-				var wrapper = new PCM16LoopWrapper(pcm);
-
-				using (var fileMap = RSTMConverter.Encode(wrapper, null, WaveEncoding.PCM16)) {
-					using (var node = NodeFactory.FromAddress(null, fileMap.Address, fileMap.Length)) {
-						node.Export(outfile);
-					}
-				}
 			}
 		}
 	}

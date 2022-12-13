@@ -1,6 +1,9 @@
 ﻿using LoopingAudioConverter.PCM;
+using LoopingAudioConverter.WAV;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
+using VGAudio.Containers.Wave;
 using VGAudio.Formats;
 
 namespace LoopingAudioConverter.VGAudio {
@@ -22,12 +25,17 @@ namespace LoopingAudioConverter.VGAudio {
 		public AudioData Export() {
             _audioData.SetLoop(Looping, LoopStart, LoopEnd);
             return _audioData;
-        }
+		}
 
-        public override string ToString() {
+		public Task<PCM16Audio> DecodeAsync() {
+			byte[] wavedata = new WaveWriter().GetFile(_audioData);
+			return Task.FromResult(WaveConverter.FromByteArray(wavedata));
+		}
+
+		public override string ToString() {
 			return base.ToString() + " (VGAudio)";
         }
 
 		void IDisposable.Dispose() { }
-    }
+	}
 }

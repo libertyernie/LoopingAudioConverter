@@ -99,18 +99,29 @@ namespace LoopingAudioConverter.Conversion {
 
             List<IPCMAudioImporter> importers = BuildImporters().ToList();
 
-            if (!inputFiles.Any()) {
+            IEnumerable<IAudioImporter> fancyImporters() {
+                foreach (var m in importers)
+                    if (m is IAudioImporter y)
+                        yield return y;
+			}
+
+			if (!inputFiles.Any()) {
                 throw new Exception("No input files were selected.");
             }
 
             double x = 1.0 / inputFiles.Count;
             int i = 0;
             foreach (string inputFile in inputFiles) {
-                if (o.BypassEncoding) throw new NotImplementedException();
-                var pr = new ProgressSubset(progress, x * i, x * (i + 1));
-                if (!env.Cancelled)
-                    await ConvertFileAsync(env, o, importers, effectEngine, exporter, inputFile, pr);
-                pr.Report(1.0);
+				var pr = new ProgressSubset(progress, x * i, x * (i + 1));
+				if (o.BypassEncoding) {
+					if (!env.Cancelled && exporter is IAudioExporter ae)
+                        await CopyAudioDataAsync(env, o, fancyImporters().ToList(), ae, inputFile);
+					await Task.Yield();
+                } else {
+                    if (!env.Cancelled)
+                        await ConvertFileAsync(env, o, importers, effectEngine, exporter, inputFile, pr);
+				}
+				pr.Report(1.0);
                 i++;
             }
         }
@@ -162,7 +173,7 @@ namespace LoopingAudioConverter.Conversion {
                 throw new Exception("No importers supported for file extension " + extension);
             }
 
-            foreach (IAudioImporter importer in importers_supported) {
+            foreach (var importer in importers_supported) {
                 try {
                     env.UpdateStatus(filename_no_ext, $"Decoding ({importer.GetType().Name})");
                     w = await importer.ReadFileAsync(inputFile, o.GetAudioHints(inputFile), new ProgressSubset(progress, 0.0, 0.5));
@@ -266,6 +277,102 @@ namespace LoopingAudioConverter.Conversion {
             }
 
             progress?.Report(1.0);
-        }
-    }
+		}
+
+		public static async Task CopyAudioDataAsync(
+			IConverterEnvironment env,
+			IConverterOptions o,
+			IEnumerable<IAudioImporter> importers,
+			IAudioExporter exporter,
+			string inputFile
+		) {
+			string outputDir = o.OutputDir;
+			string inputDir = Path.GetDirectoryName(inputFile);
+			for (int x = 0; x < 100; x++) {
+				if (inputDir == o.InputDir) {
+					outputDir = outputDir.Replace("*", "");
+					break;
+				}
+
+				int index = outputDir.LastIndexOf('*');
+				if (index < 0) break;
+
+				string replacement = Path.GetFileName(inputDir);
+				outputDir = outputDir.Substring(0, index) + replacement + outputDir.Substring(index + 1);
+				inputDir = Path.GetDirectoryName(inputDir);
+			}
+
+			if (!Directory.Exists(outputDir)) {
+				try {
+					Directory.CreateDirectory(outputDir);
+				} catch (Exception e) {
+					throw new Exception("Could not create output directory " + o.OutputDir, e);
+				}
+			}
+
+			string filename_no_ext = Path.GetFileNameWithoutExtension(inputFile);
+			env.UpdateStatus(filename_no_ext, "Reading");
+
+			string extension = Path.GetExtension(inputFile);
+
+            IEnumerable<IAudio> collectInputAudio() {
+                foreach (var i in importers) {
+                    if (!i.SupportsExtension(extension))
+                        continue;
+
+                    foreach (var x in i.TryReadFile(inputFile))
+                        yield return x;
+                }
+            }
+
+            var inputAudio = collectInputAudio().ToList();
+
+            foreach (var w in inputAudio) {
+                if (o.GetLoopOverrides(Path.GetFileName(inputFile)) is LoopOverride loopOverride) {
+                    if (loopOverride.LoopStart < 0) {
+                        w.Looping = false;
+                    } else {
+                        w.Looping = true;
+                        w.LoopStart = loopOverride.LoopStart;
+                        w.LoopEnd = loopOverride.LoopEnd;
+                    }
+                }
+            }
+
+            switch (o.InputLoopBehavior) {
+                case InputLoopBehavior.ForceLoop:
+                    var first = await inputAudio.First().DecodeAsync();
+					if (!first.Looping) {
+                        foreach (var a in inputAudio) {
+                            a.Looping = true;
+                            a.LoopStart = 0;
+                            a.LoopEnd = first.Samples.Length / first.Channels;
+                        }
+					}
+					throw new NotImplementedException();
+				case InputLoopBehavior.AskForNonLooping:
+				case InputLoopBehavior.AskForAll:
+					var demo = await inputAudio.First().DecodeAsync();
+					if (o.InputLoopBehavior == InputLoopBehavior.AskForNonLooping && demo.Looping) {
+						break;
+					}
+                    if (env.ShowLoopConversionDialog(new NamedAudio(demo, filename_no_ext))) {
+						foreach (var a in inputAudio) {
+							a.Looping = demo.Looping;
+                            a.LoopStart = demo.LoopStart;
+                            a.LoopEnd = demo.LoopEnd;
+						}
+					} else {
+                        inputAudio.Clear();
+					}
+                    break;
+				case InputLoopBehavior.DiscardForAll:
+					foreach (var w in inputAudio) w.Looping = false;
+					break;
+			}
+
+            foreach (var w in inputAudio)
+                exporter.TryWriteFile(w, outputDir, filename_no_ext);
+		}
+	}
 }

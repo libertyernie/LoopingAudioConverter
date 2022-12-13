@@ -26,7 +26,7 @@ namespace LoopingAudioConverter.Vorbis {
 
 			string tempFile = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".ogg");
 			await effectEngine.WriteFileAsync(lwav, tempFile, encoding_parameters, progress);
-			VorbisAudio audio = new VorbisAudio(File.ReadAllBytes(tempFile)) {
+			VorbisAudio audio = new VorbisAudio(File.ReadAllBytes(tempFile), effectEngine) {
                 LoopStart = lwav.LoopStart,
                 LoopEnd = lwav.LoopEnd,
                 Looping = lwav.Looping
