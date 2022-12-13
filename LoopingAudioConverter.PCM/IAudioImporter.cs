@@ -14,7 +14,6 @@ namespace LoopingAudioConverter.PCM {
 
 	public interface IAudioImporter {
 		bool SupportsExtension(string extension);
-		bool SharesCodecsWith(IAudioExporter exporter);
 		Task<PCM16Audio> ReadFileAsync(string filename, IRenderingHints hints = null, IProgress<double> progress = null);
 	}
 }

@@ -37,8 +37,6 @@ namespace LoopingAudioConverter.MSU1 {
 			return extension.Equals("pcm", StringComparison.InvariantCultureIgnoreCase);
 		}
 
-		bool IAudioImporter.SharesCodecsWith(IAudioExporter exporter) => false;
-
 		public Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IProgress<double> progress) {
 			if (lwav.Channels != 2 || lwav.SampleRate != 44100) {
 				throw new AudioExporterException("MSU-1 output must be 2-channel audio at a sample rate of 44100Hz.");

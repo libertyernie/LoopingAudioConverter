@@ -22,8 +22,6 @@ namespace LoopingAudioConverter.WAV {
 			return EXTENSIONS.Any(s => s.Equals(extension, StringComparison.InvariantCultureIgnoreCase));
 		}
 
-		bool IAudioImporter.SharesCodecsWith(IAudioExporter exporter) => false;
-
 		public Task<PCM16Audio> ReadFileAsync(string filename, IRenderingHints hints, IProgress<double> progress) {
 			try {
 				return Task.FromResult(WaveConverter.FromByteArray(File.ReadAllBytes(filename)));

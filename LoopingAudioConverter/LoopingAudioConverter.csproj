@@ -148,7 +148,7 @@
       <Name>LoopingAudioConverter.FFmpeg</Name>
     </ProjectReference>
     <ProjectReference Include="..\LoopingAudioConverter.MP3\LoopingAudioConverter.MP3.csproj">
-      <Project>{F5DA7913-4A3C-4EED-BF34-827FB5A5D45D}</Project>
+      <Project>{16e229f2-c1fd-412b-a83a-d4f25ba99c5f}</Project>
       <Name>LoopingAudioConverter.MP3</Name>
     </ProjectReference>
     <ProjectReference Include="..\LoopingAudioConverter.MSF\LoopingAudioConverter.MSF.csproj">

@@ -31,8 +31,6 @@ namespace LoopingAudioConverter.VGMStream {
 			return true;
 		}
 
-		bool IAudioImporter.SharesCodecsWith(IAudioExporter exporter) => false;
-
 		/// <summary>
 		/// Converts a file to WAV using test.exe and reads it into a PCM16Audio object.
 		/// If the format is not supported, test.exe will write a message to the console and this function will throw an AudioImporterException.

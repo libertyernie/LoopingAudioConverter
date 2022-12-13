@@ -42,8 +42,6 @@ namespace LoopingAudioConverter.VGM {
 				|| string.Equals(extension, "vgz", StringComparison.InvariantCultureIgnoreCase);
 		}
 
-		bool IAudioImporter.SharesCodecsWith(IAudioExporter exporter) => false;
-
         private class Hints : IRenderingHints {
             public int RenderingSampleRate { get; set; }
 			public int SampleCount { get; set; }

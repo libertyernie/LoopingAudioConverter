@@ -2,6 +2,7 @@
 using LoopingAudioConverter.PCM;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter.Vorbis {
@@ -16,22 +17,30 @@ namespace LoopingAudioConverter.Vorbis {
 
         public async Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IProgress<double> progress) {
 			string output_filename = Path.Combine(output_dir, original_filename_no_ext + ".ogg");
-
-			VorbisAudio audio;
-			if (lwav is VorbisAudio v) {
-				audio = v;
-			} else {
-				string tempFile = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".ogg");
-				await effectEngine.WriteFileAsync(lwav, tempFile, encoding_parameters, progress);
-				audio = new VorbisAudio(File.ReadAllBytes(tempFile), lwav) {
-                    LoopStart = lwav.LoopStart,
-                    LoopEnd = lwav.LoopEnd,
-                    Looping = lwav.Looping
-                };
-				File.Delete(tempFile);
-			}
-
-			File.WriteAllBytes(output_filename, audio.Export());
+			await effectEngine.WriteFileAsync(lwav, output_filename, encoding_parameters, progress);
+            using (VorbisFile vorbisFile = new VorbisFile(File.ReadAllBytes(output_filename)))
+            {
+                VorbisComments c = vorbisFile.GetPageHeaders()
+                    .Select(p => p.GetCommentHeader())
+                    .Where(h => h != null)
+                    .Select(h => h.ExtractComments())
+                    .DefaultIfEmpty(new VorbisComments())
+                    .First();
+                if (lwav.Looping)
+                {
+                    c.Comments["LOOPSTART"] = lwav.LoopStart.ToString();
+                    c.Comments["LOOPLENGTH"] = lwav.LoopLength.ToString();
+                }
+                else
+                {
+                    c.Comments.Remove("LOOPSTART");
+                    c.Comments.Remove("LOOPLENGTH");
+                }
+                using (VorbisFile newFile = new VorbisFile(vorbisFile, c))
+                {
+                    File.WriteAllBytes(output_filename, newFile.ToByteArray());
+                }
+            }
 		}
     }
 }

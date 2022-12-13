@@ -45,9 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="VorbisAudio.cs" />
     <Compile Include="UnsafeCRC.cs" />
-    <Compile Include="VorbisImporter.cs" />
     <Compile Include="VorbisExporter.cs" />
     <Compile Include="VorbisHeader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

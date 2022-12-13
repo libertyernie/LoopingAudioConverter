@@ -83,12 +83,9 @@ namespace LoopingAudioConverter.Conversion {
 
             IEnumerable<IAudioImporter> BuildImporters() {
                 yield return new WaveImporter();
-                yield return new MP3Importer();
-                yield return new VorbisImporter(effectEngine);
                 if (env.VGMPlayPath is string vgmplay_path)
                     yield return new VGMImporter(vgmplay_path);
                 yield return new MSU1Converter();
-                yield return new MSFImporter();
                 if (env.VGMStreamPath is string vgmstream_path)
                     yield return new VGMStreamImporter(vgmstream_path);
                 yield return new VGAudioImporter();
@@ -97,7 +94,7 @@ namespace LoopingAudioConverter.Conversion {
                 yield return effectEngine;
             }
 
-            List<IAudioImporter> importers = BuildImporters().OrderBy(y => y.SharesCodecsWith(exporter) ? 1 : 2).ToList();
+            List<IAudioImporter> importers = BuildImporters().ToList();
 
             if (!inputFiles.Any()) {
                 throw new Exception("No input files were selected.");
@@ -192,8 +189,7 @@ namespace LoopingAudioConverter.Conversion {
                     db: o.AmplifydB ?? 0M,
                     amplitude: o.AmplifyRatio ?? 1M,
                     pitch_semitones: o.PitchSemitones ?? 0,
-                    tempo_ratio: o.TempoRatio ?? 1,
-                    force: !o.BypassEncodingWhenPossible);
+                    tempo_ratio: o.TempoRatio ?? 1);
                 env.UpdateStatus(filename_no_ext, "Applied effects");
 
                 List<NamedAudio> wavsToExport = new List<NamedAudio>();

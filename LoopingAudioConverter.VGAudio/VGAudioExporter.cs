@@ -11,9 +11,7 @@ namespace LoopingAudioConverter.VGAudio {
 		protected abstract byte[] GetData(AudioData audio);
 		protected abstract string GetExtension();
 
-		private static AudioData Read(PCM16Audio lwav) => lwav is VGAudioAudio v
-			? v.Export()
-			: new WaveReader().Read(lwav.Export());
+		private static AudioData Read(PCM16Audio lwav) => new WaveReader().Read(lwav.Export());
 
 		public void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
 			AudioData audio = Read(lwav);

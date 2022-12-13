@@ -16,12 +16,6 @@ namespace LoopingAudioConverter.MP3 {
 
 		public async Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IProgress<double> progress) {
 			string output_filename = Path.Combine(output_dir, original_filename_no_ext + ".mp3");
-
-			if (lwav is MP3Audio mp3) {
-				File.WriteAllBytes(output_filename, mp3.MP3Data);
-				return;
-			}
-
 			await effectEngine.WriteFileAsync(lwav, output_filename, encoding_parameters, progress);
 		}
 	}

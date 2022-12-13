@@ -26,8 +26,6 @@ namespace LoopingAudioConverter.FFmpeg {
 
 		bool IAudioImporter.SupportsExtension(string extension) => true;
 
-		bool IAudioImporter.SharesCodecsWith(IAudioExporter exporter) => false;
-
 		private struct Metadata {
 			public string codec;
 			public TimeSpan? duration;
@@ -139,9 +137,8 @@ namespace LoopingAudioConverter.FFmpeg {
 		/// <param name="rate">The new sample rate (if the PCM16Audio's sample rate is equal to this value, this effect will not be applied)</param>
 		/// <param name="pitch_semitones">Pitch adjustment, in semitones (if 0, this effect will not be applied)</param>
 		/// <param name="tempo_ratio">Tempo ratio (if 1, this effect will not be applied)</param>
-		/// <param name="force">If true, always return a new PCM16Audio object</param>
 		/// <returns>A new PCM16Audio object if one or more effects are applied; the same PCM16Audio object if no effects are applied.</returns>
-		public async Task<PCM16Audio> ApplyEffectsAsync(PCM16Audio lwav, int channels = int.MaxValue, decimal db = 0, decimal amplitude = 1, int rate = int.MaxValue, double pitch_semitones = 0, double tempo_ratio = 1, bool force = false) {
+		public async Task<PCM16Audio> ApplyEffectsAsync(PCM16Audio lwav, int channels = int.MaxValue, decimal db = 0, decimal amplitude = 1, int rate = int.MaxValue, double pitch_semitones = 0, double tempo_ratio = 1) {
 			// This is where I wish I had F# list comprehensions
 
 			IEnumerable<string> getParameters() {
@@ -180,7 +177,7 @@ namespace LoopingAudioConverter.FFmpeg {
 			}
 
 			var parameters = getParameters().ToList();
-			if (parameters.Count == 0 && !force)
+			if (parameters.Count == 0)
 				return lwav;
 
 			async Task<PCM16Audio> convert(PCM16Audio lin) {

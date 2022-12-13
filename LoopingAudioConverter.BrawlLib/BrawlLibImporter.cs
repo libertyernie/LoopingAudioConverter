@@ -12,8 +12,6 @@ namespace LoopingAudioConverter.BrawlLib {
     public class BrawlLibImporter : IAudioImporter {
         public bool SupportsExtension(string extension) => true;
 
-        public bool SharesCodecsWith(IAudioExporter exporter) => exporter is BrawlLibRSTMExporter;
-
         public async Task<PCM16Audio> ReadFileAsync(string filename, IRenderingHints hints, IProgress<double> progress) {
             await Task.Yield();
 
@@ -22,10 +20,7 @@ namespace LoopingAudioConverter.BrawlLib {
                 using (var node = NodeFactory.FromFile(null, filename)) {
                     if (node is IAudioSource rstmNode) {
                         WX.ToFile(rstmNode.CreateStreams()[0], file);
-                        var decoded = WaveConverter.FromFile(file, true);
-                        return node is RSTMNode
-                            ? new BrawlLibRSTMAudio(File.ReadAllBytes(filename), decoded)
-                            : decoded;
+                        return WaveConverter.FromFile(file, true);
                     } else {
                         throw new AudioImporterException("Could not export to .wav using BrawlLib");
                     }

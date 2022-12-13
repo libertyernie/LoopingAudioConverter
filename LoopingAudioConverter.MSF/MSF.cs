@@ -72,33 +72,6 @@ namespace LoopingAudioConverter.MSF
         }
 
         /// <summary>
-        /// Reads an MSF file from a byte array.
-        /// </summary>
-        /// <param name="data">The complete data of the MSF file (including the header)</param>
-        /// <returns>An MSF object</returns>
-        public unsafe static MSF Parse(byte[] data)
-        {
-            fixed (byte* ptr = data)
-            {
-                MSFHeader header = *(MSFHeader*)ptr;
-                int size = Math.Min(header.data_size, data.Length - sizeof(MSFHeader));
-                byte[] body = new byte[size];
-                Marshal.Copy((IntPtr)(ptr + sizeof(MSFHeader)), body, 0, body.Length);
-                switch (header.codec)
-                {
-                    case 0:
-                        return new MSF_PCM16BE(header, body);
-                    case 1:
-                        return new MSF_PCM16LE(header, body);
-                    case 7:
-                        return new MSF_MP3(header, body);
-                    default:
-                        throw new NotSupportedException($"The codec {header.codec} is not supported.");
-                }
-            }
-        }
-
-        /// <summary>
         /// Decodes the data of the MSF file.
         /// </summary>
         /// <returns>A PCM16Audio object with the header and uncompressed audio data</returns>

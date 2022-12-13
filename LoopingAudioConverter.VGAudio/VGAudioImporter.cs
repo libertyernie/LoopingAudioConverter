@@ -43,8 +43,6 @@ namespace LoopingAudioConverter.VGAudio {
 			}
 		}
 
-		public bool SharesCodecsWith(IAudioExporter exporter) => exporter is VGAudioExporter;
-
 		public static AudioData Read(byte[] data, string filename) {
 			string extension = Path.GetExtension(filename).ToLowerInvariant();
 			if (extension.StartsWith("."))
@@ -96,9 +94,7 @@ namespace LoopingAudioConverter.VGAudio {
 
 				AudioData a = Read(indata, filename);
 				byte[] wavedata = new WaveWriter().GetFile(a);
-				var w1 = WaveConverter.FromByteArray(wavedata);
-				var w2 = new VGAudioAudio(a, w1);
-				return w2;
+				return WaveConverter.FromByteArray(wavedata);
 			} catch (Exception e) {
 				throw new AudioImporterException("Could not convert using VGAudio: " + e.Message);
 			}
