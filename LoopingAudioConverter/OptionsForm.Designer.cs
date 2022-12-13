@@ -60,12 +60,19 @@
 			this.radChannelsTogether = new System.Windows.Forms.RadioButton();
 			this.radChannelsPairs = new System.Windows.Forms.RadioButton();
 			this.radChannelsSeparate = new System.Windows.Forms.RadioButton();
+			this.panel3 = new System.Windows.Forms.Panel();
+			this.btnEncodingOptions = new System.Windows.Forms.Button();
+			this.comboBox1 = new System.Windows.Forms.ComboBox();
+			this.lblOutputFormat = new System.Windows.Forms.Label();
 			this.pnlExportSegments = new System.Windows.Forms.Panel();
+			this.txtLastLapFilenamePattern = new System.Windows.Forms.TextBox();
+			this.label9 = new System.Windows.Forms.Label();
 			this.chkEndFinal = new System.Windows.Forms.CheckBox();
 			this.txtEndFinalFilenamePattern = new System.Windows.Forms.TextBox();
 			this.label8 = new System.Windows.Forms.Label();
 			this.radDesiredDuration = new System.Windows.Forms.RadioButton();
 			this.radNumberLoops = new System.Windows.Forms.RadioButton();
+			this.chkLastLap = new System.Windows.Forms.CheckBox();
 			this.label7 = new System.Windows.Forms.Label();
 			this.numDesiredDuration = new System.Windows.Forms.NumericUpDown();
 			this.chk0End = new System.Windows.Forms.CheckBox();
@@ -82,6 +89,7 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.numFadeOutTime = new System.Windows.Forms.NumericUpDown();
 			this.chkShortCircuit = new System.Windows.Forms.CheckBox();
+			this.chkNoEncode = new System.Windows.Forms.CheckBox();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.btnLoadOptions = new System.Windows.Forms.Button();
 			this.btnHelp = new System.Windows.Forms.Button();
@@ -91,13 +99,6 @@
 			this.btnCancel = new System.Windows.Forms.Button();
 			this.label6 = new System.Windows.Forms.Label();
 			this.progressBar1 = new System.Windows.Forms.ProgressBar();
-			this.panel3 = new System.Windows.Forms.Panel();
-			this.btnEncodingOptions = new System.Windows.Forms.Button();
-			this.comboBox1 = new System.Windows.Forms.ComboBox();
-			this.lblOutputFormat = new System.Windows.Forms.Label();
-			this.chkLastLap = new System.Windows.Forms.CheckBox();
-			this.txtLastLapFilenamePattern = new System.Windows.Forms.TextBox();
-			this.label9 = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
@@ -112,13 +113,13 @@
 			((System.ComponentModel.ISupportInitialize)(this.numMaxSampleRate)).BeginInit();
 			this.panel4.SuspendLayout();
 			this.pnlExportChannels.SuspendLayout();
+			this.panel3.SuspendLayout();
 			this.pnlExportSegments.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numDesiredDuration)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numNumberLoops)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numFadeOutTime)).BeginInit();
 			this.panel1.SuspendLayout();
 			this.panel5.SuspendLayout();
-			this.panel3.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// splitContainer1
@@ -324,6 +325,7 @@
 			this.flowLayoutPanel2.Controls.Add(this.panel3);
 			this.flowLayoutPanel2.Controls.Add(this.pnlExportSegments);
 			this.flowLayoutPanel2.Controls.Add(this.chkShortCircuit);
+			this.flowLayoutPanel2.Controls.Add(this.chkNoEncode);
 			this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
 			this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 0);
@@ -596,6 +598,49 @@
 			this.radChannelsSeparate.Text = "Put each channel in its own file";
 			this.radChannelsSeparate.UseVisualStyleBackColor = true;
 			// 
+			// panel3
+			// 
+			this.panel3.AutoSize = true;
+			this.panel3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.panel3.Controls.Add(this.btnEncodingOptions);
+			this.panel3.Controls.Add(this.comboBox1);
+			this.panel3.Controls.Add(this.lblOutputFormat);
+			this.panel3.Location = new System.Drawing.Point(230, 3);
+			this.panel3.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
+			this.panel3.Name = "panel3";
+			this.panel3.Size = new System.Drawing.Size(295, 27);
+			this.panel3.TabIndex = 5;
+			// 
+			// btnEncodingOptions
+			// 
+			this.btnEncodingOptions.Location = new System.Drawing.Point(216, 3);
+			this.btnEncodingOptions.Name = "btnEncodingOptions";
+			this.btnEncodingOptions.Size = new System.Drawing.Size(76, 21);
+			this.btnEncodingOptions.TabIndex = 5;
+			this.btnEncodingOptions.Text = "Options";
+			this.btnEncodingOptions.UseVisualStyleBackColor = true;
+			// 
+			// comboBox1
+			// 
+			this.comboBox1.DisplayMember = "Name";
+			this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.comboBox1.FormattingEnabled = true;
+			this.comboBox1.Location = new System.Drawing.Point(89, 3);
+			this.comboBox1.Name = "comboBox1";
+			this.comboBox1.Size = new System.Drawing.Size(121, 21);
+			this.comboBox1.TabIndex = 4;
+			this.comboBox1.ValueMember = "Value";
+			// 
+			// lblOutputFormat
+			// 
+			this.lblOutputFormat.Location = new System.Drawing.Point(3, 3);
+			this.lblOutputFormat.Margin = new System.Windows.Forms.Padding(3);
+			this.lblOutputFormat.Name = "lblOutputFormat";
+			this.lblOutputFormat.Size = new System.Drawing.Size(80, 21);
+			this.lblOutputFormat.TabIndex = 3;
+			this.lblOutputFormat.Text = "Output format:";
+			this.lblOutputFormat.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
 			// pnlExportSegments
 			// 
 			this.pnlExportSegments.AutoSize = true;
@@ -628,6 +673,25 @@
 			this.pnlExportSegments.Name = "pnlExportSegments";
 			this.pnlExportSegments.Size = new System.Drawing.Size(299, 210);
 			this.pnlExportSegments.TabIndex = 3;
+			// 
+			// txtLastLapFilenamePattern
+			// 
+			this.txtLastLapFilenamePattern.Enabled = false;
+			this.txtLastLapFilenamePattern.Location = new System.Drawing.Point(216, 187);
+			this.txtLastLapFilenamePattern.Name = "txtLastLapFilenamePattern";
+			this.txtLastLapFilenamePattern.Size = new System.Drawing.Size(80, 20);
+			this.txtLastLapFilenamePattern.TabIndex = 26;
+			this.txtLastLapFilenamePattern.Text = " (final lap)";
+			// 
+			// label9
+			// 
+			this.label9.Location = new System.Drawing.Point(170, 187);
+			this.label9.Margin = new System.Windows.Forms.Padding(3);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(40, 20);
+			this.label9.TabIndex = 25;
+			this.label9.Text = "Suffix:";
+			this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// chkEndFinal
 			// 
@@ -679,6 +743,16 @@
 			this.radNumberLoops.TabStop = true;
 			this.radNumberLoops.Text = "Number of loops";
 			this.radNumberLoops.UseVisualStyleBackColor = true;
+			// 
+			// chkLastLap
+			// 
+			this.chkLastLap.AutoSize = true;
+			this.chkLastLap.Location = new System.Drawing.Point(3, 189);
+			this.chkLastLap.Name = "chkLastLap";
+			this.chkLastLap.Size = new System.Drawing.Size(161, 17);
+			this.chkLastLap.TabIndex = 6;
+			this.chkLastLap.Text = "All (+1 semitone, 1.1x tempo)";
+			this.chkLastLap.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
 			// 
 			// label7
 			// 
@@ -842,13 +916,21 @@
 			// chkShortCircuit
 			// 
 			this.chkShortCircuit.AutoSize = true;
-			this.chkShortCircuit.Checked = true;
-			this.chkShortCircuit.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.chkShortCircuit.Location = new System.Drawing.Point(233, 252);
 			this.chkShortCircuit.Name = "chkShortCircuit";
 			this.chkShortCircuit.Size = new System.Drawing.Size(176, 17);
 			this.chkShortCircuit.TabIndex = 4;
 			this.chkShortCircuit.Text = "Skip re-encoding when possible";
+			// 
+			// chkNoEncode
+			// 
+			this.chkNoEncode.AutoSize = true;
+			this.chkNoEncode.Location = new System.Drawing.Point(233, 275);
+			this.chkNoEncode.Name = "chkNoEncode";
+			this.chkNoEncode.Size = new System.Drawing.Size(263, 17);
+			this.chkNoEncode.TabIndex = 6;
+			this.chkNoEncode.Text = "Copy audio data only (skip if re-encode is required)";
+			this.chkNoEncode.CheckedChanged += new System.EventHandler(this.chkNoEncode_CheckedChanged);
 			// 
 			// panel1
 			// 
@@ -948,78 +1030,6 @@
 			this.progressBar1.Size = new System.Drawing.Size(287, 23);
 			this.progressBar1.TabIndex = 0;
 			// 
-			// panel3
-			// 
-			this.panel3.AutoSize = true;
-			this.panel3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.panel3.Controls.Add(this.btnEncodingOptions);
-			this.panel3.Controls.Add(this.comboBox1);
-			this.panel3.Controls.Add(this.lblOutputFormat);
-			this.panel3.Location = new System.Drawing.Point(230, 3);
-			this.panel3.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
-			this.panel3.Name = "panel3";
-			this.panel3.Size = new System.Drawing.Size(295, 27);
-			this.panel3.TabIndex = 5;
-			// 
-			// btnEncodingOptions
-			// 
-			this.btnEncodingOptions.Location = new System.Drawing.Point(216, 3);
-			this.btnEncodingOptions.Name = "btnEncodingOptions";
-			this.btnEncodingOptions.Size = new System.Drawing.Size(76, 21);
-			this.btnEncodingOptions.TabIndex = 5;
-			this.btnEncodingOptions.Text = "Options";
-			this.btnEncodingOptions.UseVisualStyleBackColor = true;
-			// 
-			// comboBox1
-			// 
-			this.comboBox1.DisplayMember = "Name";
-			this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.comboBox1.FormattingEnabled = true;
-			this.comboBox1.Location = new System.Drawing.Point(89, 3);
-			this.comboBox1.Name = "comboBox1";
-			this.comboBox1.Size = new System.Drawing.Size(121, 21);
-			this.comboBox1.TabIndex = 4;
-			this.comboBox1.ValueMember = "Value";
-			// 
-			// lblOutputFormat
-			// 
-			this.lblOutputFormat.Location = new System.Drawing.Point(3, 3);
-			this.lblOutputFormat.Margin = new System.Windows.Forms.Padding(3);
-			this.lblOutputFormat.Name = "lblOutputFormat";
-			this.lblOutputFormat.Size = new System.Drawing.Size(80, 21);
-			this.lblOutputFormat.TabIndex = 3;
-			this.lblOutputFormat.Text = "Output format:";
-			this.lblOutputFormat.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			// 
-			// chkLastLap
-			// 
-			this.chkLastLap.AutoSize = true;
-			this.chkLastLap.Location = new System.Drawing.Point(3, 189);
-			this.chkLastLap.Name = "chkLastLap";
-			this.chkLastLap.Size = new System.Drawing.Size(161, 17);
-			this.chkLastLap.TabIndex = 6;
-			this.chkLastLap.Text = "All (+1 semitone, 1.1x tempo)";
-			this.chkLastLap.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
-			// 
-			// txtLastLapFilenamePattern
-			// 
-			this.txtLastLapFilenamePattern.Enabled = false;
-			this.txtLastLapFilenamePattern.Location = new System.Drawing.Point(216, 187);
-			this.txtLastLapFilenamePattern.Name = "txtLastLapFilenamePattern";
-			this.txtLastLapFilenamePattern.Size = new System.Drawing.Size(80, 20);
-			this.txtLastLapFilenamePattern.TabIndex = 26;
-			this.txtLastLapFilenamePattern.Text = " (final lap)";
-			// 
-			// label9
-			// 
-			this.label9.Location = new System.Drawing.Point(170, 187);
-			this.label9.Margin = new System.Windows.Forms.Padding(3);
-			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(40, 20);
-			this.label9.TabIndex = 25;
-			this.label9.Text = "Suffix:";
-			this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			// 
 			// OptionsForm
 			// 
 			this.AcceptButton = this.btnOkay;
@@ -1049,6 +1059,7 @@
 			this.panel4.ResumeLayout(false);
 			this.pnlExportChannels.ResumeLayout(false);
 			this.pnlExportChannels.PerformLayout();
+			this.panel3.ResumeLayout(false);
 			this.pnlExportSegments.ResumeLayout(false);
 			this.pnlExportSegments.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numDesiredDuration)).EndInit();
@@ -1056,7 +1067,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.numFadeOutTime)).EndInit();
 			this.panel1.ResumeLayout(false);
 			this.panel5.ResumeLayout(false);
-			this.panel3.ResumeLayout(false);
 			this.ResumeLayout(false);
 
         }
@@ -1138,5 +1148,6 @@
 		private System.Windows.Forms.CheckBox chkLastLap;
 		private System.Windows.Forms.TextBox txtLastLapFilenamePattern;
 		private System.Windows.Forms.Label label9;
+		private System.Windows.Forms.CheckBox chkNoEncode;
 	}
 }

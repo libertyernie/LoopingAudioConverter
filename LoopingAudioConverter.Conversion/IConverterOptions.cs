@@ -99,9 +99,10 @@ namespace LoopingAudioConverter.Conversion {
         double? PitchSemitones { get; }
         double? TempoRatio { get; }
 
+        bool BypassEncoding { get; }
         bool BypassEncodingWhenPossible { get; }
 
-        ExporterType ExporterType { get; }
+		ExporterType ExporterType { get; }
         IEncodingParameters EncodingParameters { get; }
     }
 }

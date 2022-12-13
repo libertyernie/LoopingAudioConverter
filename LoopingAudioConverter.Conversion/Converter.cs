@@ -106,6 +106,7 @@ namespace LoopingAudioConverter.Conversion {
             double x = 1.0 / inputFiles.Count;
             int i = 0;
             foreach (string inputFile in inputFiles) {
+                if (o.BypassEncoding) throw new NotImplementedException();
                 var pr = new ProgressSubset(progress, x * i, x * (i + 1));
                 if (!env.Cancelled)
                     await ConvertFileAsync(env, o, importers, effectEngine, exporter, inputFile, pr);
