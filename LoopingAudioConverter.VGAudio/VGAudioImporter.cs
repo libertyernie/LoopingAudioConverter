@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using VGAudio.Containers.Adx;
 using VGAudio.Containers.Dsp;
 using VGAudio.Containers.Genh;

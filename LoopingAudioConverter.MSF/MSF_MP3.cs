@@ -8,11 +8,11 @@ namespace LoopingAudioConverter.MSF
     {
         public readonly MP3Audio MP3;
 
-        private readonly int TotalSampleCount;
+        private readonly Lazy<int> TotalSampleCount;
 
         public long Bitrate {
             get {
-                double sampleCount = TotalSampleCount / Header.channel_count;
+                double sampleCount = TotalSampleCount.Value / Header.channel_count;
                 double seconds = sampleCount / Header.sample_rate;
                 double bytes_per_second = MP3.MP3Data.Length / seconds;
                 return (long)Math.Round(bytes_per_second);
@@ -29,9 +29,7 @@ namespace LoopingAudioConverter.MSF
                 throw new FormatException("The codec in the MSF header is not MP3");
 
             MP3 = new MP3Audio(body);
-			TotalSampleCount = MP3.Decode().Samples.Length;
-			MP3.LoopStart = GetLoopStartSample();
-            MP3.LoopEnd = GetLoopSampleCount() - GetLoopStartSample();
+			TotalSampleCount = new Lazy<int>(() => MP3.Decode().Samples.Length);
         }
 
         /// <summary>

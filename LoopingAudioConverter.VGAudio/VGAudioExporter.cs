@@ -24,9 +24,11 @@ namespace LoopingAudioConverter.VGAudio {
 			return task;
 		}
 
-		public void TryWriteFile(IAudio audio, string output_dir, string original_filename_no_ext) {
+		public void TryWriteFile(IAudio audio, ILoopPoints loopPoints, string output_dir, string original_filename_no_ext) {
 			if (audio is VGAudioAudio a) {
-				byte[] data = GetData(a.Export());
+				var d = a.AudioData;
+				d.SetLoop(loopPoints.Looping, loopPoints.LoopStart, loopPoints.LoopEnd);
+				byte[] data = GetData(d);
 				File.WriteAllBytes(Path.Combine(output_dir, original_filename_no_ext + GetExtension()), data);
 			}
 		}

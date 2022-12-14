@@ -9,29 +9,19 @@ namespace LoopingAudioConverter.BrawlLib {
     public unsafe sealed class BrawlLibRSTMAudio : IAudio {
         private readonly RSTMNode _node;
 
-        public bool Looping { get; set; }
-        public int LoopStart { get; set; }
-        public int LoopEnd { get; set; }
+        public bool Looping => _node.IsLooped;
+        public int LoopStart => _node.LoopStartSample;
+        public int LoopEnd => _node.NumSamples;
 
-        public unsafe BrawlLibRSTMAudio(RSTMNode node) {
+		public unsafe BrawlLibRSTMAudio(RSTMNode node) {
             _node = node;
-
-            Looping = _node.IsLooped;
-            LoopStart = _node.LoopStartSample;
-            LoopEnd = _node.NumSamples;
         }
 
-        public bool LoopChanged => Looping != _node.IsLooped
-            || LoopStart != _node.LoopStartSample
-            || LoopEnd != _node.NumSamples;
-
         public void Export(string path) {
-            if (LoopChanged)
-                throw new Exception("Cannot export RSTM with changed loop parameters");
-
             _node.Export(path);
 		}
 
+        [Obsolete]
 		public Task<PCM16Audio> DecodeAsync() {
 			string file = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".wav");
 			var audio = Task.FromResult(WaveConverter.FromFile(file, true));

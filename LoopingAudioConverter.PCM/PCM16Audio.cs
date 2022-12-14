@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace LoopingAudioConverter.PCM {
+	public interface ILoopPoints {
+		bool Looping { get; }
+		int LoopStart { get; }
+		int LoopEnd { get; }
+	}
+
 	/// <summary>
 	/// Represents 16-bit uncompressed PCM data with an arbitary number of channels and an optional loop sequence.
 	/// The total sample length of this data is immutable, but the data itself and other properties can be modified.
 	/// </summary>
-	public sealed class PCM16Audio {
+	public sealed class PCM16Audio : ILoopPoints {
 		public short Channels { get; }
 		public int SampleRate { get; }
 		public short[] Samples { get; }

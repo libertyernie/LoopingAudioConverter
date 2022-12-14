@@ -9,10 +9,6 @@ namespace LoopingAudioConverter.MP3 {
 	public sealed class MP3Audio : IAudio {
 		private readonly byte[] _mp3Data;
 
-		public bool Looping { get; set; }
-		public int LoopStart { get; set; }
-		public int LoopEnd { get; set; }
-
 		public byte[] MP3Data {
             get {
 				byte[] arr = new byte[_mp3Data.Length];
@@ -39,14 +35,11 @@ namespace LoopingAudioConverter.MP3 {
 					Marshal.Copy((IntPtr)ptr16, samples, 0, samples.Length);
 				}
 
-				return new PCM16Audio(mp3.ChannelCount, mp3.Frequency, samples) {
-					Looping = Looping,
-					LoopStart = LoopStart,
-					LoopEnd = LoopEnd
-				};
+				return new PCM16Audio(mp3.ChannelCount, mp3.Frequency, samples);
 			}
 		}
 
+		[Obsolete]
 		public Task<PCM16Audio> DecodeAsync() => Task.FromResult(Decode());
 
 		public override string ToString() {

@@ -2,6 +2,7 @@
 using LoopingAudioConverter.PCM;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter.Vorbis {
@@ -14,26 +15,39 @@ namespace LoopingAudioConverter.Vorbis {
 			this.encoding_parameters = encoding_parameters;
 		}
 
-		public void TryWriteFile(IAudio audio, string output_dir, string original_filename_no_ext) {
+		private void SetLoop(string path, ILoopPoints loopPoints) {
+			using (VorbisFile vorbisFile = new VorbisFile(File.ReadAllBytes(path))) {
+				VorbisComments c = vorbisFile.GetPageHeaders()
+					.Select(p => p.GetCommentHeader())
+					.Where(h => h != null)
+					.Select(h => h.ExtractComments())
+					.DefaultIfEmpty(new VorbisComments())
+					.First();
+				if (loopPoints.Looping) {
+					c.Comments["LOOPSTART"] = loopPoints.LoopStart.ToString();
+					c.Comments["LOOPLENGTH"] = (loopPoints.LoopEnd - loopPoints.LoopStart).ToString();
+				} else {
+					c.Comments.Remove("LOOPSTART");
+					c.Comments.Remove("LOOPLENGTH");
+				}
+				using (VorbisFile newFile = new VorbisFile(vorbisFile, c)) {
+					File.WriteAllBytes(path + "x.ogg", newFile.ToByteArray());
+				}
+			}
+		}
+
+		public void TryWriteFile(IAudio audio, ILoopPoints loopPoints, string output_dir, string original_filename_no_ext) {
 			if (audio is VorbisAudio v) {
 				string output_filename = Path.Combine(output_dir, original_filename_no_ext + ".ogg");
-				File.WriteAllBytes(output_filename, v.Export());
+				File.WriteAllBytes(output_filename, v.OggVorbisData);
+				SetLoop(output_filename, loopPoints);
 			}
 		}
 
 		public async Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IProgress<double> progress) {
 			string output_filename = Path.Combine(output_dir, original_filename_no_ext + ".ogg");
-
-			string tempFile = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".ogg");
-			await effectEngine.WriteFileAsync(lwav, tempFile, encoding_parameters, progress);
-			VorbisAudio audio = new VorbisAudio(File.ReadAllBytes(tempFile), effectEngine) {
-                LoopStart = lwav.LoopStart,
-                LoopEnd = lwav.LoopEnd,
-                Looping = lwav.Looping
-            };
-			File.Delete(tempFile);
-
-			File.WriteAllBytes(output_filename, audio.Export());
+			await effectEngine.WriteFileAsync(lwav, output_filename, encoding_parameters, progress);
+			SetLoop(output_filename, lwav);
 		}
     }
 }
