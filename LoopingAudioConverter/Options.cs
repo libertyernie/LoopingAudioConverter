@@ -50,12 +50,9 @@ namespace LoopingAudioConverter {
 		public string PostLoopSuffix { get; set; }
 		public bool ExportLastLap { get; set; }
 		public string LastLapSuffix { get; set; }
-		public bool ShortCircuit { get; set; }
 		public bool BypassEncoding { get; set; }
 
 		ILoopExportParameters IConverterOptions.LoopExportParameters => this;
-
-		bool IConverterOptions.BypassEncodingWhenPossible => ShortCircuit;
 
 		IEncodingParameters IConverterOptions.EncodingParameters => this;
 

@@ -100,7 +100,6 @@ namespace LoopingAudioConverter.Conversion {
         double? TempoRatio { get; }
 
         bool BypassEncoding { get; }
-        bool BypassEncodingWhenPossible { get; }
 
 		ExporterType ExporterType { get; }
         IEncodingParameters EncodingParameters { get; }

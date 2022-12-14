@@ -88,7 +88,6 @@
 			this.numNumberLoops = new System.Windows.Forms.NumericUpDown();
 			this.label1 = new System.Windows.Forms.Label();
 			this.numFadeOutTime = new System.Windows.Forms.NumericUpDown();
-			this.chkShortCircuit = new System.Windows.Forms.CheckBox();
 			this.chkNoEncode = new System.Windows.Forms.CheckBox();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.btnLoadOptions = new System.Windows.Forms.Button();
@@ -324,7 +323,6 @@
 			this.flowLayoutPanel2.Controls.Add(this.pnlExportChannels);
 			this.flowLayoutPanel2.Controls.Add(this.panel3);
 			this.flowLayoutPanel2.Controls.Add(this.pnlExportSegments);
-			this.flowLayoutPanel2.Controls.Add(this.chkShortCircuit);
 			this.flowLayoutPanel2.Controls.Add(this.chkNoEncode);
 			this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
@@ -913,19 +911,10 @@
 			this.numFadeOutTime.Size = new System.Drawing.Size(53, 20);
 			this.numFadeOutTime.TabIndex = 12;
 			// 
-			// chkShortCircuit
-			// 
-			this.chkShortCircuit.AutoSize = true;
-			this.chkShortCircuit.Location = new System.Drawing.Point(233, 252);
-			this.chkShortCircuit.Name = "chkShortCircuit";
-			this.chkShortCircuit.Size = new System.Drawing.Size(176, 17);
-			this.chkShortCircuit.TabIndex = 4;
-			this.chkShortCircuit.Text = "Skip re-encoding when possible";
-			// 
 			// chkNoEncode
 			// 
 			this.chkNoEncode.AutoSize = true;
-			this.chkNoEncode.Location = new System.Drawing.Point(233, 275);
+			this.chkNoEncode.Location = new System.Drawing.Point(233, 252);
 			this.chkNoEncode.Name = "chkNoEncode";
 			this.chkNoEncode.Size = new System.Drawing.Size(263, 17);
 			this.chkNoEncode.TabIndex = 6;
@@ -1117,7 +1106,6 @@
         private System.Windows.Forms.Button btnAddDir;
         private System.Windows.Forms.Button btnSuffixFilter;
         private System.Windows.Forms.Label lblEnumerationStatus;
-        private System.Windows.Forms.CheckBox chkShortCircuit;
         private System.Windows.Forms.Button btnSaveOptions;
         private System.Windows.Forms.Button btnLoadOptions;
         private System.Windows.Forms.Panel panel4;

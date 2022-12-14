@@ -258,7 +258,6 @@ namespace LoopingAudioConverter {
 				ExportLastLap = chkLastLap.Checked,
 				LastLapSuffix = txtLastLapFilenamePattern.Text,
 				BypassEncoding = chkNoEncode.Checked,
-				ShortCircuit = chkShortCircuit.Checked,
 			};
 		}
 

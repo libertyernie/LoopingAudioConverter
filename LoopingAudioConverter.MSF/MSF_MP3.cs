@@ -54,6 +54,12 @@ namespace LoopingAudioConverter.MSF
             return checked((int)x);
         }
 
-        public override PCM16Audio Decode() => MP3.Decode();
+        public override PCM16Audio Decode() {
+            var pcm = MP3.Decode();
+            pcm.Looping = Header.flags.Flags.HasFlag( MSFFlag.LoopMarker0);
+			pcm.LoopStart = GetLoopStartSample();
+            pcm.LoopEnd = GetLoopSampleCount();
+            return pcm;
+		}
     }
 }
