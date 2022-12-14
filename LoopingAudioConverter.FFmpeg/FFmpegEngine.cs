@@ -195,7 +195,7 @@ namespace LoopingAudioConverter.FFmpeg {
 					FileName = ExePath,
 					UseShellExecute = false,
 					CreateNoWindow = true,
-					Arguments = $"-y -f wav -i {infile} {string.Join(" ", parameters)} -f wav -c:a pcm_s16le {outfile}"
+					Arguments = $"-y -f wav -i \"{infile}\" {string.Join(" ", parameters)} -f wav -c:a pcm_s16le \"{outfile}\""
 				};
 				await ProcessEx.RunAsync(psi);
 				File.Delete(infile);
