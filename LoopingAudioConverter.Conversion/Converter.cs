@@ -84,7 +84,6 @@ namespace LoopingAudioConverter.Conversion {
             IEnumerable<IAudioImporter> BuildImporters() {
                 yield return new WaveImporter();
                 yield return new MP3Importer();
-                yield return new FLACConverter(effectEngine, "", env.MetaflacPath);
                 yield return new VorbisImporter(effectEngine);
                 if (env.VGMPlayPath is string vgmplay_path)
                     yield return new VGMImporter(vgmplay_path);
