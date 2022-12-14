@@ -82,7 +82,7 @@ namespace LoopingAudioConverter.Conversion {
 
 			IPCMAudioExporter exporter = getExporter();
 
-			IEnumerable<IPCMAudioImporter> BuildImporters() {
+			IEnumerable<IGenericAudioImporter> BuildImporters() {
 				yield return new WaveImporter();
 				yield return new MP3Importer();
 				yield return new VorbisImporter(effectEngine);
@@ -98,13 +98,7 @@ namespace LoopingAudioConverter.Conversion {
 				yield return effectEngine;
 			}
 
-			List<IPCMAudioImporter> importers = BuildImporters().ToList();
-
-			IEnumerable<IAudioImporter> fancyImporters() {
-				foreach (var m in importers)
-					if (m is IAudioImporter y)
-						yield return y;
-			}
+			var importers = BuildImporters().ToList();
 
 			if (!inputFiles.Any()) {
 				throw new Exception("No input files were selected.");
@@ -116,8 +110,7 @@ namespace LoopingAudioConverter.Conversion {
 				var pr = new ProgressSubset(progress, x * i, x * (i + 1));
 				if (o.BypassEncoding) {
 					if (!env.Cancelled && exporter is IAudioExporter ae)
-						await CopyAudioDataAsync(env, o, fancyImporters().ToList(), ae, inputFile, pr);
-					await Task.Yield();
+						await CopyAudioDataAsync(env, o, importers, ae, inputFile, pr);
 				} else {
 					if (!env.Cancelled)
 						await ConvertFileAsync(env, o, importers, effectEngine, exporter, inputFile, pr);
@@ -127,20 +120,10 @@ namespace LoopingAudioConverter.Conversion {
 			}
 		}
 
-		public static async Task ConvertFileAsync(
-			IConverterEnvironment env,
-			IConverterOptions o,
-			IEnumerable<IPCMAudioImporter> importers,
-			FFmpegEngine effectEngine,
-			IPCMAudioExporter exporter,
-			string inputFile,
-			IProgress<double> progress = null
-		) {
-			progress?.Report(0.0);
-
+		private static string CreateOutputDirectory(IConverterOptions o, string inputFile) {
 			string outputDir = o.OutputDir;
 			string inputDir = Path.GetDirectoryName(inputFile);
-			for (int x = 0; x < 100; x++) {
+			for (int j = 0; j < 100; j++) {
 				if (inputDir == o.InputDir) {
 					outputDir = outputDir.Replace("*", "");
 					break;
@@ -162,6 +145,22 @@ namespace LoopingAudioConverter.Conversion {
 				}
 			}
 
+			return outputDir;
+		}
+
+		public static async Task ConvertFileAsync(
+			IConverterEnvironment env,
+			IConverterOptions o,
+			IEnumerable<IGenericAudioImporter> importers,
+			FFmpegEngine effectEngine,
+			IPCMAudioExporter exporter,
+			string inputFile,
+			IProgress<double> progress = null
+		) {
+			progress?.Report(0.0);
+
+			string outputDir = CreateOutputDirectory(o, inputFile);
+
 			string filename_no_ext = Path.GetFileNameWithoutExtension(inputFile);
 			env.UpdateStatus(filename_no_ext, "Reading");
 
@@ -169,7 +168,7 @@ namespace LoopingAudioConverter.Conversion {
 
 			PCM16Audio w = null;
 
-			var importers_supported = importers.Where(im => im.SupportsExtension(extension));
+			var importers_supported = importers.OfType<IPCMAudioImporter>().Where(im => im.SupportsExtension(extension));
 			if (!importers_supported.Any()) {
 				throw new Exception("No importers supported for file extension " + extension);
 			}
@@ -282,34 +281,12 @@ namespace LoopingAudioConverter.Conversion {
 		public static async Task CopyAudioDataAsync(
 			IConverterEnvironment env,
 			IConverterOptions o,
-			IEnumerable<IAudioImporter> importers,
+			IEnumerable<IGenericAudioImporter> importers,
 			IAudioExporter exporter,
 			string inputFile,
 			IProgress<double> progress = null
 		) {
-			string outputDir = o.OutputDir;
-			string inputDir = Path.GetDirectoryName(inputFile);
-			for (int x = 0; x < 100; x++) {
-				if (inputDir == o.InputDir) {
-					outputDir = outputDir.Replace("*", "");
-					break;
-				}
-
-				int index = outputDir.LastIndexOf('*');
-				if (index < 0) break;
-
-				string replacement = Path.GetFileName(inputDir);
-				outputDir = outputDir.Substring(0, index) + replacement + outputDir.Substring(index + 1);
-				inputDir = Path.GetDirectoryName(inputDir);
-			}
-
-			if (!Directory.Exists(outputDir)) {
-				try {
-					Directory.CreateDirectory(outputDir);
-				} catch (Exception e) {
-					throw new Exception("Could not create output directory " + o.OutputDir, e);
-				}
-			}
+			string outputDir = CreateOutputDirectory(o, inputFile);
 
 			string filename_no_ext = Path.GetFileNameWithoutExtension(inputFile);
 			env.UpdateStatus(filename_no_ext, "reading");
@@ -318,12 +295,18 @@ namespace LoopingAudioConverter.Conversion {
 			var importers_supported = importers.Where(i => i.SupportsExtension(extension));
 
 			var inputAudio = importers_supported
+				.OfType<ICompressedAudioImporter>()
 				.SelectMany(i => i.TryReadFile(inputFile))
 				.ToList();
 
+			if (inputAudio.Count == 0) {
+				env.UpdateStatus(filename_no_ext, "could not read compressed audio");
+				return;
+			}
+
 			try {
 				PCM16Audio w = null;
-				foreach (var importer in importers_supported) {
+				foreach (var importer in importers_supported.OfType<IPCMAudioImporter>()) {
 					try {
 						env.UpdateStatus(filename_no_ext, $"decoding ({importer.GetType().Name})");
 						progress.Report(1.0);
@@ -332,8 +315,8 @@ namespace LoopingAudioConverter.Conversion {
 					} catch (AudioImporterException) { }
 				}
 
-				if (w == null || inputAudio.Count == 0) {
-					env.UpdateStatus(filename_no_ext, "could not convert");
+				if (w == null) {
+					env.UpdateStatus(filename_no_ext, "could not decode audio");
 					return;
 				}
 

@@ -52,16 +52,6 @@ namespace LoopingAudioConverter.MSF
         }
 
         /// <summary>
-        /// The sample at which the loop starts.
-        /// </summary>
-        public abstract int GetLoopStartSample();
-
-        /// <summary>
-        /// The number of samples in the loop.
-        /// </summary>
-        public abstract int GetLoopSampleCount();
-
-        /// <summary>
         /// Creates a new MSF file.
         /// </summary>
         /// <param name="header">The header</param>
@@ -97,12 +87,6 @@ namespace LoopingAudioConverter.MSF
                 }
             }
 		}
-
-		/// <summary>
-		/// Decodes the data of the MSF file.
-		/// </summary>
-		/// <returns>A PCM16Audio object with the header and uncompressed audio data</returns>
-		public abstract PCM16Audio Decode();
 
         /// <summary>
         /// Exports the data of the MSF file.
