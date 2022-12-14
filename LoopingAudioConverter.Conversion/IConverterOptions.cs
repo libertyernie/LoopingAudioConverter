@@ -66,7 +66,9 @@ namespace LoopingAudioConverter.Conversion {
         string LoopSuffix { get; }
         bool ExportPostLoop { get; }
         string PostLoopSuffix { get; }
-        bool ExportWholeSong { get; }
+		bool ExportLastLap { get; }
+		string LastLapSuffix { get; }
+		bool ExportWholeSong { get; }
         WholeSongExportType WholeSongExportType { get; }
         string WholeSongSuffix { get; }
 
