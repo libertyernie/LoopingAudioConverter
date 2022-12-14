@@ -24,7 +24,7 @@ namespace LoopingAudioConverter.VGAudio {
 			return task;
 		}
 
-		public bool TryWriteFile(object audio, ILoopPoints loopPoints, string output_dir, string original_filename_no_ext) {
+		public bool TryWriteCompressedAudioToFile(object audio, ILoopPoints loopPoints, string output_dir, string original_filename_no_ext) {
 			if (audio is AudioData a) {
 				a.SetLoop(loopPoints.Looping, loopPoints.LoopStart, loopPoints.LoopEnd);
 				byte[] data = GetData(a);

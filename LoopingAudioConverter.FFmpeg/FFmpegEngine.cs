@@ -13,7 +13,7 @@ namespace LoopingAudioConverter.FFmpeg {
 	/// <summary>
 	/// A class to interface with FFmpeg, using it to read and write non-looping audio data and to apply effects.
 	/// </summary>
-	public class FFmpegEngine : IPCMAudioImporter {
+	public class FFmpegEngine : IAudioImporter {
 		private readonly string ExePath;
 
 		/// <summary>
@@ -277,6 +277,10 @@ namespace LoopingAudioConverter.FFmpeg {
 			if (process.ExitCode != 0) {
 				throw new AudioExporterException("ffmpeg quit with exit code " + process.ExitCode);
 			}
+		}
+
+		public IEnumerable<object> TryReadUncompressedAudioFromFile(string file) {
+			yield break;
 		}
 	}
 }

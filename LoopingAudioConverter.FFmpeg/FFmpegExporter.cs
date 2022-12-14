@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter.FFmpeg {
-	public class FFmpegExporter : IPCMAudioExporter {
+	public class FFmpegExporter : IAudioExporter {
 		private readonly FFmpegEngine effectEngine;
 		private readonly string encoding_parameters;
 		private readonly string output_extension;
@@ -19,6 +19,10 @@ namespace LoopingAudioConverter.FFmpeg {
 			string output_filename = Path.Combine(output_dir, original_filename_no_ext + output_extension);
 
 			await effectEngine.WriteFileAsync(lwav, output_filename, encoding_parameters, progress);
+		}
+
+		public bool TryWriteCompressedAudioToFile(object audio, ILoopPoints loopPoints, string output_dir, string original_filename_no_ext) {
+			return false;
 		}
 	}
 }

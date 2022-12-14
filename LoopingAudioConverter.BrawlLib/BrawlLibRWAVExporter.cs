@@ -5,7 +5,7 @@ using System.IO;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter.BrawlLib {
-	public class BrawlLibRWAVExporter : IPCMAudioExporter {
+	public class BrawlLibRWAVExporter : IAudioExporter {
 		public unsafe void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
 			string outputPath = Path.Combine(output_dir, original_filename_no_ext + ".brwav");
 			var wrapper = new PCM16LoopWrapper(lwav);
@@ -19,6 +19,10 @@ namespace LoopingAudioConverter.BrawlLib {
 
 		public Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IProgress<double> progress) {
 			return Task.Run(() => WriteFile(lwav, output_dir, original_filename_no_ext));
+		}
+
+		public bool TryWriteCompressedAudioToFile(object audio, ILoopPoints loopPoints, string output_dir, string original_filename_no_ext) {
+			return false;
 		}
 	}
 }

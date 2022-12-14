@@ -7,7 +7,7 @@ using System.IO;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter.QuickTime {
-	public class AACExporter : IPCMAudioExporter {
+	public class AACExporter : IAudioExporter {
 		private readonly string ExePath;
 		private readonly bool Adts;
 		private readonly string EncodingParameters;
@@ -40,6 +40,10 @@ namespace LoopingAudioConverter.QuickTime {
 				foreach (string s in pr.StandardError) Console.WriteLine(s);
 				throw new AudioExporterException("qaac quit with exit code " + pr.ExitCode);
 			}
+		}
+
+		public bool TryWriteCompressedAudioToFile(object audio, ILoopPoints loopPoints, string output_dir, string original_filename_no_ext) {
+			return false;
 		}
 	}
 }

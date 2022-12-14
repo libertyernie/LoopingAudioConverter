@@ -14,7 +14,7 @@ namespace LoopingAudioConverter.MP3 {
 			this.encoding_parameters = encoding_parameters;
 		}
 
-		public bool TryWriteFile(object audio, ILoopPoints loopPoints, string output_dir, string original_filename_no_ext) {
+		public bool TryWriteCompressedAudioToFile(object audio, ILoopPoints loopPoints, string output_dir, string original_filename_no_ext) {
 			if (audio is MP3Audio mp3 && !loopPoints.Looping) {
 				string output_filename = Path.Combine(output_dir, original_filename_no_ext + ".mp3");
 				File.WriteAllBytes(output_filename, mp3.Data);

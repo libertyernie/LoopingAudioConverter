@@ -1,11 +1,12 @@
 ﻿using LoopingAudioConverter.PCM;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter.MSU1 {
-	public class MSU1Converter : IPCMAudioImporter, IPCMAudioExporter {
+	public class MSU1Converter : IAudioImporter, IAudioExporter {
 		public Task<PCM16Audio> ReadFileAsync(string filename, IRenderingHints hints, IProgress<double> progress) {
 			using (var fs = new FileStream(filename, FileMode.Open, FileAccess.Read))
 			using (var br = new BinaryReader(fs)) {
@@ -60,6 +61,14 @@ namespace LoopingAudioConverter.MSU1 {
 				}
 			}
 			return Task.FromResult(0);
+		}
+
+		public IEnumerable<object> TryReadUncompressedAudioFromFile(string file) {
+			yield break;
+		}
+
+		public bool TryWriteCompressedAudioToFile(object audio, ILoopPoints loopPoints, string output_dir, string original_filename_no_ext) {
+			return false;
 		}
 	}
 }

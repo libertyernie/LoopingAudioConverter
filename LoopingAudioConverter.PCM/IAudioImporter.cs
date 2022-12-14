@@ -13,17 +13,9 @@ namespace LoopingAudioConverter.PCM {
 		TimeSpan? RequiredDecodingDuration { get; }
 	}
 
-	public interface IGenericAudioImporter {
+	public interface IAudioImporter {
 		bool SupportsExtension(string extension);
-	}
-
-	public interface IPCMAudioImporter : IGenericAudioImporter {
+		IEnumerable<object> TryReadUncompressedAudioFromFile(string filename);
 		Task<PCM16Audio> ReadFileAsync(string filename, IRenderingHints hints = null, IProgress<double> progress = null);
 	}
-
-	public interface ICompressedAudioImporter : IGenericAudioImporter {
-		IEnumerable<object> TryReadFile(string filename);
-	}
-
-	public interface IAudioImporter : IPCMAudioImporter, ICompressedAudioImporter { }
 }

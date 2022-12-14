@@ -36,7 +36,7 @@ namespace LoopingAudioConverter.Vorbis {
 			}
 		}
 
-		public bool TryWriteFile(object audio, ILoopPoints loopPoints, string output_dir, string original_filename_no_ext) {
+		public bool TryWriteCompressedAudioToFile(object audio, ILoopPoints loopPoints, string output_dir, string original_filename_no_ext) {
 			if (audio is VorbisAudio v) {
 				string output_filename = Path.Combine(output_dir, original_filename_no_ext + ".ogg");
 				File.WriteAllBytes(output_filename, v.Data);

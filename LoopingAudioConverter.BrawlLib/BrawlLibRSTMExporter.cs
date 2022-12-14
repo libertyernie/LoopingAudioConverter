@@ -106,7 +106,7 @@ namespace LoopingAudioConverter.BrawlLib {
 			await Task.Run(() => WriteFile(lwav, output_dir, original_filename_no_ext, new ProgressTracker(progress)));
 		}
 
-		public bool TryWriteFile(object audio, ILoopPoints loopPoints, string output_dir, string original_filename_no_ext) {
+		public bool TryWriteCompressedAudioToFile(object audio, ILoopPoints loopPoints, string output_dir, string original_filename_no_ext) {
 			string ext = _container == Container.RSTM ? ".brstm"
 				: _container == Container.CSTM ? ".bcstm"
 				: _container == Container.FSTM ? ".bfstm"

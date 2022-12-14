@@ -35,7 +35,7 @@ namespace LoopingAudioConverter.BrawlLib {
 			}
 		}
 
-		public IEnumerable<object> TryReadFile(string filename) {
+		public IEnumerable<object> TryReadUncompressedAudioFromFile(string filename) {
 			var node = NodeFactory.FromFile(null, filename);
 			if (node is RSTMNode r)
 				yield return r;

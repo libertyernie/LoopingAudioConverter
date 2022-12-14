@@ -10,9 +10,7 @@ namespace LoopingAudioConverter.WAV {
 	/// A wrapper around PCM16Factory that implements the IAudioImporter interface.
 	/// For .wav files, it makes sense to read them directly when possible. If the file cannot be read, vgmstream or ffmpeg should be used instead.
 	/// </summary>
-	public class WaveImporter : IPCMAudioImporter {
-		private static string[] EXTENSIONS = new string[] { "wav", "lwav" };
-
+	public class WaveImporter : IAudioImporter {
 		/// <summary>
 		/// Returns whether this importer supports a given file extension: true for .wav and .lwav, false otherwise.
 		/// </summary>
@@ -20,7 +18,7 @@ namespace LoopingAudioConverter.WAV {
 		/// <returns>true if the file might be readable using this importer; false if it's not and this importer should be skipped</returns>
 		public bool SupportsExtension(string extension) {
 			while (extension.StartsWith(".")) extension = extension.Substring(1);
-			return EXTENSIONS.Any(s => s.Equals(extension, StringComparison.InvariantCultureIgnoreCase));
+			return new string[] { "wav", "lwav" }.Any(s => s.Equals(extension, StringComparison.InvariantCultureIgnoreCase));
 		}
 
 		public Task<PCM16Audio> ReadFileAsync(string filename, IRenderingHints hints, IProgress<double> progress) {
@@ -29,6 +27,10 @@ namespace LoopingAudioConverter.WAV {
 			} catch (WaveConverterException e) {
 				throw new AudioImporterException(e.Message, e);
 			}
+		}
+
+		public IEnumerable<object> TryReadUncompressedAudioFromFile(string file) {
+			yield break;
 		}
 	}
 }

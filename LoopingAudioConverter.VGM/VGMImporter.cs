@@ -2,6 +2,7 @@
 using LoopingAudioConverter.PCM;
 using LoopingAudioConverter.WAV;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -11,7 +12,7 @@ namespace LoopingAudioConverter.VGM {
 	/// <summary>
 	/// A class to use either FFmpeg or VGMPlay to render VGM/VGZ files to WAV format.
 	/// </summary>
-	public class VGMImporter : IPCMAudioImporter {
+	public class VGMImporter : IAudioImporter {
 		private readonly FFmpegEngine Engine;
 		private readonly string VGMPlayPath;
 
@@ -143,6 +144,10 @@ namespace LoopingAudioConverter.VGM {
 			} catch (Exception e) when (!(e is AudioImporterException)) {
 				throw new AudioImporterException("Could not read VGM: " + e.Message, e);
 			}
+		}
+
+		public IEnumerable<object> TryReadUncompressedAudioFromFile(string file) {
+			yield break;
 		}
 	}
 }
