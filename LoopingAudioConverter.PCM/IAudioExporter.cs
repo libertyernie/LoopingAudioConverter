@@ -11,6 +11,6 @@ namespace LoopingAudioConverter.PCM {
 	}
 
 	public interface IAudioExporter : IPCMAudioExporter {
-		void TryWriteFile(IAudio audio, ILoopPoints loopPoints, string output_dir, string original_filename_no_ext);
+		bool TryWriteFile(object audio, ILoopPoints loopPoints, string output_dir, string original_filename_no_ext);
 	}
 }

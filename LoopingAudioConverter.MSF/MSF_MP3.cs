@@ -14,7 +14,7 @@ namespace LoopingAudioConverter.MSF
             get {
                 double sampleCount = TotalSampleCount.Value / Header.channel_count;
                 double seconds = sampleCount / Header.sample_rate;
-                double bytes_per_second = MP3.MP3Data.Length / seconds;
+                double bytes_per_second = MP3.Data.Length / seconds;
                 return (long)Math.Round(bytes_per_second);
             }
         }

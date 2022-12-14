@@ -106,7 +106,7 @@ namespace LoopingAudioConverter.BrawlLib {
 			await Task.Run(() => WriteFile(lwav, output_dir, original_filename_no_ext, new ProgressTracker(progress)));
 		}
 
-		public void TryWriteFile(IAudio audio, ILoopPoints loopPoints, string output_dir, string original_filename_no_ext) {
+		public bool TryWriteFile(object audio, ILoopPoints loopPoints, string output_dir, string original_filename_no_ext) {
 			string ext = _container == Container.RSTM ? ".brstm"
 				: _container == Container.CSTM ? ".bcstm"
 				: _container == Container.FSTM ? ".bfstm"
@@ -114,13 +114,16 @@ namespace LoopingAudioConverter.BrawlLib {
 
 			string outfile = Path.Combine(output_dir, original_filename_no_ext + ext);
 
-			if (audio is BrawlLibRSTMAudio r) {
-				if (loopPoints.Looping != r.Looping) return;
-				if (loopPoints.LoopStart != r.LoopStart) return;
-				if (loopPoints.LoopEnd != r.LoopEnd) return;
+			if (audio is RSTMNode r) {
+				if (loopPoints.Looping != r.IsLooped) return false;
+				if (loopPoints.LoopStart != r.LoopStartSample) return false;
+				if (loopPoints.LoopEnd != r.NumSamples) return false;
 
 				r.Export(outfile);
+				return true;
 			}
+
+			return false;
 		}
 	}
 }

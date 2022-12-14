@@ -41,7 +41,7 @@ namespace LoopingAudioConverter.Vorbis {
 			return pcm;
 		}
 
-		public IEnumerable<IAudio> TryReadFile(string filename) {
+		public IEnumerable<object> TryReadFile(string filename) {
 			var originalFile = File.ReadAllBytes(filename);
 			yield return new VorbisAudio(originalFile);
 		}

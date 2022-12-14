@@ -19,6 +19,6 @@ namespace LoopingAudioConverter.PCM {
 	}
 
 	public interface IAudioImporter : IPCMAudioImporter {
-		IEnumerable<IAudio> TryReadFile(string filename);
+		IEnumerable<object> TryReadFile(string filename);
 	}
 }

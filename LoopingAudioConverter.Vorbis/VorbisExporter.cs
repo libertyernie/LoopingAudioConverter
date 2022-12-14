@@ -31,17 +31,19 @@ namespace LoopingAudioConverter.Vorbis {
 					c.Comments.Remove("LOOPLENGTH");
 				}
 				using (VorbisFile newFile = new VorbisFile(vorbisFile, c)) {
-					File.WriteAllBytes(path + "x.ogg", newFile.ToByteArray());
+					File.WriteAllBytes(path, newFile.ToByteArray());
 				}
 			}
 		}
 
-		public void TryWriteFile(IAudio audio, ILoopPoints loopPoints, string output_dir, string original_filename_no_ext) {
+		public bool TryWriteFile(object audio, ILoopPoints loopPoints, string output_dir, string original_filename_no_ext) {
 			if (audio is VorbisAudio v) {
 				string output_filename = Path.Combine(output_dir, original_filename_no_ext + ".ogg");
-				File.WriteAllBytes(output_filename, v.OggVorbisData);
+				File.WriteAllBytes(output_filename, v.Data);
 				SetLoop(output_filename, loopPoints);
+				return true;
 			}
+			return false;
 		}
 
 		public async Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IProgress<double> progress) {

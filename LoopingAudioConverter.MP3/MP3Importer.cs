@@ -18,7 +18,7 @@ namespace LoopingAudioConverter.MP3 {
 			return mp3.Decode();
 		}
 
-		public IEnumerable<IAudio> TryReadFile(string filename) {
+		public IEnumerable<object> TryReadFile(string filename) {
 			byte[] mp3data = File.ReadAllBytes(filename);
 			yield return new MP3Audio(mp3data);
 		}

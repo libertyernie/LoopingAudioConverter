@@ -3,29 +3,19 @@ using MP3Sharp;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 
 namespace LoopingAudioConverter.MP3 {
-	public sealed class MP3Audio : IAudio {
-		private readonly byte[] _mp3Data;
+	public sealed class MP3Audio {
+		public readonly byte[] Data;
 
-		public byte[] MP3Data {
-            get {
-				byte[] arr = new byte[_mp3Data.Length];
-				Array.Copy(_mp3Data, arr, arr.Length);
-				return arr;
-            }
-        }
-
-		public MP3Audio(byte[] mp3data) {
-			_mp3Data = mp3data;
+		public MP3Audio(byte[] data) {
+			Data = data;
 		}
 
 		public unsafe PCM16Audio Decode() {
 			using (var output = new MemoryStream())
-			using (var input = new MemoryStream(MP3Data, false))
+			using (var input = new MemoryStream(Data, false))
 			using (var mp3 = new MP3Stream(input)) {
-				// TODO figure out why CopyTo is slow
 				mp3.CopyTo(output);
 				byte[] array = output.ToArray();
 
@@ -38,14 +28,5 @@ namespace LoopingAudioConverter.MP3 {
 				return new PCM16Audio(mp3.ChannelCount, mp3.Frequency, samples);
 			}
 		}
-
-		[Obsolete]
-		public Task<PCM16Audio> DecodeAsync() => Task.FromResult(Decode());
-
-		public override string ToString() {
-			return base.ToString() + " (MP3)";
-		}
-
-		void IDisposable.Dispose() { }
 	}
 }

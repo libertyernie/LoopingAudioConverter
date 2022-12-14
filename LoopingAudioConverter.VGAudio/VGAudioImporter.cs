@@ -103,14 +103,13 @@ namespace LoopingAudioConverter.VGAudio {
 			}
 		}
 
-		public IEnumerable<IAudio> TryReadFile(string filename) {
+		public IEnumerable<object> TryReadFile(string filename) {
 			byte[] indata = File.ReadAllBytes(filename);
 			if (indata.Length == 0) {
 				throw new AudioImporterException("Empty input file");
 			}
 
-			AudioData a = Read(indata, filename);
-			yield return new VGAudioAudio(a);
+			yield return Read(indata, filename);
 		}
 	}
 }

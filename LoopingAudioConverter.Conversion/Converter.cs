@@ -313,7 +313,7 @@ namespace LoopingAudioConverter.Conversion {
 			}
 
 			string filename_no_ext = Path.GetFileNameWithoutExtension(inputFile);
-			env.UpdateStatus(filename_no_ext, "Reading");
+			env.UpdateStatus(filename_no_ext, "reading");
 
 			string extension = Path.GetExtension(inputFile);
             var importers_supported = importers.Where(i => i.SupportsExtension(extension));
@@ -322,61 +322,71 @@ namespace LoopingAudioConverter.Conversion {
 				.SelectMany(i => i.TryReadFile(inputFile))
                 .ToList();
 
-            PCM16Audio w = null;
-			foreach (var importer in importers_supported) {
-				try {
-					env.UpdateStatus(filename_no_ext, $"Decoding ({importer.GetType().Name})");
-                    progress.Report(1.0);
-					w = await importer.ReadFileAsync(inputFile);
-					break;
-				} catch (AudioImporterException) { }
-			}
-
-            if (w == null) {
-				env.UpdateStatus(filename_no_ext, "Could not convert file without re-encoding");
-                return;
-			}
-
-			env.UpdateStatus(filename_no_ext, "Exporting");
-
-			if (o.GetLoopOverrides(Path.GetFileName(inputFile)) is LoopOverride loopOverride) {
-                if (loopOverride.LoopStart < 0) {
-                    w.Looping = false;
-                } else {
-                    w.Looping = true;
-                    w.LoopStart = loopOverride.LoopStart;
-                    w.LoopEnd = loopOverride.LoopEnd;
+            try {
+                PCM16Audio w = null;
+                foreach (var importer in importers_supported) {
+                    try {
+                        env.UpdateStatus(filename_no_ext, $"decoding ({importer.GetType().Name})");
+                        progress.Report(1.0);
+                        w = await importer.ReadFileAsync(inputFile);
+                        break;
+                    } catch (AudioImporterException) { }
                 }
-            }
 
-            switch (o.InputLoopBehavior) {
-                case InputLoopBehavior.ForceLoop:
-					if (!w.Looping) {
-                        foreach (var a in inputAudio) {
-                            w.Looping = true;
-                            w.LoopStart = 0;
-                            w.LoopEnd = w.Samples.Length / w.Channels;
+                if (w == null || inputAudio.Count == 0) {
+                    env.UpdateStatus(filename_no_ext, "could not convert");
+                    return;
+                }
+
+                env.UpdateStatus(filename_no_ext, "exporting");
+
+                if (o.GetLoopOverrides(Path.GetFileName(inputFile)) is LoopOverride loopOverride) {
+                    if (loopOverride.LoopStart < 0) {
+                        w.Looping = false;
+                    } else {
+                        w.Looping = true;
+                        w.LoopStart = loopOverride.LoopStart;
+                        w.LoopEnd = loopOverride.LoopEnd;
+                    }
+                }
+
+                switch (o.InputLoopBehavior) {
+                    case InputLoopBehavior.ForceLoop:
+                        if (!w.Looping) {
+                            foreach (var a in inputAudio) {
+                                w.Looping = true;
+                                w.LoopStart = 0;
+                                w.LoopEnd = w.Samples.Length / w.Channels;
+                            }
                         }
-					}
-					throw new NotImplementedException();
-				case InputLoopBehavior.AskForNonLooping:
-				case InputLoopBehavior.AskForAll:
-					if (o.InputLoopBehavior == InputLoopBehavior.AskForNonLooping && w.Looping) {
-						break;
-					}
-                    if (!env.ShowLoopConversionDialog(new NamedAudio(w, filename_no_ext))) {
-                        inputAudio.Clear();
-					}
-                    break;
-				case InputLoopBehavior.DiscardForAll:
-					w.Looping = false;
-					break;
-			}
+                        break;
+                    case InputLoopBehavior.AskForNonLooping:
+                    case InputLoopBehavior.AskForAll:
+                        if (o.InputLoopBehavior == InputLoopBehavior.AskForNonLooping && w.Looping) {
+                            break;
+                        }
+                        if (!env.ShowLoopConversionDialog(new NamedAudio(w, filename_no_ext))) {
+                            inputAudio.Clear();
+                        }
+                        break;
+                    case InputLoopBehavior.DiscardForAll:
+                        w.Looping = false;
+                        break;
+                }
 
-            foreach (var a in inputAudio)
-                exporter.TryWriteFile(a, w, outputDir, filename_no_ext);
+                foreach (var a in inputAudio) {
+                    if (exporter.TryWriteFile(a, w, outputDir, filename_no_ext)) {
+                        env.UpdateStatus(filename_no_ext, "finished");
+                        return;
+                    }
+				}
 
-			env.UpdateStatus(filename_no_ext, "finished");
+				env.UpdateStatus(filename_no_ext, "skipped");
+			} finally {
+                foreach (var obj in inputAudio)
+                    if (obj is IDisposable d)
+                        d.Dispose();
+            }
 		}
 	}
 }

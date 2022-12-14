@@ -35,10 +35,10 @@ namespace LoopingAudioConverter.BrawlLib {
 			}
         }
 
-		public IEnumerable<IAudio> TryReadFile(string filename) {
+		public IEnumerable<object> TryReadFile(string filename) {
             var node = NodeFactory.FromFile(null, filename);
             if (node is RSTMNode r)
-                yield return new BrawlLibRSTMAudio(r);
+                yield return r;
             else
                 node.Dispose();
 		}

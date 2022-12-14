@@ -1,5 +1,4 @@
-﻿using LoopingAudioConverter.MP3;
-using LoopingAudioConverter.PCM;
+﻿using LoopingAudioConverter.PCM;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,7 +22,7 @@ namespace LoopingAudioConverter.MSF {
 			return extension.Equals("msf", StringComparison.InvariantCultureIgnoreCase);
 		}
 
-		public IEnumerable<IAudio> TryReadFile(string filename) {
+		public IEnumerable<object> TryReadFile(string filename) {
 			byte[] data = File.ReadAllBytes(filename);
 			var msf = MSF.Parse(data);
 			if (msf is MSF_MP3 x)
