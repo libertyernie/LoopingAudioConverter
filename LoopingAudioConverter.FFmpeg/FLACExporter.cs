@@ -5,12 +5,12 @@ using System.IO;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter.FFmpeg {
-	public class FLACConverter : IAudioExporter {
+	public class FLACExporter : IAudioExporter {
 		private readonly FFmpegEngine effectEngine;
 		private readonly string encoding_parameters;
 		private readonly string metaflac_path;
 
-		public FLACConverter(FFmpegEngine effectEngine, string encoding_parameters, string metaflac_path) {
+		public FLACExporter(FFmpegEngine effectEngine, string encoding_parameters, string metaflac_path) {
 			this.effectEngine = effectEngine;
 			this.encoding_parameters = encoding_parameters;
 			this.metaflac_path = metaflac_path;
@@ -45,7 +45,7 @@ namespace LoopingAudioConverter.FFmpeg {
             if (lwav.Looping)
 			{
 				await MetaflacAsync($"--set-tag=LOOPSTART={lwav.LoopStart} \"{output_filename}\"");
-				await MetaflacAsync($"--set-tag=LOOPEND={lwav.LoopEnd} \"{output_filename}\"");
+				await MetaflacAsync($"--set-tag=LOOPLENGTH={lwav.LoopEnd - lwav.LoopStart} \"{output_filename}\"");
             }
         }
     }
