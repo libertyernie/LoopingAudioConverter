@@ -33,8 +33,7 @@ namespace LoopingAudioConverter.FFmpeg {
 		}
 
 		public async Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IProgress<double> progress) {
-			string ext = lwav.Looping ? ".lflac" : ".flac";
-			string output_filename = Path.Combine(output_dir, original_filename_no_ext + ext);
+			string output_filename = Path.Combine(output_dir, original_filename_no_ext + ".flac");
 
 			string temp_filename = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".flac");
 
