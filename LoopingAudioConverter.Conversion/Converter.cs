@@ -94,7 +94,6 @@ namespace LoopingAudioConverter.Conversion {
 					yield return new VGMStreamImporter(vgmstream_path);
 				yield return new VGAudioImporter();
 				yield return new BrawlLibImporter();
-				yield return new VGMImporter(effectEngine);
 				yield return effectEngine;
 			}
 
