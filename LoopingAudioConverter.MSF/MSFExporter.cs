@@ -19,5 +19,9 @@ namespace LoopingAudioConverter.MSF {
 			File.WriteAllBytes(outPath, msf.Export());
 			return Task.CompletedTask;
 		}
+
+		public bool TryWriteCompressedAudioToFile(object audio, ILoopPoints loopPoints, string output_dir, string original_filename_no_ext) {
+			return false;
+		}
 	}
 }

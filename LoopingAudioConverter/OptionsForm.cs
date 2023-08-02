@@ -209,6 +209,9 @@ namespace LoopingAudioConverter {
 				txtStartEndFilenamePattern.Text = o.LoopSuffix;
 				chkEndFinal.Checked = o.ExportPostLoop;
 				txtEndFinalFilenamePattern.Text = o.PostLoopSuffix;
+				chkLastLap.Checked = o.ExportLastLap;
+				txtLastLapFilenamePattern.Text = o.LastLapSuffix;
+				chkNoEncode.Checked = o.BypassEncoding;
 			} catch (Exception e) {
 				MessageBox.Show(e.Message);
 			}
@@ -254,7 +257,9 @@ namespace LoopingAudioConverter {
 				LoopSuffix = txtStartEndFilenamePattern.Text,
 				ExportPostLoop = chkEndFinal.Checked,
 				PostLoopSuffix = txtEndFinalFilenamePattern.Text,
-				ShortCircuit = chkShortCircuit.Checked,
+				ExportLastLap = chkLastLap.Checked,
+				LastLapSuffix = txtLastLapFilenamePattern.Text,
+				BypassEncoding = chkNoEncode.Checked,
 			};
 		}
 
@@ -344,6 +349,11 @@ namespace LoopingAudioConverter {
 		private void chkEndFinal_CheckedChanged(object sender, EventArgs e) {
 			CheckBox cb = (CheckBox)sender;
 			txtEndFinalFilenamePattern.Enabled = cb.Checked;
+		}
+
+		private void checkBox1_CheckedChanged(object sender, EventArgs e) {
+			CheckBox cb = (CheckBox)sender;
+			txtLastLapFilenamePattern.Enabled = cb.Checked;
 		}
 
 		private void chkMaxSampleRate_CheckedChanged(object sender, EventArgs e) {
@@ -585,6 +595,12 @@ namespace LoopingAudioConverter {
 
 		private void btnCancel_Click(object sender, EventArgs e) {
 			btnCancel.Enabled = false;
+		}
+
+		private void chkNoEncode_CheckedChanged(object sender, EventArgs e) {
+			panel2.Enabled = !chkNoEncode.Checked;
+			pnlExportChannels.Enabled = !chkNoEncode.Checked;
+			pnlExportSegments.Enabled = !chkNoEncode.Checked;
 		}
 	}
 }

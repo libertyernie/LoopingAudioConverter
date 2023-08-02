@@ -1,5 +1,6 @@
 ﻿using LoopingAudioConverter.PCM;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -10,14 +11,13 @@ namespace LoopingAudioConverter.MP3 {
 			return extension.Equals("mp3", StringComparison.InvariantCultureIgnoreCase);
 		}
 
-		public bool SharesCodecsWith(IAudioExporter exporter) => exporter is MP3Exporter;
+		public Task<PCM16Audio> ReadFileAsync(string filename, IRenderingHints hints = null, IProgress<double> progress = null) {
+			throw new AudioImporterException("Cannot natively decode this format");
+		}
 
-		public Task<PCM16Audio> ReadFileAsync(string filename, IRenderingHints hints, IProgress<double> progress) {
+		public IEnumerable<object> TryReadUncompressedAudioFromFile(string filename) {
 			byte[] mp3data = File.ReadAllBytes(filename);
-			return Task.Run(() => {
-				PCM16Audio a = MP3Audio.Read(mp3data);
-				return a;
-			});
+			yield return new MP3Audio(mp3data);
 		}
 	}
 }

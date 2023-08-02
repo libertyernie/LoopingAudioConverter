@@ -11,12 +11,8 @@ namespace LoopingAudioConverter.VGAudio {
 		protected abstract byte[] GetData(AudioData audio);
 		protected abstract string GetExtension();
 
-		private static AudioData Read(PCM16Audio lwav) => lwav is VGAudioAudio v
-			? v.Export()
-			: new WaveReader().Read(lwav.Export());
-
 		public void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext) {
-			AudioData audio = Read(lwav);
+			AudioData audio = new WaveReader().Read(lwav.Export());
 			audio.SetLoop(lwav.Looping, lwav.LoopStart, lwav.LoopEnd);
 			byte[] data = GetData(audio);
 			File.WriteAllBytes(Path.Combine(output_dir, original_filename_no_ext + GetExtension()), data);
@@ -26,6 +22,16 @@ namespace LoopingAudioConverter.VGAudio {
 			Task task = new Task(() => WriteFile(lwav, output_dir, original_filename_no_ext));
 			task.Start();
 			return task;
+		}
+
+		public bool TryWriteCompressedAudioToFile(object audio, ILoopPoints loopPoints, string output_dir, string original_filename_no_ext) {
+			if (audio is AudioData a) {
+				a.SetLoop(loopPoints.Looping, loopPoints.LoopStart, loopPoints.LoopEnd);
+				byte[] data = GetData(a);
+				File.WriteAllBytes(Path.Combine(output_dir, original_filename_no_ext + GetExtension()), data);
+				return true;
+			}
+			return false;
 		}
 	}
 }

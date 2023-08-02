@@ -17,8 +17,12 @@ namespace LoopingAudioConverter.BrawlLib {
 			}
 		}
 
-		Task IAudioExporter.WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IProgress<double> progress) {
+		public Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IProgress<double> progress) {
 			return Task.Run(() => WriteFile(lwav, output_dir, original_filename_no_ext));
+		}
+
+		public bool TryWriteCompressedAudioToFile(object audio, ILoopPoints loopPoints, string output_dir, string original_filename_no_ext) {
+			return false;
 		}
 	}
 }

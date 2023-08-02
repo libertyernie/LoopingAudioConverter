@@ -39,13 +39,17 @@ namespace LoopingAudioConverter.FFmpeg {
 
 			await effectEngine.WriteFileAsync(lwav, temp_filename, encoding_parameters, progress);
 
-            File.Move(temp_filename, output_filename);
+			File.Move(temp_filename, output_filename);
 
-            if (lwav.Looping)
+			if (lwav.Looping)
 			{
 				await MetaflacAsync($"--set-tag=LOOPSTART={lwav.LoopStart} \"{output_filename}\"");
 				await MetaflacAsync($"--set-tag=LOOPLENGTH={lwav.LoopEnd - lwav.LoopStart} \"{output_filename}\"");
-            }
-        }
-    }
+			}
+		}
+
+		public bool TryWriteCompressedAudioToFile(object audio, ILoopPoints loopPoints, string output_dir, string original_filename_no_ext) {
+			return false;
+		}
+	}
 }

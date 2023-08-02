@@ -5,7 +5,6 @@ using LoopingAudioConverter.VGAudioOptions;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using VGAudio.Containers.Adx;
@@ -49,11 +48,11 @@ namespace LoopingAudioConverter {
 		public string LoopSuffix { get; set; }
 		public bool ExportPostLoop { get; set; }
 		public string PostLoopSuffix { get; set; }
-		public bool ShortCircuit { get; set; }
+		public bool ExportLastLap { get; set; }
+		public string LastLapSuffix { get; set; }
+		public bool BypassEncoding { get; set; }
 
 		ILoopExportParameters IConverterOptions.LoopExportParameters => this;
-
-		bool IConverterOptions.BypassEncodingWhenPossible => ShortCircuit;
 
 		IEncodingParameters IConverterOptions.EncodingParameters => this;
 
@@ -87,23 +86,21 @@ namespace LoopingAudioConverter {
 
 		public LoopOverride? GetLoopOverrides(string filename) {
 			if (File.Exists("loop.txt")) {
-				using (StreamReader sr = new StreamReader("loop.txt")) {
-					string line;
-					while ((line = sr.ReadLine()) != null) {
-						line = Regex.Replace(line, "[ \t]+", " ");
-						if (line.Length > 0 && line[0] != '#' && line.Contains(" ")) {
-							try {
-								int loopStart = int.Parse(line.Substring(0, line.IndexOf(" ")));
-								line = line.Substring(line.IndexOf(" ") + 1);
-								int loopEnd = int.Parse(line.Substring(0, line.IndexOf(" ")));
-								line = line.Substring(line.IndexOf(" ") + 1);
-								if (line == filename)
-									return new LoopOverride { LoopStart = loopStart, LoopEnd = loopEnd };
-							} catch (Exception e) {
-								Console.Error.WriteLine("Could not parse line in loop.txt: " + line + " - " + e.Message);
-							}
+				try {
+					Regex loopExpression = new Regex(@"(?<loopStart>\d+)\s+(?<loopEnd>\d+)\s+(?<fileName>.+)");
+					MatchCollection loopCollection = loopExpression.Matches(File.ReadAllText("loop.txt"));
+
+					foreach (Match loopMatch in loopCollection) {
+						if (loopMatch.Groups["fileName"].Value.Trim() == Path.GetFileName(filename)) {
+							int loopStart = int.Parse(loopMatch.Groups["loopStart"].Value);
+							int loopEnd = int.Parse(loopMatch.Groups["loopEnd"].Value);
+
+							return new LoopOverride { LoopStart = loopStart, LoopEnd = loopEnd };
 						}
+
 					}
+				} catch (Exception e) {
+					Console.Error.WriteLine("Could not parse line in loop.txt - " + e.Message);
 				}
 			}
 			return null;

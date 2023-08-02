@@ -2,6 +2,7 @@
 using LoopingAudioConverter.PCM;
 using LoopingAudioConverter.WAV;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -41,8 +42,6 @@ namespace LoopingAudioConverter.VGM {
 			return string.Equals(extension, "vgm", StringComparison.InvariantCultureIgnoreCase)
 				|| string.Equals(extension, "vgz", StringComparison.InvariantCultureIgnoreCase);
 		}
-
-		bool IAudioImporter.SharesCodecsWith(IAudioExporter exporter) => false;
 
         private class Hints : IRenderingHints {
             public int RenderingSampleRate { get; set; }
@@ -145,6 +144,10 @@ namespace LoopingAudioConverter.VGM {
 			} catch (Exception e) when (!(e is AudioImporterException)) {
 				throw new AudioImporterException("Could not read VGM: " + e.Message, e);
 			}
+		}
+
+		public IEnumerable<object> TryReadUncompressedAudioFromFile(string file) {
+			yield break;
 		}
 	}
 }

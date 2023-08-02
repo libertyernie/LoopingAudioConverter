@@ -24,9 +24,7 @@ namespace LoopingAudioConverter.FFmpeg {
 			ExePath = exePath;
 		}
 
-		bool IAudioImporter.SupportsExtension(string extension) => true;
-
-		bool IAudioImporter.SharesCodecsWith(IAudioExporter exporter) => false;
+		public bool SupportsExtension(string extension) => true;
 
 		private struct Metadata {
 			public string codec;
@@ -65,7 +63,7 @@ namespace LoopingAudioConverter.FFmpeg {
 		/// <param name="default_max_duration">A maximum duration for the input file. Only used if the actual duration cannot be determined.</param>
 		/// <param name="progress">Progress bar callback (values range from 0.0 to 1.0, inclusive) (optional)</param>
 		/// <returns>A non-looping PCM16Audio</returns>
-		public async Task<PCM16Audio> ReadFileAsync(string filename, IRenderingHints hints, IProgress<double> progress = null) {
+		public async Task<PCM16Audio> ReadFileAsync(string filename, IRenderingHints hints = null, IProgress<double> progress = null) {
 			if (!File.Exists(ExePath)) {
 				throw new AudioImporterException("FFmpeg not found at path: " + ExePath);
 			}
@@ -76,7 +74,7 @@ namespace LoopingAudioConverter.FFmpeg {
 			var metadata = await GetInputMetadataAsync(filename);
 
 			TimeSpan? actual_duration = metadata.duration;
-			TimeSpan expectedDuration = hints.RequiredDecodingDuration ?? actual_duration ?? TimeSpan.FromMinutes(10);
+			TimeSpan expectedDuration = hints?.RequiredDecodingDuration ?? actual_duration ?? TimeSpan.FromMinutes(10);
 
 			string outfile = Path.GetTempFileName();
 
@@ -84,7 +82,7 @@ namespace LoopingAudioConverter.FFmpeg {
 				yield return "-y";
 				if (metadata.codec == "libgme") {
 					yield return "-f libgme";
-					if (hints.RenderingSampleRate is int gr) {
+					if (hints?.RenderingSampleRate is int gr) {
 						yield return $"-sample_rate {gr}";
                     }
 				}
@@ -195,7 +193,7 @@ namespace LoopingAudioConverter.FFmpeg {
 					FileName = ExePath,
 					UseShellExecute = false,
 					CreateNoWindow = true,
-					Arguments = $"-y -f wav -i {infile} {string.Join(" ", parameters)} -f wav -c:a pcm_s16le {outfile}"
+					Arguments = $"-y -f wav -i \"{infile}\" {string.Join(" ", parameters)} -f wav -c:a pcm_s16le \"{outfile}\""
 				};
 				await ProcessEx.RunAsync(psi);
 				File.Delete(infile);
@@ -279,6 +277,10 @@ namespace LoopingAudioConverter.FFmpeg {
 			if (process.ExitCode != 0) {
 				throw new AudioExporterException("ffmpeg quit with exit code " + process.ExitCode);
 			}
+		}
+
+		public IEnumerable<object> TryReadUncompressedAudioFromFile(string file) {
+			yield break;
 		}
 	}
 }
