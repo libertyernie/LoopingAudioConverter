@@ -1,4 +1,6 @@
-﻿using BrawlLib.Internal.Windows.Forms;
+﻿using BrawlLib.Internal.Audio;
+using BrawlLib.Internal.Windows.Forms;
+using BrawlLib.SSBB.ResourceNodes;
 using BrawlLib.SSBB.Types.Audio;
 using BrawlLib.Wii.Audio;
 using LoopingAudioConverter.PCM;
@@ -6,6 +8,7 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using static OpenTK.Graphics.OpenGL.GL;
 
 namespace LoopingAudioConverter.BrawlLib {
 	public class BrawlLibRSTMExporter : IAudioExporter {
@@ -81,9 +84,7 @@ namespace LoopingAudioConverter.BrawlLib {
 		}
 
 		public void WriteFile(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IProgressTracker progressTracker) {
-			byte[] data = lwav is BrawlLibRSTMAudio a && !a.LoopChanged
-				? a.ExportRSTM()
-				: Encode(lwav, progressTracker);
+			byte[] data = Encode(lwav, progressTracker);
 
 			string ext = ".brstm";
 			if (_container == Container.CSTM) {
@@ -104,5 +105,25 @@ namespace LoopingAudioConverter.BrawlLib {
 			await Task.Yield();
 			await Task.Run(() => WriteFile(lwav, output_dir, original_filename_no_ext, new ProgressTracker(progress)));
 		}
-    }
+
+		public bool TryWriteCompressedAudioToFile(object audio, ILoopPoints loopPoints, string output_dir, string original_filename_no_ext) {
+			string ext = _container == Container.RSTM ? ".brstm"
+				: _container == Container.CSTM ? ".bcstm"
+				: _container == Container.FSTM ? ".bfstm"
+				: throw new NotImplementedException();
+
+			string outfile = Path.Combine(output_dir, original_filename_no_ext + ext);
+
+			if (audio is RSTMNode r) {
+				if (loopPoints.Looping != r.IsLooped) return false;
+				if (loopPoints.LoopStart != r.LoopStartSample) return false;
+				if (loopPoints.LoopEnd != r.NumSamples) return false;
+
+				r.Export(outfile);
+				return true;
+			}
+
+			return false;
+		}
+	}
 }

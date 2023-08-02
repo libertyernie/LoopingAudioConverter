@@ -1,6 +1,7 @@
 ﻿using LoopingAudioConverter.PCM;
 using LoopingAudioConverter.WAV;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -96,12 +97,19 @@ namespace LoopingAudioConverter.VGAudio {
 
 				AudioData a = Read(indata, filename);
 				byte[] wavedata = new WaveWriter().GetFile(a);
-				var w1 = WaveConverter.FromByteArray(wavedata);
-				var w2 = new VGAudioAudio(a, w1);
-				return w2;
+				return WaveConverter.FromByteArray(wavedata);
 			} catch (Exception e) {
 				throw new AudioImporterException("Could not convert using VGAudio: " + e.Message);
 			}
+		}
+
+		public IEnumerable<object> TryReadUncompressedAudioFromFile(string filename) {
+			byte[] indata = File.ReadAllBytes(filename);
+			if (indata.Length == 0) {
+				throw new AudioImporterException("Empty input file");
+			}
+
+			yield return Read(indata, filename);
 		}
 	}
 }

@@ -2,6 +2,7 @@
 using LoopingAudioConverter.WAV;
 using RunProcessAsTask;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -30,8 +31,6 @@ namespace LoopingAudioConverter.VGMStream {
 		public bool SupportsExtension(string extension) {
 			return true;
 		}
-
-		bool IAudioImporter.SharesCodecsWith(IAudioExporter exporter) => false;
 
 		/// <summary>
 		/// Converts a file to WAV using test.exe and reads it into a PCM16Audio object.
@@ -66,6 +65,10 @@ namespace LoopingAudioConverter.VGMStream {
 			} catch (Exception e) {
 				throw new AudioImporterException("Could not read output of test.exe: " + e.Message);
 			}
+		}
+
+		public IEnumerable<object> TryReadUncompressedAudioFromFile(string file) {
+			yield break;
 		}
 	}
 }

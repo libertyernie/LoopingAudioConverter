@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter.PCM {
@@ -14,7 +15,7 @@ namespace LoopingAudioConverter.PCM {
 
 	public interface IAudioImporter {
 		bool SupportsExtension(string extension);
-		bool SharesCodecsWith(IAudioExporter exporter);
+		IEnumerable<object> TryReadUncompressedAudioFromFile(string filename);
 		Task<PCM16Audio> ReadFileAsync(string filename, IRenderingHints hints = null, IProgress<double> progress = null);
 	}
 }

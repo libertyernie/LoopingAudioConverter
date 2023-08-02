@@ -13,10 +13,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MP3Sharp" Version="1.0.5" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\LoopingAudioConverter.FFmpeg\LoopingAudioConverter.FFmpeg.csproj" />
     <ProjectReference Include="..\LoopingAudioConverter.PCM\LoopingAudioConverter.PCM.csproj" />
   </ItemGroup>

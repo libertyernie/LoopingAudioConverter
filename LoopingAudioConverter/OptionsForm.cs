@@ -209,6 +209,7 @@ namespace LoopingAudioConverter {
 				txtEndFinalFilenamePattern.Text = o.PostLoopSuffix;
 				chkLastLap.Checked = o.ExportLastLap;
 				txtLastLapFilenamePattern.Text = o.LastLapSuffix;
+				chkNoEncode.Checked = o.BypassEncoding;
 			} catch (Exception e) {
 				MessageBox.Show(e.Message);
 			}
@@ -256,7 +257,7 @@ namespace LoopingAudioConverter {
 				PostLoopSuffix = txtEndFinalFilenamePattern.Text,
 				ExportLastLap = chkLastLap.Checked,
 				LastLapSuffix = txtLastLapFilenamePattern.Text,
-				ShortCircuit = chkShortCircuit.Checked,
+				BypassEncoding = chkNoEncode.Checked,
 			};
 		}
 
@@ -592,6 +593,12 @@ namespace LoopingAudioConverter {
 
 		private void btnCancel_Click(object sender, EventArgs e) {
 			btnCancel.Enabled = false;
+		}
+
+		private void chkNoEncode_CheckedChanged(object sender, EventArgs e) {
+			panel2.Enabled = !chkNoEncode.Checked;
+			pnlExportChannels.Enabled = !chkNoEncode.Checked;
+			pnlExportSegments.Enabled = !chkNoEncode.Checked;
 		}
 	}
 }

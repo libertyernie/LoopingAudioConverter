@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace LoopingAudioConverter.PCM {
@@ -9,5 +8,6 @@ namespace LoopingAudioConverter.PCM {
 
 	public interface IAudioExporter {
 		Task WriteFileAsync(PCM16Audio lwav, string output_dir, string original_filename_no_ext, IProgress<double> progress = null);
+		bool TryWriteCompressedAudioToFile(object audio, ILoopPoints loopPoints, string output_dir, string original_filename_no_ext);
 	}
 }

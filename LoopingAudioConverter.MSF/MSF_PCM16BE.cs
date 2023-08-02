@@ -50,23 +50,5 @@ namespace LoopingAudioConverter.MSF
 
             return msf;
         }
-
-        /// <summary>
-        /// Gets the audio data as raw 16-bit PCM.
-        /// </summary>
-        /// <returns></returns>
-        public unsafe override short[] GetPCM16Samples()
-        {
-            fixed (byte* ptr = Body)
-            {
-                bshort* be_samples = (bshort*)ptr;
-                short[] samples = new short[Body.Length / sizeof(short)];
-                for (int i = 0; i < samples.Length; i++)
-                {
-                    samples[i] = be_samples[i];
-                }
-                return samples;
-            }
-        }
     }
 }

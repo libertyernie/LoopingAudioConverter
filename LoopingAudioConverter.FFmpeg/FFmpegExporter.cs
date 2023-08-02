@@ -20,5 +20,9 @@ namespace LoopingAudioConverter.FFmpeg {
 
 			await effectEngine.WriteFileAsync(lwav, output_filename, encoding_parameters, progress);
 		}
+
+		public bool TryWriteCompressedAudioToFile(object audio, ILoopPoints loopPoints, string output_dir, string original_filename_no_ext) {
+			return false;
+		}
 	}
 }
