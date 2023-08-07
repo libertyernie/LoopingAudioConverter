@@ -34,8 +34,10 @@ namespace LoopingAudioConverter {
 	namespace MediaFoundation {
 		public ref struct FLACExporter : public LoopingAudioConverter::PCM::IAudioExporter {
 			static void WriteFile(PCM16Audio^ lwav, String^ output_path) {
-				String^ input_path = Path::GetTempFileName();
-				File::WriteAllBytes(input_path, WaveConverter::Export(lwav));
+				array<uint8_t>^ wav = WaveConverter::Export(lwav);
+
+				IStream* stream = NULL;
+				IMFByteStream* byteStream = NULL;
 
 				IMFCollection* pAvailableTypes = NULL;
 				IMFMediaType* pOutputMediaType = NULL;
@@ -46,8 +48,10 @@ namespace LoopingAudioConverter {
 
 					// Set up to read from source
 					IMFSourceReader* pSourceReader;
-					pin_ptr<const wchar_t> inStr = PtrToStringChars(input_path);
-					assert_success(MFCreateSourceReaderFromURL(inStr, NULL, &pSourceReader));
+					pin_ptr<uint8_t> wavPtr = &wav[0];
+					stream = SHCreateMemStream(wavPtr, wav->Length);
+					MFCreateMFByteStreamOnStream(stream, &byteStream);
+					assert_success(MFCreateSourceReaderFromByteStream(byteStream, NULL, &pSourceReader));
 
 					IMFMediaType* pInputType;
 					assert_success(pSourceReader->GetCurrentMediaType(MF_SOURCE_READER_FIRST_AUDIO_STREAM, &pInputType));
@@ -157,12 +161,14 @@ namespace LoopingAudioConverter {
 					assert_success(pSinkWriter->Finalize());
 				}
 				finally {
-					File::Delete(input_path);
-
 					if (pOutputMediaType)
 						pOutputMediaType->Release();
 					if (pAvailableTypes)
 						pAvailableTypes->Release();
+					if (byteStream)
+						byteStream->Close();
+					if (stream)
+						stream->Release();
 				}
 			}
 
