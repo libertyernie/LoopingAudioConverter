@@ -59,9 +59,9 @@ namespace LoopingAudioConverter.Conversion {
 					case ExporterType.MSU1:
 						return new MSU1Converter();
 					case ExporterType.MediaFoundation_FLAC:
-						return new FLACExporter(new FLACExporter.MediaFoundationProvider(), env);
+						return new MediaFoundationFLACExporter(env);
 					case ExporterType.FLAC:
-						return new FLACExporter(new FLACExporter.FFmpegEncoder(effectEngine), env);
+						return new FFmpegFLACExporter(env, effectEngine);
 					case ExporterType.MP3:
 						return new MP3Exporter(effectEngine, o.EncodingParameters.FFMpeg_MP3);
 					case ExporterType.QAAC_M4A:
