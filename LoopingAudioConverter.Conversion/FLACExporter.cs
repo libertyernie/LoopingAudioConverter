@@ -1,5 +1,6 @@
 ﻿using LoopingAudioConverter.FFmpeg;
 using LoopingAudioConverter.PCM;
+using LoopingAudioConverter.WAV;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -68,7 +69,10 @@ namespace LoopingAudioConverter.Conversion {
 		public MediaFoundationFLACExporter(IConverterEnvironment env) : base(env) { }
 
 		protected override async Task EncodeAsync(PCM16Audio lwav, string outputPath, IProgress<double> progress) {
-			await Task.Run(() => MediaFoundation.FLACEncoder.WriteFile(lwav, outputPath));
+			string temp_wav = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".wav");
+			File.WriteAllBytes(temp_wav, lwav.Export());
+			await Task.Run(() => MediaFoundation.FLACEncoder.Convert(temp_wav, outputPath));
+			File.Delete(temp_wav);
 		}
 	}
 }

@@ -33,12 +33,10 @@ inline void assert_success(HRESULT hr)
 namespace LoopingAudioConverter {
 	namespace MediaFoundation {
 		public ref struct FLACEncoder {
-			static void WriteFile(PCM16Audio^ lwav, String^ output_path) {
-				array<uint8_t>^ wav = WaveConverter::Export(lwav);
-
-				IStream* stream = NULL;
-				IMFByteStream* byteStream = NULL;
-
+			static void Convert(String^ inputPath, String^ output_path) {
+				IMFSourceReader* pSourceReader = NULL;
+				IMFMediaType* pInputType = NULL;
+				IMFSinkWriter* pSinkWriter = NULL;
 				IMFCollection* pAvailableTypes = NULL;
 				IMFMediaType* pOutputMediaType = NULL;
 
@@ -47,17 +45,12 @@ namespace LoopingAudioConverter {
 					assert_success(MFStartup(MF_VERSION));
 
 					// Set up to read from source
-					IMFSourceReader* pSourceReader;
-					pin_ptr<uint8_t> wavPtr = &wav[0];
-					stream = SHCreateMemStream(wavPtr, wav->Length);
-					MFCreateMFByteStreamOnStream(stream, &byteStream);
-					assert_success(MFCreateSourceReaderFromByteStream(byteStream, NULL, &pSourceReader));
+					pin_ptr<const wchar_t> inStr = PtrToStringChars(inputPath);
+					assert_success(MFCreateSourceReaderFromURL(inStr, NULL, &pSourceReader));
 
-					IMFMediaType* pInputType;
 					assert_success(pSourceReader->GetCurrentMediaType(MF_SOURCE_READER_FIRST_AUDIO_STREAM, &pInputType));
 
 					// Set up to write to output file
-					IMFSinkWriter* pSinkWriter;
 					pin_ptr<const wchar_t> outStr = PtrToStringChars(output_path);
 					assert_success(MFCreateSinkWriterFromURL(outStr, NULL, NULL, &pSinkWriter));
 
@@ -151,8 +144,10 @@ namespace LoopingAudioConverter {
 							&pSample));
 
 						// Write to input stream
-						if (pSample)
+						if (pSample) {
 							assert_success(pSinkWriter->WriteSample(dwWriterStreamIndex, pSample));
+							pSample->Release();
+						}
 
 						// Check for end of input stream
 						if (nStreamFlags & MF_SOURCE_READERF_ENDOFSTREAM)
@@ -165,10 +160,12 @@ namespace LoopingAudioConverter {
 						pOutputMediaType->Release();
 					if (pAvailableTypes)
 						pAvailableTypes->Release();
-					if (byteStream)
-						byteStream->Close();
-					if (stream)
-						stream->Release();
+					if (pSinkWriter)
+						pSinkWriter->Release();
+					if (pInputType)
+						pInputType->Release();
+					if (pSourceReader)
+						pSourceReader->Release();
 				}
 			}
 		};
