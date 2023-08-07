@@ -15,8 +15,6 @@
 using namespace System;
 using namespace System::IO;
 using namespace System::Runtime::InteropServices;
-using namespace LoopingAudioConverter::PCM;
-using namespace LoopingAudioConverter::WAV;
 
 // https://stackoverflow.com/a/48991319
 
@@ -26,7 +24,7 @@ inline void assert_success(HRESULT hr)
 	{
 		_com_error err(hr);
 		String^ errMsg = gcnew String(err.ErrorMessage());
-		throw gcnew AudioExporterException(errMsg);
+		throw gcnew Exception(errMsg);
 	}
 }
 
@@ -120,7 +118,7 @@ namespace LoopingAudioConverter {
 					}
 
 					if (pOutputMediaType == NULL)
-						throw gcnew AudioExporterException("Could not find a Media Foundation output codec with an appropriate sample rate, bit depth, and channel count.");
+						throw gcnew Exception("Could not find a Media Foundation output codec with an appropriate sample rate, bit depth, and channel count.");
 
 					// Add a new output stream with the appropriate media type
 					DWORD dwWriterStreamIndex = -1;

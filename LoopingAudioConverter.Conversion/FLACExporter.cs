@@ -71,8 +71,13 @@ namespace LoopingAudioConverter.Conversion {
 		protected override async Task EncodeAsync(PCM16Audio lwav, string outputPath, IProgress<double> progress) {
 			string temp_wav = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".wav");
 			File.WriteAllBytes(temp_wav, lwav.Export());
-			await Task.Run(() => MediaFoundation.FLACEncoder.Convert(temp_wav, outputPath));
-			File.Delete(temp_wav);
+			try {
+				await Task.Run(() => MediaFoundation.FLACEncoder.Convert(temp_wav, outputPath));
+			} catch (Exception ex) {
+				throw new AudioImporterException(ex.Message, ex);
+			} finally {
+				File.Delete(temp_wav);
+			}
 		}
 	}
 }

@@ -114,14 +114,6 @@
   <ItemGroup>
     <ClCompile Include="FLACEncoder.h" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\LoopingAudioConverter.PCM\LoopingAudioConverter.PCM.csproj">
-      <Project>{3bb57c1c-b3ed-4d0f-8719-29b036bfeec3}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\LoopingAudioConverter.WAV\LoopingAudioConverter.WAV.csproj">
-      <Project>{ff053cc3-0cd5-4476-b51e-f3a26328a500}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
