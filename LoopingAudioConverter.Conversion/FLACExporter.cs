@@ -1,19 +1,40 @@
-﻿using LoopingAudioConverter.PCM;
+﻿using LoopingAudioConverter.FFmpeg;
+using LoopingAudioConverter.PCM;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace LoopingAudioConverter.FFmpeg {
+namespace LoopingAudioConverter.Conversion {
 	public class FLACExporter : IAudioExporter {
-		private readonly FFmpegEngine effectEngine;
-		private readonly string encoding_parameters;
+		public interface IEncoder {
+			Task WriteFileAsync(PCM16Audio lwav, string outputPath, IProgress<double> progress);
+		}
+
+		public class FFmpegEncoder : IEncoder {
+			private readonly FFmpegEngine ffmpeg;
+
+			public FFmpegEncoder(FFmpegEngine ffmpeg) {
+				this.ffmpeg = ffmpeg;
+			}
+
+			public async Task WriteFileAsync(PCM16Audio lwav, string outputPath, IProgress<double> progress) {
+				await ffmpeg.WriteFileAsync(lwav, outputPath, "", progress);
+			}
+		}
+
+		public class MediaFoundationProvider : IEncoder {
+			public async Task WriteFileAsync(PCM16Audio lwav, string outputPath, IProgress<double> progress) {
+				await Task.Run(() => MediaFoundation.FLACEncoder.WriteFile(lwav, outputPath));
+			}
+		}
+
+		private readonly IEncoder flacProvider;
 		private readonly string metaflac_path;
 
-		public FLACExporter(FFmpegEngine effectEngine, string encoding_parameters, string metaflac_path) {
-			this.effectEngine = effectEngine;
-			this.encoding_parameters = encoding_parameters;
-			this.metaflac_path = metaflac_path;
+		public FLACExporter(IEncoder flacProvider, IConverterEnvironment env) {
+			this.flacProvider = flacProvider;
+			this.metaflac_path = env.MetaflacPath;
 		}
 
 		private async Task<string[]> MetaflacAsync(string parameters)
@@ -37,7 +58,7 @@ namespace LoopingAudioConverter.FFmpeg {
 
 			string temp_filename = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".flac");
 
-			await effectEngine.WriteFileAsync(lwav, temp_filename, encoding_parameters, progress);
+			await flacProvider.WriteFileAsync(lwav, temp_filename, progress);
 
 			File.Move(temp_filename, output_filename);
 

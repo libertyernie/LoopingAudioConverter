@@ -112,7 +112,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="FLACExporter.h" />
+    <ClCompile Include="FLACEncoder.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LoopingAudioConverter.PCM\LoopingAudioConverter.PCM.csproj">

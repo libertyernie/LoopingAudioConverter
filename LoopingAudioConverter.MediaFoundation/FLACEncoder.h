@@ -32,7 +32,7 @@ inline void assert_success(HRESULT hr)
 
 namespace LoopingAudioConverter {
 	namespace MediaFoundation {
-		public ref struct FLACExporter : public LoopingAudioConverter::PCM::IAudioExporter {
+		public ref struct FLACEncoder {
 			static void WriteFile(PCM16Audio^ lwav, String^ output_path) {
 				array<uint8_t>^ wav = WaveConverter::Export(lwav);
 
@@ -170,16 +170,6 @@ namespace LoopingAudioConverter {
 					if (stream)
 						stream->Release();
 				}
-			}
-
-			virtual System::Threading::Tasks::Task^ WriteFileAsync(PCM16Audio^ lwav, String^ output_dir, String^ filename_no_ext, IProgress<double>^ progress) {
-				String^ output_path = Path::Combine(output_dir, filename_no_ext + ".flac");
-				WriteFile(lwav, output_path);
-				return System::Threading::Tasks::Task::CompletedTask;
-			}
-
-			virtual bool TryWriteCompressedAudioToFile(System::Object^ audio, LoopingAudioConverter::PCM::ILoopPoints^ loopPoints, System::String^ output_dir, System::String^ original_filename_no_ext) {
-				return false;
 			}
 		};
 	}
