@@ -14,15 +14,16 @@ namespace LoopingAudioConverter.VGM {
 	/// </summary>
 	public class VGMImporter : IAudioImporter {
 		private readonly FFmpegEngine Engine;
+		private readonly string VGMPlayPath;
 
 		/// <summary>
 		/// Initializes the VGM importer.
-		/// </summary>
 		/// <param name="engine">The FFmpeg handler</param>
 		public VGMImporter(FFmpegEngine engine) {
 			Engine = engine;
 		}
 
+		/// <summary>
 		/// <summary>
 		/// Returns whether the extension matches that of a VGM file (vgm or vgz), ignoring any leading period.
 		/// </summary>
@@ -72,11 +73,11 @@ namespace LoopingAudioConverter.VGM {
 					br.ReadInt32();
 					loopSamples = br.ReadInt32();
 				}
-
 				PCM16Audio data = await Engine.ReadFileAsync(filename, new Hints {
 					RenderingSampleRate = hints.RenderingSampleRate,
 					SampleCount = samples
 				}, progress);
+                }
 				if (loopSamples != 0) {
 					data.Looping = true;
 					data.LoopStart = (int)Math.Round((samples - loopSamples) * (hints.RenderingSampleRate / 44100.0));
