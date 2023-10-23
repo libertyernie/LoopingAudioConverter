@@ -1030,7 +1030,7 @@
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.panel1);
             this.Name = "OptionsForm";
-            this.Text = "Looping Audio Converter 3.1";
+            this.Text = "Looping Audio Converter 3.2";
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
