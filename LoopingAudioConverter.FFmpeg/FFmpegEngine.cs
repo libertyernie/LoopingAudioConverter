@@ -282,5 +282,9 @@ namespace LoopingAudioConverter.FFmpeg {
 		public IEnumerable<object> TryReadUncompressedAudioFromFile(string file) {
 			yield break;
 		}
+
+		public void WriteFile(PCM16Audio lwav, string outputPath) {
+			throw new NotImplementedException();
+		}
 	}
 }

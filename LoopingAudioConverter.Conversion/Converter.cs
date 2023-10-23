@@ -13,7 +13,6 @@ using LoopingAudioConverter.Vorbis;
 using LoopingAudioConverter.WAV;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -59,8 +58,10 @@ namespace LoopingAudioConverter.Conversion {
 						return new MSFExporter(big_endian: false);
 					case ExporterType.MSU1:
 						return new MSU1Converter();
+					case ExporterType.MediaFoundation_FLAC:
+						return new MediaFoundationFLACExporter(env);
 					case ExporterType.FLAC:
-						return new FLACExporter(effectEngine, "", env.MetaflacPath);
+						return new FFmpegFLACExporter(env, effectEngine);
 					case ExporterType.MP3:
 						return new MP3Exporter(effectEngine, o.EncodingParameters.FFMpeg_MP3);
 					case ExporterType.QAAC_M4A:
