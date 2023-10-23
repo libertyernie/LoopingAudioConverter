@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LoopingAudioConverter.FFmpeg\LoopingAudioConverter.FFmpeg.csproj" />
-    <ProjectReference Include="..\LoopingAudioConverter.MediaFoundation\LoopingAudioConverter.MediaFoundation.vcxproj" />
     <ProjectReference Include="..\LoopingAudioConverter.MP3\LoopingAudioConverter.MP3.csproj" />
     <ProjectReference Include="..\LoopingAudioConverter.MSF\LoopingAudioConverter.MSF.csproj" />
     <ProjectReference Include="..\LoopingAudioConverter.MSU1\LoopingAudioConverter.MSU1.csproj" />

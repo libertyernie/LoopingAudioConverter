@@ -82,7 +82,6 @@ namespace LoopingAudioConverter {
 				new NVPair<ExporterType>(ExporterType.MSF_PCM16LE, "MSF (PCM16, little-endian)"),
 				new NVPair<ExporterType>(ExporterType.MSU1, "MSU-1"),
 				new NVPair<ExporterType>(ExporterType.WAV, "WAV"),
-				new NVPair<ExporterType>(ExporterType.MediaFoundation_FLAC, "[Media Foundation] FLAC"),
 				new NVPair<ExporterType>(ExporterType.FLAC, "[FFmpeg] FLAC"),
 				new NVPair<ExporterType>(ExporterType.MP3, "[FFmpeg] MP3"),
 				new NVPair<ExporterType>(ExporterType.M4A, "[FFmpeg] AAC (.m4a)"),

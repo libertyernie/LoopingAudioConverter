@@ -18,7 +18,6 @@ namespace LoopingAudioConverter.Conversion {
         MSF_PCM16BE,
         MSF_PCM16LE,
         MSU1,
-		MediaFoundation_FLAC,
 		FLAC,
         MP3,
         M4A,
