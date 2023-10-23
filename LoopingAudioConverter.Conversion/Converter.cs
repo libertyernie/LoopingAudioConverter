@@ -5,7 +5,6 @@ using LoopingAudioConverter.MSU1;
 using LoopingAudioConverter.PCM;
 using LoopingAudioConverter.QuickTime;
 using LoopingAudioConverter.VGAudio;
-using LoopingAudioConverter.VGM;
 using LoopingAudioConverter.VGMStream;
 using LoopingAudioConverter.Vorbis;
 using LoopingAudioConverter.WAV;
@@ -78,7 +77,6 @@ namespace LoopingAudioConverter.Conversion {
 				if (env.VGMStreamPath is string vgmstream_path)
 					yield return new VGMStreamImporter(vgmstream_path);
 				yield return new VGAudioImporter();
-				yield return new VGMImporter(effectEngine);
 				yield return effectEngine;
 			}
 
