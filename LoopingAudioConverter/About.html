@@ -12,6 +12,102 @@
       libraries, and allows conversion between a variety of looping
       audio formats.<br>
     </p>
+    <p>Libraries used:<br>
+    </p>
+    <table cellspacing="2" cellpadding="2" border="1">
+      <thead> <tr>
+          <th valign="top" align="left">Name<br>
+          </th>
+          <th valign="top" align="left">License<br>
+          </th>
+        </tr>
+      </thead><tbody>
+        <tr>
+          <td valign="top">BrawlLib (BrawlCrate)<br>
+          </td>
+          <td valign="top">Some unknown, some MIT<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">OpenTK<br>
+          </td>
+          <td valign="top">Mostly <a moz-do-not-send="true"
+href="https://github.com/opentk/opentk/blob/928ef8934cbec1a55a3d8631a5c3db4801b582ae/LICENSE.md">MIT</a>,
+            with some code <a moz-do-not-send="true"
+href="https://github.com/opentk/opentk/blob/92bce6838a024f41cccb7f5bc39ec6b1529a6ffa/THIRD_PARTIES.md">3-clause
+
+
+              BSD</a><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">RunProcessAsTask<br>
+          </td>
+          <td valign="top"><a moz-do-not-send="true"
+href="https://github.com/jamesmanning/RunProcessAsTask/blob/18c842e8c1b16df80910cea0a13f159d2f60c559/LICENSE">MIT<br>
+            </a> </td>
+        </tr>
+        <tr>
+          <td valign="top">VGAudio<br>
+          </td>
+          <td valign="top"><a moz-do-not-send="true"
+href="https://github.com/Thealexbarney/VGAudio/blob/4643d0cc423069f96dbbca165ca29654ac02f304/LICENSE">MIT<br>
+            </a> </td>
+        </tr>
+      </tbody>
+    </table>
+    <p>External applications used:<br>
+    </p>
+    <table cellspacing="2" cellpadding="2" border="1">
+      <thead> <tr>
+          <th valign="top" align="left">Name<br>
+          </th>
+          <th valign="top" align="left">License<br>
+          </th>
+        </tr>
+      </thead> <tbody>
+        <tr>
+          <td valign="top"><a moz-do-not-send="true"
+              href="https://github.com/GyanD/codexffmpeg/releases">ffmpeg</a><br>
+          </td>
+          <td valign="top">GPL v3<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top"><a moz-do-not-send="true"
+              href="https://xiph.org/flac/documentation_tools_metaflac.html">metaflac<br>
+            </a> </td>
+          <td valign="top"><a moz-do-not-send="true"
+              href="https://github.com/xiph/flac/blob/master/src/metaflac/main.c">GPL
+              v2 or later</a><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">qaac<br>
+          </td>
+          <td valign="top"><a moz-do-not-send="true"
+              href="https://github.com/nu774/qaac/blob/master/COPYING">Mostly
+              public domain</a><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">VGMPlay<br>
+          </td>
+          <td valign="top"><a moz-do-not-send="true"
+              href="https://github.com/vgmrips/vgmplay/issues/47">Mostly
+              unknown</a><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">vgmstream<br>
+          </td>
+          <td valign="top"><a moz-do-not-send="true"
+href="https://github.com/vgmstream/vgmstream/blob/001cc5e453e17138c757a00987f04ac77926c1df/COPYING">MIT
+              variant</a><br>
+          </td>
+        </tr>
+      </tbody>
+    </table>
     <p>Supported importers:<br>
     </p>
     <table cellspacing="2" cellpadding="2" border="1">
@@ -34,7 +130,7 @@
           </td>
           <td valign="top">*.wav (signed 16-bit PCM)<br>
           </td>
-          <td valign="top"><br>
+          <td valign="top">None needed<br>
           </td>
           <td valign="top">Yes (smpl)<br>
           </td>
@@ -48,11 +144,12 @@
           </td>
           <td valign="top">*.mp3<br>
           </td>
-          <td valign="top"><a href="https://github.com/Nihlus/MP3Sharp">MP3Sharp</a></td>
-          <td valign="top">No<br>
-          </td>
           <td valign="top"><br>
           </td>
+          <td valign="top">No<br>
+          </td>
+          <td valign="top">Only used for "copy audio data only" -
+            decoding handled by vgmstream or ffmpeg </td>
           <td valign="top">MP3Audio<br>
           </td>
         </tr>
@@ -75,8 +172,7 @@
           </td>
           <td valign="top">*.pcm<br>
           </td>
-          <td valign="top"><br>
-          </td>
+          <td valign="top">None needed </td>
           <td valign="top">Yes<br>
           </td>
           <td valign="top">Files with a "loop start" of 0 are treated as
@@ -94,9 +190,8 @@
           </td>
           <td valign="top"><br>
           </td>
-          <td valign="top">Supports 16-bit PCM (big or little endian),
-            or MP3<br>
-          </td>
+          <td valign="top">Only used for "copy audio data only" -
+            decoding handled by vgmstream </td>
           <td valign="top">MP3Audio (if MP3) </td>
         </tr>
         <tr>
