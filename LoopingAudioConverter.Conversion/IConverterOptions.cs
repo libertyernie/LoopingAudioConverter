@@ -13,11 +13,6 @@ namespace LoopingAudioConverter.Conversion {
         VGAudio_HPS,
         VGAudio_HCA,
         VGAudio_ADX,
-        BrawlLib_BRSTM_ADPCM,
-        BrawlLib_BRSTM_PCM16,
-        BrawlLib_BCSTM,
-        BrawlLib_BFSTM,
-        BrawlLib_BRWAV,
         QAAC_M4A,
         QAAC_AAC,
         MSF_PCM16BE,
@@ -41,8 +36,6 @@ namespace LoopingAudioConverter.Conversion {
     public enum InputLoopBehavior {
         NoChange,
         ForceLoop,
-        AskForNonLooping,
-        AskForAll,
         DiscardForAll
     }
 

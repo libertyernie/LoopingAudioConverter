@@ -1,6 +1,4 @@
-﻿using BrawlLib.SSBB.Types.Audio;
-using LoopingAudioConverter.BrawlLib;
-using LoopingAudioConverter.FFmpeg;
+﻿using LoopingAudioConverter.FFmpeg;
 using LoopingAudioConverter.MP3;
 using LoopingAudioConverter.MSF;
 using LoopingAudioConverter.MSU1;
@@ -42,16 +40,6 @@ namespace LoopingAudioConverter.Conversion {
 						return new HCAExporter(o.EncodingParameters.VGAudio_HCA);
 					case ExporterType.VGAudio_ADX:
 						return new ADXExporter(o.EncodingParameters.VGAudio_ADX);
-					case ExporterType.BrawlLib_BRSTM_ADPCM:
-						return new BrawlLibRSTMExporter(WaveEncoding.ADPCM, BrawlLibRSTMExporter.Container.RSTM);
-					case ExporterType.BrawlLib_BRSTM_PCM16:
-						return new BrawlLibRSTMExporter(WaveEncoding.PCM16, BrawlLibRSTMExporter.Container.RSTM);
-					case ExporterType.BrawlLib_BCSTM:
-						return new BrawlLibRSTMExporter(WaveEncoding.ADPCM, BrawlLibRSTMExporter.Container.CSTM);
-					case ExporterType.BrawlLib_BFSTM:
-						return new BrawlLibRSTMExporter(WaveEncoding.ADPCM, BrawlLibRSTMExporter.Container.FSTM);
-					case ExporterType.BrawlLib_BRWAV:
-						return new BrawlLibRWAVExporter();
 					case ExporterType.MSF_PCM16BE:
 						return new MSFExporter(big_endian: true);
 					case ExporterType.MSF_PCM16LE:
@@ -94,7 +82,6 @@ namespace LoopingAudioConverter.Conversion {
 				if (env.VGMStreamPath is string vgmstream_path)
 					yield return new VGMStreamImporter(vgmstream_path);
 				yield return new VGAudioImporter();
-				yield return new BrawlLibImporter();
 				yield return effectEngine;
 			}
 
@@ -249,15 +236,6 @@ namespace LoopingAudioConverter.Conversion {
 									toExport.Audio.LoopEnd = toExport.Audio.Samples.Length / toExport.Audio.Channels;
 								}
 								break;
-							case InputLoopBehavior.AskForNonLooping:
-							case InputLoopBehavior.AskForAll:
-								if (o.InputLoopBehavior == InputLoopBehavior.AskForNonLooping && toExport.Audio.Looping) {
-									break;
-								}
-								if (!env.ShowLoopConversionDialog(toExport)) {
-									toExport = null;
-								}
-								break;
 							case InputLoopBehavior.DiscardForAll:
 								toExport.Audio.Looping = false;
 								break;
@@ -339,15 +317,6 @@ namespace LoopingAudioConverter.Conversion {
 								w.LoopStart = 0;
 								w.LoopEnd = w.Samples.Length / w.Channels;
 							}
-						}
-						break;
-					case InputLoopBehavior.AskForNonLooping:
-					case InputLoopBehavior.AskForAll:
-						if (o.InputLoopBehavior == InputLoopBehavior.AskForNonLooping && w.Looping) {
-							break;
-						}
-						if (!env.ShowLoopConversionDialog(new NamedAudio(w, filename_no_ext))) {
-							inputAudio.Clear();
 						}
 						break;
 					case InputLoopBehavior.DiscardForAll:

@@ -9,7 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LoopingAudioConverter.BrawlLib\LoopingAudioConverter.BrawlLib.csproj" />
     <ProjectReference Include="..\LoopingAudioConverter.FFmpeg\LoopingAudioConverter.FFmpeg.csproj" />
     <ProjectReference Include="..\LoopingAudioConverter.MediaFoundation\LoopingAudioConverter.MediaFoundation.vcxproj" />
     <ProjectReference Include="..\LoopingAudioConverter.MP3\LoopingAudioConverter.MP3.csproj" />
