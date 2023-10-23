@@ -209,7 +209,7 @@ namespace LoopingAudioConverter.FFmpeg {
 					lwav.GetPreLoopSegment(),
 					lwav.GetLoopSegment(),
 					lwav.GetPostLoopSegment()
-				}.Where(x => x.Samples.Length != 0).Select(convert));
+				}.Select(convert));
 
 				short[] samples = new short[segments.Select(x => x.Samples.Length).Sum()];
 				int i = 0;

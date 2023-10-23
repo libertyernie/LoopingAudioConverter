@@ -171,7 +171,9 @@ namespace LoopingAudioConverter.WAV {
 							} else if (id == "data") {
 								// Data chunk - contains samples
 								sample_data = new short[buffer2.Length / 2];
-								Marshal.Copy((IntPtr)ptr2, sample_data, 0, sample_data.Length);
+								if (buffer2.Length != 0) {
+									Marshal.Copy((IntPtr)ptr2, sample_data, 0, sample_data.Length);
+								}
 							} else if (id == "smpl") {
 								// sampler chunk
 								smpl* smpl = (smpl*)ptr2;
