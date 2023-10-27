@@ -195,8 +195,16 @@ namespace LoopingAudioConverter.FFmpeg {
 					CreateNoWindow = true,
 					Arguments = $"-y -f wav -i \"{infile}\" {string.Join(" ", parameters)} -f wav -c:a pcm_s16le \"{outfile}\""
 				};
-				await ProcessEx.RunAsync(psi);
+				var pr = await ProcessEx.RunAsync(psi);
 				File.Delete(infile);
+
+				using (var fs = new FileStream(outfile, FileMode.Open, FileAccess.Read)) {
+					if (fs.Length == 0) {
+						File.WriteAllLines("ffmpeg_stdout.txt", pr.StandardOutput);
+						File.WriteAllLines("ffmpeg_stderr.txt", pr.StandardError);
+						throw new AudioImporterException($"Output file was empty when trying to apply effects, ffmpeg exit code: {pr.ExitCode} - see files ffmpeg_stdout.txt, ffmpeg_stderr.txt for details");
+					}
+				}
 
 				return WaveConverter.FromFile(outfile, true);
 			}
