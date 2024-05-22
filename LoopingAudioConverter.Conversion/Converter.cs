@@ -22,7 +22,7 @@ namespace LoopingAudioConverter.Conversion {
 		public static async Task ConvertFilesAsync(IConverterEnvironment env, IConverterOptions o, IReadOnlyList<string> inputFiles, IProgress<double> progress = null) {
 			FFmpegEngine effectEngine = File.Exists(env.FFmpegPath)
 				? new FFmpegEngine(env.FFmpegPath)
-				: throw new Exception("Could not find ffmpeg - please specify ffmpeg_path in .config file");
+				: throw new Exception("Either the file LoopingAudioConverter.config does not contain ffmpeg_path, or ffmpeg.exe could not be found at that path.");
 
 			IAudioExporter getExporter() {
 				switch (o.ExporterType) {

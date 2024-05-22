@@ -145,10 +145,10 @@ namespace LoopingAudioConverter {
 				}) {
 					string v = ConfigurationManager.AppSettings[str];
 					if (v == null) {
-						MessageBox.Show(this, $"The .config file setting {str} could not be found.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+						MessageBox.Show(this, $"The file LoopingAudioConverter.config does not have a setting {str}.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 					}
 					if (!File.Exists(v)) {
-						MessageBox.Show(this, $"The file {v} could not be found.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+						MessageBox.Show(this, $"The file LoopingAudioConverter.config has a {str} of {v}, but the file at that path is missing.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 					}
 				}
 			};
@@ -444,7 +444,10 @@ namespace LoopingAudioConverter {
 				await t;
 			} catch (Exception ex) {
 				Console.Error.WriteLine(ex);
-				MessageBox.Show(this, "An error occurred.\r\nFor more details, run from cmd.exe and write a log file:\r\n\r\nLoopingAudioConverter.exe 2> log.txt", ex.GetType().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				using (var form = new ErrorForm()) {
+					form.Message = ex.ToString();
+					form.ShowDialog(this);
+				}
 			}
 			runningTasks.Remove(t);
 			UpdateTitle();
