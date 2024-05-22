@@ -200,7 +200,7 @@ namespace LoopingAudioConverter.Conversion {
 				env.UpdateStatus(filename_no_ext, "Applying effects");
 				w = await effectEngine.ApplyEffectsAsync(w,
 					channels: o.Channels ?? w.Channels,
-					rate: o.SampleRate ?? w.SampleRate,
+					rate: o.SampleRate,
 					db: o.AmplifydB ?? 0M,
 					amplitude: o.AmplifyRatio ?? 1M,
 					pitch_semitones: o.PitchSemitones ?? 0,

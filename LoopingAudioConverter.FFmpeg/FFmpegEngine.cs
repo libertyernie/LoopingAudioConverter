@@ -139,12 +139,10 @@ namespace LoopingAudioConverter.FFmpeg {
 		/// <param name="tempo_ratio">Tempo ratio (if 1, this effect will not be applied)</param>
 		/// <param name="force">If true, always return a new PCM16Audio object</param>
 		/// <returns>A new PCM16Audio object if one or more effects are applied; the same PCM16Audio object if no effects are applied.</returns>
-		public async Task<PCM16Audio> ApplyEffectsAsync(PCM16Audio lwav, int channels = int.MaxValue, decimal db = 0, decimal amplitude = 1, int rate = int.MaxValue, double pitch_semitones = 0, double tempo_ratio = 1, bool force = false) {
-			// This is where I wish I had F# list comprehensions
-
+		public async Task<PCM16Audio> ApplyEffectsAsync(PCM16Audio lwav, int? channels = null, decimal db = 0, decimal amplitude = 1, int? rate = null, double pitch_semitones = 0, double tempo_ratio = 1, bool force = false) {
 			IEnumerable<string> getParameters() {
-				if (channels != lwav.Channels)
-					yield return $"-ac {channels}";
+				if (channels is int ch && ch != lwav.Channels)
+					yield return $"-ac {ch}";
 
 				IEnumerable<string> getFilters() {
 					if (db != 0)
@@ -167,8 +165,8 @@ namespace LoopingAudioConverter.FFmpeg {
 					if (tempo != 1) {
 						yield return $"atempo={tempo}";
 					}
-					if (newrate > rate) {
-						yield return $"aresample={rate}";
+					if (rate is int rr && newrate != rr) {
+						yield return $"aresample={rr}";
 					}
 				}
 
