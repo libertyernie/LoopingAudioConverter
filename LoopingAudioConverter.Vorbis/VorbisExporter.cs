@@ -25,7 +25,7 @@ namespace LoopingAudioConverter.Vorbis {
 					.First();
 				if (loopPoints.Looping) {
 					c.Comments["LOOPSTART"] = loopPoints.LoopStart.ToString();
-					c.Comments["LOOPLENGTH"] = (loopPoints.LoopEnd - loopPoints.LoopStart).ToString();
+					c.Comments["LOOPLENGTH"] = (loopPoints.LoopEnd - loopPoints.LoopStart + 1).ToString();
 				} else {
 					c.Comments.Remove("LOOPSTART");
 					c.Comments.Remove("LOOPLENGTH");

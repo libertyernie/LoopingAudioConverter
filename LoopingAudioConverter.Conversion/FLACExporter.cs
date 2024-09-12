@@ -44,7 +44,7 @@ namespace LoopingAudioConverter.Conversion {
 			if (lwav.Looping)
 			{
 				await MetaflacAsync($"--set-tag=LOOPSTART={lwav.LoopStart} \"{output_filename}\"");
-				await MetaflacAsync($"--set-tag=LOOPLENGTH={lwav.LoopEnd - lwav.LoopStart} \"{output_filename}\"");
+				await MetaflacAsync($"--set-tag=LOOPLENGTH={lwav.LoopEnd - lwav.LoopStart + 1} \"{output_filename}\"");
 			}
 		}
 
