@@ -2,6 +2,12 @@
 
 This application acts as a frontend to other programs and libraries, and allows conversion between the Wii .brstm format and a variety of other formats.
 
+Requirements:
+
+* Windows
+* .NET Framework 4.8
+* [Microsoft Visual C++ Redistributable (2022+)](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170)
+
 Supported input formats:
 
     WAV (with or without "smpl" chunk to denote looping audio)
