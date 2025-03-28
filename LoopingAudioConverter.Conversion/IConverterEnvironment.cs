@@ -10,8 +10,6 @@ namespace LoopingAudioConverter.Conversion {
 
         bool Cancelled { get; }
 
-        bool ShowLoopConversionDialog(NamedAudio file);
-
         void UpdateStatus(string filename, string message);
         void ReportSuccess(string filename);
         void ReportFailure(string filename, string message);

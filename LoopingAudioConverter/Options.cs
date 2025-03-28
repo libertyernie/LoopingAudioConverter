@@ -1,5 +1,4 @@
-﻿using BrawlLib.SSBB.Types.Audio;
-using LoopingAudioConverter.Conversion;
+﻿using LoopingAudioConverter.Conversion;
 using LoopingAudioConverter.PCM;
 using LoopingAudioConverter.VGAudioOptions;
 using System;
@@ -34,7 +33,6 @@ namespace LoopingAudioConverter {
 		public AdxOptions AdxOptions { get; set; }
 		public HcaOptions HcaOptions { get; set; }
 		public BxstmOptions BxstmOptions { get; set; }
-		public WaveEncoding? WaveEncoding { get; set; }
 		public InputLoopBehavior InputLoopBehavior { get; set; }
 		public bool ExportWholeSong { get; set; }
 		public bool WholeSongExportByDesiredDuration { get; set; }

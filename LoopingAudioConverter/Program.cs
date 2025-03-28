@@ -1,7 +1,4 @@
-﻿using BrawlLib.Internal.Windows.Forms;
-using BrawlLib.SSBB.Types.Audio;
-using LoopingAudioConverter.BrawlLib;
-using LoopingAudioConverter.FFmpeg;
+﻿using LoopingAudioConverter.FFmpeg;
 using LoopingAudioConverter.MP3;
 using LoopingAudioConverter.MSF;
 using LoopingAudioConverter.MSU1;

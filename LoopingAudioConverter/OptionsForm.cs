@@ -1,7 +1,4 @@
-﻿using BrawlLib.Internal.Windows.Forms;
-using BrawlLib.SSBB.Types.Audio;
-using LoopingAudioConverter.BrawlLib;
-using LoopingAudioConverter.Conversion;
+﻿using LoopingAudioConverter.Conversion;
 using LoopingAudioConverter.PCM;
 using LoopingAudioConverter.VGAudioOptions;
 using System;
@@ -47,8 +44,6 @@ namespace LoopingAudioConverter {
 		private AdxOptions adxOptions = new AdxOptions();
 		private BxstmOptions bxstmOptions = new BxstmOptions();
 
-		private WaveEncoding waveEncoding = 0;
-
 		public IEnumerable<Task> RunningTasks {
 			get {
 				return runningTasks;
@@ -80,16 +75,10 @@ namespace LoopingAudioConverter {
 				new NVPair<ExporterType>(ExporterType.VGAudio_HPS, "[VGAudio] HPS (HAL)"),
 				new NVPair<ExporterType>(ExporterType.VGAudio_ADX, "[VGAudio] CRI ADX"),
 				new NVPair<ExporterType>(ExporterType.VGAudio_HCA, "[VGAudio] CRI HCA"),
-				new NVPair<ExporterType>(ExporterType.BrawlLib_BRSTM_ADPCM, "[BrawlLib] BRSTM (ADPCM)"),
-				new NVPair<ExporterType>(ExporterType.BrawlLib_BRSTM_PCM16, "[BrawlLib] BRSTM (PCM16)"),
-				new NVPair<ExporterType>(ExporterType.BrawlLib_BCSTM, "[BrawlLib] BCSTM (ADPCM)"),
-				new NVPair<ExporterType>(ExporterType.BrawlLib_BFSTM, "[BrawlLib] BFSTM (ADPCM)"),
-				new NVPair<ExporterType>(ExporterType.BrawlLib_BRWAV, "[BrawlLib] BRWAV (ADPCM)"),
 				new NVPair<ExporterType>(ExporterType.MSF_PCM16BE, "MSF (PCM16, big-endian)"),
 				new NVPair<ExporterType>(ExporterType.MSF_PCM16LE, "MSF (PCM16, little-endian)"),
 				new NVPair<ExporterType>(ExporterType.MSU1, "MSU-1"),
 				new NVPair<ExporterType>(ExporterType.WAV, "WAV"),
-				new NVPair<ExporterType>(ExporterType.MediaFoundation_FLAC, "[Media Foundation] FLAC"),
 				new NVPair<ExporterType>(ExporterType.FLAC, "[FFmpeg] FLAC"),
 				new NVPair<ExporterType>(ExporterType.MP3, "[FFmpeg] MP3"),
 				new NVPair<ExporterType>(ExporterType.M4A, "[FFmpeg] AAC (.m4a)"),
@@ -126,9 +115,7 @@ namespace LoopingAudioConverter {
 			var unknownLoopBehaviors = new[] {
 				new NVPair<InputLoopBehavior>(InputLoopBehavior.NoChange, "Keep as is"),
 				new NVPair<InputLoopBehavior>(InputLoopBehavior.DiscardForAll, "Remove loop information if present"),
-				new NVPair<InputLoopBehavior>(InputLoopBehavior.ForceLoop, "Add loop information if missing (start-to-end loop)"),
-				new NVPair<InputLoopBehavior>(InputLoopBehavior.AskForNonLooping, "Ask for non-looping files"),
-				new NVPair<InputLoopBehavior>(InputLoopBehavior.AskForAll, "Ask for all files")
+				new NVPair<InputLoopBehavior>(InputLoopBehavior.ForceLoop, "Add loop information if missing (start-to-end loop)")
 			};
 			ddlUnknownLoopBehavior.DataSource = unknownLoopBehaviors;
 			if (ddlUnknownLoopBehavior.SelectedIndex < 0) ddlUnknownLoopBehavior.SelectedIndex = 0;
@@ -195,7 +182,6 @@ namespace LoopingAudioConverter {
 				hcaOptions = o.HcaOptions ?? new HcaOptions();
 				adxOptions = o.AdxOptions ?? new AdxOptions();
 				bxstmOptions = o.BxstmOptions ?? new BxstmOptions();
-				waveEncoding = o.WaveEncoding ?? WaveEncoding.ADPCM;
 				ddlUnknownLoopBehavior.SelectedValue = o.InputLoopBehavior;
 				chk0End.Checked = o.ExportWholeSong;
 				txt0EndFilenamePattern.Text = o.WholeSongSuffix;
@@ -244,7 +230,6 @@ namespace LoopingAudioConverter {
 				HcaOptions = hcaOptions,
 				AdxOptions = adxOptions,
 				BxstmOptions = bxstmOptions,
-				WaveEncoding = waveEncoding,
 				InputLoopBehavior = (InputLoopBehavior)ddlUnknownLoopBehavior.SelectedValue,
 				ExportWholeSong = chk0End.Checked,
 				WholeSongSuffix = txt0EndFilenamePattern.Text,
@@ -562,14 +547,6 @@ namespace LoopingAudioConverter {
 					break;
 				default:
 					break;
-			}
-		}
-
-		bool IConverterEnvironment.ShowLoopConversionDialog(NamedAudio file) {
-			PCM16LoopWrapper audioStream = new PCM16LoopWrapper(file.Audio);
-			using (BrstmConverterDialog dialog = new BrstmConverterDialog(audioStream)) {
-				dialog.AudioSource = file.Name;
-				return dialog.ShowDialog(this) == DialogResult.OK;
 			}
 		}
 
