@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LoopingAudioConverter.VGMStream {
 	/// <summary>
-	/// A class to use vgmstream's test.exe to convert formats it supports to PCM16Audio format.
+	/// A class to use vgmstream's .exe to convert formats it supports to PCM16Audio format.
 	/// </summary>
 	public class VGMStreamImporter : IAudioImporter {
 		private string TestExePath;
@@ -18,7 +18,7 @@ namespace LoopingAudioConverter.VGMStream {
 		/// <summary>
 		/// Initializes the vgmstream importer.
 		/// </summary>
-		/// <param name="exePath">Path to test.exe (relative or absolute.)</param>
+		/// <param name="exePath">Path to the .exe (relative or absolute.)</param>
 		public VGMStreamImporter(string test_exe_path) {
 			TestExePath = test_exe_path;
 		}
@@ -33,14 +33,14 @@ namespace LoopingAudioConverter.VGMStream {
 		}
 
 		/// <summary>
-		/// Converts a file to WAV using test.exe and reads it into a PCM16Audio object.
-		/// If the format is not supported, test.exe will write a message to the console and this function will throw an AudioImporterException.
+		/// Converts a file to WAV using the .exe and reads it into a PCM16Audio object.
+		/// If the format is not supported, the .exe will write a message to the console and this function will throw an AudioImporterException.
 		/// </summary>
 		/// <param name="filename">The path of the file to read</param>
 		/// <returns>A PCM16Audio, which may or may not be looping</returns>
 		public async Task<PCM16Audio> ReadFileAsync(string filename, IRenderingHints hints, IProgress<double> progress) {
 			if (!File.Exists(TestExePath)) {
-				throw new AudioImporterException("test.exe not found at path: " + TestExePath);
+				throw new AudioImporterException(".exe not found at path: " + TestExePath);
 			}
 			if (filename.Contains('"')) {
 				throw new AudioImporterException("File paths with double quote marks (\") are not supported");
@@ -63,7 +63,7 @@ namespace LoopingAudioConverter.VGMStream {
 				PCM16Audio lwav = WaveConverter.FromFile("tmp/dump.wav", true);
 				return lwav;
 			} catch (Exception e) {
-				throw new AudioImporterException("Could not read output of test.exe: " + e.Message);
+				throw new AudioImporterException("Could not read output of .exe: " + e.Message);
 			}
 		}
 

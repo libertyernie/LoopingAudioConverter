@@ -13,17 +13,17 @@ Put the following files somewhere Windows can find them:
 - `libvorbis.dll`
 - `libmpg123-0.dll`
 - `libg719_decode.dll`
-- `avcodec-vgmstream-58.dll`
-- `avformat-vgmstream-58.dll`
-- `avutil-vgmstream-56.dll`
-- `swresample-vgmstream-3.dll`
+- `avcodec-vgmstream-59.dll`
+- `avformat-vgmstream-59.dll`
+- `avutil-vgmstream-57.dll`
+- `swresample-vgmstream-4.dll`
 - `libatrac9.dll`
 - `libcelt-0061.dll`
 - `libcelt-0110.dll`
-- `libspeex.dll`
+- `libspeex-1.dll`
 
-For command line (`test.exe`) and XMPlay this means in the directory with the main `.exe`,
-or possibly a directory in the PATH variable.
+For command line (`vgmstream-cli.exe`) and XMPlay this means in the directory with the main
+`.exe`, or possibly a directory in the PATH variable.
 
 For Winamp, the above `.dll` also go near main `winamp.exe`, but note that `in_vgmstream.dll`
 plugin itself goes in `Plugins`.
@@ -34,25 +34,25 @@ automatically, though not all may enabled at the moment due to build scripts iss
 
 ## Components
 
-### test.exe/vgmstream-cli (command line decoder)
-*Windows*: unzip `test.exe` and follow the above instructions for installing needed extra files.
-`test.exe` is used for historical reasons, but you can call it `vgmstream-cli.exe`, anyway.
+### vgmstream-cli (command line decoder)
+*Windows*: unzip `vgmstream-cli` and follow the above instructions for installing needed extra files.
+This tool was called `test.exe` before for historical reasons (rename back if needed).
 
 *Others*: build instructions can be found in the [BUILD.md](BUILD.md) document (can be compiled
 with CMake/Make/autotools).
 
 Converts playable files to `.wav`. Typical usage would be:
-- `test.exe -o happy.wav happy.adx` to decode `happy.adx` to `happy.wav`.
+- `vgmstream-cli -o happy.wav happy.adx` to decode `happy.adx` to `happy.wav`.
 
 If command-line isn't your thing you can simply drag and drop one or multiple
 files to the executable to decode them as `(filename.ext).wav`.
 
 There are multiple options that alter how the file is converted, for example:
-- `test.exe -m file.adx`: print info but don't decode
-- `test.exe -i -o file_noloop.wav file.hca`: convert without looping
-- `test.exe -s 2 -F file.fsb`: write 2nd subsong + ending after 2.0 loops
-- `test.exe -l 3.0 -f 5.0 -d 3.0 file.wem`: 3 loops, 3s delay, 5s fade
-- `test.exe -o bgm_?f.wav file1.adx file2.adx`: convert multiple files to `bgm_(name).wav`
+- `vgmstream-cli -m file.adx`: print info but don't decode
+- `vgmstream-cli -i -o file_noloop.wav file.hca`: convert without looping
+- `vgmstream-cli -s 2 -F file.fsb`: write 2nd subsong + ending after 2.0 loops
+- `vgmstream-cli -l 3.0 -f 5.0 -d 3.0 file.wem`: 3 loops, 3s delay, 5s fade
+- `vgmstream-cli -o bgm_?f.wav file1.adx file2.adx`: convert multiple files to `bgm_(name).wav`
 
 Available commands are printed when run with no flags. Note that you can also
 achieve similar results for other plugins using TXTP, described later.
@@ -63,7 +63,7 @@ Output filename in `-o` may use wildcards:
 - `?n`: internal stream name, or input filename if format doesn't have name
 - `?f`: input filename
 
-For example `test.exe -s 2 -o ?04s_?n.wav file.fsb` could generate `0002_song1.wav`.
+For example `vgmstream-cli -s 2 -o ?04s_?n.wav file.fsb` could generate `0002_song1.wav`.
 Default output filename is `?f.wav`, or `?f#?s.wav` if you set subsongs (`-s/-S`).
 
 
@@ -123,16 +123,25 @@ Note the above is also affected by vgmstream's options *Enable common exts* (vgm
 will accept and play common files like `.wav` or `.ogg`), and *Enable unknown exts* (will
 try to play files outside the known extension list, which is often possible through *TXTH*).
 
-#### Default title
+#### Default title and playlist columns
 By default *vgmstream* auto-generates a `title` tag depending on subsongs, stream name
 and other details. You can change this by setting *"override title"* in the options,
 that uses foobar's default (filename without extension) and tweating the display format
 in *Preferences > Display > Default User Interface* (may need to add some conditionals
-to handle files with/out subsongs). *vgmstream* automatically exports these tags:
+to handle files with/out subsongs).
+
+*vgmstream* automatically exports these tags:
 - `STREAM_INDEX`: current subsong, if file has subsongs, starts from 1
 - `STREAM_COUNT`: total subsongs, if file has subsongs
 - `STREAM_NAME`: internal name, that also exists in some formats without subsongs
-For example: `[%artist% - ]%title% [%stream_index%][/ %stream_name%]` 
+- `LOOP_START`: loop start, if any
+- `LOOP_END`: loop end, if any
+
+Exported tags can be used as columns as well (*.. > Playlist view > custom columns*),
+and may be added as tags (which means *vgmstream* can play and loop an exported `.ogg`,
+since those tags are inherited).
+
+Custom title example: `[%artist% - ]%title% [%stream_index%][/ %stream_name%]`
 
 You can also set an unique *Destination* pattern when converting to .wav (even without)
 setting *override title*). For example `[$num(%stream_index%,2)] %filename%[-%stream_name%]` 
@@ -207,39 +216,54 @@ WAV/MP3 conversions ahead of time.
 The tag syntax follows the conventions established in Apple's HTTP Live Streaming
 standard, whose docs discuss extending M3U with arbitrary tags.
 
+### Related projects
+We only manage the above components, but there are other projects using
+vgmstream that may useful for other cases. A few of them:
+- Web browser player: https://github.com/KatieFrogs/vgmstream-web
+- AIMP plugin: https://github.com/ArtemIzmaylov/aimp_vgmstream
+- DeaDBeeF plugin: https://github.com/jchv/deadbeef-vgmstream
+- Python bindings: https://github.com/hugeBlack/pyvgmstream
+- 3DS port: https://github.com/TricksterGuy/3ds-vgmstream
+- Reaper plugin: https://github.com/maxton/reaper_vgmstream
+- Simple GUI: https://github.com/BENICHN/VGMGUI
+
+They may not be up to date though, and since they aren't part of vgmstream
+issues should be directed to each project.
+
 
 ## Special cases
 vgmstream aims to support most audio formats as-is, but some files require extra
 handling.
 
 ### Subsongs
-Certain container formats have multiple audio files, usually called "subsongs", often
-not meant to be extracted (no simple separation from container).
+Certain container formats have multiple audio files, usually called "subsongs", 
+which usually are not meant to be extracted as single files (can't easily separate
+from their container).
 
 By default vgmstream plays first subsong and reports total subsongs, if the format
 is able to contain them. Easiest to use would be the *foobar/winamp/Audacious*
 plugins, that are able to "unpack" those subsongs automatically into the playlist.
 
 With CLI tools, you can select a subsong using the `-s` flag followed by a number,
-for example: `text.exe -s 5 file.bank` or `vgmstream123 -s 5 file.bank`.
+for example: `vgmstream-cli -s 5 file.bank` or `vgmstream123 -s 5 file.bank`.
 
 Using *vgmstream-cli* you can convert multiple subsongs at once using the `-S` flag.
-**WARNING, MAY TAKE A LOT OF SPACE!** Some files have been observed to contain +20000
+**WARNING, MAY TAKE A LOT OF SPACE!** Some containers have been observed to contain +20000
 subsongs, so don't use this lightly. Remember to set an output name (`-o`) with subsong
-wildcards (or leave it alone for the defaults).
-- `test.exe -s 1 -S 100 file.bank`: writes from subsong 1 to subsong 100
-- `test.exe -s 101 -S 0 file.bank`: writes from subsong 101 to max subsong (automatically changes 0 to max)
-- `test.exe -S 0 file.bank`: writes from subsong 1 to max subsong
-- `test.exe -s 1 -S 5 -o bgm.wav file.bank`: writes 5 subsongs, but all overwrite the same file = wrong.
-- `test.exe -s 1 -S 5 -o bgm_?02s.wav file.bank`: writes 5 subsongs, each named differently = correct.
+wildcards (or leave it alone for good defaults).
+- `vgmstream-cli -s 1 -S 100 file.bank`: writes from subsong 1 to subsong 100
+- `vgmstream-cli -s 101 -S 0 file.bank`: writes from subsong 101 to max subsong (automatically changes 0 to max)
+- `vgmstream-cli -S 0 file.bank`: writes from subsong 1 to max subsong
+- `vgmstream-cli -s 1 -S 5 -o bgm.wav file.bank`: writes 5 subsongs, but all overwrite the same file = wrong.
+- `vgmstream-cli -s 1 -S 5 -o bgm_?02s.wav file.bank`: writes 5 subsongs, each named differently = correct.
 
-For other players without support, or to play only a few choice subsongs, you
-can create multiple `.txtp` (explained later) to select one, like `bgm.sxd#10.txtp`
+For players without subsong support, or to play only a few choice subsongs you can
+create multiple `.txtp` (explained later) to select one subsong, like `bgm.sxd#10.txtp`
 (plays subsong 10 in `bgm.sxd`).
 
 You can use this python script to autogenerate one `.txtp` per subsong:
 https://github.com/vgmstream/vgmstream/tree/master/cli/tools/txtp_maker.py
-Put in the same dir as test.exe/vgmstream_cli, then to drag-and-drop files with
+Put in the same dir as *vgmstream-cli*, then to drag-and-drop files with
 subsongs to `txtp_maker.py` (it has CLI options to control output too).
 
 ### Common and unknown extensions
@@ -262,19 +286,20 @@ like foobar or Winamp don't react well to that, they may be renamed to these
 - `.stm` to `.lstm` (Rockstar STM)
 - `.wav` to `.lwav` (standard WAV, various formats)
 - `.wma` to `.lwma` (standard WMA)
-- `.(any)` to `.vgmstream` (FFmpeg formats or TXTH)
+- `.(unknown)` to `.vgmstream` (TXTH formats / extracted bigfiles without extension)
 
 Command line tools don't have this restriction and will accept the original
-filename.
+filename. Note that vgmstream also accepts certain extension-less files as-is too.
 
-The main advantage of renaming here is that vgmstream may use the file's internal
-loop info, or apply subtle fixes, but is also limited in some ways (like ignoring
-standard tags). `.vgmstream` is a catch-all extension that may work as a last resort
-to make a file playable.
+The main reason of renaming is forcing the player to use vgmstream instead of its
+internal decoder. vgmstream then may use the file's loop info, or apply small
+fixes, but is also limited in some ways such as regular tagged files (like `.ogg`)
+won't show tags when played through vgmstream (since video game `.ogg` rarely
+have anything worth showing).
 
 Some plugins have options that allow "*common extensions*" to be played, making any
 renaming unnecessary. You may need to adjust plugin priority in player's options
-first. Note that vgmstream also accepts certain extension-less files as-is too.
+first, but the same issues apply (will lose tags).
 
 Similarly, vgmstream has a curated list of known extensions, that plugins may take
 into account and ignore unknowns. Through *TXTH* you can make unknown files playable,
@@ -404,16 +429,23 @@ Regular formats without companion files should work fine in upper/lowercase. For
 Certain formats have encrypted data, and need a key to decrypt. vgmstream
 will try to find the correct key from a list, but it can be provided by
 a companion file:
-- `.adx`: `.adxkey` (keystring, 8-byte keycode, or derived 6 byte start/mult/add key)
-- `.ahx`: `.ahxkey` (derived 6-byte start/mult/add key)
-- `.hca`: `.hcakey` (8-byte decryption key, a 64-bit number)
-  - `.awb`/`.acb` also may use `.hcakey`, and will combine with an internal AWB subkey
-  - May set a 8-byte key followed a 2-byte AWB subkey for newer HCA
+- `.adx`: `.adxkey` (keystring, or 8-byte keycode, or derived 6 byte start/mult/add key)
+- `.ahx`: `.ahxkey` (keystring, or derived 6-byte start/mult/add key)
+- `.hca`: `.hcakey` (keystring, or 8-byte keycode, a 64-bit number)
+  - May set 8-byte key followed a 2-byte AWB subkey for newer HCA
+  - `.awb`/`.acb` also may use `.adxkey`/`.hcakey`, and will combine with an internal AWB subkey
 - `.fsb`: `.fsbkey` (decryption key in hex, usually between 8-32 bytes) 
 - `.bnsf`: `.bnsfkey` (decryption key, a string up to 24 chars)
+- `.awc`: `.awckey` (decryption key, 0x10 bytes divided into 4 BE ints)
 
 The key file can be `.(ext)key` (for the whole folder), or `(name).(ext)key"
 (for a single file). The format is made up to suit vgmstream.
+
+For example, if you have an encrypted HCA and its key string is *"123456789"*, make
+a text file named `.hcakey` (notice it starts with a dot), open it with a text editor
+and copy that key without quotes nor line endings: `123456789`. Save it, then play the
+HCA normally. vgmstream will see this key and use it automatically.
+
 
 ### Artificial files
 In some cases a file only has raw data, while important header info (codec type,
@@ -513,6 +545,11 @@ willow.mpf: willow.mus,willow_o.mus
 bgm_2_streamfiles.awb: bgm_2.acb
 ```
 ```
+# hashes of SE1_Common_BGM + SRSA/SRST [Hyrule Warriors: Age of Calamity (Switch)]
+# (more exactly "R_SRSA［SE1_Common_BGM］" and "R_SRST［SE1_Common_BGM］")
+0x3a160928.srsa: 0x272c6efb.srst
+```
+```
 # Snack World (Switch) names for .awb (single .acb for all .awb, order matters)
 bgm.awb: bgm.acb
 bgm_DLC1.awb: bgm.acb
@@ -562,9 +599,9 @@ making impossible for vgmstream to play them properly.
 ### Channel issues
 Some games layer a huge number of channels, that are disabled or downmixed
 during gameplay. The player may be unable to play those files (for example
-foobar can only play up to 8 channels, and Winamp depends on your sound
-card). For those files you can set the "downmix" option in vgmstream, that
-can reduce the number of channels to a playable amount. 
+older foobar versions can only play up to 8 channels, and Winamp depends on
+your sound card). For those files you can set the "downmix" option in
+vgmstream, that can reduce the number of channels to a playable amount.
 
 Note that this type of downmixing is very generic (not meant to be used when
 converting to other formats), channels are re-assigned and volumes modified
@@ -639,7 +676,7 @@ called to play one or multiple audio "waves"/"materials" in another section.
 Rather than handling cues, vgmstream shows and plays waves, then assigns cue names
 that point to the wave if possible, since vgmstream mainly deals with streamed/wave
 audio and simulating cues is out of scope. Figuring out a whole cue format can be a
-*huge* time investment, so handling waves only is often enough.
+*huge* time investment, so handling waves only is good enough.
 
 Cues can be *very* complex, like N cues pointing to 1 wave with varying pitch, or
 1 cue playing one random wave out of 3. Sometimes not all waves are referenced by
@@ -673,16 +710,20 @@ order). The format is meant to be both a quick playlist and tags, but the tagfil
 itself just 'looks' like an M3U. you can load files manually or using other playlists
 and still get tags.
 
+Currently there is no way to simplify adding tags and you need to manually add them,
+but format is just a text file. You can use your player to save a playlist in `.m3u`
+format sinde the folder with your files, then edit it with any text editor.
+
 Format is:
 ```
-# ignored comment
+# comment (ignored)
 # $GLOBAL_COMMAND (extra features)
 # @GLOBAL_TAG text (applies all following tracks)
 
 # %LOCAL_TAG text (applies to next track only)
-filename1
+filename1.ext
 # %LOCAL_TAG text (applies to next track only)
-filename2
+filename2.ext
 ```
 Accepted tags depend on the player (foobar: any; Winamp: see ATF config, Audacious:
 few standard ones), typically *ALBUM/ARTIST/TITLE/DISC/TRACK/COMPOSER/etc*, lower
@@ -707,7 +748,7 @@ Example:
 # * Global tags apply to all songs, unless overwritten
 #   Better use ARTIST instead of ALBUMARTIST (more compatible)
 #   Tags usually go in CAPS for readability but no differences
-
+#
 # $AUTOTRACK
 # * This adds TRACK tags automatically from 1 to N
 
@@ -822,10 +863,11 @@ BGM01.adx #I 1.0 90.0 .txtp
 
 ### Issues
 If your player isn't picking tags make sure vgmstream is detecting the song
-(as other plugins can steal its extensions, see above), `.m3u` is properly
-named and that filenames inside match the song filename. For Winamp you need
-to make sure *options > titles > advanced title formatting* checkbox is set and
-the format defined.
+and "vgmstream version" or such text shows in the file properties (as other
+plugins can steal its extensions, see above), `.m3u` is properly named and
+that filenames inside match the song filename. For Winamp you need to make
+sure *options > titles > advanced title formatting* checkbox is set and the
+format defined.
 
 When tags change behavior varies depending on player:
 - *Winamp*: should refresh tags when a different file is played.
@@ -881,7 +923,7 @@ boss2_3ningumi_ver6.adx     #l 1.0  #F .txtp
 You can also use it in CLI for quick access to some txtp-exclusive functions:
 ```
 # force change sample rate to 22050 (don't forget to use " with spaces)
-test.exe -o btl_koopa1_44k_lp.wav "btl_koopa1_44k_lp.brstm  #h22050.txtp"
+vgmstream-cli -o btl_koopa1_44k_lp.wav "btl_koopa1_44k_lp.brstm  #h22050.txtp"
 ```
 
 Support for this feature is limited by player itself, as foobar and Winamp allow
@@ -909,3 +951,53 @@ vgmstream's internals are tailored to play streams so, in other words, it's not
 possible to add support for sequenced audio unless massive changes were done,
 basically becoming another program entirely. There are other projects better
 suited for playing sequences.
+
+
+## External loop points
+Most games use audio formats that define loop points inside its files. That is,
+you get looped/repeated audio in vgmstream simply by opening the files.
+
+However some games use formats that don't define loops points, and instead store
+loops in the executable or some external file. For example they could have a bunch
+of `.ogg` and some text with start/end loop time info for all `.ogg`, or `.opus`
+files with loop samples defined in a `.bfsar`.
+
+Since those cases are typically custom/per game, vgmstream can't really read those
+loop points automatically. Instead, one should make (manually or with some script)
+one TXTP per file that tells vgmstream about its external loop points, and play
+the `.txtp`:
+**BGM_BTL_ACMaster_opus.txtp**: `BGM_BTL_ACMaster_opus.lopus #I 258724 2929972`
+
+Some games also use intro + loop "segments" in separate files that can be combined
+with `.txtp` as well.
+
+This may even happen with formats that do have loops in other games (for example
+relatively common with `.fsb` and mobile games, that may define loops in a .json file).
+
+
+## Modding game audio and encoding wav files to video game formats
+vgmstream cannot *encode* (convert *from* `.wav` *to* a game format), it only *decodes*
+(plays game audio). It also can't repack/mod game files (like `.wem`) into other game
+formats (like `.bnk`).
+
+One may think it's easy to do, since vgmstream reads game audio might as well write audio
+too, but *encoding* and *decoding* are very different.
+
+To *decode* vgmstream just reads a few existing values from the file's *header*,
+to setup and play the file's *body* data, decompressing the game's audio codec.
+
+To *encode* the program would need to make the *header* from scratch (having to include
+lots of values the game needs but aren't needed for vgmstream to play audio), and take
+PCM audio (.wav) and compress it (*very* different than decompressing) to make a *body*.
+
+In other words you need a dedicated tool that can *encode* to your particular format.
+Since *encoding* is lot harder than *decoding* it's not very common to find public tools,
+and may need to program one yourself.
+
+
+## Stream names
+Sometimes vgmstream reads and shows some *stream name*, some internal text that identifies the *stream* (song). Typically this is some identifier text that developers used for the song, but not always meaningful.
+
+*Stream names* don't necessarily work like *filenames*. For example the name may just be generic unused text that doesn't really apply to the sound. Or multiple subsongs may share the same *stream name*, such as `shot_sfx` may apply to 3 *streams*/subsongs, which often means game may use either of those randomly). Or even a single *stream*/subsong may have multiple associated names like `bgm_boss1; bgm_boss1_alt`.
+
+In some cases *vgmstream* may make a *stream name* based on parts or IDs for easier handling, like marking songs with `dummy` or `[pre]`. The letter are "prefetch" files that are just a tiny part of another file (to cache and hide loading times), and can be ignored.
