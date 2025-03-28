@@ -6,7 +6,7 @@
     <title></title>
   </head>
   <body>
-    <h1>Looping Audio Converter 3.2<br>
+    <h1>Looping Audio Converter 4.2<br>
     </h1>
     <p>This application acts as a frontend to other programs and
       libraries, and allows conversion between a variety of looping
@@ -22,24 +22,6 @@
           </th>
         </tr>
       </thead><tbody>
-        <tr>
-          <td valign="top">BrawlLib (BrawlCrate)<br>
-          </td>
-          <td valign="top"><a moz-do-not-send="true"
-              href="https://github.com/soopercool101/BrawlCrate/issues/82">LGPL
-              v3 or later</a><br>
-          </td>
-        </tr>
-        <tr>
-          <td valign="top">OpenTK<br>
-          </td>
-          <td valign="top">Mostly <a moz-do-not-send="true"
-href="https://github.com/opentk/opentk/blob/928ef8934cbec1a55a3d8631a5c3db4801b582ae/LICENSE.md">MIT</a>,
-            with some code <a moz-do-not-send="true"
-href="https://github.com/opentk/opentk/blob/92bce6838a024f41cccb7f5bc39ec6b1529a6ffa/THIRD_PARTIES.md">
-              3-clause BSD</a><br>
-          </td>
-        </tr>
         <tr>
           <td valign="top">RunProcessAsTask<br>
           </td>
@@ -231,21 +213,6 @@ href="https://github.com/vgmstream/vgmstream/blob/001cc5e453e17138c757a00987f04a
           </td>
         </tr>
         <tr>
-          <td valign="top">BrawlLibImporter<br>
-          </td>
-          <td valign="top">*<br>
-          </td>
-          <td valign="top"><a moz-do-not-send="true"
-              href="https://github.com/soopercool101/BrawlCrate">BrawlCrate</a>
-            (BrawlLib.dll)<br>
-          </td>
-          <td valign="top">Yes<br>
-          </td>
-          <td valign="top"><br>
-          </td>
-          <td valign="top">RSTMNode (sometimes) </td>
-        </tr>
-        <tr>
           <td valign="top">VGMImporter<br>
           </td>
           <td valign="top">*.vgm, *.vgz<br>
@@ -377,59 +344,6 @@ href="https://github.com/vgmstream/vgmstream/blob/001cc5e453e17138c757a00987f04a
           <td valign="top">AudioData</td>
         </tr>
         <tr>
-          <td valign="top">[BrawlLib] BRSTM (ADPCM)<br>
-          </td>
-          <td valign="top">*.brstm<br>
-          </td>
-          <td valign="top">BrawlCrate<br>
-          </td>
-          <td valign="top">Yes</td>
-          <td valign="top"><br>
-          </td>
-          <td valign="top">RSTMNode</td>
-        </tr>
-        <tr>
-          <td valign="top">[BrawlLib] BRSTM (PCM16) </td>
-          <td valign="top">*.brstm<br>
-          </td>
-          <td valign="top">BrawlCrate</td>
-          <td valign="top">Yes</td>
-          <td valign="top"><br>
-          </td>
-          <td valign="top">RSTMNode</td>
-        </tr>
-        <tr>
-          <td valign="top">[BrawlLib] BCSTM (ADPCM) </td>
-          <td valign="top">*.bcstm<br>
-          </td>
-          <td valign="top">BrawlCrate</td>
-          <td valign="top">Yes</td>
-          <td valign="top"><br>
-          </td>
-          <td valign="top">RSTMNode</td>
-        </tr>
-        <tr>
-          <td valign="top">[BrawlLib] BFSTM (ADPCM) </td>
-          <td valign="top">*.bfstm<br>
-          </td>
-          <td valign="top">BrawlCrate</td>
-          <td valign="top">Yes</td>
-          <td valign="top"><br>
-          </td>
-          <td valign="top">RSTMNode</td>
-        </tr>
-        <tr>
-          <td valign="top">[BrawlLib] BRWAV (ADPCM) </td>
-          <td valign="top">*.brwav<br>
-          </td>
-          <td valign="top">BrawlCrate</td>
-          <td valign="top">Yes</td>
-          <td valign="top"><br>
-          </td>
-          <td valign="top"><br>
-          </td>
-        </tr>
-        <tr>
           <td valign="top">MSF (PCM16, big-endian)<br>
           </td>
           <td valign="top">*.msf<br>
@@ -481,22 +395,6 @@ href="https://github.com/vgmstream/vgmstream/blob/001cc5e453e17138c757a00987f04a
           <td valign="top">Yes (smpl)<br>
           </td>
           <td valign="top"><br>
-          </td>
-          <td valign="top"><br>
-          </td>
-        </tr>
-        <tr>
-          <td valign="top">[Media Foundation] FLAC<br>
-          </td>
-          <td valign="top">*.flac<br>
-          </td>
-          <td valign="top"><a moz-do-not-send="true"
-href="https://learn.microsoft.com/en-us/windows/win32/medfound/microsoft-media-foundation-sdk">
-              Media Foundation</a><br>
-          </td>
-          <td valign="top">No<br>
-          </td>
-          <td valign="top">No<br>
           </td>
           <td valign="top"><br>
           </td>
@@ -671,15 +569,6 @@ src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhgAAAJHCAIAAABdPrhlAAAgAElEQ
         <li><b>Add loop information if missing (start-to-end loop)</b>:
           Any input files that are non-looping or lack loop information
           will be looped start to end in the output.</li>
-        <li><b>Ask for non-looping files</b>: The audio import dialog
-          from BrawlCrate will be shown for each input file without loop
-          information after decoding so you can specify your own loop
-          point.<br>
-        </li>
-        <li><b>Ask for all files</b>: The audio import dialog from
-          BrawlCrate will be shown for all input files. For looping
-          files, the loop point will be pre-populated.<br>
-        </li>
       </ul>
       <li>Channel export options</li>
       <ul>
