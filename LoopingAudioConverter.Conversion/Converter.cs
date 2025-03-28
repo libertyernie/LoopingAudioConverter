@@ -91,10 +91,10 @@ namespace LoopingAudioConverter.Conversion {
 					yield return new VGMImporter(vgmplay_path);
 				yield return new MSU1Converter();
 				yield return new MSFImporter();
-				if (env.VGMStreamPath is string vgmstream_path)
-					yield return new VGMStreamImporter(vgmstream_path);
 				yield return new VGAudioImporter();
 				yield return new BrawlLibImporter();
+				if (env.VGMStreamPath is string vgmstream_path)
+					yield return new VGMStreamImporter(vgmstream_path);
 				yield return effectEngine;
 			}
 
