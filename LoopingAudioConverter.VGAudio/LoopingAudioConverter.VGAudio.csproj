@@ -5,12 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="VGAudio" Version="2.2.1" />
+    <ProjectReference Include="..\LoopingAudioConverter.PCM\LoopingAudioConverter.PCM.csproj" />
+    <ProjectReference Include="..\LoopingAudioConverter.WAV\LoopingAudioConverter.WAV.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LoopingAudioConverter.PCM\LoopingAudioConverter.PCM.csproj" />
-    <ProjectReference Include="..\LoopingAudioConverter.WAV\LoopingAudioConverter.WAV.csproj" />
+    <Reference Include="VGAudio">
+      <HintPath>..\lib\VGAudio.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

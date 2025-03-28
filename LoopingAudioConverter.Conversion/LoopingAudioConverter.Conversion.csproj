@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="VGAudio" Version="2.2.1" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\LoopingAudioConverter.BrawlLib\LoopingAudioConverter.BrawlLib.csproj" />
     <ProjectReference Include="..\LoopingAudioConverter.FFmpeg\LoopingAudioConverter.FFmpeg.csproj" />
     <ProjectReference Include="..\LoopingAudioConverter.MediaFoundation\LoopingAudioConverter.MediaFoundation.vcxproj" />
@@ -27,6 +23,9 @@
   <ItemGroup>
     <Reference Include="BrawlLib">
       <HintPath>..\lib\BrawlLib.dll</HintPath>
+    </Reference>
+    <Reference Include="VGAudio">
+      <HintPath>..\lib\VGAudio.dll</HintPath>
     </Reference>
   </ItemGroup>
 
