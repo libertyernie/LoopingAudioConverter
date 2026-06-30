@@ -57,8 +57,34 @@ namespace LoopingAudioConverter.VGAudioOptions {
 		public NwCodec Codec { get; set; } = NwCodec.GcAdpcm;
 		[Description("The endianness. Wii and Wii U use big endian, while 3DS and Switch use little endian.")]
 		public Endianness? Endianness { get; set; }
-		[Description("A version number. Set useDefault to let VGAudio pick a number based on the container format.")]
-		public BxstmVersion Version { get; set; } = new BxstmVersion { UseDefault = true };
+
+		private BxstmVersion _Version = new BxstmVersion() { UseDefault = true };
+
+		[Description("If true, let VGAudio pick a number based on the container format. Otherwise, use the Version properties to specify a custom version.")]
+		public bool UseDefaultVersion {
+			get => _Version.UseDefault;
+			set => _Version.UseDefault = value;
+		}
+		[Description("The major version byte. Ignored if UseDefaultVersion is set to True.")]
+		public byte VersionMajor {
+			get => _Version.Major;
+			set => _Version.Major = value;
+		}
+		[Description("The minor version byte. Ignored if UseDefaultVersion is set to True.")]
+		public byte VersionMinor {
+			get => _Version.Minor;
+			set => _Version.Minor = value;
+		}
+		[Description("The micro version byte. Ignored if UseDefaultVersion is set to True.")]
+		public byte VersionMicro {
+			get => _Version.Micro;
+			set => _Version.Micro = value;
+		}
+		[Description("The revision version byte. Ignored if UseDefaultVersion is set to True.")]
+		public byte VersionRevision {
+			get => _Version.Revision;
+			set => _Version.Revision = value;
+		}
 
 		/// <summary>
 		/// The type of track description to be used when building the 
@@ -89,13 +115,13 @@ namespace LoopingAudioConverter.VGAudioOptions {
 			SeekTableType = SeekTableType,
 			TrackType = TrackType,
 			TrimFile = TrimFile,
-			Version = Version.UseDefault
+			Version = _Version.UseDefault
 				? null
 				: new NwVersion(
-					Version.Major,
-					Version.Minor,
-					Version.Micro,
-					Version.Revision)
+					_Version.Major,
+					_Version.Minor,
+					_Version.Micro,
+					_Version.Revision)
 		};
 	}
 }
